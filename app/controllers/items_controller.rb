@@ -20,7 +20,7 @@ class ItemsController < ApplicationController
   end
 
   def view
-    @items = Item.where(:delete_flag => 0)
+    @items = Item.where(:delete_flag => 0).order("id DESC")
   end
 
   def create
