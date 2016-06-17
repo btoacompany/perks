@@ -6,11 +6,11 @@
     </div>
     <br><br><hr><br>
 
-    <p align="right"><a href="/items">SEE ALL CATEGORIES</a></p><br>
+    <h3 align="right"><a href="/items">SEE ALL CATEGORIES</a></h3><br>
     <% @categories.each do | id, val | %>
     <div class="feat">
       <div class="title">
-	<a href="/items?cat=<%= id %>"><h3><%= val %></h3></a>
+	<a href="/items?cat=<%= id %>"><h2><%= val %></h2></a>
       </div>
 
       <div class="items clearfix">
@@ -18,10 +18,13 @@
 	<% @items[id].each do |item| %>
 	  <div class="item col-6">
 	    <a href="/items/<%= item[:id] %>"><img src="<%= item[:img_src] %>"/></a>
+	    <a href="/items/<%= item[:id] %>">
 	    <div class="caption col-12">
-	      <h3 align="left"><%= item[:name] %></h3>
-	      <p align="right"><%= number_with_delimiter(item[:price], :delimiter => ',') %> 円</p>
-	    </div>
+		<h2 align="left"><%= item[:name] %></h2>
+		<h3 align="right"><%= item[:discount] %>% DISCOUNT</h3>
+		<h3 align="right"><%= number_with_delimiter(item[:sale_price], :delimiter => ',') %> 円</h3>
+		<p align="right">From <del><%= number_with_delimiter(item[:price], :delimiter => ',') %> 円</del></p>
+	    </div></a>
 	  </div>
 	<% end %>
 	</div>

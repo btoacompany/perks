@@ -15,8 +15,10 @@
 	<a href="<%= @item[:img_src] %>" target="_blank"><img src="<%= @item[:img_src] %>"/></a>
       </div>
       <div class="info col-5">
-	<h3 class="name"><%= @item[:name] %></h3>
-	<p class="price"><%= number_with_delimiter(@item[:price], :delimiter => ',') %> 円</p><br>
+	<h2 class="name"><%= @item[:name] %></h2>
+	<p><b><%= number_with_delimiter(@item[:sale_price], :delimiter => ',') %> 円 (<%= @item[:discount] %>% DISCOUNT)</b></p>
+	<p class="price">From <del><%= number_with_delimiter(@item[:price], :delimiter => ',') %> 円</del></p><br>
+
 	<p class="desc"><%= @item[:description] %></p><br>
 	<input type="button" class="btn_coupon" value="GET COUPON"/>
       </div>
