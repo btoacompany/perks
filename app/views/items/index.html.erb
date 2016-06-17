@@ -1,0 +1,27 @@
+<div id="wrapper">
+<div id="contents">
+  <div class="row">
+    <div id="menu">
+      <ul> 
+	<% @categories.each do | id, val | %>
+	<li> 
+	  <a href="/items/?cat=<%= id %>"> <img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/perks/icons/cat<%= id %>_icon.png" width="16" height="16"/> <%= val %></a> </li>
+	<% end %>
+      </ul>
+    </div>
+
+    <div id="item_list">
+      <% @items.each_with_index do | item, i | %>
+      <div class="item">
+	<a href="/items/<%= item[:id] %>"><img src="<%= item[:img_src] %>"/></a><br>
+	<div class="details">
+	  <p align="center">
+	    <a href="/items/<%= item[:id] %>"><b><%= item[:name] %></b></a>
+	  </p>
+	</div>
+      </div>
+      <% end %>
+    </div>
+  </div> <!-- row -->
+</div> <!-- contents -->
+</div> <!-- wrapper -->

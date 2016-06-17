@@ -1,0 +1,33 @@
+<div id="wrapper">
+<div id="contents">
+  <div id="top_box" class="center">
+    <div class="slide">
+      <img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/perks/top/top_img1.jpg" />
+    </div>
+    <br><br><hr><br>
+
+    <p align="right"><a href="/items">SEE ALL CATEGORIES</a></p><br>
+    <% @categories.each do | id, val | %>
+    <div class="feat">
+      <div class="title">
+	<a href="/items?cat=<%= id %>"><h3><%= val %></h3></a>
+      </div>
+
+      <div class="items clearfix">
+	<div class="row">
+	<% @items[id].each do |item| %>
+	  <div class="item col-6">
+	    <a href="/items/<%= item[:id] %>"><img src="<%= item[:img_src] %>"/></a>
+	    <div class="caption col-12">
+	      <h3 align="left"><%= item[:name] %></h3>
+	      <p align="right"><%= number_with_delimiter(item[:price], :delimiter => ',') %> 円</p>
+	    </div>
+	  </div>
+	<% end %>
+	</div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div> <!-- contents -->
+</div> <!-- wrapper -->

@@ -22,5 +22,8 @@ module Perks
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Precompile addtional assets
+    config.assets.precompile += %w( default2.css )
   end
 end

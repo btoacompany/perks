@@ -1,0 +1,30 @@
+<div id="wrapper">
+<div id="contents">
+  <h3 class="c_align">Create New Supplier</h3>
+  <%= form_tag( "/tools/suppliers/create_complete", method: "post" ) do %>
+  <table class="center">
+      <tr>
+	<td>Supplier Name: </td>
+	<td><input type="text" value="" name="name" /></td>
+      </tr>
+      <tr>
+	<td>Supplier URL: </td>
+	<td><input type="text" value="" name="url" width="200"/></td>
+      </tr>
+      <tr>
+	<td>Upgrade Type: </td>
+	<td>
+	  <label><input type="radio" value="0" name="upgrade"/>Standard</label><br>
+	  <label><input type="radio" value="1" name="upgrade"/>Gold</label><br>
+	  <label><input type="radio" value="2" name="upgrade"/>Premium</label><br>
+	</td>
+      </tr>
+      <tr>
+	<td class="btn r_align" colspan="2">
+	  <input type="submit" value="Submit" class="btn" />
+	</td>
+      </tr>	
+  </table>
+  <% end %>
+</div> <!-- contents -->
+</div> <!-- wrapper -->

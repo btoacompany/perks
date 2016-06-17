@@ -1,0 +1,51 @@
+<div id="wrapper">
+<div id="container">
+  <div id="content_supplier">
+    <div class="c_align">
+      <h2>Suppliers Tool</h2>
+      <a href="/tools/suppliers/create" class="a_btn">Add New Supplier</a>
+    </div><br>
+
+    <table class="tbl_common center" border="0">
+      <tr>
+	<th>ID</th>
+	<th>Supplier Name</th>
+	<th>Supplier Url</th>
+	<th class="c_align">Action</th>
+      </tr>
+      <% @suppliers.each do | item | %>
+      <tr class="item_<%= item[:id] %>">
+	<td><%= item[:id] %></td>
+	<td><%= item[:name] %></td>
+	<td>
+	  <a href="<%= item[:url] %>" target="blank"><%= item[:url] %></a>
+	</td>
+	<td class="c_align">
+	  <input type="button" class="edit_item" data-id="<%= item[:id] %>" value="edit" /> | 
+	  <input type="button" class="delete_item" data-id="<%= item[:id] %>" value="del" />
+	</td>
+      </tr>
+      <% end %>
+    </table>
+  </div> <!-- content_supplier -->
+</div> <!-- container -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+
+$('.delete_item').click(function() {
+  var supplier_id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if (confirm("Are you sure you want to delete this item?")) {
+    $.post("/tools/suppliers/delete_complete", { 'id': supplier_id }); //send post request
+    $(".item_" + supplier_id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
+});
+
+$('.edit_item').click(function() {
+  var supplier_id = ($(this).attr('data-id'));
+  window.location.href = "/tools/suppliers/edit/"+supplier_id; //redirect to assigned url
+});
+
+</script>
