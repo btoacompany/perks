@@ -78,6 +78,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # paperclip config
+=begin  
   config.paperclip_defaults = {
     storage: :s3,
     s3_protocol: 'http',
@@ -88,4 +89,5 @@ Rails.application.configure do
       s3_region: ENV.fetch("AWS_REGION"), 
     }
   }
+=end  
 end
