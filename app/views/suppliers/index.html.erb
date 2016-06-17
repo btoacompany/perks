@@ -1,18 +1,26 @@
 <div id="wrapper">
 <div id="container">
-  <div id="content_supplier">
+  <div class="toolbox">
+    <div class="toolmenu clearfix">
+      <ul>
+	<li><a href="/tools/items">ITEM TOOLS</a></li>
+	<li><a href="/tools/suppliers">SUPPLIER TOOLS</a></li>
+      </ul>
+    </div><br><br>
+
     <div class="c_align">
-      <h2>Suppliers Tool</h2>
-      <a href="/tools/suppliers/create" class="a_btn">Add New Supplier</a>
+      <h2>Supplier Tools</h2><br>
+      <a href="/tools/suppliers/create" class="a_btn" style="font-size:14pt">Add New Supplier</a>
     </div><br>
 
-    <table class="tbl_common center" border="0">
+    <table class="tbl_tools center" border="0">
       <tr>
 	<th>ID</th>
 	<th>Supplier Name</th>
 	<th>Supplier Url</th>
-	<th class="c_align">Action</th>
+	<th class="c_align">Actions</th>
       </tr>
+
       <% @suppliers.each do | item | %>
       <tr class="item_<%= item[:id] %>">
 	<td><%= item[:id] %></td>
@@ -21,8 +29,8 @@
 	  <a href="<%= item[:url] %>" target="blank"><%= item[:url] %></a>
 	</td>
 	<td class="c_align">
-	  <input type="button" class="edit_item" data-id="<%= item[:id] %>" value="edit" /> | 
-	  <input type="button" class="delete_item" data-id="<%= item[:id] %>" value="del" />
+	  <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="edit" /> | 
+	  <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="del" />
 	</td>
       </tr>
       <% end %>

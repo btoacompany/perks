@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get	'/items/:id'			=> 'items#details'
 
   # item tools
+  get	'/tools/items'			=> 'items#view'
   get	'/tools/items/create'		=> 'items#create'
   post	'/tools/items/create_complete'	=> 'items#create_complete'
   get	'/tools/items/edit/:id'		=> 'items#edit'

@@ -19,6 +19,10 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
   end
 
+  def view
+    @items = Item.where(:delete_flag => 0)
+  end
+
   def create
     @suppliers = Supplier.where(:delete_flag => 0)
   end
@@ -50,6 +54,6 @@ class ItemsController < ApplicationController
   end
 
   def redirect_to_index
-    redirect_to "/items" 
+    redirect_to "/tools/items" 
   end
 end

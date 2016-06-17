@@ -1,10 +1,10 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 class="c_align">Add New Perk</h3>
+  <h3 align="center">Add New Perk</h3>
   <%= form_tag( "/tools/items/edit_complete", method: "post", id: "new_form" ) do %>
   <input type="hidden" name="id" value="<%= @item[:id] %>"/>
-  <div class="center">
-    <table class="center">
+  <div class="toolbox">
+    <table class="tbl_tools">
       <tr>
 	<td>Perk Title: </td>
 	<td><input type="text" name="name" value="<%= @item[:name] %>"/></td>
@@ -31,7 +31,7 @@
       </tr>
       <tr>
 	<td>Image Source: </td>
-	<td><input type="text" name="img_src" value="<%= @item[:img_src] %>"/></td>
+	<td><input type="text" name="img_src" value="<%= @item[:img_src] %>" size="50"/></td>
       </tr>
       <tr>
 	<td>Perk URL: </td>
@@ -54,8 +54,10 @@
 	<td><input type="text" name="sale_price" value="<%= @item[:sale_price] %>"/></td>
       </tr>
       <tr>
-	<td class="btn r_align" colspan="2">
-	  <br><input type="submit" value="Submit" class="btn_submit" />
+	<td align="right" colspan="2">
+	  <br>
+	  <input type="button" value="Back" class="btn_back btn" />
+	  <input type="submit" value="Submit" class="btn_submit btn" />
 	</td>
       </tr>
     </table>
@@ -65,4 +67,7 @@
 </div> <!-- wrapper -->
 
 <script type="text/javascript">
+$(".btn_back").click(function() {
+  window.location = "/tools/items";
+});
 </script>
