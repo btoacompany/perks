@@ -33,10 +33,12 @@ class ItemsController < ApplicationController
 
   def edit
     @item = Item.find(params[:id])
+    @suppliers = Supplier.where(:delete_flag => 0)
   end
   
   def edit_complete
-    item = Items.find(params[:id])
+    params[:supplier_name] = Supplier.find(params[:supplier_id]).name
+    item = Item.find(params[:id])
     item.save_record(params)
     redirect_to_index 
   end

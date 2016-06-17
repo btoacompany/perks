@@ -220,7 +220,8 @@ html[xmlns] .clearfix {
 }
 
 .details .main_img {
-  background-color: #282828;
+  /*background-color: #282828;*/
+  border: 1px solid #282828;
   vertical-align: middle;
 }
 
@@ -248,6 +249,20 @@ html[xmlns] .clearfix {
 
 @media only screen and (min-width: 768px) {
   /* For desktop: */
+  body {
+  }
+
+  body {
+    background: #fff repeat-x;
+    margin: 0 auto 0;
+    padding: 0;
+  }
+
+  #wrapper {
+    width: 960px;
+    margin: 0 auto;
+  }
+
   #top_box .slide {
       max-width: 1024px;
       height: auto;
@@ -261,12 +276,12 @@ html[xmlns] .clearfix {
   }
 
   #top_box .feat img {
-    height: 320px;
+    height: 300px;
     width: 360px;
   }
 
   #menu {
-    width: 25%;
+    width: 30%;
     float: left;
     margin-top: 10px;
   }
@@ -283,7 +298,7 @@ html[xmlns] .clearfix {
 
   #item_list {
     float: right;
-    width: 75%;
+    width: 70%;
   }
 
   #item_list .item {
@@ -291,13 +306,13 @@ html[xmlns] .clearfix {
     border: 1px solid #a4a4a4;
     padding: 10px;
     margin: 10px 10px;
-    width: 320px;
+    width: 290px;
     height: auto;
   }
 
   #item_list .item img {
     width: 100%; 
-    height: 220px;
+    height: 180px;
     vertical-align: middle;
   }
 }
