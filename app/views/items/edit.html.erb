@@ -20,11 +20,11 @@
 	</td>
       </tr>
       <tr>
-	<td>Supplier: </td>
+	<td>Vendor: </td>
 	<td>
-	  <select name="supplier_id">
-	  <% @suppliers.each do | item | %>
-	    <option value="<%= item[:id] %>" <% if item[:id] == @item[:supplier_id] %> selected <% end %>><%= item[:name] %></option>
+	  <select name="vendor_id">
+	  <% @vendors.each do | item | %>
+	    <option value="<%= item[:id] %>" <% if item[:id] == @item[:vendor_id] %> selected <% end %>><%= item[:name] %></option>
 	  <% end %>
 	  </select>
 	</td>

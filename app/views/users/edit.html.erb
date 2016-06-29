@@ -1,0 +1,94 @@
+<div id="wrapper">
+<div id="contents">
+  <h3 class="c_align">Update your information</h3><br>
+  <%= form_tag( "/user/register/complete", method: "post", id: "login_form" ) do %>
+  <div class="center">
+    <table class="center">
+      <tr>
+	<td>会社: </td>
+	<td><%= @user[:company_name] %></td>
+      </tr>
+      <tr>
+	<td>E-mail: </td>
+	<td><%= @user[:email] %></td>
+      </tr>
+      <tr>
+	<td>Password: </td>
+	<td><input type="password" name="password" value="" id="passwd1"/></td>
+      </tr>
+      <tr>
+	<td>Confirm Password: </td>
+	<td>
+	  <input type="password" name="password" value="" id="passwd2"/><br>
+	  <span class="notice"></span>
+	</td>
+      </tr>
+      <tr><td colspan="2"><hr></td></tr>
+      <tr>
+	<td>Last Name: </td>
+	<td><input type="text" name="lastname" value=""/></td>
+      </tr>
+      <tr>
+	<td>First Name: </td>
+	<td><input type="text" name="firstname" value=""/></td>
+      </tr>
+      <tr>
+	<td>Gender: </td>
+	<td>
+	  <label><input type="radio" name="gender" value="1" checked />女</label>
+	  <label><input type="radio" name="gender" value="2"/>男</label>
+	</td>
+      </tr>
+      <tr>
+	<td>Birthday: </td>
+	<td>
+	  <select name="b_year">
+	  <% @years.reverse_each do | val | %>
+	    <option value="<%= val %>"><%= val %></option>
+	  <% end %>
+	  </select> 年 
+	  <select name="b_month">
+	  <% (1..12).each do | val | %>
+	    <option value="<%= val %>"><%= val %></option>
+	  <% end %>
+	  </select> 月 
+	  <select name="b_day">
+	  <% (1..31).each do | val | %>
+	    <option value="<%= val %>"><%= val %></option>
+	  <% end %>
+	  </select> 日
+	</td>
+      </tr>
+      <tr>
+	<td>Position: </td>
+	<td><input type="text" name="position" value=""/></td>
+      </tr>
+      <tr>
+	<td>Job Title: </td>
+	<td><input type="text" name="job_title" value=""/></td>
+      </tr>
+      <tr>
+	<td class="btn r_align" colspan="2">
+	  <br><input type="submit" value="Update Info" class="btn" />
+	</td>
+      </tr>
+    </table>
+  </div><br><br>
+  <% end %>
+</div> <!-- contents -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+var passwd1 = document.getElementById("passwd1");
+var passwd2 = document.getElementById("passwd2");
+
+function validatePassword(){
+  if(passwd1.value != passwd2.value) {
+    $(".notice").text(" Passwords don't match");
+  } else {
+    $(".notice").text("");
+  }
+}
+passwd1.onchange = validatePassword;
+passwd2.onkeyup = validatePassword;
+</script>

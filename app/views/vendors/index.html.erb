@@ -4,24 +4,24 @@
     <div class="toolmenu clearfix">
       <ul>
 	<li><a href="/tools/items">ITEM TOOLS</a></li>
-	<li><a href="/tools/suppliers">SUPPLIER TOOLS</a></li>
+	<li><a href="/tools/vendors">SUPPLIER TOOLS</a></li>
       </ul>
     </div><br><br>
 
     <div class="c_align">
-      <h2>Supplier Tools</h2><br>
-      <a href="/tools/suppliers/create" class="a_btn" style="font-size:14pt">Add New Supplier</a>
+      <h2>Vendor Tools</h2><br>
+      <a href="/tools/vendors/create" class="a_btn" style="font-size:14pt">Add New Vendor</a>
     </div><br>
 
     <table class="tbl_tools center" border="0">
       <tr>
 	<th>ID</th>
-	<th>Supplier Name</th>
-	<th>Supplier Url</th>
+	<th>Vendor Name</th>
+	<th>Vendor Url</th>
 	<th class="c_align">Actions</th>
       </tr>
 
-      <% @suppliers.each do | item | %>
+      <% @vendors.each do | item | %>
       <tr class="item_<%= item[:id] %>">
 	<td><%= item[:id] %></td>
 	<td><%= item[:name] %></td>
@@ -35,25 +35,25 @@
       </tr>
       <% end %>
     </table>
-  </div> <!-- content_supplier -->
+  </div> <!-- content_vendor -->
 </div> <!-- container -->
 </div> <!-- wrapper -->
 
 <script type="text/javascript">
 
 $('.delete_item').click(function() {
-  var supplier_id = ($(this).attr('data-id')); //get attributes of clicked item
+  var vendor_id = ($(this).attr('data-id')); //get attributes of clicked item
 
   if (confirm("Are you sure you want to delete this item?")) {
-    $.post("/tools/suppliers/delete_complete", { 'id': supplier_id }); //send post request
-    $(".item_" + supplier_id).remove(); //remove item upon deletion
+    $.post("/tools/vendors/delete_complete", { 'id': vendor_id }); //send post request
+    $(".item_" + vendor_id).remove(); //remove item upon deletion
   }
   return false; //do nothing
 });
 
 $('.edit_item').click(function() {
-  var supplier_id = ($(this).attr('data-id'));
-  window.location.href = "/tools/suppliers/edit/"+supplier_id; //redirect to assigned url
+  var vendor_id = ($(this).attr('data-id'));
+  window.location.href = "/tools/vendors/edit/"+vendor_id; //redirect to assigned url
 });
 
 </script>

@@ -1,7 +1,7 @@
 #coding:utf-8
 
-class Item < ActiveRecord::Base
-  self.table_name = "items"
+class Reward < ActiveRecord::Base
+  self.table_name = "rewards "
 
   before_create :set_create_time
   before_update :set_update_time

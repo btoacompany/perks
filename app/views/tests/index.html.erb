@@ -1,0 +1,9 @@
+<div>
+<% @tests.each do | item | %>
+  <a href="/tests/edit/<%= item[:id] %>">Edit</a><br>
+  Name: <%= item[:name] %> <br>
+  Email: <%= item[:email] %> <br>
+  Tabelog Account: <%= item[:accounts]["tabelog"] %> <br>
+  Line Music Account: <%= item[:accounts]["line_music"] %> <br>
+<% end %>
+</div>

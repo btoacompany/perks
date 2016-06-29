@@ -1,0 +1,12 @@
+<div id="wrapper">
+<div id="contents">
+  <h3 class="c_align">Register Company</h3><br>
+  <%= form_tag( "/company/employees/add/complete", method: "post", id: "login_form" ) do %>
+  <div class="center">
+    <p>Enter employees e-mail address</p>
+    <textarea name="emails" rows="5" cols="30"></textarea>
+    <p><input type="submit" value="Submit" /></p>
+  </div><br><br>
+  <% end %>
+</div> <!-- contents -->
+</div> <!-- wrapper -->

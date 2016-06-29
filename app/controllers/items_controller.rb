@@ -24,11 +24,11 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @suppliers = Supplier.where(:delete_flag => 0)
+    @vendors = Vendor.where(:delete_flag => 0)
   end
 
   def create_complete
-    params[:supplier_name] = Supplier.find(params[:supplier_id]).name
+    params[:vendor_name] = Vendor.find(params[:vendor_id]).name
     item = Item.new
     item.save_record(params)
     redirect_to "/tools/items/create" 
@@ -37,11 +37,11 @@ class ItemsController < ApplicationController
 
   def edit
     @item = Item.find(params[:id])
-    @suppliers = Supplier.where(:delete_flag => 0)
+    @vendors = Vendor.where(:delete_flag => 0)
   end
   
   def edit_complete
-    params[:supplier_name] = Supplier.find(params[:supplier_id]).name
+    params[:vendor_name] = Vendor.find(params[:vendor_id]).name
     item = Item.find(params[:id])
     item.save_record(params)
     redirect_to_index 

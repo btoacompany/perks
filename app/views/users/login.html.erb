@@ -1,18 +1,16 @@
 <div id="wrapper">
 <div id="contents">
-  <br>
   <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
-  <%= form_tag( "/tools/login/complete", method: "post", id: "login_form" ) do %>
+  <%= form_tag( "/login/complete", method: "post", id: "login_form" ) do %>
   <div id="login_box" class="center">
-    <a href="/register">Register</a>
-    <h3 class="c_align">Login</h3>
+    <h3 class="c_align">User Login</h3><br>
     <table class="center">
       <tr>
-	<td><b>Username: </b></td>
-	<td><input type="text" value="" name="username" size="30" required /></td>
+	<td><b>メールアドレス: </b></td>
+	<td><input type="text" value="" name="email" size="30" required /></td>
       </tr>
       <tr>
-	<td><b>Password: </b></td>
+	<td><b>パスワード: </b></td>
 	<td><input type="password" value="" name="password" size="30" required /></td>
       </tr>
       <tr>
@@ -20,9 +18,8 @@
 	  <br><input type="submit" value="Login" class="btn" />
 	</td>
       </tr>	
-    </table><br>
-    <p><a href="/tools/register">No account yet? Register here.</a></p>
-  </div><br>
+    </table>
+  </div><br><br>
   <% end %>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
