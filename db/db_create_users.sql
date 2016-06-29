@@ -15,7 +15,6 @@ CREATE TABLE users (
   kudos		INT(11) NOT NULL DEFAULT 0,
   plan		TINYINT(2) NOT NULL DEFAULT 0,
   invite_status	TINYINT(2) NOT NULL DEFAULT 0,
-  accounts	JSON,
   verified	TINYINT(2) NOT NULL DEFAULT 0,
   password	VARCHAR(255),
   salt		VARCHAR(255),

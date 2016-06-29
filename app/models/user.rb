@@ -29,7 +29,6 @@ class User < ActiveRecord::Base
     self.kudos	      = params[:kudos] || 0
     self.plan	      = params[:plan] || 0
     self.invite_status = params[:invite_status] || 0
-    self.accounts     = params[:accounts]
     self.verified     = params[:verified] || 0
     self.save
   end
