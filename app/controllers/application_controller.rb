@@ -62,10 +62,10 @@ protected
       redirect_to(:controller => 'logs', :action => 'index')
       return false
     elsif session[:user_id]
-      redirect_to(:controller => 'perks', :action => 'index')
+      redirect_to(:controller => 'top', :action => 'index')
       return false
     elsif session[:company_id]
-      redirect_to(:controller => 'top', :action => 'index')
+      redirect_to(:controller => 'company', :action => 'index')
       return false
     else
       return true

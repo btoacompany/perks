@@ -2,8 +2,8 @@
 <div id="contents">
   <h3 class="c_align">Register Company</h3><br>
   <%= form_tag( "/company/edit/complete", method: "post", id: "login_form" ) do %>
-  <div class="center">
-    <table class="center">
+  <div class="toolbox center">
+    <table class="center tbl_tools">
       <tr>
 	<td>会社名: </td>
 	<td><input type="text" name="name" value="<%= @company[:name] %>" required /></td>
@@ -39,12 +39,11 @@
 	<td>連絡先: </td>
 	<td><input type="text" name="phone" value="<%= @company[:phone] %>" /></td>
       </tr>
-      <tr>
-	<td class="btn r_align" colspan="2">
-	  <br><input type="submit" value="Submit" class="btn" />
-	</td>
-      </tr>
-    </table>
+    </table><br>
+    <p align="center">
+      <input type="button" value="Back" class="btn btn_back" />
+      <input type="submit" value="Submit" class="btn" />
+    </p>
   </div><br><br>
   <% end %>
 </div> <!-- contents -->
@@ -63,4 +62,8 @@ function validatePassword(){
 }
 passwd1.onchange = validatePassword;
 passwd2.onkeyup = validatePassword;
+
+$(".btn_back").click(function() {
+  window.location = "/company/details";
+});
 </script>

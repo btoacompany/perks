@@ -7,6 +7,12 @@ class User < ActiveRecord::Base
   serialize :accounts
   self.table_name = "users"
 
+  belongs_to :company
+  has_many :posts
+  has_many :comments
+  has_many :kudos
+  has_many :hashtags
+
   before_save 	:encrypt_password
   after_save 	:clear_password
   before_create :set_create_time
@@ -14,22 +20,17 @@ class User < ActiveRecord::Base
   
   def save_record(params)
     @password = params[:password]
-    self.name	      = params[:name]
+    self.name	      = params[:name]	      if params[:name].present?
+    self.email	      = params[:email]	      if params[:email].present?
+    self.company_id   = params[:company_id]   if params[:company_id].present?
+    self.img_src      = params[:img_src]      if params[:img_src].present?
     self.firstname    = params[:firstname]
     self.lastname     = params[:lastname]
-    self.email	      = params[:email]
     self.birthday     = params[:birthday]
-    self.gender	      = params[:gender] || 0
     self.job_title    = params[:job_title]
-    self.position     = params[:position]
-    self.company_id   = params[:company_id]
-    self.company_name = params[:company_name]
-    self.in_points    = params[:in_points] || 0
-    self.out_points   = params[:out_points] || 0
-    self.kudos	      = params[:kudos] || 0
-    self.plan	      = params[:plan] || 0
-    self.invite_status = params[:invite_status] || 0
-    self.verified     = params[:verified] || 0
+    self.gender	      = params[:gender]
+    self.out_points   = params[:out_points]
+    self.verified     = params[:verified]
     self.save
   end
   

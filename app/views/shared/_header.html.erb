@@ -1,7 +1,13 @@
 <div id="header">
   <br>
-  <h1><a href="/">P E R K S</a></h1>
-    <p align="center">Welcome, <%= current_user.name -%>!
-  </p>
+  <h1><a href="<% if session[:user_id] %>/rewards<% else %>/company<% end %>">P E R K S</a></h1>
+    <p align="center">Welcome, <%= current_user.name -%>!</p>
+    <% if session[:user_id] %>
+      <p align="center">
+	<a href="/profile">Profile</a> |
+	<a href="/rewards">Rewards</a> |
+	<a href="/logout">Logout</a>
+      </p>
+    <% end %>
   <br><hr class="style-two"><br>
 </div>

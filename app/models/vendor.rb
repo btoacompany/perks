@@ -1,5 +1,6 @@
 class Vendor < ActiveRecord::Base
   self.table_name = "vendors"
+  has_many :items
 
   before_create :set_create_time
   before_update :set_update_time

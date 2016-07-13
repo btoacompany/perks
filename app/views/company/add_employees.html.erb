@@ -1,12 +1,23 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 class="c_align">Register Company</h3><br>
+  <h3 class="c_align">Add Employees</h3><br>
   <%= form_tag( "/company/employees/add/complete", method: "post", id: "login_form" ) do %>
-  <div class="center">
+  <div class="toolbox center">
     <p>Enter employees e-mail address</p>
-    <textarea name="emails" rows="5" cols="30"></textarea>
-    <p><input type="submit" value="Submit" /></p>
+    <p>(One line at a time)</p><br>
+    <textarea name="emails" rows="10" cols="40"></textarea>
+    <br><br>
+    <p>
+      <input type="button" class="btn btn_back" value="Back" />
+      <input type="submit" class="btn btn_submit" value="Submit" />
+    </p>
   </div><br><br>
   <% end %>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
+
+<script type="text/javascript">
+$(".btn_back").click(function() {
+  window.location = "/company/employees";
+});
+</script>

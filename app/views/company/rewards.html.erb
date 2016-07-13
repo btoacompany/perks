@@ -1,0 +1,55 @@
+<div id="wrapper">
+<div id="container">
+  <div class="toolbox">
+    <div class="c_align">
+      <h2>Custom rewards</h2><br>
+      <a href="/company/rewards/add" class="a_btn" style="font-size:14pt">Add Rewards</a>
+    </div><br>
+
+    <table class="tbl_tools center" border="1">
+      <tr>
+	<th>ID</th>
+	<th>Title</th>
+	<th>Description</th>
+	<th>Points</th>
+	<th class="c_align">Actions</th>
+      </tr>
+      <% @rewards.each do | item | %>
+      <tr class="item_<%= item[:id] %>">
+	<td><%= item[:id] %></td>
+	<td style="width:250px;"><%= item[:title] %></td>
+	<td style="width:300px;"><%= item[:description] %></td>
+	<td><%= number_with_delimiter(item[:points], :delimiter => ',') %></td>
+	<td class="c_align">
+	  <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="edit" /> | 
+	  <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="del" />
+	</td>
+      </tr>
+      <% end %>
+    </table><br>
+    <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="Back to Menu" /></p>
+  </div> <!-- toolbox -->
+</div> <!-- container -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+
+$('.delete_item').click(function() {
+  var item_id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if (confirm("Are you sure you want to delete this item?")) {
+    $.post("/company/rewards/delete", { 'id': item_id }); //send post request
+    $(".item_" + item_id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
+});
+
+$('.edit_item').click(function() {
+  var item_id = ($(this).attr('data-id'));
+  window.location.href = "/company/rewards/edit/"+item_id; //redirect to assigned url
+});
+
+$(".btn_back").click(function() {
+  window.location = "/company";
+});
+</script>

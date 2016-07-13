@@ -1,16 +1,16 @@
 <div id="wrapper">
 <div id="contents">
   <h3 class="c_align">Update your information</h3><br>
-  <%= form_tag( "/register/complete", method: "post", id: "login_form" ) do %>
-  <div class="center">
-    <table class="center">
+  <%= form_tag( "/update/complete", method: "post", id: "login_form" ) do %>
+  <div class="toolbox center">
+    <table class="center tbl_tools">
       <tr>
 	<td>会社: </td>
-	<td><%= @user[:company_name] %></td>
+	<td><%= @user.company.name %></td>
       </tr>
       <tr>
 	<td>E-mail: </td>
-	<td><%= @user[:email] %></td>
+	<td><%= @user.email %></td>
       </tr>
       <tr>
 	<td>Password: </td>
@@ -23,20 +23,24 @@
 	  <span class="notice"></span>
 	</td>
       </tr>
+      <tr>
+	<td>Job Title: </td>
+	<td><input type="text" name="job_title" value="<%= @user.job_title %>"/></td>
+      </tr>
       <tr><td colspan="2"><hr></td></tr>
       <tr>
 	<td>Last Name: </td>
-	<td><input type="text" name="lastname" value=""/></td>
+	<td><input type="text" name="lastname" value="<%= @user.lastname %>"/></td>
       </tr>
       <tr>
 	<td>First Name: </td>
-	<td><input type="text" name="firstname" value=""/></td>
+	<td><input type="text" name="firstname" value="<%= @user.firstname %>"/></td>
       </tr>
       <tr>
 	<td>Gender: </td>
 	<td>
-	  <label><input type="radio" name="gender" value="1" checked />女</label>
-	  <label><input type="radio" name="gender" value="2"/>男</label>
+	  <label><input type="radio" name="gender" value="0" <% if @user.gender==0 %> checked <% end %>/>男</label>
+	  <label><input type="radio" name="gender" value="1" <% if @user.gender==1 %> checked <% end %>/>女</label>
 	</td>
       </tr>
       <tr>
@@ -44,35 +48,26 @@
 	<td>
 	  <select name="b_year">
 	  <% @years.reverse_each do | val | %>
-	    <option value="<%= val %>"><%= val %></option>
+	    <option value="<%= val %>" <% if @b_year==val %> selected <% end %>><%= val %></option>
 	  <% end %>
 	  </select> 年 
 	  <select name="b_month">
 	  <% (1..12).each do | val | %>
-	    <option value="<%= val %>"><%= val %></option>
+	    <option value="<%= val %>" <% if @b_month==val %> selected <% end %>><%= val %></option>
 	  <% end %>
 	  </select> 月 
 	  <select name="b_day">
 	  <% (1..31).each do | val | %>
-	    <option value="<%= val %>"><%= val %></option>
+	    <option value="<%= val %>" <% if @b_day==val %> selected <% end %>><%= val %></option>
 	  <% end %>
 	  </select> 日
 	</td>
       </tr>
-      <tr>
-	<td>Position: </td>
-	<td><input type="text" name="position" value=""/></td>
-      </tr>
-      <tr>
-	<td>Job Title: </td>
-	<td><input type="text" name="job_title" value=""/></td>
-      </tr>
-      <tr>
-	<td class="btn r_align" colspan="2">
-	  <br><input type="submit" value="Update Info" class="btn" />
-	</td>
-      </tr>
-    </table>
+    </table><br>
+    <p align="center">
+      <input type="button" value="Back" class="btn btn_back" />
+      <input type="submit" value="Update" class="btn"/>
+    </p>
   </div><br><br>
   <% end %>
 </div> <!-- contents -->
@@ -91,4 +86,8 @@ function validatePassword(){
 }
 passwd1.onchange = validatePassword;
 passwd2.onkeyup = validatePassword;
+
+$(".btn_back").click(function() {
+  window.location = "/profile";
+});
 </script>

@@ -1,0 +1,25 @@
+<div id="wrapper">
+<div id="contents">
+  <div class="row">
+    <div class="profile">
+      <div class="profile_pic col-4">
+	<%= image_tag "nopic.png" %>
+	<p><input type="button" value="UPDATE INFO" class="btncmn w100p btn_edit" /></p>
+      </div>
+      <div class="info col-8">
+	<h1 class="name"><%= @user.firstname %> <%= @user.lastname %></h1>
+	<h3 class="gray"><%= @user.company.name %></h3>
+	<h4 class="gray"><u><%= @user.email %></u></h4><br>
+	<h2>Your Points: <%= number_with_delimiter(@user.in_points, :delimiter => ',') %></h2>
+	<h2>Giveaway Points: <%= number_with_delimiter(@user.out_points, :delimiter => ',') %></h2>
+      </div>
+    </div>
+  </div><!-- row -->
+</div> <!-- contents -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+$(".btn_edit").click(function() {
+  window.location = '/update';
+});
+</script>

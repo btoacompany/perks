@@ -44,9 +44,9 @@ class CompanyController < ApplicationController
   end
 
   def create_complete
-    res = Company.new
-    res.save_record(params)
-    session[:id] = res.id
+    result = Company.new
+    result.save_record(params)
+    session[:id] = result.id
     redirect_to_index
   end
 
@@ -61,7 +61,7 @@ class CompanyController < ApplicationController
   def edit_complete
     res = Company.find(@id)
     res.save_record(params)
-
+    
     if params[:password].present?
       redirect_to '/company/logout'
     else
@@ -78,16 +78,17 @@ class CompanyController < ApplicationController
   end
 
   def add_employees_complete
+    #TODO: fix email suitable for server
     emails = params[:emails].split("\r\n")
     emails.map{ |s| s.strip }
 
     emails.each do | email |
-      temp_password = SecureRandom.hex(4)
+      #temp_password = SecureRandom.hex(4)
+      temp_password = "qwe" 
       name = email.split("@")[0]
 
       @data = {
 	:company_id	=> @id,
-	:company_name	=> Company.find(@id).name,
 	:email		=> email,
 	:password	=> temp_password,
 	:name		=> name
@@ -96,6 +97,7 @@ class CompanyController < ApplicationController
       @user = User.new
       @user.save_record(@data)
 
+=begin
       respond_to do |format|
 	if @user.save
 	  # Tell the UserMailer to send a welcome email after save
@@ -107,15 +109,72 @@ class CompanyController < ApplicationController
 	  format.json { render json: @user.errors, status: :unprocessable_entity }
 	end
       end
+=end      
     end
 
     redirect_to "/company/employees"
   end
 
-  def remove_employees
-    res = User.find(@id)
-    res.delete_record
+  def delete_employees 
+    result = User.find(params[:id])
+    result.delete_record
     redirect_to_index 
+  end
+
+  def rewards
+    @rewards = Reward.where(:company_id => @id, :delete_flag => 0)
+  end
+
+  def add_rewards
+    #do nothing
+  end
+
+  def add_rewards_complete
+    params[:company_id] = @id
+
+    @user = Reward.new
+    @user.save_record(params)
+    redirect_to '/company/rewards'
+  end
+
+  def edit_rewards
+    @reward = Reward.find(params[:reward_id])
+  end
+
+  def edit_rewards_complete
+    params[:company_id] = @id
+
+    result = Reward.find(params[:reward_id])
+    result.save_record(params)
+    redirect_to '/company/rewards'
+  end
+
+  def delete_rewards 
+    result =  Reward.find(params[:id])
+    result.delete_record
+    redirect_to '/company/employees'
+  end
+
+  def rewards_request
+    @rewards = RequestReward.where(:company_id => @id, :status => 0)
+    @rewards_accepted = RequestReward.where(:company_id => @id, :status => 1).order("update_time desc")
+    @rewards_rejected = RequestReward.where(:company_id => @id, :status => 9).order("update_time desc")
+  end
+
+  def rewards_request_action
+    #TODO: send accept/reject email to user
+    res = RequestReward.find(params[:id])
+
+    if params[:status].to_i == 1
+      res.status = 1
+    elsif params[:status].to_i == 9
+      res.status = 9
+    else
+      res.status = 0
+    end
+    
+    res.save
+    redirect_to "/company/rewards"
   end
 
   def redirect_to_index

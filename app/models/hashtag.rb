@@ -1,17 +1,21 @@
 #coding:utf-8
 
-class Reward < ActiveRecord::Base
-  self.table_name = "rewards"
+class Hashtag < ActiveRecord::Base
+  self.table_name = "hashtags"
+
+  belongs_to :user, :class_name => 'User'
+  belongs_to :receiver, :class_name => 'User'
   belongs_to :company
 
   before_create :set_create_time
   before_update :set_update_time
 
   def save_record(params)
-    self.title		= params[:title]	|| params[:title].present?
-    self.company_id	= params[:company_id]	|| params[:company_id].present?
-    self.description	= params[:description]
-    self.points		= params[:points]
+    self.post_id	= params[:post_id]
+    self.company_id	= params[:company_id]
+    self.user_id	= params[:user_id]
+    self.receiver_id	= params[:receiver_id]
+    self.hashtag	= params[:hashtag]
     self.save
   end
   

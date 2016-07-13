@@ -5,6 +5,10 @@ class Company < ActiveRecord::Base
   include BCrypt
   self.table_name = "company"
 
+  has_many :users
+  has_many :rewards
+  has_many :posts
+
   before_save 	:encrypt_password
   after_save 	:clear_password
   before_create :set_create_time
@@ -19,7 +23,7 @@ class Company < ActiveRecord::Base
     self.phone	      = params[:phone]
     self.url	      = params[:url]
     self.logo	      = params[:logo]
-    self.plan	      = params[:plan] || 0
+    self.plan	      = params[:plan]	  || 0
     self.verified     = params[:verified] || 0
     self.save
   end

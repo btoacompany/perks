@@ -1,0 +1,36 @@
+<div id="wrapper">
+<div id="contents">
+  <h3 align="center">Add New Custom Reward</h3><br>
+  <%= form_tag( "/company/rewards/add/complete", method: "post", id: "new_form" ) do %>
+  <div class="toolbox">
+    <table class="tbl_tools">
+      <tr>
+	<td>Reward Title: </td>
+	<td><input type="text" name="title" value="" size="32"/></td>
+      </tr>
+      <tr>
+	<td>Description: </td>
+	<td><textarea name="description" rows="5" cols="25"></textarea></td>
+      </tr>
+      <tr>
+	<td>Points: </td>
+	<td><input type="text" name="points" value=""/></td>
+      </tr>
+      <tr>
+	<td colspan="2" align="right">
+	  <br>
+	  <input type="button" value="Back" class="btn_back btn" />
+	  <input type="submit" value="Submit" class="btn_submit btn" />
+	</td>
+      </tr>
+    </table>
+  </div><br><br>
+  <% end %>
+</div> <!-- contents -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+$(".btn_back").click(function() {
+  window.location = "/company/rewards";
+});
+</script>

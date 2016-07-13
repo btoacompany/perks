@@ -6,7 +6,6 @@ CREATE TABLE items (
   category_id INT NOT NULL,
   description TEXT,
   vendor_id   INT NOT NULL,
-  vendor_name VARCHAR(255) NOT NULL,
   price	      INT NOT NULL DEFAULT 0,
   discount    INT DEFAULT 0,
   sale_price  INT DEFAULT 0,

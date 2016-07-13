@@ -5,7 +5,10 @@ class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout]
 
   def init
-    @id = session[:user_id] if session[:user_id].present? 
+    if session[:user_id].present?
+      @id = session[:user_id]
+      @company_id = User.find(@id).company_id
+    end
   end
 
   def login
@@ -19,15 +22,17 @@ class UsersController < ApplicationController
     reset_session
     if authorized_user
       session[:user_id] = authorized_user.id
-
       verified = authorized_user.verified
       flash[:notice] = "" 
 
+=begin
       if verified == 0
 	redirect_to "/update"
       else
 	redirect_to "/"
       end
+=end      
+	redirect_to "/"
     else
       flash[:notice] = "Invalid Email or Password"
       flash[:color]= "invalid"
@@ -42,11 +47,85 @@ class UsersController < ApplicationController
   end
 
   def index
+    @user = User.find(@id)
+    @users = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
+  end
+
+  def give_points
+    params[:description] = params[:comment] 
+    params[:receiver_id] = rand(1..5) 
+    params[:user_id] = @id
+    params[:company_id] = @company_id
+    params[:points] = params[:points].to_i
+
+    giver = User.find(params[:user_id])
+
+    unless (giver[:out_points] <= 0)
+      giver = User.find(params[:user_id])
+      giver.out_points -= params[:points]
+      giver.save
+
+      receiver = User.find(params[:receiver_id])
+      receiver.in_points += params[:points]
+      receiver.save
+
+      post = Post.new
+      post.save_record(params)
+      params[:post_id] = post.id
+
+      hashtags = params[:comment].scan(/\#[^\s|　]+/)
+      hashtags.each do | tag |
+	params[:hashtag] = tag 
+	hashtag = Hashtag.new
+	hashtag.save_record(params)
+      end
+
+      redirect_to '/user'
+    else
+      flash[:notice] = "Insufficient Points"
+      render "index"
+    end
+  end
+
+  def profile
+    @user = User.find(@id)
+  end
+
+  def rewards
+    @user = User.find(@id)
+    @rewards = Reward.where(:company_id => @user.company_id, :delete_flag => 0).order("points").order("title")
+  end
+
+  def rewards_request
+    logger.debug "------"
+    logger.debug params["reward_id"]
+    data = {
+      :company_id   => @company_id,
+      :user_id	    => @id,
+      :reward_id    => params["reward_id"],
+      :status	    => 0
+    }
+
+    req = RequestReward.new
+    req.save_record(data)
+    redirect_to "/rewards"
   end
 
   def update 
     @user = User.find(@id)
     @years = Util.years
+
+    @b_year   = 0
+    @b_month  = 0
+    @b_day    = 0
+
+    if @user.birthday?
+      bday = @user.birthday.to_s.split("-")
+      @b_year	= bday[0].to_i
+      @b_month	= bday[1].to_i
+      @b_day	= bday[2].to_i
+    end
   end
 
   def update_complete 
@@ -56,6 +135,10 @@ class UsersController < ApplicationController
     params[:birthday] = DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d") 
 
     res = User.find(@id)
+
+    params[:out_points] = 150 if res.verified == 0
+    params[:verified] = 1 
+    
     res.save_record(params)
     redirect_to_index
   end

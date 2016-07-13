@@ -1,0 +1,121 @@
+<div id="wrapper">
+<div id="contents" class="timeline">
+<% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
+
+<%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
+  <p>You have <%= @user.in_points %> points to redeem</p>
+  <p><a href="/rewards">Pick a reward</a></p><br>
+
+  <p>You have <%= @user.out_points %> points to give away</p><br>
+
+  <p align="center">
+    <div class="dropdown">
+      <input type="button" id="ptsbtn" class="dropbtn" value="+" />
+<!--    
+      <input type="button" id="atbtn" class="dropbtn" value="@" />
+      <input type="button" id="tagbtn" class="dropbtn" value="#" />
+-->
+      <div id="myDropdown" class="dropdown-content"> </div>
+    </div><br>
+    <select name="receiver">
+      <% @users.each do | user | %>
+	<option value="<%= user[:name] %>"><%= user[:name] %></option>
+      <% end %>
+    </select>
+    <br>
+
+    <div class="tags">
+    </div>
+
+    <div class="comments">
+      <textarea name="comment" class="taginput" align="center" rows="5" cols="80"></textarea><br>
+    </div><br>
+
+    <input type="submit" value="Give" class="btn btn_give"/>
+  </p>
+  <br>
+
+  <div class="timeline">
+  <% @posts.each do | post | %>
+    <div class="posts">
+      <span class="user giver"><b><%= post.user.name %>:</b></span> 
+      <span class="points">+<%= post.points %></span>
+      <span class="user receiver">@<%= post.receiver.name %></span>
+      <span class="description"><%= post.description %></span>
+      <br><br>
+
+      <% (post.hashtags).each do | tag | %>
+	<span class="hashtag"><%= tag.hashtag %></span>
+      <% end %>
+    </div><br>
+  <% end %>
+  </div>
+<% end %>
+</div> <!-- contents -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+function getTag () {
+  return ["cool", "leader", "wow"];
+}
+
+function getName () {
+  return ["name1", "name2", "name3"];
+}
+
+function getPoints () {
+  return ["10","20","30","40","50"];
+}
+
+$("#myDropdown").click(function(e) {
+  pts = e.target.text;
+  $(".tags").append($("<input type='button' class='tag'/>").val(pts));
+  $(".tags").append($("<input type='hidden' name='points'/>").val(pts));
+
+  //input = $(".taginput");
+  //input.val( input.val() + pts );
+});
+
+$(".dropbtn").click(function() {
+  symId = $(this).attr("id");
+
+  switch (symId) {
+    case "ptsbtn":
+      values = getPoints();
+      break;
+    case "atbtn":
+      values = getName();
+      break;
+    case "tagbtn":
+      values = getTag();
+      break;
+  }
+
+  $.each(values, function( index, value ) {
+    $("#myDropdown").append($("<a></a>").text(value));
+  });
+
+  $("#myDropdown").toggle();
+
+});
+
+
+$(document).click(function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    resetDropdown();
+  }
+/*  
+  else if (!event.target.matches('#atbtn')) {
+    resetDropdown();
+  } else if (!event.target.matches('#tagbtn')) {
+    resetDropdown();
+  }
+*/  
+});
+
+function resetDropdown () {
+  $(".taginput").focus();
+  $("#myDropdown > a").remove();
+  $("#myDropdown").hide();
+}
+</script>

@@ -2,11 +2,11 @@
 <div id="contents">
   <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
   <%= form_tag( "/company/login/complete", method: "post", id: "login_form" ) do %>
-  <div id="login_box" class="center">
+  <div id="login_box" class="center toolbox">
     <h3 class="c_align">Company Login</h3><br>
-    <table class="center">
+    <table class="center tbl_tools">
       <tr>
-	<td><b>メールアドレス: </b></td>
+	<td><br><b>メールアドレス: </b></td>
 	<td><input type="text" value="" name="email" size="30" required /></td>
       </tr>
       <tr>
@@ -14,12 +14,12 @@
 	<td><input type="password" value="" name="password" size="30" required /></td>
       </tr>
       <tr>
-	<td class="btn r_align" colspan="2">
-	  <br><input type="submit" value="Login" class="btn" />
+	<td align="center" class="btn" colspan="2" style="background-color:#fff">
+	  <input type="submit" value="Login" class="btn" />
 	</td>
       </tr>	
     </table><br>
-    <p><a href="/company/register">No account yet? Register here.</a></p>
+    <p align="center"><a href="/company/register">No account yet? Register here.</a></p>
   </div><br>  <% end %>
 </div> <!-- contents -->
 </div> <!-- wrapper -->

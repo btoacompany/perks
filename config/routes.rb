@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get	'/company/register'	      => 'company#create'
   post	'/company/register/complete'  => 'company#create_complete'
   get	'/update'		      => 'users#update'
-  get	'/update/complete'	      => 'users#update_complete', :as => 'user'
+  post	'/update/complete'	      => 'users#update_complete', :as => 'user'
 
   # company
   get	'/company'			    => 'company#index'
@@ -35,11 +35,26 @@ Rails.application.routes.draw do
   get	'/company/employees'		    => 'company#employees'
   get	'/company/employees/add'	    => 'company#add_employees'
   post	'/company/employees/add/complete'   => 'company#add_employees_complete'
-  post	'/company/employees/remove'	    => 'company#remove_employees'
+  get	'/company/employees/edit/:user_id'  => 'company#edit_employees'
+  post	'/company/employees/edit/complete'  => 'company#edit_employees_complete'
+  post	'/company/employees/delete'	    => 'company#delete_employees'
+  get	'/company/rewards'		    => 'company#rewards'
+  get	'/company/rewards/add'		    => 'company#add_rewards'
+  post	'/company/rewards/add/complete'	    => 'company#add_rewards_complete'
+  get	'/company/rewards/edit/:reward_id'  => 'company#edit_rewards'
+  post	'/company/rewards/edit/complete'    => 'company#edit_rewards_complete'
+  post	'/company/rewards/delete'	    => 'company#delete_rewards'
+  get	'/company/rewards/request'	    => 'company#rewards_request'
+  post	'/company/rewards/request/action'   => 'company#rewards_request_action'
 
   # users
+  get	'/profile'		    => 'users#profile'
+  get	'/rewards'		    => 'users#rewards'
+  post	'/rewards/request'	    => 'users#rewards_request'
   get	'/edit'			    => 'users#edit'
   post	'/edit/complete'	    => 'users#edit_complete'
+  get	'/user'			    => 'users#index'
+  post	'/user/give_points'	    => 'users#give_points'
 
   # item front
   get	'/items'			=> 'items#index'

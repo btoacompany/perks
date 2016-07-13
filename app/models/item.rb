@@ -3,6 +3,8 @@
 class Item < ActiveRecord::Base
   self.table_name = "items"
 
+  belongs_to :vendor
+
   before_create :set_create_time
   before_update :set_update_time
 
@@ -13,7 +15,6 @@ class Item < ActiveRecord::Base
     self.category_id	= params[:category_id]
     self.description	= params[:description]
     self.vendor_id	= params[:vendor_id]
-    self.vendor_name	= params[:vendor_name]
     self.price		= params[:price]
     self.discount	= params[:discount]
     self.sale_price	= params[:sale_price]

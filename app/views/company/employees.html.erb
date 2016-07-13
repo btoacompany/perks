@@ -3,25 +3,37 @@
   <h3>Manage Employees Page</h3><br>
   <a href="/company/employees/add">Add Empolyees</a>
   <br><br>
-  <div>
-    <table border="1">
+  <div class="toolbox">
+    <table class="tbl_tools" border="1">
       <tr>
+	<th>ID</th>
 	<th>Name</th>
 	<th>E-mail</th>
 	<th>Invitation<br>Status</th>
+	<th>Personal<br>Points</th>
+	<th>Giveaway<br>Points</th>
 	<th>Actions</th>
       </tr>
       <% @users.each do | item | %>
 	<tr class="item_<%= item[:id] %>">
+	  <td><%= item[:id] %></td>
 	  <td><%= "#{item[:firstname]} #{item[:lastname]}" %></td>
 	  <td><%= item[:email] %></td>
-	  <td><%= item[:invite_status] %></td>
-	  <td><input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="del" /></td>
+	  <td align="center">
+	    <% if item[:verified] == 0 %> Pending
+	    <% else %> Accepted 
+	    <% end %>
+	  </td>
+	  <td><%= item[:in_points] %></td>
+	  <td><%= item[:out_points] %></td>
+	  <td align="center">
+	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
+	  </td>
 	</tr>
-
       <% end %>
-    </table>
-  </div><br><br>
+    </table><br>
+    <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="Back to Menu" /></p>
+  </div><br>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
 
@@ -30,16 +42,13 @@ $('.delete_item').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
 
   if (confirm("Are you sure you want to remove this employee?")) {
-    $.post("/company/employees/remove", { 'id': _id }); //send post request
+    $.post("/company/employees/delete", { 'id': _id }); //send post request
     $(".item_" + _id).remove(); //remove item upon deletion
   }
   return false; //do nothing
 });
 
-/*
-$('.edit_item').click(function() {
-  var _id = ($(this).attr('data-id'));
-  window.location.href = "/tools/vendors/edit/"+_id; //redirect to assigned url
+$(".btn_back").click(function() {
+  window.location = "/company";
 });
-*/
 </script>

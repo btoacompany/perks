@@ -1,9 +1,12 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 class="c_align">Register Company</h3><br>
-  <%= form_tag( "/company/edit/complete", method: "post", id: "login_form" ) do %>
-  <div class="center">
-    <table class="center">
+  <h3 class="c_align">Company Details</h3><br>
+  <div class="toolbox center">
+    <table class="tbl_tools center">
+      <tr>
+	<td>Company ID: </td>
+	<td><%= @company[:id] %></td>
+      </tr>
       <tr>
 	<td>会社名: </td>
 	<td><%= @company[:name] %></td>
@@ -28,13 +31,21 @@
 	<td>連絡先: </td>
 	<td><%= @company[:phone] %></td>
       </tr>
-      <tr>
-	<td class="btn r_align" colspan="2">
-	  <br><input type="submit" value="Submit" class="btn" />
-	</td>
-      </tr>
-    </table>
+    </table><br>
+    <p align="center">
+      <input type="button" value="Back" class="btn btn_back" />
+      <input type="button" value="Edit" class="btn btn_edit" />
+    </p>
   </div><br><br>
-  <% end %>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
+
+<script type="text/javascript">
+$(".btn_edit").click(function() {
+  window.location = '/company/edit';
+});
+
+$(".btn_back").click(function() {
+  window.location = "/company";
+});
+</script>
