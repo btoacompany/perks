@@ -30,8 +30,8 @@ class User < ActiveRecord::Base
     self.job_title    = params[:job_title]
     self.gender	      = params[:gender] || 0
     self.in_points    = params[:in_points] || 0
-    self.out_points   = params[:out_points]
-    self.verified     = params[:verified]
+    self.out_points   = params[:out_points] || 0
+    self.verified     = params[:verified] || 0
     self.save
   end
   
