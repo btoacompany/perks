@@ -98,8 +98,6 @@ class UsersController < ApplicationController
   end
 
   def rewards_request
-    logger.debug "------"
-    logger.debug params["reward_id"]
     data = {
       :company_id   => @company_id,
       :user_id	    => @id,
@@ -107,9 +105,35 @@ class UsersController < ApplicationController
       :status	    => 0
     }
 
-    req = RequestReward.new
-    req.save_record(data)
+    res = RequestReward.new
+    res.save_record(data)
+
+    user = User.find(@id)
+    user.in_points -= res.reward.points
+    user.save
     redirect_to "/rewards"
+  end
+
+  def rewards_status
+    @rewards = RequestReward.where(user_id: @id, status: 0, delete_flag: 0)
+    @rewards_accepted = RequestReward.where(user_id: @id, status: 1).order("update_time desc")
+    @rewards_rejected = RequestReward.where(user_id: @id, status: 9).order("update_time desc")
+  end
+
+  def rewards_cancel
+    #TODO: send accept/reject email to user
+    res = RequestReward.find(params[:id])
+
+    if res.status == 0
+      res.delete_flag = 1
+      res.save
+
+      user = User.find(@id)
+      user.in_points += res.reward.points
+      user.save
+    end
+
+    redirect_to "/rewards/status"
   end
 
   def update 

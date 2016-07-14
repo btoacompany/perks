@@ -26,11 +26,16 @@
 .col-11 {width: 91.66%;}
 .col-12 {width: 100%;}
 
-@media only screen and (max-width: 768px) {
-    /* For mobile phones: */
-    [class*="col-"] {
-        width: 100%;
-    }
+@media only screen and (max-width: 650px) {
+  /* For mobile phones: */
+  [class*="col-"] {
+      width: 100%;
+  }
+
+  .rightbox {
+    visibility: hidden;
+    display: none;
+  }
 }
 
 body {
@@ -569,11 +574,43 @@ hr.style-two {
   vertical-align: middle;
 }
 
+.radius10 {
+  -webkit-border-radius: 10px; 
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.radius5 {
+  -webkit-border-radius: 5px; 
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.font32 {
+  font-size: 32pt;
+}
+
+.font20 {
+  font-size: 20pt;
+}
+
+.font16 {
+  font-size: 16pt;
+}
+
+.font14 {
+  font-size: 14pt;
+}
+
+.font12 {
+  font-size: 12pt;
+}
+
 /* REWARDS */
 
 /* USER INDEX - TIMELINE */
 .dropbtn {
-  background-color: #4CAF50;
+  background-color: #EF903E;
   color: white;
   width: 45px;
   height: 40px;
@@ -581,6 +618,9 @@ hr.style-two {
   font-size: 16px;
   border: none;
   cursor: pointer;
+  -webkit-border-radius: 5px; 
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 .dropbtn:hover, .dropbtn:focus {
@@ -620,8 +660,8 @@ hr.style-two {
 }
 
 .timeline .btn_give {
-  background-color: #4caf50;
-  padding: 5px 10px;
+  background-color: #EF903E;
+  padding: 10px 20px;
   color: #fff;
   font-size: 12pt;
   font-weight: bold;
@@ -631,16 +671,17 @@ hr.style-two {
   width: 100%;
   overflow: hidden;
   resize: none;
+  border: none;
 }
 .timeline .points {
-  border: 2px solid #39AC45;
+  border: 2px solid #EF903E;
   padding: 3px 5px;
-  color: #39AC45;
+  color: #EF903E;
   font-weight: bold;
 }
 .timeline span.receiver {
   font-weight: bold;
-  color: #39AC45;
+  color: #EF903E;
 }
 .timeline span.hashtag{
   font-weight: bold;
@@ -649,4 +690,64 @@ hr.style-two {
 .timeline input.tag {
   padding: 2px 10px;
   font-size: 10pt;
+}
+
+.mypage .rightbox {
+  float: right;
+  padding: 10px;
+}
+
+.mypage .leftbox {
+  float: left;
+  padding: 10px;
+}
+
+.mypage .rightbox .title {
+  padding: 5px;
+  text-align: center;
+  background-color: #a7a7a7;
+  color: #fff;
+}
+
+.mypage .pointsbox {
+  padding: 10px;
+  border: 1px solid #d7d7d7;
+}
+
+.mypage .profilebox {
+  padding: 10px;
+  border: 1px solid #d7d7d7;
+}
+
+.mypage .profilebox p {
+  font-size: 16pt;
+  text-align: center;
+}
+
+.mypage .profilebox .pic {
+  padding: 10px;
+  text-align: center;
+}
+
+.mypage .profilebox .pic img {
+  max-width: 80%;
+}
+
+.mypage .profilebox .btn_reward {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  background-color: #303030;
+  padding: 10px 20px;
+  -webkit-border-radius: 10px; 
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.mypage .timeline {
+}
+
+.mypage .outofboxmsg {
+  padding: 0px 15px;
+  font-size: 14pt;
 }

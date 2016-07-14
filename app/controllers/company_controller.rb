@@ -156,7 +156,7 @@ class CompanyController < ApplicationController
   end
 
   def rewards_request
-    @rewards = RequestReward.where(:company_id => @id, :status => 0)
+    @rewards = RequestReward.where(company_id: @id, status: 0, delete_flag: 0)
     @rewards_accepted = RequestReward.where(:company_id => @id, :status => 1).order("update_time desc")
     @rewards_rejected = RequestReward.where(:company_id => @id, :status => 9).order("update_time desc")
   end
@@ -164,17 +164,19 @@ class CompanyController < ApplicationController
   def rewards_request_action
     #TODO: send accept/reject email to user
     res = RequestReward.find(params[:id])
-
-    if params[:status].to_i == 1
-      res.status = 1
-    elsif params[:status].to_i == 9
-      res.status = 9
-    else
-      res.status = 0
-    end
     
-    res.save
-    redirect_to "/company/rewards"
+    if res.delete_flag == 0
+      if params[:status].to_i == 1
+	res.status = 1
+      elsif params[:status].to_i == 9
+	res.status = 9
+      else
+	res.status = 0
+      end
+      res.save
+    end
+
+    redirect_to "/company/rewards/request"
   end
 
   def redirect_to_index

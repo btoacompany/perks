@@ -7,6 +7,7 @@ CREATE TABLE company (
   phone	      VARCHAR(255),
   url	      VARCHAR(255),
   logo	      VARCHAR(255),
+  hashtags    VARCHAR(255),
   plan	      TINYINT(2) NOT NULL DEFAULT 0,
   verified    TINYINT(2) NOT NULL DEFAULT 0,
   password    VARCHAR(255),

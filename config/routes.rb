@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   get	'/profile'		    => 'users#profile'
   get	'/rewards'		    => 'users#rewards'
   post	'/rewards/request'	    => 'users#rewards_request'
+  get	'/rewards/status'	    => 'users#rewards_status'
+  post	'/rewards/cancel'	    => 'users#rewards_cancel'
   get	'/edit'			    => 'users#edit'
   post	'/edit/complete'	    => 'users#edit_complete'
   get	'/user'			    => 'users#index'

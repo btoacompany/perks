@@ -2,6 +2,7 @@
 <div id="container" class="request">
   <div class="toolbox">
     <h2>Manage Rewards Requests</h2><br>
+    <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
     <div id="tab-container" class="tab-container">
       <ul id="tab-menu" class="etabs">
 	<li class="tab"><a href="#pending">Pending</a></li>

@@ -4,6 +4,7 @@
     <p align="center">Welcome, <%= current_user.name -%>!</p>
     <% if session[:user_id] %>
       <p align="center">
+	<a href="/user">My Page</a> |
 	<a href="/profile">Profile</a> |
 	<a href="/rewards">Rewards</a> |
 	<a href="/logout">Logout</a>
