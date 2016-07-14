@@ -1,0 +1,113 @@
+<div id="wrapper">
+<div id="container" class="request">
+  <div class="toolbox">
+    <h2>Rewards Requests Status</h2><br>
+    <div id="tab-container" class="tab-container">
+      <ul id="tab-menu" class="etabs">
+	<li class="tab"><a href="#pending">Pending</a></li>
+	<li class="tab"><a href="#accepted">Accepted</a></li>
+	<li class="tab"><a href="#rejected">Rejected</a></li>
+      </ul><br>
+      <div id="pending" class="tab-content">
+	<% if @rewards.count == 0 %>
+	  <p><i>No pending rewards requests</i></p>
+	<% else %>
+	<table class="tbl_tools" border="1" style="margin:0">
+	  <tr>
+	    <th>Date</th>
+	    <th>Reward</th>
+	    <th>Points</th>
+	    <th class="c_align">Actions</th>
+	  </tr>
+	  <% @rewards.each do | item | %>
+	  <tr class="item_<%= item.id %>">
+	    <td><%= item.create_time %></td>
+	    <td><%= item.reward.title %></td>
+	    <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	    <td class="c_align">
+	      <input type="button" class="btn cancel_item" data-id="<%= item.id %>" value="Cancel" />
+	    </td>
+	  </tr>
+	  <% end %>
+	</table><br>
+	<% end %>
+      </div><!-- pending -->
+
+      <div id="accepted" class="tab-content">
+	<% if @rewards_accepted.count == 0 %>
+	  <p><i>Empty</i></p>
+	<% else %>
+	<table class="tbl_tools" border="1" style="margin:0">
+	  <tr>
+	    <th>Date</th>
+	    <th>Reward</th>
+	    <th>Points</th>
+	  </tr>
+	  <% @rewards_accepted.each do | item | %>
+	  <tr class="item_<%= item.id %>">
+	    <td><%= item.update_time %></td>
+	    <td><%= item.reward.title %></td>
+	    <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	  </tr>
+	  <% end %>
+	</table><br>
+	<% end %>
+      </div><!-- accepted -->
+
+      <div id="rejected" class="tab-content">
+	<% if @rewards_rejected.count == 0 %>
+	  <p><i>Empty</i></p>
+	<% else %>
+	<table class="tbl_tools" border="1" style="margin:0">
+	  <tr>
+	    <th>Date</th>
+	    <th>Reward</th>
+	    <th>Points</th>
+	  </tr>
+	  <% @rewards_rejected.each do | item | %>
+	  <tr class="item_<%= item.id %>">
+	    <td><%= item.update_time %></td>
+	    <td><%= item.reward.title %></td>
+	    <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	  </tr>
+	  <% end %>
+	</table><br>
+	<% end %>
+      </div><!-- rejected -->
+    </div><!-- tabs_container -->
+    <br>
+    <p align="left"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="Back to Menu" /></p>
+  </div> <!-- toolbox -->
+</div> <!-- container -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+$(document).ready(function () {
+  $("#tab-container").easytabs();
+});
+
+$('.cancel_item').click(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+  var msg = " Cancel Request?";
+  setRequestAction(_id, msg);
+});
+
+function setRequestAction( id, msg ) {
+  if (confirm( msg )) {
+    $.ajax({
+      type: "POST",
+      url: "/rewards/cancel",
+      data: { 'id': id },
+      success: function(data){
+	$(".item_" + id).remove(); //remove item upon deletion
+	window.location.reload(); 
+      }
+    });
+  }
+  return false; //do nothing
+}
+
+$(".btn_back").click(function() {
+  window.location = "/user";
+});
+</script>

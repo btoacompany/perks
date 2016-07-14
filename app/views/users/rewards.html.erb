@@ -1,6 +1,8 @@
 <div id="wrapper">
 <div id="contents">
   <div class="row">
+    <p class="font14">You have <b class="font16"><%= @user.in_points %> points</b> to redeem</p>
+    <a href="/rewards/status">See Rewards Status</a>
     <div id="item_list">
       <% @rewards.each_with_index do | item, i | %>
 	<div class="item <% if @user.in_points < item[:points] %>grayscale<% else %>colored<% end %>">
@@ -29,7 +31,15 @@ $('.btn_buy').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
 
   if (confirm("このアイテムを買いますか?")) {
-    $.post("/rewards/request", { 'reward_id': _id }); //send post request
+    $.ajax({
+      type: "POST",
+      url: "/rewards/request",
+      data: { 'reward_id': _id },
+      success: function(data){
+	$(".item_" + _id).remove(); //remove item upon deletion
+	window.location.reload(); 
+      }
+    });
   }
   return false; //do nothing
 });
