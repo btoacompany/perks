@@ -53,18 +53,17 @@ class UsersController < ApplicationController
   end
 
   def give_points
+    @user = User.find(params[:user_id])
+    @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     params[:description] = params[:comment] 
-    params[:receiver_id] = rand(1..5) 
+    params[:receiver_id] = rand(1..@user.count) 
     params[:user_id] = @id
     params[:company_id] = @company_id
     params[:points] = params[:points].to_i
 
-    giver = User.find(params[:user_id])
-
-    unless (giver[:out_points] <= 0)
-      giver = User.find(params[:user_id])
-      giver.out_points -= params[:points]
-      giver.save
+    unless (@user[:out_points] <= 0)
+      @user.out_points -= params[:points]
+      @user.save
 
       receiver = User.find(params[:receiver_id])
       receiver.in_points += params[:points]
@@ -83,6 +82,7 @@ class UsersController < ApplicationController
 
       redirect_to '/user'
     else
+      @posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
       flash[:notice] = "Insufficient Points"
       render "index"
     end

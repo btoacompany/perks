@@ -28,7 +28,6 @@
 	  <input type="button" id="ptsbtn" class="dropbtn" value="+" />
 	  <input type="button" id="atbtn" class="dropbtn" value="@" />
 	  <input type="button" id="tagbtn" class="dropbtn" value="#" />
-
 	  <div id="myDropdown" class="dropdown-content"> </div>
 	</div><br>
 
@@ -88,9 +87,6 @@ $("#myDropdown").click(function(e) {
   pts = e.target.text;
   $(".tags").append($("<input type='button' class='tag'/>").val(pts));
   $(".tags").append($("<input type='hidden' name='points'/>").val(pts));
-
-  //input = $(".taginput");
-  //input.val( input.val() + pts );
 });
 
 $(".dropbtn").click(function() {
@@ -114,9 +110,14 @@ $(".dropbtn").click(function() {
   });
 
   $("#myDropdown").toggle();
+  
   $(".item").click(function() {
     $(".taginput").focus();
   });
+});
+
+
+$(document).click(function(e) {
 });
 
 $(document).mouseup(function(e) {

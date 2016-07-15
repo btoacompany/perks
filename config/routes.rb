@@ -48,6 +48,8 @@ Rails.application.routes.draw do
   post	'/company/rewards/request/action'   => 'company#rewards_request_action'
 
   # users
+  get	'/user'			    => 'users#index'
+  post	'/user/give_points'	    => 'users#give_points'
   get	'/profile'		    => 'users#profile'
   get	'/rewards'		    => 'users#rewards'
   post	'/rewards/request'	    => 'users#rewards_request'
@@ -55,8 +57,6 @@ Rails.application.routes.draw do
   post	'/rewards/cancel'	    => 'users#rewards_cancel'
   get	'/edit'			    => 'users#edit'
   post	'/edit/complete'	    => 'users#edit_complete'
-  get	'/user'			    => 'users#index'
-  post	'/user/give_points'	    => 'users#give_points'
 
   # item front
   get	'/items'			=> 'items#index'
