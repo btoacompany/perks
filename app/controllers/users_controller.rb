@@ -53,18 +53,24 @@ class UsersController < ApplicationController
   end
 
   def give_points
-    @user = User.find(params[:user_id])
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @user = User.find(@id)
+
+    points = params[:comment].scan(/\+[^\s|　]+/).first.to_i
     params[:description] = params[:comment] 
-    params[:receiver_id] = rand(1..@user.count) 
+    params[:receiver_id] = rand(1..@users.count) 
     params[:user_id] = @id
     params[:company_id] = @company_id
-    params[:points] = params[:points].to_i
+    params[:points] = points
 
     unless (@user[:out_points] <= 0)
-      @user.out_points -= params[:points]
-      @user.save
+      @user.out_points -= points 
+      #@user.save
 
+      receivers = params[:comment].scan(/\@[^\s|　]+/)
+      hashtags = params[:comment].scan(/\#[^\s|　]+/)
+
+=begin
       receiver = User.find(params[:receiver_id])
       receiver.in_points += params[:points]
       receiver.save
@@ -73,13 +79,12 @@ class UsersController < ApplicationController
       post.save_record(params)
       params[:post_id] = post.id
 
-      hashtags = params[:comment].scan(/\#[^\s|　]+/)
       hashtags.each do | tag |
 	params[:hashtag] = tag 
 	hashtag = Hashtag.new
 	hashtag.save_record(params)
       end
-
+=end
       redirect_to '/user'
     else
       @posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")

@@ -28,6 +28,13 @@
 	  <input type="button" id="ptsbtn" class="dropbtn" value="+" />
 	  <input type="button" id="atbtn" class="dropbtn" value="@" />
 	  <input type="button" id="tagbtn" class="dropbtn" value="#" />
+	  <div class="selDropdown"><br>
+	    <select class="" name="receiver[]" multiple>
+	      <% @users.each do | user | %>
+	       <option value="<%= user.id %>">@<%= user.name %></option> 
+	      <% end %>
+	    </select>
+	  </div>
 	  <div id="myDropdown" class="dropdown-content"> </div>
 	</div><br>
 
@@ -71,9 +78,13 @@ function getTag () {
 }
 
 function getName () {
-  var names = [];
+  var names = {}
+
   <% @users.each do | user | %>
-    names.push("<%= user.name %>");
+  names = {
+    id: "<%= user.id %>",
+    name: "<%= user.name %>"
+  };
   <% end %>
 
   return names;
@@ -84,29 +95,44 @@ function getPoints () {
 }
 
 $("#myDropdown").click(function(e) {
-  pts = e.target.text;
-  $(".tags").append($("<input type='button' class='tag'/>").val(pts));
-  $(".tags").append($("<input type='hidden' name='points'/>").val(pts));
+  content = e.target.text;
+  className = e.target.classList[1];
+  switch (className) {
+    case "drpPoints":
+      $(".taginput").val($(".taginput").val() + "+" + content + " ");
+      break;
+    case "drpAt":
+      $(".tags").append().val(content);
+      break;
+    case "drpTag":
+      $(".taginput").val($(".taginput").val() + "#" + content + " ");
+      break;
+  }
+
 });
 
 $(".dropbtn").click(function() {
   symId = $(this).attr("id");
+  className = "";
 
   switch (symId) {
     case "ptsbtn":
       values = getPoints();
+      className = "drpPoints";
       break;
     case "atbtn":
-      values = getName();
+      values = [];
+      $(".selDropdown").show();
       break;
     case "tagbtn":
       values = getTag();
+      className = "drpTag";
       break;
   }
 
   $("#myDropdown > a").remove();
   $.each(values, function( index, value ) {
-    $("#myDropdown").append($("<a></a>").addClass("item").text(value));
+    $("#myDropdown").append($("<a></a>").addClass("item "+ className).text(value));
   });
 
   $("#myDropdown").toggle();
@@ -116,13 +142,15 @@ $(".dropbtn").click(function() {
   });
 });
 
-
-$(document).click(function(e) {
+$(document).ready(function(e) {
+  $(".selDropdown").hide();
 });
 
 $(document).mouseup(function(e) {
   var subject = $(".dropbtn");
   if(e.target.id != subject.attr("id")){
+    $(".selDropdown").hide();
+    $("#myDropdown > a").remove();
     $("#myDropdown").hide();
   }
 });

@@ -754,3 +754,9 @@ hr.style-two {
   padding: 0px 15px;
   font-size: 14pt;
 }
+
+.mypage .selDropdown select {
+  background-color: none; 
+  font-size: 12pt;
+  width: 140px
+}
