@@ -47,6 +47,13 @@ class UsersController < ApplicationController
   end
 
   def index
+    hashtags = Company.find(@company_id).hashtags
+    if hashtags.nil?
+      @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
+    else
+      @hashtags = hashtags.split(",")
+    end
+
     @user = User.find(@id)
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     @posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
@@ -56,21 +63,18 @@ class UsersController < ApplicationController
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user = User.find(@id)
 
-    points = params[:comment].scan(/\+[^\s|　]+/).first.to_i
-    params[:description] = params[:comment] 
-    params[:receiver_id] = rand(1..@users.count) 
+    points = params[:description].scan(/\+[^\s|　]+/).first.to_i
+    #params[:receiver_id] = rand(1..@users.count) 
     params[:user_id] = @id
     params[:company_id] = @company_id
     params[:points] = points
 
     unless (@user[:out_points] <= 0)
       @user.out_points -= points 
-      #@user.save
+      @user.save
 
-      receivers = params[:comment].scan(/\@[^\s|　]+/)
-      hashtags = params[:comment].scan(/\#[^\s|　]+/)
+      hashtags = params[:description].scan(/\#[^\s|　]+/)
 
-=begin
       receiver = User.find(params[:receiver_id])
       receiver.in_points += params[:points]
       receiver.save
@@ -84,7 +88,6 @@ class UsersController < ApplicationController
 	hashtag = Hashtag.new
 	hashtag.save_record(params)
       end
-=end
       redirect_to '/user'
     else
       @posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")

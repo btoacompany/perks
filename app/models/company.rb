@@ -23,6 +23,7 @@ class Company < ActiveRecord::Base
     self.phone	      = params[:phone]
     self.url	      = params[:url]
     self.logo	      = params[:logo]
+    self.hashtags     = params[:hashtags]
     self.plan	      = params[:plan]	  || 0
     self.verified     = params[:verified] || 0
     self.save

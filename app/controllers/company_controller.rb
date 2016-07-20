@@ -44,6 +44,7 @@ class CompanyController < ApplicationController
   end
 
   def create_complete
+    params[:hashtags] = hashtags_fix(params[:hashtags])
     result = Company.new
     result.save_record(params)
     session[:id] = result.id
@@ -59,6 +60,7 @@ class CompanyController < ApplicationController
   end
 
   def edit_complete
+    params[:hashtags] = hashtags_fix(params[:hashtags])
     res = Company.find(@id)
     res.save_record(params)
     
@@ -68,6 +70,14 @@ class CompanyController < ApplicationController
       redirect_to_index
     end
   end
+
+  def hashtags_fix(hashtags)
+    arr_hashtags = hashtags.split(",")
+    arr_hashtags.reject! { | tag | tag.empty? }
+    arr_hashtags.uniq!
+    arr_hashtags.map{ | tag | tag.strip }.compact.join(",")
+  end
+
 
   def employees
     @users = User.where(:company_id => @id, :delete_flag => 0)

@@ -613,7 +613,7 @@ hr.style-two {
 
 /* USER INDEX - TIMELINE */
 .dropbtn {
-  background-color: #EF903E;
+  background-color: #ff8d07;
   color: white;
   width: 45px;
   height: 40px;
@@ -621,9 +621,9 @@ hr.style-two {
   font-size: 16px;
   border: none;
   cursor: pointer;
-  -webkit-border-radius: 5px; 
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  -webkit-border-radius: 25px; 
+  -moz-border-radius: 25px;
+  border-radius: 25px;
 }
 
 .dropbtn:hover, .dropbtn:focus {
@@ -655,40 +655,76 @@ hr.style-two {
 
 .show {display:block;}
 
-.timeline .posts{
+#postsbox {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #000;
-  line-height: 1.5em;
+  border: 1px solid #e6e6e6;
+  line-height: 1.8em;
+}
+
+#postsbox .images {
+  text-align: center;
+}
+
+#postsbox .pic {
+  width: 50%;
+}
+
+#postsbox hr {
+  margin: 0px 30px;
+  border: 1px solid #e6e6e6;
+}
+
+#postsbox .posts {
+  padding: 10px 45px;
+}
+
+#postsbox .kudos {
+  padding: 10px 45px;
+}
+
+#postsbox .a_btn {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+}
+
+#postsbox .comments {
+  background-color: #f4f4f4;
+  padding: 10px 45px;
+}
+
+#postsbox .comments input {
+  width: 100%;
+  padding: 5px;
 }
 
 .timeline .btn_give {
-  background-color: #EF903E;
+  background-color: #ff8d07;
   padding: 10px 20px;
   color: #fff;
   font-size: 12pt;
   font-weight: bold;
 }
 
-.timeline .comments textarea {
+.timeline .description textarea {
   width: 100%;
   overflow: hidden;
   resize: none;
   border: none;
 }
 .timeline .points {
-  border: 2px solid #EF903E;
-  padding: 3px 5px;
-  color: #EF903E;
+  background-color: #ff8d07;
+  padding: 3px 7px;
+  color: #fff;
   font-weight: bold;
 }
-.timeline span.receiver {
+.timeline span.user{
   font-weight: bold;
-  color: #EF903E;
+  color: #ff8d07;
 }
 .timeline span.hashtag{
   font-weight: bold;
-  color: gray;
+  color: #2E9AFE;
 }
 .timeline input.tag {
   padding: 2px 10px;
@@ -708,7 +744,7 @@ hr.style-two {
 .mypage .rightbox .title {
   padding: 5px;
   text-align: center;
-  background-color: #a7a7a7;
+  background-color: #aeaeae;
   color: #fff;
 }
 
@@ -759,4 +795,11 @@ hr.style-two {
   background-color: none; 
   font-size: 12pt;
   width: 140px
+}
+
+.mypage .tags .btn {
+  font-size: 12pt;
+  padding: 5px;
+  background-color: #303030;
+  color: #fff;
 }

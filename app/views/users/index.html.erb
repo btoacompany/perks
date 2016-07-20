@@ -12,12 +12,12 @@
     
     <div class="profilebox">
       <div class="pic">
-	<%= image_tag "nopic.png" %>
+	<%= image_tag "pic1.jpg" %>
       </div>
       <p>@<%= @user.name %></p>
       <hr>
-      <p>You have <b><span class="font32"><%= @user.in_points %></span> points</b> to redeem</p><br>
-      <p><a href="/rewards" class="btn_reward">Pick a reward</a></p>
+      <p><b><span class="font32"><%= @user.in_points %></span> points</b></p><br>
+      <p><a href="/rewards" class="btn_reward">ポイントを交換する</a></p>
     </div>
   </div>
 
@@ -28,41 +28,45 @@
 	  <input type="button" id="ptsbtn" class="dropbtn" value="+" />
 	  <input type="button" id="atbtn" class="dropbtn" value="@" />
 	  <input type="button" id="tagbtn" class="dropbtn" value="#" />
-	  <div class="selDropdown"><br>
-	    <select class="" name="receiver[]" multiple>
-	      <% @users.each do | user | %>
-	       <option value="<%= user.id %>">@<%= user.name %></option> 
-	      <% end %>
-	    </select>
-	  </div>
 	  <div id="myDropdown" class="dropdown-content"> </div>
+	</div><br><hr>
+
+	<div class="description">
+	  <textarea name="description" class="taginput" align="center" rows="3" cols="80" placeholder="Type here"></textarea><br>
 	</div><br>
 
-	<div class="tags">
+	<div class="tags" style="float:left">
+	  To: <span></span> 
 	</div>
-	<hr>
-
-	<div class="comments">
-	  <textarea name="comment" class="taginput" align="center" rows="3" cols="80" placeholder="Type here"></textarea><br>
-	</div><br>
-
-	<p align="right"><input type="submit" value="Give" class="radius5 btn_give"/></p>
+	<p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
       </p>
     </div> <!-- pointsbox -->  
     <br>
 
     <div class="timeline">
     <% @posts.each do | post | %>
-      <div class="posts">
-	<span class="user giver"><b><%= post.user.name %>:</b></span> 
-	<span class="points">+<%= post.points %></span>
-	<span class="user receiver">@<%= post.receiver.name %></span>
-	<span class="description"><%= post.description %></span>
-	<br><br>
-
-	<% (post.hashtags).each do | tag | %>
-	  <span class="hashtag"><%= tag.hashtag %></span>
-	<% end %>
+      <div id="postsbox">
+	<div class="images">
+	  <%= image_tag "pic1.jpg", class: "pic l_img" %><%= image_tag "pic2.jpg", class: "pic r_img" %>
+	</div>
+	<div class="posts">
+	  <span class="user giver"><b>@<%= post.user.name %></b></span><br> 
+	  <span class="user receiver"><b>@<%= post.receiver.name %>: </b></span>
+	  <span class="points radius5"><%= post.points %> pts</span><br>
+	  <span class="description"><%= post.description %></span><br>
+	  <% (post.hashtags).each do | tag | %>
+	    <span class="hashtag"><%= tag.hashtag %></span>
+	  <% end %>
+	</div>
+	<hr>
+	<div class="kudos">
+	  <a href="#" class="a_btn btn_like">いいね！</a>
+	  <a href="#" class="a_btn btn_like_count"></a>
+	</div>
+	
+	<div class="comments">
+	  <input type="text" name="comment" value="" placeholder="コメントする"/>
+	</div>
       </div><br>
     <% end %>
     </div>
@@ -74,46 +78,54 @@
 
 <script type="text/javascript">
 function getTag () {
-  return ["cool", "leader", "wow"];
+  items = [];
+  <% @hashtags.each do | tag | %>
+    items.push("<%= tag %>");
+  <% end %>
+  return items;
 }
 
 function getName () {
-  var names = {}
-
+  items = {};
   <% @users.each do | user | %>
-  names = {
-    id: "<%= user.id %>",
-    name: "<%= user.name %>"
-  };
+    items["<%= user.id %>"] = "<%= user.name %>";
   <% end %>
-
-  return names;
+  return items;
 }
 
 function getPoints () {
   return ["10","20","30","40","50"];
 }
 
+$(".selDropdown option").click(function() {
+  $(".tags span").empty();
+  $(".tags span").append($("<input type='button' class='btn radius5'/>").val($(this).text()));
+});
+
 $("#myDropdown").click(function(e) {
   content = e.target.text;
   className = e.target.classList[1];
+  dataId = e.target.dataset.id;
+
   switch (className) {
     case "drpPoints":
       $(".taginput").val($(".taginput").val() + "+" + content + " ");
       break;
     case "drpAt":
-      $(".tags").append().val(content);
+      $(".tags span").empty();
+      $(".tags span").append($("<input type='button' class='btn radius5'/>").val(content));
+      $(".tags span").append($("<input type='hidden' name='receiver_id'/>").val(dataId));
       break;
     case "drpTag":
       $(".taginput").val($(".taginput").val() + "#" + content + " ");
       break;
   }
-
 });
 
 $(".dropbtn").click(function() {
-  symId = $(this).attr("id");
-  className = "";
+  var symId = $(this).attr("id");
+  var className = "";
+  var dataId = "";
 
   switch (symId) {
     case "ptsbtn":
@@ -121,8 +133,8 @@ $(".dropbtn").click(function() {
       className = "drpPoints";
       break;
     case "atbtn":
-      values = [];
-      $(".selDropdown").show();
+      values = getName();
+      className = "drpAt";
       break;
     case "tagbtn":
       values = getTag();
@@ -132,25 +144,19 @@ $(".dropbtn").click(function() {
 
   $("#myDropdown > a").remove();
   $.each(values, function( index, value ) {
-    $("#myDropdown").append($("<a></a>").addClass("item "+ className).text(value));
+    $("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
   });
 
-  $("#myDropdown").toggle();
+  $("#myDropdown").show();
   
   $(".item").click(function() {
     $(".taginput").focus();
   });
 });
 
-$(document).ready(function(e) {
-  $(".selDropdown").hide();
-});
-
 $(document).mouseup(function(e) {
   var subject = $(".dropbtn");
   if(e.target.id != subject.attr("id")){
-    $(".selDropdown").hide();
-    $("#myDropdown > a").remove();
     $("#myDropdown").hide();
   }
 });

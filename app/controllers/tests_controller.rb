@@ -10,8 +10,8 @@ class TestsController < ApplicationController
 
   def create_complete
     #set_accounts
-    #test = Test.new
-    #test.save_record(params)
+    test = Test.new
+    test.save_record(params)
     redirect_to_index
   end
 
