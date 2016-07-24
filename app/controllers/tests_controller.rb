@@ -1,4 +1,5 @@
 #coding:utf-8
+require 'aws-sdk'
 
 class TestsController < ApplicationController
   def index 
@@ -9,11 +10,22 @@ class TestsController < ApplicationController
   end
 
   def create_complete
-    #set_accounts
+    src = params[:img_src]
+    s3 = Aws::S3::Resource.new
+    obj = s3 .bucket("btoa-img").object("profile/#{src.original_filename}")
+    obj.upload_file src.tempfile, {acl: 'public-read'}
+
+    params[:img_src] = obj.public_url
     test = Test.new
     test.save_record(params)
+
     redirect_to_index
   end
+
+  def save_img_to_s3(img_loc, folder_name, user_id)
+
+  end
+
 
   def edit
     @test = Test.find(params[:id])

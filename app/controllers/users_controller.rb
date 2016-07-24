@@ -56,7 +56,31 @@ class UsersController < ApplicationController
 
     @user = User.find(@id)
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
-    @posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
+    posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
+
+    @posts = []
+    data = {}
+
+    posts.each do | post |
+      comments = Comment.where(:post_id => post.id, :delete_flag => 0)
+      kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
+
+      data = {
+	id:		post.id,
+	user_id:	post.user_id,
+	user_name:	post.user.name,
+	receiver_name:	post.receiver.name,
+	user_img:	post.user.img_src,
+	receiver_img:	post.receiver.img_src,
+	points:		post.points,
+	description:	post.description,
+	hashtags:	post.hashtags,
+	comments:	comments,
+	kudos:		kudos
+      }
+
+      @posts << data
+    end
   end
 
   def give_points
@@ -64,7 +88,6 @@ class UsersController < ApplicationController
     @user = User.find(@id)
 
     points = params[:description].scan(/\+[^\s|　]+/).first.to_i
-    #params[:receiver_id] = rand(1..@users.count) 
     params[:user_id] = @id
     params[:company_id] = @company_id
     params[:points] = points
@@ -94,6 +117,33 @@ class UsersController < ApplicationController
       flash[:notice] = "Insufficient Points"
       render "index"
     end
+  end
+
+  def give_comments 
+    params[:company_id] = @company_id
+    params[:user_id] = @id
+
+    res = Comment.new
+    res.save_record(params)
+    redirect_to "/user"
+  end
+
+  def give_kudos
+    params[:user_id] = @id
+
+    kudo = Kudos.where(:user_id => @id, :post_id => params[:post_id]).first
+
+    if kudo.present?
+      logger.debug "---1---"
+      kudo.kudos = params[:kudos]
+      kudo.save
+    else
+      logger.debug "---2---"
+      res = Kudos.new
+      res.save_record(params)
+    end
+
+    redirect_to "/user"
   end
 
   def profile
@@ -170,12 +220,25 @@ class UsersController < ApplicationController
 
     params[:out_points] = 150 if res.verified == 0
     params[:verified] = 1 
+
+    if params[:img_src].present?
+      src = params[:img_src]
+      src_ext = File.extname(src.original_filename)
+
+      s3 = Aws::S3::Resource.new
+      obj = s3 .bucket("btoa-img").object("profile/user_#{res.id}_pic#{src_ext}")
+      obj.upload_file src.tempfile, {acl: 'public-read'}
+
+      params[:img_src] = obj.public_url
+    else
+      params[:img_src] = "https://btoa-img.s3-ap-northeast-1.amazonaws.com/profile/nopic.png" 
+    end
     
     res.save_record(params)
     redirect_to_index
   end
 
   def redirect_to_index
-    redirect_to "/" 
+    redirect_to "/user" 
   end
 end

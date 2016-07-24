@@ -2,7 +2,6 @@
 <div id="contents" class="timeline">
 <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
 
-<%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
 <div class="mypage row">
   <div class="outofboxmsg col-12">
     <p>You have <b><span class="font20"><%= @user.out_points %></span> points</b> to give away</p><br>
@@ -12,7 +11,7 @@
     
     <div class="profilebox">
       <div class="pic">
-	<%= image_tag "pic1.jpg" %>
+	<img src="<%= @user.img_src %>" class="radius10"/>
       </div>
       <p>@<%= @user.name %></p>
       <hr>
@@ -22,6 +21,7 @@
   </div>
 
   <div class="leftbox col-8">
+    <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
     <div class="pointsbox">
       <p align="center">
 	<div class="dropdown">
@@ -41,42 +41,118 @@
 	<p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
       </p>
     </div> <!-- pointsbox -->  
+    <% end %>
     <br>
 
     <div class="timeline">
     <% @posts.each do | post | %>
       <div id="postsbox">
 	<div class="images">
-	  <%= image_tag "pic1.jpg", class: "pic l_img" %><%= image_tag "pic2.jpg", class: "pic r_img" %>
+	  <img src="<%= post[:user_img] %>" class="pic l_img"/><img src="<%= post[:receiver_img] %>" class="pic r_img"/>
 	</div>
 	<div class="posts">
-	  <span class="user giver"><b>@<%= post.user.name %></b></span><br> 
-	  <span class="user receiver"><b>@<%= post.receiver.name %>: </b></span>
-	  <span class="points radius5"><%= post.points %> pts</span><br>
-	  <span class="description"><%= post.description %></span><br>
-	  <% (post.hashtags).each do | tag | %>
+	  <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 
+	  <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
+	  <span class="points radius5"><%= post[:points] %> pts</span><br>
+	  <span class="description"><%= post[:description] %></span><br>
+	  <% (post[:hashtags]).each do | tag | %>
 	    <span class="hashtag"><%= tag.hashtag %></span>
 	  <% end %>
 	</div>
 	<hr>
 	<div class="kudos">
-	  <a href="#" class="a_btn btn_like">いいね！</a>
-	  <a href="#" class="a_btn btn_like_count"></a>
+	  <% if post[:kudos].find { |item| item[:user_id] == @user.id } %>
+	    <a data-id="<%= post[:id] %>" class="a_btn btn_unlike">Unlike</a>
+	  <% else %>
+	    <a data-id="<%= post[:id] %>" class="a_btn btn_like">Like</a>
+	  <% end %>
+
+	  <span><%= post[:kudos].count %>件</span>
+	  <div class="tooltip">
+	    <a class="a_btn user_kudos">
+	      <% if post[:kudos].present? %>
+		<% post[:kudos].each_with_index do | kudo, i | %>
+		  <%= kudo.user.name %>
+		  <% unless i == post[:kudos].count-1 %>,<% end %>
+		  <% if i > 3 %><% break %> <% end %>
+		<% end %>...
+	      <% end %>
+	    </a>
+	    <span class="tooltiptext">
+	      <% post[:kudos].each do | kudo | %>
+		<%= kudo.user.name %><br>
+	      <% end %>
+	    </span>
+	  </div>
 	</div>
 	
 	<div class="comments">
-	  <input type="text" name="comment" value="" placeholder="コメントする"/>
+	  <div class="comment_entry_<%= post[:id] %>">
+	    <% post[:comments].each do | comment | %>
+	      <div class="user_comment_img">
+		<img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
+	      </div>
+	      <div class="user_comments">
+		<span class="user" style="font-weight:normal;">@<%= comment.user.name %></span>
+		<span class="comment"><%= comment.comments %></span>
+	      </div><br>  
+	    <% end %>
+	  </div>
+	  <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments"
+	  value="" placeholder="コメントする" autocomplete="off"/>
 	</div>
       </div><br>
     <% end %>
     </div>
   </div> <!-- leftbox -->
 </div><!-- row -->
-<% end %>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
 
 <script type="text/javascript">
+$(".give_comments").bind('keypress',function(e) {
+  if(e.keyCode == 13) {
+    var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+    var comments = ($(this).val()); //get attributes of clicked item
+
+    $.ajax({
+      type: "POST",
+      url: "/user/give_comments",
+      data: { 'post_id': post_id, 'comments': comments },
+      success: function(data) {
+	$(this).val("");
+	window.location.reload(); 
+      }
+    });
+  }
+});
+
+$(".btn_like").mouseup(function() {
+  var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  $.ajax({
+    type: "POST",
+    url: "/user/give_kudos",
+    data: { 'post_id': post_id, 'kudos': 1 },
+    success: function(data) {
+      window.location.reload(); 
+    }
+  });
+});
+
+$(".btn_unlike").mouseup(function() {
+  var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  $.ajax({
+    type: "POST",
+    url: "/user/give_kudos",
+    data: { 'post_id': post_id, 'kudos': 0 },
+    success: function(data) {
+      window.location.reload(); 
+    }
+  });
+});
+
 function getTag () {
   items = [];
   <% @hashtags.each do | tag | %>
@@ -94,7 +170,7 @@ function getName () {
 }
 
 function getPoints () {
-  return ["10","20","30","40","50"];
+  return ["2","5","10","20","30"];
 }
 
 $(".selDropdown option").click(function() {

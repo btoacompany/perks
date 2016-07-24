@@ -1,7 +1,7 @@
 <div id="wrapper">
 <div id="contents">
   <h3 class="c_align">Update your information</h3><br>
-  <%= form_tag( "/update/complete", method: "post", id: "login_form" ) do %>
+  <%= form_tag( "/update/complete", method: "post", id: "login_form", multipart: true ) do %>
   <div class="toolbox center">
     <table class="center tbl_tools">
       <tr>
@@ -28,6 +28,10 @@
 	<td><input type="text" name="job_title" value="<%= @user.job_title %>"/></td>
       </tr>
       <tr><td colspan="2"><hr></td></tr>
+      <tr>
+	<td>Picture: </td>
+	<td><%= file_field_tag :img_src %></td>
+      </tr>
       <tr>
 	<td>Last Name: </td>
 	<td><input type="text" name="lastname" value="<%= @user.lastname %>"/></td>

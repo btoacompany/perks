@@ -48,8 +48,8 @@ end
 
 # custom gems
 gem 'jquery-turbolinks'
+gem 'aws-sdk'
 gem 'paperclip'
-gem 'aws-sdk', '~> 2.3'
 
 gem 'rails_12factor', group: :production
 gem 'pg'

@@ -101,7 +101,8 @@ class CompanyController < ApplicationController
 	:company_id	=> @id,
 	:email		=> email,
 	:password	=> temp_password,
-	:name		=> name
+	:name		=> name,
+	:img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/profile/nopic.png"
       }
 
       @user = User.new

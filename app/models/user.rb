@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   after_save 	:clear_password
   before_create :set_create_time
   before_update :set_update_time
+
   
   def save_record(params)
     @password = params[:password]

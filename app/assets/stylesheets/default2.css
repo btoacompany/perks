@@ -36,6 +36,36 @@
     visibility: hidden;
     display: none;
   }
+
+  #postsbox .images .pic {
+    height: 150px;
+  }
+
+  #postsbox hr {
+    margin: 0px 10px;
+    border: 1px solid #e6e6e6;
+  }
+
+  #postsbox .posts {
+    padding: 10px 20px;
+    line-height: 1.4em;
+  }
+
+  #postsbox .kudos {
+    padding: 10px 20px;
+  }
+
+  #postsbox .comments {
+    padding: 10px 20px;
+  }
+
+  #postsbox .comments .user_comment_img img {
+    float: left;
+    margin-left: 0px;
+  }
+  #postsbox .comments .user_comments {
+    padding-left: 15px;
+  }
 }
 
 body {
@@ -243,7 +273,7 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 */
 
 /* --- PC VIEW ---*/
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 650px) {
   /* For desktop: */
   body {
   }
@@ -310,6 +340,26 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
     width: 100%; 
     height: 150px;
     vertical-align: middle;
+  }
+  #postsbox .images .pic {
+    height: 230px;
+  }
+
+  #postsbox hr {
+    margin: 0px 30px;
+    border: 1px solid #e6e6e6;
+  }
+
+  #postsbox .posts {
+    padding: 10px 45px;
+  }
+
+  #postsbox .kudos {
+    padding: 10px 45px;
+  }
+
+  #postsbox .comments {
+    padding: 10px 45px;
   }
 }
 
@@ -577,6 +627,12 @@ hr.style-two {
   vertical-align: middle;
 }
 
+.radius20 {
+  -webkit-border-radius: 20px; 
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
 .radius10 {
   -webkit-border-radius: 10px; 
   -moz-border-radius: 10px;
@@ -665,22 +721,10 @@ hr.style-two {
   text-align: center;
 }
 
-#postsbox .pic {
+#postsbox .images .pic {
   width: 50%;
 }
 
-#postsbox hr {
-  margin: 0px 30px;
-  border: 1px solid #e6e6e6;
-}
-
-#postsbox .posts {
-  padding: 10px 45px;
-}
-
-#postsbox .kudos {
-  padding: 10px 45px;
-}
 
 #postsbox .a_btn {
   text-decoration: none;
@@ -690,12 +734,68 @@ hr.style-two {
 
 #postsbox .comments {
   background-color: #f4f4f4;
-  padding: 10px 45px;
 }
 
 #postsbox .comments input {
   width: 100%;
   padding: 5px;
+  margin-top: 5px;
+}
+#postsbox .comments .user_comment_img {
+  float: left;
+  width: 8.33%; 
+}
+
+#postsbox .comments .user_comment_img img {
+  float: left;
+  margin-left: 10px;
+}
+
+#postsbox .comments .user_comments {
+  margin-top: -3px;
+  float: left;
+  width: 91.66%;
+}
+
+#postsbox .kudos .a_btn:hover {
+  color: #2e9afe;
+  cursor: hand;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#postsbox .kudos .user_kudos {
+  color: #2e9afe;
+  cursor: hand;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    font-size: 10pt;
+    line-height: 1.5em;
+    visibility: hidden;
+    width: 130px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px 10px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }
 
 .timeline .btn_give {

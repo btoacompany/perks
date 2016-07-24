@@ -1,14 +1,5 @@
 <div>
-<%= form_tag( "/tests/create/complete", method: "post", id: "login_form" ) do %>
-<p align="center">
-  <a href="#" id="ptsbtn">+</a>
-  <a href="#" id="atbtn">@</a>
-  <a href="#" id="hashbtn">#</a>
-</p>
-<div class="ui-widget">
-  <label for="tags">Tags: </label>
-  <input id="tags" value=""/>
-</div>
+<%= form_tag( "/tests/create/complete", method: "post", id: "login_form", multipart: true ) do %>
 <table class="center">
   <tr>
     <td>Name: </td>
@@ -20,6 +11,10 @@
     <td><input type="text" name="email" value="" /></td>
   </tr>
   <tr>
+    <td>Image: </td>
+    <td><%= file_field_tag :img_src %></td>
+  </tr>
+  <tr>
     <td class="btn r_align" colspan="2">
       <br><input type="submit" value="Submit" class="btn_submit" />
     </td>
@@ -29,63 +24,4 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function() {
-  $("#tags").tokenInput([{name:"hi"},{name:"hello"},{name:"aaaa"}], {theme: "facebook"});
-});
-/*
-$("#tags").keypress(function(e) {
-  var hashtags = false;
-  var ats = false;
-  var pluses = false;
-
-  var arrow = {
-    at: 64,
-    hashtag: 35,
-    plus: 43,
-    space: 32
-  };
-
-  var input_field = $(this);
-  switch (e.which) {
-    case arrow.plus:
-      input_field.autocomplete({ source: getPoints() });
-      pluses = true;
-      break;
-    case arrow.at:
-      input_field.autocomplete({ source: getName() });
-      ats = true;
-      break;
-    case arrow.hashtag:
-      input_field.val(input_field.val() + " <> ");
-      //input_field.autocomplete({ source: getHashtag() });
-      hashtags = true;
-      break;
-    case arrow.space:
-      if(hashtags) {
-	input_field.val(input_field.val() + " hi ");
-	hashtags = false;
-      } 
-      if (ats) {
-	input_field.val(input_field.val() + " hello ");
-	ats = false;
-      } 
-      if (pluses) {
-	input_field.val(input_field.val() + " world ");
-	pluses = false;
-      }
-      break;
-  }
-});
-
-function getHashtag () {
-  return ["#cool", "#leader", "#wow"];
-}
-
-function getName () {
-  return ["@name1", "@name2", "@name3"];
-}
-
-function getPoints () {
-  return ["+10","+20","+30","+40","+50"];
-}*/
 </script>

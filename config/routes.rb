@@ -50,35 +50,15 @@ Rails.application.routes.draw do
   # users
   get	'/user'			    => 'users#index'
   post	'/user/give_points'	    => 'users#give_points'
+  post	'/user/give_comments'	    => 'users#give_comments'
+  post	'/user/give_kudos'	    => 'users#give_kudos'
   get	'/profile'		    => 'users#profile'
   get	'/rewards'		    => 'users#rewards'
   post	'/rewards/request'	    => 'users#rewards_request'
   get	'/rewards/status'	    => 'users#rewards_status'
   post	'/rewards/cancel'	    => 'users#rewards_cancel'
-  get	'/edit'			    => 'users#edit'
-  post	'/edit/complete'	    => 'users#edit_complete'
-
-  # item front
-  get	'/items'			=> 'items#index'
-  get	'/items/:id'			=> 'items#details'
 
   # admin
   get	'/tools/admin/edit/:id'	      => 'admins#edit'
   get	'/tools/admin/edit/complete'  => 'admins#edit_complete'
-
-  # item tools
-  get	'/tools/items'			=> 'items#view'
-  get	'/tools/items/create'		=> 'items#create'
-  post	'/tools/items/create_complete'	=> 'items#create_complete'
-  get	'/tools/items/edit/:id'		=> 'items#edit'
-  post	'/tools/items/edit_complete'	=> 'items#edit_complete'	
-  post	'/tools/items/delete_complete'	=> 'items#delete'
-
-  # vendor tools
-  get	'/tools/vendors'		  => 'vendors#index'
-  get	'/tools/vendors/create'		  => 'vendors#create'
-  get	'/tools/vendors/edit/:id'	  => 'vendors#edit'
-  post	'/tools/vendors/create_complete'  => 'vendors#create_complete'
-  post	'/tools/vendors/edit_complete'	  => 'vendors#edit_complete'	
-  post	'/tools/vendors/delete_complete'  => 'vendors#delete'
 end
