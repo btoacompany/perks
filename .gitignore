@@ -12,3 +12,5 @@
 !/log/.keep
 /tmp
 /.bash_profile
+config/database.yml
+config/application.yml

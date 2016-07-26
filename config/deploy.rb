@@ -1,6 +1,6 @@
 # config valid only for current version of Capistrano
 lock '3.5.0'
-server '52.197.201.37', port: 80, roles: [:web, :app, :db], primary: true
+#server '52.197.210.66', port: 80, roles: [:web, :app, :db], primary: true
 set :application, 'perks'
 set :repo_url, 'git@github.com:btoacompany/perks.git' # Edit this to match your repository
 set :branch, :master
