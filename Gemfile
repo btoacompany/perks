@@ -28,10 +28,17 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
-gem 'puma'
-
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'figaro'
+gem 'puma'
+group :development do
+  gem 'capistrano'
+  gem 'capistrano3-puma'
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rvm'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -49,7 +56,6 @@ end
 # custom gems
 gem 'jquery-turbolinks'
 gem 'aws-sdk'
-gem 'paperclip'
-
-gem 'rails_12factor', group: :production
-gem 'pg'
+#gem 'paperclip'
+#gem 'rails_12factor', group: :production
+#gem 'pg'
