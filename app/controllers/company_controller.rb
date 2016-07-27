@@ -72,10 +72,15 @@ class CompanyController < ApplicationController
   end
 
   def hashtags_fix(hashtags)
-    arr_hashtags = hashtags.split(",")
-    arr_hashtags.reject! { | tag | tag.empty? }
-    arr_hashtags.uniq!
-    arr_hashtags.map{ | tag | tag.strip }.compact.join(",")
+    arr_hashtags = ""
+    if hashtags.present?
+      arr_hashtags = hashtags.split(",")
+      arr_hashtags.reject! { | tag | tag.empty? }
+      arr_hashtags.uniq!
+      arr_hashtags.map{ | tag | tag.gsub(" ", "").strip }.compact.join(",")
+    else
+      arr_hashtags="leadership,hardwork,creativity,positivity,teamwork"
+    end
   end
 
 
@@ -88,27 +93,27 @@ class CompanyController < ApplicationController
   end
 
   def add_employees_complete
-    #TODO: fix email suitable for server
     emails = params[:emails].split("\r\n")
     emails.map{ |s| s.strip }
+    company = Company.find(@id)
 
     emails.each do | email |
-      #temp_password = SecureRandom.hex(4)
-      temp_password = "qwe" 
+      temp_password = SecureRandom.hex(4)
       name = email.split("@")[0]
 
       @data = {
 	:company_id	=> @id,
+	:company_name	=> company.name,
+	:company_owner	=> company.owner,
 	:email		=> email,
 	:password	=> temp_password,
 	:name		=> name,
-	:img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/profile/nopic.png"
+	:img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
       }
 
       @user = User.new
       @user.save_record(@data)
 
-=begin
       respond_to do |format|
 	if @user.save
 	  # Tell the UserMailer to send a welcome email after save
@@ -120,7 +125,6 @@ class CompanyController < ApplicationController
 	  format.json { render json: @user.errors, status: :unprocessable_entity }
 	end
       end
-=end      
     end
 
     redirect_to "/company/employees"

@@ -1,6 +1,6 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 class="c_align">Update your information</h3><br>
+  <h3 class="c_align">ユーザー情報編集</h3><br>
   <%= form_tag( "/update/complete", method: "post", id: "login_form", multipart: true ) do %>
   <div class="toolbox center">
     <table class="center tbl_tools">
@@ -9,46 +9,50 @@
 	<td><%= @user.company.name %></td>
       </tr>
       <tr>
-	<td>E-mail: </td>
+	<td>メールアドレス: </td>
 	<td><%= @user.email %></td>
       </tr>
       <tr>
-	<td>Password: </td>
+	<td>パスワード: </td>
 	<td><input type="password" name="password" value="" id="passwd1"/></td>
       </tr>
       <tr>
-	<td>Confirm Password: </td>
+	<td>パスワード確認: </td>
 	<td>
 	  <input type="password" name="password" value="" id="passwd2"/><br>
 	  <span class="notice"></span>
 	</td>
       </tr>
       <tr>
-	<td>Job Title: </td>
+	<td>役職: </td>
 	<td><input type="text" name="job_title" value="<%= @user.job_title %>"/></td>
       </tr>
       <tr><td colspan="2"><hr></td></tr>
       <tr>
-	<td>Picture: </td>
+	<td>プロフィール写真: </td>
 	<td><%= file_field_tag :img_src %></td>
       </tr>
       <tr>
-	<td>Last Name: </td>
+	<td>ユーザー名: </td>
+	<td><input type="text" name="name" value="<%= @user.name %>"/></td>
+      </tr>
+      <tr>
+	<td>苗字: </td>
 	<td><input type="text" name="lastname" value="<%= @user.lastname %>"/></td>
       </tr>
       <tr>
-	<td>First Name: </td>
+	<td>名前: </td>
 	<td><input type="text" name="firstname" value="<%= @user.firstname %>"/></td>
       </tr>
       <tr>
-	<td>Gender: </td>
+	<td>性別: </td>
 	<td>
 	  <label><input type="radio" name="gender" value="0" <% if @user.gender==0 %> checked <% end %>/>男</label>
 	  <label><input type="radio" name="gender" value="1" <% if @user.gender==1 %> checked <% end %>/>女</label>
 	</td>
       </tr>
       <tr>
-	<td>Birthday: </td>
+	<td>生年月日: </td>
 	<td>
 	  <select name="b_year">
 	  <% @years.reverse_each do | val | %>
@@ -69,8 +73,8 @@
       </tr>
     </table><br>
     <p align="center">
-      <input type="button" value="Back" class="btn btn_back" />
-      <input type="submit" value="Update" class="btn"/>
+      <input type="button" value="戻る" class="btn btn_back" />
+      <input type="submit" value="編集" class="btn"/>
     </p>
   </div><br><br>
   <% end %>

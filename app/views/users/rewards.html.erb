@@ -1,8 +1,9 @@
 <div id="wrapper">
 <div id="contents">
   <div class="row">
-    <p class="font14">You have <b class="font16"><%= @user.in_points %> points</b> to redeem</p>
-    <a href="/rewards/status">See Rewards Status</a>
+    <p class="font14">You have <b class="font16"><%= @user.in_points %> points</b> to
+    redeem</p><br>
+    <a href="/rewards/status" class="a_btncmn radius5">See Rewards Status</a>
     <div id="item_list">
       <% @rewards.each_with_index do | item, i | %>
 	<div class="item <% if @user.in_points < item[:points] %>grayscale<% else %>colored<% end %>">

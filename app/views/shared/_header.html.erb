@@ -1,14 +1,31 @@
 <div id="header">
-  <br>
-  <h1><a href="<% if session[:user_id] %>/rewards<% else %>/company<% end %>">P R I Z Y</a></h1>
-    <p align="center">Welcome, <%= current_user.name -%>!</p>
-    <% if session[:user_id] %>
-      <p align="center">
-	<a href="/user">My Page</a> |
-	<a href="/profile">Profile</a> |
-	<a href="/rewards">Rewards</a> |
-	<a href="/logout">Logout</a>
-      </p>
+  <p class="login_name">
+    Welcome, <%= current_user.name -%>!
+    <% if session[:company_id] %> 
+      <br><a href="/company/logout">ログアウト</a>
+    <% elsif session[:user_id] %>
+      <br><a href="/logout">ログアウト</a>
     <% end %>
-  <br><hr class="style-two"><br>
+  </p>
+  <table id="nav">
+    <tr>
+      <td>
+	<div class="menu_panel">
+	  <ul class="main_menu">
+	    <li class="logo"><a href="<% if session[:user_id] %>/user<% else %>/company<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
+	  </ul>
+	</div>
+      </td>
+    </tr>
+  </table>
+</div><br> <!-- header -->
+<% if session[:user_id] %>
+<div class="menu">
+  <p align="center">
+    <a href="/user">マイページ</a> |
+    <a href="/profile">プロフィール</a> |
+    <a href="/rewards">プレゼント</a> 
+  </p>
 </div>
+<hr class="style-two"><br>
+<% end %>

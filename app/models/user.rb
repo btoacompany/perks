@@ -29,10 +29,10 @@ class User < ActiveRecord::Base
     self.lastname     = params[:lastname]
     self.birthday     = params[:birthday]
     self.job_title    = params[:job_title]
-    self.gender	      = params[:gender] || 0
-    self.in_points    = params[:in_points] || 0
-    self.out_points   = params[:out_points] || 0
-    self.verified     = params[:verified] || 0
+    self.gender	      = params[:gender]	 || 0
+    self.in_points    = params[:in_points]    if params[:in_points].present?
+    self.out_points   = params[:out_points]   if params[:out_points].present?
+    self.verified     = params[:verified]     if params[:in_points].present?
     self.save
   end
   

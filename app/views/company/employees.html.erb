@@ -1,37 +1,41 @@
 <div id="wrapper">
 <div id="contents">
   <h3>Manage Employees Page</h3><br>
-  <a href="/company/employees/add">Add Empolyees</a>
+  <a href="/company/employees/add" class="a_btncmn radius5">+ Add Empolyees</a>
   <br><br>
   <div class="toolbox">
-    <table class="tbl_tools" border="1">
-      <tr>
-	<th>ID</th>
-	<th>Name</th>
-	<th>E-mail</th>
-	<th>Invitation<br>Status</th>
-	<th>Personal<br>Points</th>
-	<th>Giveaway<br>Points</th>
-	<th>Actions</th>
-      </tr>
-      <% @users.each do | item | %>
-	<tr class="item_<%= item[:id] %>">
-	  <td><%= item[:id] %></td>
-	  <td><%= "#{item[:firstname]} #{item[:lastname]}" %></td>
-	  <td><%= item[:email] %></td>
-	  <td align="center">
-	    <% if item[:verified] == 0 %> Pending
-	    <% else %> Accepted 
-	    <% end %>
-	  </td>
-	  <td><%= item[:in_points] %></td>
-	  <td><%= item[:out_points] %></td>
-	  <td align="center">
-	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
-	  </td>
+    <% if @users.count == 0 %>
+      <p><i>You have not added any employees yet</i></p><br>
+    <% else %>
+      <table class="tbl_tools" border="1">
+	<tr>
+	  <th>ID</th>
+	  <th>Name</th>
+	  <th>E-mail</th>
+	  <th>Invitation<br>Status</th>
+	  <th>Personal<br>Points</th>
+	  <th>Giveaway<br>Points</th>
+	  <th>Actions</th>
 	</tr>
-      <% end %>
-    </table><br>
+	<% @users.each do | item | %>
+	  <tr class="item_<%= item[:id] %>">
+	    <td><%= item[:id] %></td>
+	    <td><%= "#{item[:firstname]} #{item[:lastname]}" %></td>
+	    <td><%= item[:email] %></td>
+	    <td align="center">
+	      <% if item[:verified] == 0 %> Pending
+	      <% else %> Accepted 
+	      <% end %>
+	    </td>
+	    <td><%= item[:in_points] %></td>
+	    <td><%= item[:out_points] %></td>
+	    <td align="center">
+	      <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
+	    </td>
+	  </tr>
+	<% end %>
+      </table><br>
+    <% end %>
     <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="Back to Menu" /></p>
   </div><br>
 </div> <!-- contents -->

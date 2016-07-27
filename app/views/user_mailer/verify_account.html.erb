@@ -1,6 +1,20 @@
-<p>Hello Valued Perker!</p>
-<p>You have been registered to use our services by your company, <%= @user[:company_name] %>.</p>
-<p>You can login with your company e-mail and this password: <%= @user[:password] %></p>
-<p>Kindly <a href="http://localhost:3000/login"><b>visit our site</b></a> and proceed with the registration details.</p>
+<pre>
+こんにちは！<%= @user[:company_name] %>の<%= @user[:company_owner] %>さんから、あなた(<%= @user[:email] %>)へ
+Prizyへの招待が届きました。
 
-<p>Thank you very much!</p>
+Prizyは毎日の仕事でのやりがいや達成感を最大化するツールです。
+
+Prizy上では、あなたが仕事や会社のために頑張った分だけ、
+一緒に働く仲間からちょっとしたボーナスをもらえます。
+もらったポイントは様々な素敵なプレゼントに交換可能！
+あなたも彼らのいいところを見つけ、ちょっとしたボーナスを贈ってみましょう！
+
+初期のログインは<b><a href="http://localhost:3000/login">コチラ</a></b>から！
+
+------------------------------------------
+E-mail: <%= @user[:email] %>
+Password: <%= @user[:password] %>
+------------------------------------------
+
+Prizy運営事務局
+</pre>

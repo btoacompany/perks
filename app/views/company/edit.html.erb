@@ -6,11 +6,11 @@
     <table class="center tbl_tools">
       <tr>
 	<td>会社名: </td>
-	<td><input type="text" name="name" value="<%= @company[:name] %>" required /></td>
+	<td><input type="text" name="name" value="<%= @company[:name] %>" size="30" required /></td>
       </tr>
       <tr>
 	<td>会社URL: </td>
-	<td><input type="text" name="url" value="<%= @company[:url] %>" /></td>
+	<td><input type="text" name="url" value="<%= @company[:url] %>" size="30" /></td>
       </tr>
       <tr>
 	<td>代理: </td>
@@ -22,26 +22,26 @@
       </tr>
       <tr>
 	<td>パスワード: </td>
-	<td><input type="password" name="password" id="passwd1" value="" /></td>
+	<td><input type="password" name="password" id="passwd1" value=""  size="10"/></td>
       </tr>
       <tr>
 	<td>パスワード確認: </td>
 	<td>
-	  <input type="password" name="password" id="passwd2" value="" /><br> 
+	  <input type="password" name="password" id="passwd2" value=""  size="10"/><br> 
 	  <span class="notice"></span>
 	</td>
       </tr>
       <tr>
-	<td>会社住所: </td>
-	<td><input type="text" name="address" value="<%= @company[:address] %>" required /></td>
+	<td>連絡先: </td>
+	<td><input type="text" name="phone" value="<%= @company[:phone] %>"  size="10"/></td>
       </tr>
       <tr>
-	<td>連絡先: </td>
-	<td><input type="text" name="phone" value="<%= @company[:phone] %>" /></td>
+	<td>会社住所: </td>
+	<td><input type="text" name="address" value="<%= @company[:address] %>" size="30" required /></td>
       </tr>
       <tr>
 	<td>ハッシュタグ: </td>
-	<td><textarea name="hashtags"><%= @company.hashtags %></textarea></td>
+	<td><input type="text" name="hashtags" value="<%= @company.hashtags %>" size="30" placeholder="leadership, hardwork, creativity..."></td>
       </tr>
     </table><br>
     <p align="center">

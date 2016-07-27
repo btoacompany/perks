@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
   def login
     if session[:user_id]
-      redirect_to "/"
+      redirect_to "/user"
     end
   end
 
@@ -25,14 +25,11 @@ class UsersController < ApplicationController
       verified = authorized_user.verified
       flash[:notice] = "" 
 
-=begin
       if verified == 0
 	redirect_to "/update"
       else
-	redirect_to "/"
+	redirect_to "/user"
       end
-=end      
-	redirect_to "/"
     else
       flash[:notice] = "Invalid Email or Password"
       flash[:color]= "invalid"
@@ -48,7 +45,7 @@ class UsersController < ApplicationController
 
   def index
     hashtags = Company.find(@company_id).hashtags
-    if hashtags.nil?
+    if hashtags.blank?
       @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
     else
       @hashtags = hashtags.split(",")
@@ -134,11 +131,9 @@ class UsersController < ApplicationController
     kudo = Kudos.where(:user_id => @id, :post_id => params[:post_id]).first
 
     if kudo.present?
-      logger.debug "---1---"
       kudo.kudos = params[:kudos]
       kudo.save
     else
-      logger.debug "---2---"
       res = Kudos.new
       res.save_record(params)
     end

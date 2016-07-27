@@ -11,10 +11,10 @@
     
     <div class="profilebox">
       <div class="pic">
-	<img src="<%= @user.img_src %>" class="radius10"/>
+	<a href="/profile"><img src="<%= @user.img_src %>" class="radius10"/></a>
       </div>
       <p>@<%= @user.name %></p>
-      <hr>
+      <hr><br>
       <p><b><span class="font32"><%= @user.in_points %></span> points</b></p><br>
       <p><a href="/rewards" class="btn_reward">ポイントを交換する</a></p>
     </div>
@@ -155,8 +155,10 @@ $(".btn_unlike").mouseup(function() {
 
 function getTag () {
   items = [];
-  <% @hashtags.each do | tag | %>
-    items.push("<%= tag %>");
+  <% if @hashtags.present? %>
+    <% @hashtags.each do | tag | %>
+      items.push("<%= tag %>");
+    <% end %>
   <% end %>
   return items;
 }

@@ -2,15 +2,15 @@
 <div id="contents">
   <h3 class="c_align">Register Company</h3><br>
   <%= form_tag( "/company/register/complete", method: "post", id: "login_form" ) do %>
-  <div class="center">
-    <table class="center">
+  <div class="toolbox center">
+    <table class="center tbl_tools">
       <tr>
 	<td>会社名: </td>
-	<td><input type="text" name="name" value="" required /></td>
+	<td><input type="text" name="name" value="" size="30" required /></td>
       </tr>
       <tr>
 	<td>会社URL: </td>
-	<td><input type="text" name="url" value="" /></td>
+	<td><input type="text" name="url" value="" size="30" /></td>
       </tr>
       <tr>
 	<td>代理: </td>
@@ -22,29 +22,29 @@
       </tr>
       <tr>
 	<td>パスワード: </td>
-	<td><input type="password" name="password" id="passwd1" value="" required /></td>
+	<td><input type="password" name="password" id="passwd1" value="" size="10" required /></td>
       </tr>
       <tr>
 	<td>パスワード確認: </td>
 	<td>
-	  <input type="password" name="password" id="passwd2" value="" required /><br> 
+	  <input type="password" name="password" id="passwd2" value="" size="10" required /><br> 
 	  <span class="notice"></span>
 	</td>
       </tr>
       <tr>
-	<td>会社住所: </td>
-	<td><input type="text" name="address" value="" required /></td>
+	<td>連絡先: </td>
+	<td><input type="text" name="phone" value="" size="10"/></td>
       </tr>
       <tr>
-	<td>連絡先: </td>
-	<td><input type="text" name="phone" value="" /></td>
+	<td>会社住所: </td>
+	<td><input type="text" name="address" value="" size="30" required /></td>
       </tr>
       <tr>
 	<td>ハッシュタグ: </td>
-	<td><textarea name="hashtags"></textarea></td>
+	<td><input type="text" name="hashtags" value="" size="30" placeholder="leadership, hardwork, creativity..."></td>
       </tr>
       <tr>
-	<td class="btn r_align" colspan="2">
+	<td class="c_align" colspan="2">
 	  <br><input type="submit" value="Submit" class="btn" />
 	</td>
       </tr>

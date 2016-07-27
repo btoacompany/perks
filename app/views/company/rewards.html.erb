@@ -3,30 +3,34 @@
   <div class="toolbox">
     <div class="c_align">
       <h2>Custom rewards</h2><br>
-      <a href="/company/rewards/add" class="a_btn" style="font-size:14pt">Add Rewards</a>
+      <a href="/company/rewards/add" class="a_btncmn radius5" style="font-size:14pt">+ Add Rewards</a>
     </div><br>
 
-    <table class="tbl_tools center" border="1">
-      <tr>
-	<th>ID</th>
-	<th>Title</th>
-	<th>Description</th>
-	<th>Points</th>
-	<th class="c_align">Actions</th>
-      </tr>
-      <% @rewards.each do | item | %>
-      <tr class="item_<%= item[:id] %>">
-	<td><%= item[:id] %></td>
-	<td style="width:250px;"><%= item[:title] %></td>
-	<td style="width:300px;"><%= item[:description] %></td>
-	<td><%= number_with_delimiter(item[:points], :delimiter => ',') %></td>
-	<td class="c_align">
-	  <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="edit" /> | 
-	  <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="del" />
-	</td>
-      </tr>
-      <% end %>
-    </table><br>
+    <% if @rewards.count == 0 %>
+      <p align="center"><i>You have not added any rewards yet</i></p><br>
+    <% else %>
+      <table class="tbl_tools center" border="1">
+	<tr>
+	  <th>ID</th>
+	  <th>Title</th>
+	  <th>Description</th>
+	  <th>Points</th>
+	  <th class="c_align">Actions</th>
+	</tr>
+	<% @rewards.each do | item | %>
+	<tr class="item_<%= item[:id] %>">
+	  <td><%= item[:id] %></td>
+	  <td style="width:250px;"><%= item[:title] %></td>
+	  <td style="width:300px;"><%= item[:description] %></td>
+	  <td><%= number_with_delimiter(item[:points], :delimiter => ',') %></td>
+	  <td class="c_align">
+	    <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="edit" /> | 
+	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="del" />
+	  </td>
+	</tr>
+	<% end %>
+      </table><br>
+    <% end %>
     <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="Back to Menu" /></p>
   </div> <!-- toolbox -->
 </div> <!-- container -->
