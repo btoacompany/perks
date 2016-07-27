@@ -15,8 +15,18 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true 
-  config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
+
+  #config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address	  => "smtp.gmail.com",
+    :port	  => 587,
+    :user_name	  => ENV['EMAIL_USERNAME'],
+    :password	  => ENV['EMAIL_PASSWORD'],
+    :authentication => "plain",
+    :enable_starttls_auto => true
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -42,16 +52,4 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   config.action_view.logger = nil
   config.assets.logger = nil
-=begin  
-  # For Image Upload
-  config.paperclip_defaults = {
-    storage: :s3,
-    s3_credentials: {
-      bucket: ENV['S3_BUCKET'],
-      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-      secret_access_key: ENV['AWS_SECRET_KEY'],
-      s3_region: 'ap-northeast-1'
-    }
-  }
-=end  
 end

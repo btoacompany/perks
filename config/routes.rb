@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'top#index'
+  root 'users#index'
   
   # for testing
   get	'/tests'		  => 'tests#index'
