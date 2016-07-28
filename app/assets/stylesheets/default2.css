@@ -136,8 +136,8 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 .menu a {
   text-decoration: none;
   color: #333;
-  width: 70px;
-  font-size: 12pt;
+  width: 90px;
+  font-size: 11pt;
   display: inline-block;
 }
 

@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
     self.gender	      = params[:gender]	 || 0
     self.in_points    = params[:in_points]    if params[:in_points].present?
     self.out_points   = params[:out_points]   if params[:out_points].present?
-    self.verified     = params[:verified]     if params[:in_points].present?
+    self.verified     = params[:verified]     if params[:verified].present?
     self.save
   end
   

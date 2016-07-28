@@ -44,6 +44,7 @@ class UsersController < ApplicationController
   end
 
   def index
+    @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
     hashtags = Company.find(@company_id).hashtags
     if hashtags.blank?
       @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
@@ -88,32 +89,31 @@ class UsersController < ApplicationController
     params[:user_id] = @id
     params[:company_id] = @company_id
     params[:points] = points
+    
+    if (params[:receiver_id].present?)
+      if (points <= @user[:out_points])
+	@user.out_points -= points 
+	@user.save
 
-    unless (@user[:out_points] <= 0)
-      @user.out_points -= points 
-      @user.save
+	hashtags = params[:description].scan(/\#[^\s|　]+/)
+	receiver = User.find(params[:receiver_id])
+	receiver.in_points += params[:points]
+	receiver.save
 
-      hashtags = params[:description].scan(/\#[^\s|　]+/)
+	post = Post.new
+	post.save_record(params)
+	params[:post_id] = post.id
 
-      receiver = User.find(params[:receiver_id])
-      receiver.in_points += params[:points]
-      receiver.save
-
-      post = Post.new
-      post.save_record(params)
-      params[:post_id] = post.id
-
-      hashtags.each do | tag |
-	params[:hashtag] = tag 
-	hashtag = Hashtag.new
-	hashtag.save_record(params)
+	hashtags.each do | tag |
+	  params[:hashtag] = tag 
+	  hashtag = Hashtag.new
+	  hashtag.save_record(params)
+	end
+      else
+	flash[:notice] = "Insufficient Points"
       end
-      redirect_to '/user'
-    else
-      @posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
-      flash[:notice] = "Insufficient Points"
-      render "index"
     end
+    redirect_to '/user'
   end
 
   def give_comments 
@@ -226,7 +226,7 @@ class UsersController < ApplicationController
 
       params[:img_src] = obj.public_url
     else
-      params[:img_src] = "https://btoa-img.s3-ap-northeast-1.amazonaws.com/profile/nopic.png" 
+      params[:img_src] = "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 
     end
     
     res.save_record(params)

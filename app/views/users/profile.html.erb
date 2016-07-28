@@ -7,7 +7,7 @@
 	<p><input type="button" value="UPDATE INFO" class="btncmn w100p btn_edit" /></p>
       </div>
       <div class="info col-8">
-	<h1 class="name"><%= @user.firstname %> <%= @user.lastname %></h1>
+	<h1 class="name"><%= @user.firstname %> <%= @user.lastname %> (<%= @user.name %>)</h1>
 	<h3 class="gray"><%= @user.company.name %></h3>
 	<h4 class="gray"><u><%= @user.email %></u></h4><br>
 	<h2>Your Points: <%= number_with_delimiter(@user.in_points, :delimiter => ',') %></h2>

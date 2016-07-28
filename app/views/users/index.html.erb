@@ -1,6 +1,7 @@
 <div id="wrapper">
 <div id="contents" class="timeline">
-<% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
+<% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
+<div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
 
 <div class="mypage row">
   <div class="outofboxmsg col-12">
@@ -32,12 +33,13 @@
 	</div><br><hr>
 
 	<div class="description">
-	  <textarea name="description" class="taginput" align="center" rows="3" cols="80" placeholder="Type here"></textarea><br>
+	  <textarea name="description" class="taginput" align="center" rows="3" cols="80" placeholder="<%= @placeholder %>"></textarea><br>
 	</div><br>
 
 	<div class="tags" style="float:left">
 	  To: <span></span> 
 	</div>
+	<span class="pointsInput"></span>
 	<p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
       </p>
     </div> <!-- pointsbox -->  
@@ -51,13 +53,11 @@
 	  <img src="<%= post[:user_img] %>" class="pic l_img"/><img src="<%= post[:receiver_img] %>" class="pic r_img"/>
 	</div>
 	<div class="posts">
-	  <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 
-	  <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
+	  From <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 
+	  To <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
 	  <span class="points radius5"><%= post[:points] %> pts</span><br>
-	  <span class="description"><%= post[:description] %></span><br>
-	  <% (post[:hashtags]).each do | tag | %>
-	    <span class="hashtag"><%= tag.hashtag %></span>
-	  <% end %>
+	  
+	  <span class="description"><%= raw post[:description].gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span><br>
 	</div>
 	<hr>
 	<div class="kudos">
@@ -166,7 +166,9 @@ function getTag () {
 function getName () {
   items = {};
   <% @users.each do | user | %>
-    items["<%= user.id %>"] = "<%= user.name %>";
+    <% unless (user.name).match(@user.name) %> 
+      items["<%= user.id %>"] = "<%= user.name %>";
+    <% end %>
   <% end %>
   return items;
 }
@@ -174,6 +176,19 @@ function getName () {
 function getPoints () {
   return ["2","5","10","20","30"];
 }
+
+$(".btn_give").click(function() {
+  dataReceive = $(".receiver-selected").val();
+  input = $(".taginput").val();
+  isPoint = input.match(/\+[^\s|　]+/);
+  isTag = input.match(/\#[^\s|　]+/);
+
+  
+  if(dataReceive == null || !isPoint || !isTag ) {
+    $("span.notice").text("Please complete input");
+    return false;
+  } 
+});
 
 $(".selDropdown option").click(function() {
   $(".tags span").empty();
@@ -192,7 +207,7 @@ $("#myDropdown").click(function(e) {
     case "drpAt":
       $(".tags span").empty();
       $(".tags span").append($("<input type='button' class='btn radius5'/>").val(content));
-      $(".tags span").append($("<input type='hidden' name='receiver_id'/>").val(dataId));
+      $(".tags span").append($("<input type='hidden' class='receiver-selected' name='receiver_id'/>").val(dataId));
       break;
     case "drpTag":
       $(".taginput").val($(".taginput").val() + "#" + content + " ");
