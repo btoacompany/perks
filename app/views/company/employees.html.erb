@@ -3,13 +3,13 @@
   <h3>Manage Employees Page</h3><br>
   <a href="/company/employees/add" class="a_btncmn radius5">+ Add Empolyees</a>
   <br><br>
+  <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
   <div class="toolbox">
     <% if @users.count == 0 %>
       <p><i>You have not added any employees yet</i></p><br>
     <% else %>
       <table class="tbl_tools" border="1">
 	<tr>
-	  <th>ID</th>
 	  <th>Name</th>
 	  <th>E-mail</th>
 	  <th>Invitation<br>Status</th>
@@ -19,7 +19,6 @@
 	</tr>
 	<% @users.each do | item | %>
 	  <tr class="item_<%= item[:id] %>">
-	    <td><%= item[:id] %></td>
 	    <td><%= "#{item[:firstname]} #{item[:lastname]}" %></td>
 	    <td><%= item[:email] %></td>
 	    <td align="center">

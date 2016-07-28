@@ -36,9 +36,9 @@
     visibility: hidden;
     display: none;
   }
-
-  #postsbox .images .pic {
-    height: 150px;
+  #postsbox .images td {
+    height: 160px;
+    width: 310px;
   }
 
   #postsbox hr {
@@ -232,10 +232,8 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 #item_list .item {
   float: left;
   border: 1px solid #a4a4a4;
-  /*
   padding: 20px;
   margin: 20px auto;
-  */
   width: 100%;
   height: auto;
   background-color: #fafafa;
@@ -260,7 +258,7 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 #item_list .item .details {
   margin: 5px auto;
   padding-top: 10px;
-  height: 150px;
+  height: 180px;
 }
 
 #item_list .item .details p {
@@ -323,6 +321,10 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
     width: 120px;
     font-size: 14pt;
   }
+  #postsbox .images td {
+    height: 260px;
+    width: 310px;
+  }
 
   #wrapper {
     width: 960px;
@@ -371,18 +373,20 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
     float: left;
     border: 1px solid #a4a4a4;
     padding: 20px;
-    margin: 10px 10px;
-    width: 200px;
-    height: auto;
+    margin: 10px 0px;
+    margin-right: 40px;
+    width: 260px;
+    height: 500px;
+  }
+
+  #item_list .item .details {
+    height: 240px;
   }
 
   #item_list .item img {
     width: 100%; 
-    height: 150px;
+    height: 170px;
     vertical-align: middle;
-  }
-  #postsbox .images .pic {
-    height: 230px;
   }
 
   #postsbox hr {
@@ -728,21 +732,15 @@ hr.style-two {
 
 /* USER INDEX - TIMELINE */
 .dropbtn {
-  background-color: #ff8d07;
   color: white;
-  width: 45px;
-  height: 40px;
   padding: 0px;
   font-size: 16px;
   border: none;
   cursor: pointer;
-  -webkit-border-radius: 25px; 
-  -moz-border-radius: 25px;
-  border-radius: 25px;
+  z-index: 2;
 }
 
 .dropbtn:hover, .dropbtn:focus {
-  background-color: #3e8e41;
 }
 
 .dropdown {
@@ -778,12 +776,32 @@ hr.style-two {
 
 #postsbox .images {
   text-align: center;
+  overflow: hidden;
 }
 
-#postsbox .images .pic {
-  width: 50%;
+#postsbox .images table {
+  margin: 0 auto;
 }
 
+#postsbox .images td {
+  border: 1px solid #a4a4a4;
+  border-collapse: collapse;
+  position:relative;
+  overflow: hidden;
+  text-align: center;
+  z-index: -1;
+}
+
+#postsbox .images td img {
+  position: absolute;
+  margin: auto;
+  min-height: 100%;
+  width: 100%;
+  left: -100%;
+  right: -100%;
+  top: -100%;
+  bottom: -100%;
+}
 
 #postsbox .a_btn {
   text-decoration: none;

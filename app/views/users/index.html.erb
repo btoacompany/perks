@@ -8,7 +8,10 @@
     <p>You have <b><span class="font20"><%= @user.out_points %></span> points</b> to give away</p><br>
   </div>
   <div class="rightbox col-4">
-    <div class="title">プロフィール</div>
+    <div class="title">
+      <img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/icon_profile.png"/>
+      プロフィール
+    </div>
     
     <div class="profilebox">
       <div class="pic">
@@ -26,9 +29,9 @@
     <div class="pointsbox">
       <p align="center">
 	<div class="dropdown">
-	  <input type="button" id="ptsbtn" class="dropbtn" value="+" />
-	  <input type="button" id="atbtn" class="dropbtn" value="@" />
-	  <input type="button" id="tagbtn" class="dropbtn" value="#" />
+	  <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;"/>
+	  <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" />
+	  <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" />
 	  <div id="myDropdown" class="dropdown-content"> </div>
 	</div><br><hr>
 
@@ -50,7 +53,12 @@
     <% @posts.each do | post | %>
       <div id="postsbox">
 	<div class="images">
-	  <img src="<%= post[:user_img] %>" class="pic l_img"/><img src="<%= post[:receiver_img] %>" class="pic r_img"/>
+	  <table>
+	    <tr>
+	      <td><img src="<%= post[:user_img] %>" class=""/></td>
+	      <td><img src="<%= post[:receiver_img] %>" class=""/></td>
+	    </tr>
+	  </table>
 	</div>
 	<div class="posts">
 	  From <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 

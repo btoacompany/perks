@@ -96,38 +96,47 @@ class CompanyController < ApplicationController
     emails = params[:emails].split("\r\n")
     emails.map{ |s| s.strip }
     company = Company.find(@id)
+    existing_emails = User.uniq.pluck(:email)
+    @duplicate_emails = []
 
     emails.each do | email |
-      temp_password = SecureRandom.hex(4)
-      name = email.split("@")[0]
+      if existing_emails.include?(email)
+	@duplicate_emails << email
+      else
+	temp_password = SecureRandom.hex(4)
+	name = email.split("@")[0]
 
-      @data = {
-	:company_id	=> @id,
-	:company_name	=> company.name,
-	:company_owner	=> company.owner,
-	:email		=> email,
-	:password	=> temp_password,
-	:name		=> name,
-	:img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
-      }
+	@data = {
+	  :company_id	=> @id,
+	  :company_name	=> company.name,
+	  :company_owner	=> company.owner,
+	  :email		=> email,
+	  :password	=> temp_password,
+	  :name		=> name,
+	  :img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
+	}
+	@user = User.new
+	@user.save_record(@data)
 
-      @user = User.new
-      @user.save_record(@data)
-
-      respond_to do |format|
-	if @user.save
-	  # Tell the UserMailer to send a welcome email after save
-	  UserMailer.verify_account(@data).deliver_now
-	  format.html { }
-	  format.json { render json: @user, status: :created, location: @user }
-	else
-	  format.html { render action: 'new' }
-	  format.json { render json: @user.errors, status: :unprocessable_entity }
+	respond_to do |format|
+	  if @user.save
+	    # Tell the UserMailer to send a welcome email after save
+	    UserMailer.verify_account(@data).deliver_now
+	    format.html { }
+	    format.json { render json: @user, status: :created, location: @user }
+	  else
+	    format.html { render action: 'new' }
+	    format.json { render json: @user.errors, status: :unprocessable_entity }
+	  end
 	end
       end
     end
 
+    if @duplicate_emails.present?
+      flash[:notice] = "The following email(s) already exist: #{@duplicate_emails.join(", ")}. <br>If it is not in the list below, the email may have been removed. Please contact the site admin."
+    end
     redirect_to "/company/employees"
+
   end
 
   def delete_employees 
