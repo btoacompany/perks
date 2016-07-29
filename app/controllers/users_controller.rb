@@ -8,6 +8,9 @@ class UsersController < ApplicationController
     if session[:user_id].present?
       @id = session[:user_id]
       @company_id = User.find(@id).company_id
+      #@prizy_url = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+      @prizy_url = "http://localhost:3000"
+      #@s3_url = ""
     end
   end
 
@@ -100,6 +103,14 @@ class UsersController < ApplicationController
 	receiver.in_points += params[:points]
 	receiver.save
 
+	UserMailer.receive_points_email({
+	  receiver: receiver.name, 
+	  email: receiver.email,
+	  giver: @user.name,
+	  points: params[:points],
+	  prizy_url: @prizy_url + "/user"
+	}).deliver_now
+
 	post = Post.new
 	post.save_record(params)
 	params[:post_id] = post.id
@@ -164,6 +175,14 @@ class UsersController < ApplicationController
     user = User.find(@id)
     user.in_points -= res.reward.points
     user.save
+
+    data[:username] = user.name
+    data[:owner] = user.company.owner
+    data[:email] = user.company.email
+    data[:prizy_url] = @prizy_url + "/company/rewards/request#pending"
+
+    CompanyMailer.request_reward_email(data).deliver_now
+
     redirect_to "/rewards"
   end
 

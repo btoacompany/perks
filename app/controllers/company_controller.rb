@@ -6,6 +6,9 @@ class CompanyController < ApplicationController
 
   def init
     @id = session[:company_id] if session[:company_id].present? 
+    #@prizy_url = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+    @prizy_url = "http://localhost:3000"
+    #@s3_url = ""
   end
 
   def login
@@ -44,10 +47,16 @@ class CompanyController < ApplicationController
   end
 
   def create_complete
+    params[:prizy_url] = @prizy_url + "/company/login"
     params[:hashtags] = hashtags_fix(params[:hashtags])
-    result = Company.new
-    result.save_record(params)
-    session[:id] = result.id
+    company = Company.new
+    company.save_record(params)
+
+    if company.save
+      CompanyMailer.welcome_email(params).deliver_now
+    end
+
+    session[:id] = company.id
     redirect_to_index
   end
 
@@ -83,7 +92,6 @@ class CompanyController < ApplicationController
     end
   end
 
-
   def employees
     @users = User.where(:company_id => @id, :delete_flag => 0)
   end
@@ -109,11 +117,12 @@ class CompanyController < ApplicationController
 	@data = {
 	  :company_id	=> @id,
 	  :company_name	=> company.name,
-	  :company_owner	=> company.owner,
-	  :email		=> email,
+	  :company_owner=> company.owner,
+	  :email	=> email,
 	  :password	=> temp_password,
 	  :name		=> name,
-	  :img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
+	  :img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+	  :prizy_url	=> @prizy_url + "/login"
 	}
 	@user = User.new
 	@user.save_record(@data)
@@ -136,7 +145,9 @@ class CompanyController < ApplicationController
       flash[:notice] = "The following email(s) already exist: #{@duplicate_emails.join(", ")}. <br>If it is not in the list below, the email may have been removed. Please contact the site admin."
     end
     redirect_to "/company/employees"
+  end
 
+  def send_email
   end
 
   def delete_employees 
@@ -186,16 +197,19 @@ class CompanyController < ApplicationController
   end
 
   def rewards_request_action
-    #TODO: send accept/reject email to user
     res = RequestReward.find(params[:id])
-    
+    params[:name] = res.user.name
+    params[:email] = res.user.email
+    params[:prizy_url] = @prizy_url + "/rewards/status#accepted"
+
     if res.delete_flag == 0
-      if params[:status].to_i == 1
-	res.status = 1
-      elsif params[:status].to_i == 9
-	res.status = 9
+      if params[:status].to_i == 1 
+	res.status = 1 #accept
+	UserMailer.reward_approved_email(params).deliver_now
+      elsif params[:status].to_i == 9 
+	res.status = 9 #reject
       else
-	res.status = 0
+	res.status = 0 #pending
       end
       res.save
     end

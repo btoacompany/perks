@@ -107,13 +107,13 @@ $('.reject_item').click(function() {
 });
 
 function setRequestAction( id, stats, msg ) {
+  $(".item_" + id).remove(); //remove item upon deletion
   if (confirm( msg )) {
     $.ajax({
       type: "POST",
       url: "/company/rewards/request/action",
       data: { 'id': id, 'status': stats },
       success: function(data){
-	$(".item_" + id).remove(); //remove item upon deletion
 	window.location.reload(); 
       }
     });

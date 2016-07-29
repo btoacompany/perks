@@ -93,13 +93,13 @@ $('.cancel_item').click(function() {
 });
 
 function setRequestAction( id, msg ) {
+  $(".item_" + id).remove(); //remove item upon deletion
   if (confirm( msg )) {
     $.ajax({
       type: "POST",
       url: "/rewards/cancel",
       data: { 'id': id },
       success: function(data){
-	$(".item_" + id).remove(); //remove item upon deletion
 	window.location.reload(); 
       }
     });
