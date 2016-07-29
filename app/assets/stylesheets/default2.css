@@ -47,16 +47,16 @@
   }
 
   #postsbox .posts {
-    padding: 10px 20px;
-    line-height: 1.4em;
+    padding: 10px 10px;
+    line-height: 1.6em;
   }
 
   #postsbox .kudos {
-    padding: 10px 20px;
+    padding: 10px 10px;
   }
 
   #postsbox .comments {
-    padding: 10px 20px;
+    padding: 10px 10px;
   }
 
   #postsbox .comments .user_comment_img img {
@@ -66,12 +66,20 @@
   #postsbox .comments .user_comments {
     padding-left: 15px;
   }
+  body {
+    font-size: 10pt;
+    line-height: 1.5em;
+  }
 }
 
 body {
   /* font-family: Garamond, Georgia, serif; */
   font-family: "游ゴシック", "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, "ＭＳ ゴシック", sans-serif; 
   line-height: 1.2em;
+}
+
+pre {
+  font-size: 12pt;
 }
 
 h1,h2,h3,h4,h5,h6,p,img,a {
@@ -390,20 +398,20 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   }
 
   #postsbox hr {
-    margin: 0px 30px;
+    margin: 0px 10px;
     border: 1px solid #e6e6e6;
   }
 
   #postsbox .posts {
-    padding: 10px 45px;
+    padding: 10px 20px;
   }
 
   #postsbox .kudos {
-    padding: 10px 45px;
+    padding: 10px 20px;
   }
 
   #postsbox .comments {
-    padding: 10px 45px;
+    padding: 10px 20px;
   }
 }
 
@@ -722,6 +730,7 @@ hr.style-two {
 
 .font14 {
   font-size: 14pt;
+  line-height: 1.5em;
 }
 
 .font12 {
@@ -966,6 +975,7 @@ hr.style-two {
 .mypage .outofboxmsg {
   padding: 0px 15px;
   font-size: 14pt;
+  line-height: 1.5em;
 }
 
 .mypage .selDropdown select {
