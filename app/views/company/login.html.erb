@@ -3,7 +3,7 @@
   <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
   <%= form_tag( "/company/login/complete", method: "post", id: "login_form" ) do %>
   <div id="login_box" class="center toolbox">
-    <h3 class="c_align">Company Login</h3><br>
+    <h3 class="c_align">企業ログイン</h3><br>
     <table class="center tbl_tools">
       <tr>
 	<td><br><b>メールアドレス: </b></td>
@@ -15,11 +15,11 @@
       </tr>
       <tr>
 	<td align="center" class="btn" colspan="2" style="background-color:#fff">
-	  <input type="submit" value="Login" class="btn" />
+	  <input type="submit" value="ログイン" class="btn" />
 	</td>
       </tr>	
     </table><br>
-    <p align="center"><a href="/company/register">No account yet? Register here.</a></p>
+    <p align="center"><a href="/company/register">新規登録</a></p>
   </div><br>  <% end %>
 </div> <!-- contents -->
 </div> <!-- wrapper -->

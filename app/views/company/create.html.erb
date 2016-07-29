@@ -1,6 +1,6 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 class="c_align">Register Company</h3><br>
+  <h3 class="c_align">新規登録</h3><br>
   <%= form_tag( "/company/register/complete", method: "post", id: "login_form" ) do %>
   <div class="toolbox center">
     <table class="center tbl_tools">
@@ -13,7 +13,7 @@
 	<td><input type="text" name="url" value="" size="30" /></td>
       </tr>
       <tr>
-	<td>代理: </td>
+	<td>担当者名: </td>
 	<td><input type="text" name="owner" value="" required /></td>
       </tr>
       <tr>
@@ -32,7 +32,7 @@
 	</td>
       </tr>
       <tr>
-	<td>連絡先: </td>
+	<td>電話番号: </td>
 	<td><input type="text" name="phone" value="" size="10"/></td>
       </tr>
       <tr>
@@ -45,7 +45,7 @@
       </tr>
       <tr>
 	<td class="c_align" colspan="2">
-	  <br><input type="submit" value="Submit" class="btn" />
+	  <br><input type="submit" value="送信" class="btn" />
 	</td>
       </tr>
     </table>

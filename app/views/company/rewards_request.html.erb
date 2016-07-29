@@ -1,13 +1,13 @@
 <div id="wrapper">
 <div id="container" class="request">
   <div class="toolbox">
-    <h2>Manage Rewards Requests</h2><br>
+    <h2>交換申請の承認</h2><br>
     <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
     <div id="tab-container" class="tab-container">
       <ul id="tab-menu" class="etabs">
-	<li class="tab"><a href="#pending">Pending</a></li>
-	<li class="tab"><a href="#accepted">Accepted</a></li>
-	<li class="tab"><a href="#rejected">Rejected</a></li>
+	<li class="tab"><a href="#pending">申請中</a></li>
+	<li class="tab"><a href="#accepted">承認</a></li>
+	<li class="tab"><a href="#rejected">非承認</a></li>
       </ul><br>
       <div id="pending" class="tab-content">
 	<% if @rewards.count == 0 %>
@@ -15,9 +15,9 @@
 	<% else %>
 	<table class="tbl_tools" border="1" style="margin:0">
 	  <tr>
-	    <th>Date</th>
-	    <th>Reward</th>
-	    <th>Points</th>
+	    <th>日時</th>
+	    <th>プレゼント</th>
+	    <th>ポイント</th>
 	    <th>Requested<br>by</th>
 	    <th class="c_align">Actions</th>
 	  </tr>
@@ -43,9 +43,9 @@
 	<% else %>
 	<table class="tbl_tools" border="1" style="margin:0">
 	  <tr>
-	    <th>Date</th>
-	    <th>Reward</th>
-	    <th>Points</th>
+	    <th>日時</th>
+	    <th>プレゼント</th>
+	    <th>ポイント</th>
 	    <th>Requested<br>by</th>
 	  </tr>
 	  <% @rewards_accepted.each do | item | %>
@@ -66,9 +66,9 @@
 	<% else %>
 	<table class="tbl_tools" border="1" style="margin:0">
 	  <tr>
-	    <th>Date</th>
-	    <th>Reward</th>
-	    <th>Points</th>
+	    <th>日時</th>
+	    <th>プレゼント</th>
+	    <th>ポイント</th>
 	    <th>Requested<br>by</th>
 	  </tr>
 	  <% @rewards_rejected.each do | item | %>
@@ -84,7 +84,7 @@
       </div><!-- rejected -->
     </div><!-- tabs_container -->
     <br>
-    <p><input type="button" class="btn btn_back" style="width:200px;height:50px" value="Back to Menu" /></p>
+    <p><input type="button" class="btn btn_back" style="width:200px;height:50px" value="戻る" /></p>
   </div> <!-- toolbox -->
 </div> <!-- container -->
 </div> <!-- wrapper -->

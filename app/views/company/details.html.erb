@@ -1,12 +1,8 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 class="c_align">Company Details</h3><br>
+  <h3 class="c_align">企業情報</h3><br>
   <div class="toolbox center">
     <table class="tbl_tools center">
-      <tr>
-	<td>Company ID: </td>
-	<td><%= @company[:id] %></td>
-      </tr>
       <tr>
 	<td>会社名: </td>
 	<td><%= @company[:name] %></td>
@@ -16,7 +12,7 @@
 	<td><%= @company[:url] %></td>
       </tr>
       <tr>
-	<td>代理: </td>
+	<td>担当者名: </td>
 	<td><%= @company[:owner] %></td>
       </tr>
       <tr>
@@ -28,7 +24,7 @@
 	<td><%= @company[:address] %></td>
       </tr>
       <tr>
-	<td>連絡先: </td>
+	<td>電話番号: </td>
 	<td><%= @company[:phone] %></td>
       </tr>
       <tr>
@@ -37,8 +33,8 @@
       </tr>
     </table><br>
     <p align="center">
-      <input type="button" value="Back" class="btn btn_back" />
-      <input type="button" value="Edit" class="btn btn_edit" />
+      <input type="button" value="戻る" class="btn btn_back" />
+      <input type="button" value="情報編集" class="btn btn_edit" />
     </p>
   </div><br><br>
 </div> <!-- contents -->

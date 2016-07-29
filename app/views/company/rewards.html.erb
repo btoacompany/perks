@@ -2,8 +2,8 @@
 <div id="container">
   <div class="toolbox">
     <div class="c_align">
-      <h2>Custom rewards</h2><br>
-      <a href="/company/rewards/add" class="a_btncmn radius5" style="font-size:14pt">+ Add Rewards</a>
+      <h2>プレゼントの登録・編集</h2><br>
+      <a href="/company/rewards/add" class="a_btncmn radius5" style="font-size:14pt">+ 新規追加</a>
     </div><br>
 
     <% if @rewards.count == 0 %>
@@ -11,10 +11,10 @@
     <% else %>
       <table class="tbl_tools center" border="1">
 	<tr>
-	  <th>Title</th>
-	  <th>Description</th>
-	  <th>Points</th>
-	  <th class="c_align">Actions</th>
+	  <th>タイトル</th>
+	  <th>詳細</th>
+	  <th>ポイント</th>
+	  <th class="c_align">編集・削除</th>
 	</tr>
 	<% @rewards.each do | item | %>
 	<tr class="item_<%= item[:id] %>">
@@ -22,14 +22,14 @@
 	  <td style="width:300px;"><%= item[:description] %></td>
 	  <td><%= number_with_delimiter(item[:points], :delimiter => ',') %></td>
 	  <td class="c_align">
-	    <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="edit" /> | 
-	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="del" />
+	    <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="編集" /> 
+	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
 	  </td>
 	</tr>
 	<% end %>
       </table><br>
     <% end %>
-    <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="Back to Menu" /></p>
+    <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="メニュへ戻る" /></p>
   </div> <!-- toolbox -->
 </div> <!-- container -->
 </div> <!-- wrapper -->
