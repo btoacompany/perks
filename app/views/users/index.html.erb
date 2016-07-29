@@ -5,7 +5,7 @@
 
 <div class="mypage row">
   <div class="outofboxmsg col-12">
-    <p><b><span class="font20"><%= @user.out_points %></span> ポイント</b>
+    <p><b><span class="font16"><%= @user.out_points %></span> ポイント</b>
     持っています。誰かにボーナスを贈ってみましょう。</p>
   </div>
   <div class="rightbox col-4">
@@ -20,7 +20,7 @@
       </div>
       <p>@<%= @user.name %></p>
       <hr><br>
-      <p><b><span class="font32"><%= @user.in_points %></span> ポイント</b></p><br>
+      <p><b><span class="font24"><%= @user.in_points %></span> ポイント</b></p><br>
       <p><a href="/rewards" class="btn_reward">ポイントを交換する</a></p>
     </div>
   </div>
@@ -37,7 +37,7 @@
 	</div><br><hr>
 
 	<div class="description">
-	  <textarea name="description" class="taginput" align="center" rows="4" cols="80" placeholder="<%= @placeholder %>"></textarea><br>
+	  <textarea name="description" class="taginput" align="center" rows="5" cols="80" placeholder="<%= @placeholder %>"></textarea><br>
 	</div><br>
 
 	<div class="tags" style="float:left">

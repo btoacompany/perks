@@ -37,7 +37,7 @@
     display: none;
   }
   #postsbox .images td {
-    height: 160px;
+    height: 130px;
     width: 310px;
   }
 
@@ -49,14 +49,17 @@
   #postsbox .posts {
     padding: 10px 10px;
     line-height: 1.6em;
+    font-size: 9pt;
   }
 
   #postsbox .kudos {
     padding: 10px 10px;
+    font-size: 9pt;
   }
 
   #postsbox .comments {
     padding: 10px 10px;
+    font-size: 9pt;
   }
 
   #postsbox .comments .user_comment_img img {
@@ -70,11 +73,23 @@
     font-size: 10pt;
     line-height: 1.5em;
   }
+  .mypage .rightbox {
+    padding: 0px;
+  }
+
+  .mypage .leftbox {
+    padding: 0px;
+  }
+  .mypage .outofboxmsg {
+    padding: 0px 5px;
+  }
+
 }
 
 body {
   /* font-family: Garamond, Georgia, serif; */
   font-family: "游ゴシック", "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, "ＭＳ ゴシック", sans-serif; 
+  font-size: 10pt;
   line-height: 1.2em;
 }
 
@@ -144,8 +159,8 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 .menu a {
   text-decoration: none;
   color: #333;
-  width: 90px;
-  font-size: 11pt;
+  width: 80px;
+  font-size: 9pt;
   display: inline-block;
 }
 
@@ -318,7 +333,16 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   /* For desktop: */
   body {
   }
+  .mypage .rightbox {
+    padding: 10px;
+  }
 
+  .mypage .leftbox {
+    padding: 10px;
+  }
+  .mypage .outofboxmsg {
+    padding: 0px 15px;
+  }
   body {
     background: #fff repeat-x;
     margin: 0 auto 0;
@@ -327,10 +351,10 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 
   .menu a {
     width: 120px;
-    font-size: 14pt;
+    font-size: 12pt;
   }
   #postsbox .images td {
-    height: 260px;
+    height: 220px;
     width: 310px;
   }
 
@@ -720,6 +744,10 @@ hr.style-two {
   font-size: 32pt;
 }
 
+.font24 {
+  font-size: 24pt;
+}
+
 .font20 {
   font-size: 20pt;
 }
@@ -888,7 +916,7 @@ hr.style-two {
   background-color: #ff8d07;
   padding: 10px 20px;
   color: #fff;
-  font-size: 12pt;
+  font-size: 10pt;
   font-weight: bold;
 }
 
@@ -919,12 +947,10 @@ hr.style-two {
 
 .mypage .rightbox {
   float: right;
-  padding: 10px;
 }
 
 .mypage .leftbox {
   float: left;
-  padding: 10px;
 }
 
 .mypage .rightbox .title {
@@ -945,7 +971,7 @@ hr.style-two {
 }
 
 .mypage .profilebox p {
-  font-size: 16pt;
+  font-size: 12pt;
   text-align: center;
 }
 
@@ -973,8 +999,7 @@ hr.style-two {
 }
 
 .mypage .outofboxmsg {
-  padding: 0px 15px;
-  font-size: 14pt;
+  font-size: 12pt;
   line-height: 1.5em;
 }
 
