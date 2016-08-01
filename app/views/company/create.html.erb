@@ -2,6 +2,7 @@
 <div id="contents">
   <h3 class="c_align">新規登録</h3><br>
   <%= form_tag( "/company/register/complete", method: "post", id: "login_form" ) do %>
+  <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
   <div class="toolbox center">
     <table class="center tbl_tools">
       <tr>

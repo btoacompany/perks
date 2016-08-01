@@ -9,8 +9,8 @@ class UsersController < ApplicationController
       @id = session[:user_id]
       @company_id = User.find(@id).company_id
       session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+      session[:s3_url] = "https://s3-ap-northeast-1.amazonaws.com"
       #session[:prizy_url] = "http://localhost:3000"
-      #@s3_url = ""
     end
   end
 
@@ -232,9 +232,6 @@ class UsersController < ApplicationController
 
     res = User.find(@id)
 
-    params[:out_points] = 150 if res.verified == 0
-    params[:verified] = 1 
-
     if params[:img_src].present?
       src = params[:img_src]
       src_ext = File.extname(src.original_filename)
@@ -245,8 +242,13 @@ class UsersController < ApplicationController
 
       params[:img_src] = obj.public_url
     else
-      params[:img_src] = "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 
+      if res.verified == 0
+	params[:img_src] = "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 
+      end
     end
+
+    params[:out_points] = 150 if res.verified == 0
+    params[:verified] = 1 
     
     res.save_record(params)
     redirect_to_index

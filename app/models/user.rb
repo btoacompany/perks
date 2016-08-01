@@ -17,14 +17,17 @@ class User < ActiveRecord::Base
   after_save 	:clear_password
   before_create :set_create_time
   before_update :set_update_time
-
   
   def save_record(params)
     @password = params[:password]
+    
+    if params[:img_src].present?
+      self.img_src	= params[:img_src]
+    end
+    
     self.name	      = params[:name]	      if params[:name].present?
     self.email	      = params[:email]	      if params[:email].present?
     self.company_id   = params[:company_id]   if params[:company_id].present?
-    self.img_src      = params[:img_src]      if params[:img_src].present?
     self.firstname    = params[:firstname]
     self.lastname     = params[:lastname]
     self.birthday     = params[:birthday]

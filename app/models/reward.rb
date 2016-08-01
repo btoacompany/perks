@@ -8,8 +8,12 @@ class Reward < ActiveRecord::Base
   before_update :set_update_time
 
   def save_record(params)
-    self.title		= params[:title]	|| params[:title].present?
-    self.company_id	= params[:company_id]	|| params[:company_id].present?
+    if params[:img_src].present?
+      self.img_src	= params[:img_src]
+    end
+
+    self.title		= params[:title]
+    self.company_id	= params[:company_id]
     self.description	= params[:description]
     self.points		= params[:points]
     self.save

@@ -7,6 +7,7 @@ class CompanyController < ApplicationController
   def init
     @id = session[:company_id] if session[:company_id].present? 
     session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+    session[:s3_url] = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
     #session[:prizy_url] = "http://localhost:3000"
     #@s3_url = ""
   end
@@ -47,17 +48,44 @@ class CompanyController < ApplicationController
   end
 
   def create_complete
-    params[:prizy_url] = session[:prizy_url] + "/company/login"
-    params[:hashtags] = hashtags_fix(params[:hashtags])
-    company = Company.new
-    company.save_record(params)
+    session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+    session[:s3_url] = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
 
-    if company.save
-      CompanyMailer.welcome_email(params).deliver_now
+    begin
+      params[:prizy_url] = session[:prizy_url] + "/company/login"
+      params[:hashtags] = hashtags_fix(params[:hashtags])
+      company = Company.new
+      company.save_record(params)
+
+      if company.save
+	CompanyMailer.welcome_email(params).deliver_now
+
+	reward = Reward.new
+	reward.save_record({
+	  :company_id   => company.id,
+	  :title	      => "Starbucks eGift (500円分)",
+	  :description  => "毎日のちょっとした贅沢に。スターバックのコーヒー片手に仕事の疲れをリフレッシュしたい！そんな方におすすめのギフト券です。（※ギフト券は承認後、メールで届きます。)",
+	  :points	      => 500,
+	  :img_src      => session[:s3_url] + "/common/img_07.png"
+	})
+
+	reward = Reward.new
+	reward.save_record({
+	  :company_id   => company.id,
+	  :title	      => "Amazonギフト券(1000円分)",
+	  :description  => "ちょっとしたお買い物にとっても便利なAmazonギフト券。ちょっぴりお得になる素敵なプレセントです！（※承認後メールで電子ギフト券が届きます。)",
+	  :points	      => 1000,
+	  :img_src      => session[:s3_url] + "/common/img_05.png"
+	})
+      end
+
+      session[:id] = company.id
+      redirect_to_index
+    rescue Exception => e
+      puts e.message
+      flash[:notice] = "メールアドレスはすでにありました"
+      render 'create'
     end
-
-    session[:id] = company.id
-    redirect_to_index
   end
 
   def details 
@@ -131,11 +159,6 @@ class CompanyController < ApplicationController
 	  if @user.save
 	    # Tell the UserMailer to send a welcome email after save
 	    UserMailer.verify_account(@data).deliver_now
-	    format.html { }
-	    format.json { render json: @user, status: :created, location: @user }
-	  else
-	    format.html { render action: 'new' }
-	    format.json { render json: @user.errors, status: :unprocessable_entity }
 	  end
 	end
       end
@@ -163,6 +186,7 @@ class CompanyController < ApplicationController
 
   def add_rewards_complete
     params[:company_id] = @id
+    params[:img_src] = session[:s3_url] + "/common/img_01.png"
 
     @user = Reward.new
     @user.save_record(params)
