@@ -883,6 +883,7 @@ hr.style-two {
 #postsbox .comments .user_comments {
   margin-top: 2px;
   float: left;
+  width: 88%;
 }
 
 #postsbox .comments .give_comments {
