@@ -159,6 +159,12 @@ class CompanyController < ApplicationController
 	  if @user.save
 	    # Tell the UserMailer to send a welcome email after save
 	    UserMailer.verify_account(@data).deliver_now
+
+	    format.html { }
+	    format.json { render :show, status: :created, location: @user }
+	  else
+	    format.html { }
+	    format.json { render json: @user.errors, status: :unprocessable_entity }
 	  end
 	end
       end
