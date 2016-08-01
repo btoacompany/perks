@@ -10,7 +10,7 @@
       </ul><br>
       <div id="pending" class="tab-content">
 	<% if @rewards.count == 0 %>
-	  <p><i>No pending rewards requests</i></p>
+	  <p><i>申請中のものはありません</i></p>
 	<% else %>
 	<table class="tbl_tools" border="1" style="margin:0">
 	  <tr>
@@ -35,7 +35,7 @@
 
       <div id="accepted" class="tab-content">
 	<% if @rewards_accepted.count == 0 %>
-	  <p><i>Empty</i></p>
+	  <p><i>表示するものがありません</i></p>
 	<% else %>
 	<table class="tbl_tools" border="1" style="margin:0">
 	  <tr>
@@ -56,7 +56,7 @@
 
       <div id="rejected" class="tab-content">
 	<% if @rewards_rejected.count == 0 %>
-	  <p><i>Empty</i></p>
+	  <p><i>表示するものがありません</i></p>
 	<% else %>
 	<table class="tbl_tools" border="1" style="margin:0">
 	  <tr>
@@ -88,7 +88,7 @@ $(document).ready(function () {
 
 $('.cancel_item').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
-  var msg = " Cancel Request?";
+  var msg = "本当にキャンセルしますか？";
   setRequestAction(_id, msg);
 });
 

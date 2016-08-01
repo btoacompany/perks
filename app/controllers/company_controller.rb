@@ -6,8 +6,8 @@ class CompanyController < ApplicationController
 
   def init
     @id = session[:company_id] if session[:company_id].present? 
-    @prizy_url = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
-    #@prizy_url = "http://localhost:3000"
+    #session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+    session[:prizy_url] = "http://localhost:3000"
     #@s3_url = ""
   end
 
@@ -26,7 +26,7 @@ class CompanyController < ApplicationController
       flash[:notice] = "" 
       redirect_to "/company"
     else
-      flash[:notice] = "Invalid Username or Password"
+      flash[:notice] = "ユーザー名かパスワードに誤りがあります"
       flash[:color]= "invalid"
       render "login"
     end
@@ -47,7 +47,7 @@ class CompanyController < ApplicationController
   end
 
   def create_complete
-    params[:prizy_url] = @prizy_url + "/company/login"
+    params[:prizy_url] = session[:prizy_url] + "/company/login"
     params[:hashtags] = hashtags_fix(params[:hashtags])
     company = Company.new
     company.save_record(params)
@@ -122,7 +122,7 @@ class CompanyController < ApplicationController
 	  :password	=> temp_password,
 	  :name		=> name,
 	  :img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
-	  :prizy_url	=> @prizy_url + "/login"
+	  :prizy_url	=> session[:prizy_url] + "/login"
 	}
 	@user = User.new
 	@user.save_record(@data)
@@ -142,12 +142,9 @@ class CompanyController < ApplicationController
     end
 
     if @duplicate_emails.present?
-      flash[:notice] = "The following email(s) already exist: #{@duplicate_emails.join(", ")}. <br>If it is not in the list below, the email may have been removed. Please contact the site admin."
+      flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。<br>下記のリストに表示されていない場合、メールアドレが変更・削除された恐れがあります。<br>再度追加する場合はPrizy運営事務局にご連絡ください。"
     end
     redirect_to "/company/employees"
-  end
-
-  def send_email
   end
 
   def delete_employees 
@@ -200,7 +197,7 @@ class CompanyController < ApplicationController
     res = RequestReward.find(params[:id])
     params[:name] = res.user.name
     params[:email] = res.user.email
-    params[:prizy_url] = @prizy_url + "/rewards/status#accepted"
+    params[:prizy_url] = session[:prizy_url] + "/rewards/status#accepted"
 
     if res.delete_flag == 0
       if params[:status].to_i == 1 

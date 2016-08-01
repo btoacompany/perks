@@ -8,8 +8,8 @@ class UsersController < ApplicationController
     if session[:user_id].present?
       @id = session[:user_id]
       @company_id = User.find(@id).company_id
-      @prizy_url = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
-      #@prizy_url = "http://localhost:3000"
+      #session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+      session[:prizy_url] = "http://localhost:3000"
       #@s3_url = ""
     end
   end
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 	redirect_to "/user"
       end
     else
-      flash[:notice] = "Invalid Email or Password"
+      flash[:notice] = "ユーザー名かパスワードに誤りがあります"
       flash[:color]= "invalid"
       render "login"
     end
@@ -108,7 +108,7 @@ class UsersController < ApplicationController
 	  email: receiver.email,
 	  giver: @user.name,
 	  points: params[:points],
-	  prizy_url: @prizy_url + "/user"
+	  prizy_url: session[:prizy_url] + "/user"
 	}).deliver_now
 
 	post = Post.new
@@ -121,7 +121,7 @@ class UsersController < ApplicationController
 	  hashtag.save_record(params)
 	end
       else
-	flash[:notice] = "Insufficient Points"
+	flash[:notice] = "ポイントが足りません"
       end
     end
     redirect_to '/user'
@@ -179,7 +179,7 @@ class UsersController < ApplicationController
     data[:username] = user.name
     data[:owner] = user.company.owner
     data[:email] = user.company.email
-    data[:prizy_url] = @prizy_url + "/company/rewards/request#pending"
+    data[:prizy_url] = session[:prizy_url] + "/company/rewards/request#pending"
 
     CompanyMailer.request_reward_email(data).deliver_now
 

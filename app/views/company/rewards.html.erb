@@ -7,7 +7,7 @@
     </div><br>
 
     <% if @rewards.count == 0 %>
-      <p align="center"><i>You have not added any rewards yet</i></p><br>
+      <p align="center"><i>ギフトが追加されていません</i></p><br>
     <% else %>
       <table class="tbl_tools center" border="1">
 	<tr>
@@ -39,7 +39,7 @@
 $('.delete_item').click(function() {
   var item_id = ($(this).attr('data-id')); //get attributes of clicked item
 
-  if (confirm("Are you sure you want to delete this item?")) {
+  if (confirm("本当に削除しましか？")) {
     $.post("/company/rewards/delete", { 'id': item_id }); //send post request
     $(".item_" + item_id).remove(); //remove item upon deletion
   }

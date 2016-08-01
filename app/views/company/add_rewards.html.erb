@@ -1,19 +1,19 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 align="center">Add New Custom Reward</h3><br>
+  <h3 align="center">ギフト追加</h3><br>
   <%= form_tag( "/company/rewards/add/complete", method: "post", id: "new_form" ) do %>
   <div class="toolbox">
     <table class="tbl_tools">
       <tr>
-	<td>Reward Title: </td>
+	<td>タイトル: </td>
 	<td><input type="text" name="title" value="" size="32" maxlength="25" required/></td>
       </tr>
       <tr>
-	<td>Description: </td>
+	<td>詳細: </td>
 	<td><textarea name="description" rows="5" cols="25" maxlength="100" placeholder="Max of 100 characters"></textarea></td>
       </tr>
       <tr>
-	<td>Points: </td>
+	<td>ポイント: </td>
 	<td><input type="number" name="points" value="" required/></td>
       </tr>
       <tr>

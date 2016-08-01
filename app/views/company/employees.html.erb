@@ -1,29 +1,29 @@
 <div id="wrapper">
 <div id="contents">
-  <h3>Manage Employees Page</h3><br>
-  <a href="/company/employees/add" class="a_btncmn radius5">+ Add Empolyees</a>
+  <h3>社員登録・編集</h3><br>
+  <a href="/company/employees/add" class="a_btncmn radius5">+ 社員を追加</a>
   <br><br>
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
   <div class="toolbox">
     <% if @users.count == 0 %>
-      <p><i>You have not added any employees yet</i></p><br>
+      <p><i>社員を追加してください</i></p><br>
     <% else %>
       <table class="tbl_tools" border="1">
 	<tr>
-	  <th>Name</th>
-	  <th>E-mail</th>
-	  <th>Invitation<br>Status</th>
-	  <th>Personal<br>Points</th>
-	  <th>Giveaway<br>Points</th>
-	  <th>Actions</th>
+	  <th>名前</th>
+	  <th>メールアドレス</th>
+	  <th>ステータス</th>
+	  <th>取得ポイント</th>
+	  <th>ポイント</th>
+	  <th>編集</th>
 	</tr>
 	<% @users.each do | item | %>
 	  <tr class="item_<%= item[:id] %>">
 	    <td><%= "#{item[:firstname]} #{item[:lastname]}" %></td>
 	    <td><%= item[:email] %></td>
 	    <td align="center">
-	      <% if item[:verified] == 0 %> Pending
-	      <% else %> Accepted 
+	      <% if item[:verified] == 0 %>保留 
+	      <% else %>登録済 
 	      <% end %>
 	    </td>
 	    <td><%= item[:in_points] %></td>
@@ -35,7 +35,8 @@
 	<% end %>
       </table><br>
     <% end %>
-    <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="Back to Menu" /></p>
+    <p align="center"><input type="button" class="btn btn_back"
+    style="width:200px;height:50px" value="戻る" /></p>
   </div><br>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
@@ -44,7 +45,7 @@
 $('.delete_item').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
 
-  if (confirm("Are you sure you want to remove this employee?")) {
+  if (confirm("本当に削除しましか？")) {
     $.post("/company/employees/delete", { 'id': _id }); //send post request
     $(".item_" + _id).remove(); //remove item upon deletion
   }

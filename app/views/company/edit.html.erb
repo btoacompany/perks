@@ -1,6 +1,6 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 class="c_align">Register Company</h3><br>
+  <h3 class="c_align">企業情報編集</h3><br>
   <%= form_tag( "/company/edit/complete", method: "post", id: "login_form" ) do %>
   <div class="toolbox center">
     <table class="center tbl_tools">
@@ -59,7 +59,7 @@ var passwd2 = document.getElementById("passwd2");
 
 function validatePassword(){
   if(passwd1.value != passwd2.value) {
-    $(".notice").text(" Passwords don't match");
+    $(".notice").text("パスワードに誤りがあります");
   } else {
     $(".notice").text("");
   }
