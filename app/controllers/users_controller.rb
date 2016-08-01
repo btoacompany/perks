@@ -8,8 +8,8 @@ class UsersController < ApplicationController
     if session[:user_id].present?
       @id = session[:user_id]
       @company_id = User.find(@id).company_id
-      #session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
-      session[:prizy_url] = "http://localhost:3000"
+      session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+      #session[:prizy_url] = "http://localhost:3000"
       #@s3_url = ""
     end
   end

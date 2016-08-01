@@ -6,8 +6,8 @@ class CompanyController < ApplicationController
 
   def init
     @id = session[:company_id] if session[:company_id].present? 
-    #session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
-    session[:prizy_url] = "http://localhost:3000"
+    session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+    #session[:prizy_url] = "http://localhost:3000"
     #@s3_url = ""
   end
 
