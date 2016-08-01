@@ -71,12 +71,12 @@
 	<hr>
 	<div class="kudos">
 	  <% if post[:kudos].find { |item| item[:user_id] == @user.id } %>
-	    <a data-id="<%= post[:id] %>" class="a_btn btn_unlike">Unlike</a>
+	    <a data-id="<%= post[:id] %>" class="a_btn btn_unlike"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
 	  <% else %>
-	    <a data-id="<%= post[:id] %>" class="a_btn btn_like">Like</a>
+	    <a data-id="<%= post[:id] %>" class="a_btn btn_like"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
 	  <% end %>
 
-	  <span><%= post[:kudos].count %>件</span>
+	  <span class="kudos_count"><%= post[:kudos].count %>件</span>
 	  <div class="tooltip">
 	    <a class="a_btn user_kudos">
 	      <% if post[:kudos].present? %>
@@ -98,17 +98,21 @@
 	<div class="comments">
 	  <div class="comment_entry_<%= post[:id] %>">
 	    <% post[:comments].each do | comment | %>
+	    <div class="comment_entry">
 	      <div class="user_comment_img">
 		<img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
 	      </div>
 	      <div class="user_comments">
 		<span class="user" style="font-weight:normal;">@<%= comment.user.name %></span>
 		<span class="comment"><%= comment.comments %></span>
-	      </div><br>  
+	      </div>
+	    </div> <br> 
 	    <% end %>
 	  </div>
-	  <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments"
+	  <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments
+	  post_comment_<%= post[:id] %>"
 	  value="" placeholder="コメントする" autocomplete="off"/>
+	  <input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/>
 	</div>
       </div><br>
     <% end %>
@@ -124,17 +128,28 @@ $(".give_comments").bind('keypress',function(e) {
     var post_id = ($(this).attr('data-id')); //get attributes of clicked item
     var comments = ($(this).val()); //get attributes of clicked item
 
-    $.ajax({
-      type: "POST",
-      url: "/user/give_comments",
-      data: { 'post_id': post_id, 'comments': comments },
-      success: function(data) {
-	$(this).val("");
-	window.location.reload(); 
-      }
-    });
+    postComment(post_id, comments);
   }
 });
+
+$(".btn_comment").click(function() {
+  var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+  var comments = $(".post_comment_"+post_id).val(); 
+
+  postComment(post_id, comments);
+});
+
+function postComment(post_id, comments) {
+  $.ajax({
+    type: "POST",
+    url: "/user/give_comments",
+    data: { 'post_id': post_id, 'comments': comments },
+    success: function(data) {
+      $(this).val("");
+      window.location.reload(); 
+    }
+  });
+}
 
 $(".btn_like").mouseup(function() {
   var post_id = ($(this).attr('data-id')); //get attributes of clicked item
