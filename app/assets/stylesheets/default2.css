@@ -1072,3 +1072,9 @@ hr.style-two {
   background-color: #a4a4a4;
   color: #fff;
 }
+
+.instructions {
+  color: #a7a7a7;
+  font-style: italic;
+  font-size: 9pt;
+}

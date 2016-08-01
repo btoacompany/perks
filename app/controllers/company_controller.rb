@@ -6,7 +6,7 @@ class CompanyController < ApplicationController
 
   def init
     @id = session[:company_id] if session[:company_id].present? 
-    session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+    session[:prizy_url] = "http://prizy.me"
     session[:s3_url] = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
     #session[:prizy_url] = "http://localhost:3000"
     #@s3_url = ""
@@ -48,7 +48,7 @@ class CompanyController < ApplicationController
   end
 
   def create_complete
-    session[:prizy_url] = "http://ec2-52-197-210-66.ap-northeast-1.compute.amazonaws.com"
+    session[:prizy_url] = "http://prizy.me"
     session[:s3_url] = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
 
     begin

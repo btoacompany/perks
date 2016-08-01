@@ -64,8 +64,7 @@
 	  To <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
 	  <span class="points radius5"><%= post[:points] %> pts</span><br>
 	  
-	  <span class="description"><%= raw post[:description].gsub(/\#[^\s|　]+/,"<b
-	  style='color:#0080ff'>\\0</b>").gsub(/\+[^\s|　]+/,"") %></span><br>
+	  <span class="description"><%= raw post[:description].gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span><br>
 	</div>
 	<hr>
 	<div class="kudos">
@@ -208,7 +207,7 @@ $(".btn_give").click(function() {
 
   
   if(dataReceive == null || !isPoint || !isTag ) {
-    $("span.notice").text("Please complete input");
+    $("span.notice").text("投稿に不備があります。(誰に贈るのか、ポイント数、ハッシュタグが必須です。)");
     return false;
   } 
 });

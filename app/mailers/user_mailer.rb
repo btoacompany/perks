@@ -3,7 +3,7 @@ class UserMailer < ApplicationMailer
 
   def verify_account(data)
     @user = data 
-    mail(to: @user[:email], subject: "【Prizy】Verify your account")
+    mail(to: @user[:email], subject: "【Prizy】#{@user[:company_owner]}さんから招待が届きました。")
   end
 
   def reward_approved_email(data)

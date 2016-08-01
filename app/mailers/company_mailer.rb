@@ -8,6 +8,6 @@ class CompanyMailer < ApplicationMailer
 
   def request_reward_email(data)
     @company = data 
-    mail(to: @company[:email], subject: "【Prizy】ポイントの交換が承認されました！")
+    mail(to: @company[:email], subject: "【Prizy】ポイントの交換が申請されました！")
   end
 end

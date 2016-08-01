@@ -1,11 +1,11 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 class="c_align">Add Employees</h3><br>
+  <h3 class="c_align">社員を追加</h3><br>
   <%= form_tag( "/company/employees/add/complete", method: "post", id: "login_form" ) do %>
     <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
     <div class="toolbox center">
       <p>社員のメールアドレス入力してください。</p>
-      <p>(One line at a time)</p><br>
+      <p class="instructions">(1行ごとにメールアドレスを入力してください。<br>あなたのメールアドレスも忘れずに登録してください。)</p><br>
       <textarea name="emails" rows="10" cols="40"></textarea>
       <br><br>
       <p>
