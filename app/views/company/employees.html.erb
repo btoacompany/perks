@@ -19,7 +19,7 @@
 	</tr>
 	<% @users.each do | item | %>
 	  <tr class="item_<%= item[:id] %>">
-	    <td><%= "#{item[:firstname]} #{item[:lastname]}" %></td>
+	    <td><%= "#{item[:lastname]} #{item[:firstname]}" %></td>
 	    <td><%= item[:email] %></td>
 	    <td align="center">
 	      <% if item[:verified] == 0 %>保留 

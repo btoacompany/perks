@@ -107,8 +107,8 @@ $('.reject_item').click(function() {
 });
 
 function setRequestAction( id, stats, msg ) {
-  $(".item_" + id).remove(); //remove item upon deletion
   if (confirm( msg )) {
+    $(".item_" + id).remove(); //remove item upon deletion
     $.ajax({
       type: "POST",
       url: "/company/rewards/request/action",

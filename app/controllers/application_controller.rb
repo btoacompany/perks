@@ -7,6 +7,15 @@ class ApplicationController < ActionController::Base
     if: Proc.new { |c| c.request.format =~ %r{application/json} }
   helper_method :current_user
 
+  def init_url
+    @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
+    if Rails.env.production?
+      @prizy_url = "http://prizy.me"
+    elsif Rails.env.development?
+      @prizy_url = "http://localhost:3000"
+    end
+  end
+
   def current_user
     if session[:admin_id]
       @current_user||= Admin.find(session[:admin_id])

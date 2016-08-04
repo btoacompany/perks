@@ -57,6 +57,7 @@ end
 # custom gems
 gem 'jquery-turbolinks'
 gem 'aws-sdk'
+gem 'sucker_punch'
 #gem 'paperclip'
 #gem 'rails_12factor', group: :production
 #gem 'pg'

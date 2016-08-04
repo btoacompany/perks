@@ -42,8 +42,7 @@
       <tr>
 	<td valign="top">ハッシュタグ: </td>
 	<td>
-	  <input type="text" name="hashtags" value="<%= @company.hashtags %>" size="30"
-	  placeholder="leadership, hardwork, creativity..."><br>
+	  <textarea name="hashtags" value="" rows="3" cols="25" placeholder="leadership, hardwork, creativity..."><%= @company.hashtags %></textarea><br>
 	  <span
 	  class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
 	</td>

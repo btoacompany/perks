@@ -13,10 +13,14 @@
 	<td><%= @user.email %></td>
       </tr>
       <tr>
+	<td>パスワード: </td>
+	<td><input type="button" value="パスワード変更" class="btn_change_password"/></td>
+      </tr>
+      <tr class="password">
 	<td>新しいパスワード: </td>
 	<td><input type="password" name="password" value="" id="passwd1"/></td>
       </tr>
-      <tr>
+      <tr class="password">
 	<td>パスワード確認: </td>
 	<td>
 	  <input type="password" name="password" value="" id="passwd2"/><br>
@@ -34,7 +38,10 @@
       </tr>
       <tr>
 	<td>ユーザー名: </td>
-	<td><input type="text" name="name" value="<%= @user.name %>"/></td>
+	<td>
+	  <input type="text" name="name" value="<%= @user.name %>"/><br>
+	  <span class="instructions">好きなユーザーネームに変更できます</span>
+	</td>
       </tr>
       <tr>
 	<td>苗字: </td>
@@ -94,6 +101,16 @@ function validatePassword(){
 }
 passwd1.onchange = validatePassword;
 passwd2.onkeyup = validatePassword;
+
+$(document).ready(function() {
+  $(".password").hide();
+});
+
+$(".btn_change_password").click(function() {
+  $(".password input").val("");
+  $(".notice").text("");
+  $(".password").toggle();
+});
 
 $(".btn_back").click(function() {
   window.location = "/profile";

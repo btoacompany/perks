@@ -3,14 +3,12 @@ require 'util.rb'
 
 class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout]
+  before_filter :init_url
 
   def init
     if session[:user_id].present?
       @id = session[:user_id]
       @company_id = User.find(@id).company_id
-      session[:prizy_url] = "http://prizy.me"
-      session[:s3_url] = "https://s3-ap-northeast-1.amazonaws.com"
-      #session[:prizy_url] = "http://localhost:3000"
     end
   end
 
@@ -108,8 +106,8 @@ class UsersController < ApplicationController
 	  email: receiver.email,
 	  giver: @user.name,
 	  points: params[:points],
-	  prizy_url: session[:prizy_url] + "/user"
-	}).deliver_now
+	  prizy_url: @prizy_url + "/user"
+	}).deliver_later
 
 	post = Post.new
 	post.save_record(params)
@@ -179,9 +177,9 @@ class UsersController < ApplicationController
     data[:username] = user.name
     data[:owner] = user.company.owner
     data[:email] = user.company.email
-    data[:prizy_url] = session[:prizy_url] + "/company/rewards/request#pending"
+    data[:prizy_url] = @prizy_url + "/company/rewards/request#pending"
 
-    CompanyMailer.request_reward_email(data).deliver_now
+    CompanyMailer.request_reward_email(data).deliver_later
 
     redirect_to "/rewards"
   end

@@ -3,13 +3,10 @@ require 'securerandom'
 
 class CompanyController < ApplicationController
   before_filter :init, :authenticate_company, :except => [:login, :login_complete, :logout, :create, :create_complete]
+  before_filter :init_url
 
   def init
     @id = session[:company_id] if session[:company_id].present? 
-    session[:prizy_url] = "http://prizy.me"
-    session[:s3_url] = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
-    #session[:prizy_url] = "http://localhost:3000"
-    #@s3_url = ""
   end
 
   def login
@@ -48,44 +45,41 @@ class CompanyController < ApplicationController
   end
 
   def create_complete
-    session[:prizy_url] = "http://prizy.me"
-    session[:s3_url] = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
-
-    begin
-      params[:prizy_url] = session[:prizy_url] + "/company/login"
+    #begin
+      params[:prizy_url] = @prizy_url + "/company/login"
       params[:hashtags] = hashtags_fix(params[:hashtags])
       company = Company.new
       company.save_record(params)
 
       if company.save
-	CompanyMailer.welcome_email(params).deliver_now
+	CompanyMailer.welcome_email(params).deliver_later
 
 	reward = Reward.new
 	reward.save_record({
 	  :company_id   => company.id,
-	  :title	      => "Starbucks eGift (500円分)",
+	  :title	=> "Starbucks eGift (500円分)",
 	  :description  => "毎日のちょっとした贅沢に。スターバックのコーヒー片手に仕事の疲れをリフレッシュしたい！そんな方におすすめのギフト券です。（※ギフト券は承認後、メールで届きます。)",
-	  :points	      => 500,
-	  :img_src      => session[:s3_url] + "/common/img_07.png"
+	  :points	=> 500,
+	  :img_src      => @s3_url + "/common/img_07.png"
 	})
 
 	reward = Reward.new
 	reward.save_record({
 	  :company_id   => company.id,
-	  :title	      => "Amazonギフト券(1000円分)",
+	  :title	=> "Amazonギフト券(1000円分)",
 	  :description  => "ちょっとしたお買い物にとっても便利なAmazonギフト券。ちょっぴりお得になる素敵なプレセントです！（※承認後メールで電子ギフト券が届きます。)",
-	  :points	      => 1000,
-	  :img_src      => session[:s3_url] + "/common/img_05.png"
+	  :points	=> 1000,
+	  :img_src      => @s3_url + "/common/img_05.png"
 	})
       end
 
       session[:id] = company.id
       redirect_to_index
-    rescue Exception => e
-      puts e.message
-      flash[:notice] = "メールアドレスはすでにありました"
-      render 'create'
-    end
+    #rescue Exception => e
+     # puts e.message
+     # flash[:notice] = "メールアドレスはすでにありました"
+     # render 'create'
+    #end
   end
 
   def details 
@@ -150,23 +144,10 @@ class CompanyController < ApplicationController
 	  :password	=> temp_password,
 	  :name		=> name,
 	  :img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
-	  :prizy_url	=> session[:prizy_url] + "/login"
+	  :prizy_url	=> @prizy_url + "/login"
 	}
 	@user = User.new
 	@user.save_record(@data)
-
-	respond_to do |format|
-	  if @user.save
-	    # Tell the UserMailer to send a welcome email after save
-	    UserMailer.verify_account(@data).deliver_now
-
-	    format.html { }
-	    format.json { render :show, status: :created, location: @user }
-	  else
-	    format.html { }
-	    format.json { render json: @user.errors, status: :unprocessable_entity }
-	  end
-	end
       end
     end
 
@@ -192,7 +173,7 @@ class CompanyController < ApplicationController
 
   def add_rewards_complete
     params[:company_id] = @id
-    params[:img_src] = session[:s3_url] + "/common/img_01.png"
+    params[:img_src] = @s3_url + "/common/img_01.png"
 
     @user = Reward.new
     @user.save_record(params)
@@ -227,12 +208,12 @@ class CompanyController < ApplicationController
     res = RequestReward.find(params[:id])
     params[:name] = res.user.name
     params[:email] = res.user.email
-    params[:prizy_url] = session[:prizy_url] + "/rewards/status#accepted"
+    params[:prizy_url] = @prizy_url + "/rewards/status#accepted"
 
     if res.delete_flag == 0
       if params[:status].to_i == 1 
 	res.status = 1 #accept
-	UserMailer.reward_approved_email(params).deliver_now
+	UserMailer.reward_approved_email(params).deliver_later
       elsif params[:status].to_i == 9 
 	res.status = 9 #reject
       else
