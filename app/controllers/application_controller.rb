@@ -17,9 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    if session[:admin_id]
-      @current_user||= Admin.find(session[:admin_id])
-    elsif session[:user_id]
+    if session[:user_id]
       @current_user||= User.find(session[:user_id])
     elsif session[:company_id]
       @current_user||= Company.find(session[:company_id])
@@ -33,17 +31,6 @@ class ApplicationController < ActionController::Base
   end
 
 protected 
-  def authenticate_admin
-    if session[:admin_id]
-      # set current admin object to @current_user object variable
-      @current_user = Admin.find(session[:admin_id])
-      return true	
-    else
-      redirect_to "/tools/login"
-      return false
-    end
-  end
-
   def authenticate_user
     if session[:user_id]
       # set current user object to @current_user object variable
@@ -67,10 +54,7 @@ protected
   end
 
   def save_login_state
-    if session[:admin_id]
-      redirect_to(:controller => 'logs', :action => 'index')
-      return false
-    elsif session[:user_id]
+    if session[:user_id]
       redirect_to(:controller => 'top', :action => 'index')
       return false
     elsif session[:company_id]

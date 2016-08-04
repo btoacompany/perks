@@ -4,7 +4,7 @@ CREATE TABLE hashtags (
   company_id	INT NOT NULL,
   user_id	INT NOT NULL,
   receiver_id	INT NOT NULL,
-  hashtag	VARCHAR(255),
+  hashtag	VARCHAR(191),
   create_time	DATETIME NOT NULL,
   update_time	DATETIME NOT NULL,
   delete_flag	TINYINT(2) DEFAULT 0,

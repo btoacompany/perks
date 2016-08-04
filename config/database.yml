@@ -1,20 +1,22 @@
 # MySQL.  Versions 5.0+ are recommended.
 default: &default
   adapter: mysql2
-  encoding: utf8
+  encoding: utf8mb4
+  collation: utf8mb4_bin
+  socket: /tmp/mysql.sock
+  port: 3306
   pool: 5
 
 development:
   <<: *default
-  database: perks
-  username: root
-  password:
-  socket: /tmp/mysql.sock
-
-test:
-  <<: *default
-  database: perks_test
+  host: <%= ENV['DB_HOST_DEV'] %>
+  username: <%= ENV['DB_USER_DEV'] %>
+  password: <%= ENV['DB_PASSWORD_DEV'] %>
+  database: <%= ENV['DB_NAME_DEV'] %>
 
 production:
   <<: *default
-  database: prizy_production
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  database: <%= ENV['DB_NAME'] %>

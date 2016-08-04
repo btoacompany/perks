@@ -4,7 +4,7 @@ CREATE TABLE posts (
   user_id	INT(11) NOT NULL,
   receiver_id	INT(11) NOT NULL,
   points	INT DEFAULT 0,
-  description	VARCHAR(255),
+  description	VARCHAR(191),
   create_time	DATETIME NOT NULL,
   update_time	DATETIME NOT NULL,
   delete_flag	TINYINT(2) DEFAULT 0,
