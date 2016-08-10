@@ -20,7 +20,7 @@
 	<td>メールアドレス: </td>
 	<td><input type="email" name="email" value="<%= @company[:email] %>" required /></td>
       </tr>
-      <tr class="password">
+      <tr>
 	<td>パスワード: </td>
 	<td><input type="button" value="パスワード変更" class="btn_change_password"/></td>
       </tr>
@@ -28,7 +28,7 @@
 	<td>新しいパスワード: </td>
 	<td><input type="password" name="password" id="passwd1" value=""  size="10"/></td>
       </tr>
-      <tr>
+      <tr class="password">
 	<td>パスワード確認: </td>
 	<td>
 	  <input type="password" name="password" id="passwd2" value=""  size="10"/><br> 
@@ -74,6 +74,10 @@ function validatePassword(){
 }
 passwd1.onchange = validatePassword;
 passwd2.onkeyup = validatePassword;
+
+$(document).ready(function() {
+  $(".password").hide();
+});
 
 $(".btn_change_password").click(function() {
   $(".password input").val("");
