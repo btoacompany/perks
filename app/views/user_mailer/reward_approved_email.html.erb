@@ -1,14 +1,49 @@
-<pre>
-こんにちは！<%= @user[:name] %>さん
+<table class="head-wrap" bgcolor="#FFFFFF">
+<tr>
+<td></td>
+<td class="header container" >
 
-おめでとうございます！
-申請中のポイントの交換が承認されました。
-<b><a href="<%= @user[:prizy_url] %>">コチラ</a></b>よりステータスを確認できます。
+<div class="content">
+<table bgcolor="#FFFFFF">
+<tr>
+<td><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_200x50.png" /></td>
+</tr>
+</table>
+</div>
 
-また、Amazonギフト券、Starbucksチケットを申請された方には、Prizy運営事務局より別途メールが届きます。
+</td>
+<td></td>
+</tr>
+</table><!-- /HEADER -->
 
-引き続きPrizyをよろしくお願いいたします。
 
+<!-- BODY -->
+<table class="body-wrap">
+<tr>
+<td></td>
+<td class="container" bgcolor="#FFFFFF">
 
-Prizy 運営事務局
-</pre>
+<div class="content">
+<table>
+<tr>
+<td>
+<h3>こんにちは！<%= @user[:name] %>さん</h3>
+<p class="lead">おめでとうございます。<br>申請中のポイントの交換が承認されました。<br><a href="<%= @user[:prizy_url] %>">コチラ</a>よりステータスを確認できます。</p>
+
+<p>また、Amazonギフト券、Starbucksチケットを申請された方には、Prizy運営事務局より別途メールが届きます。<br><br>
+
+引き続きPrizyをよろしくお願いいたします。<br><br>Prizy運営事務局
+</p>
+<!-- Callout Panel -->
+<p style="padding:15px;background-color:#ECF8FF;margin-bottom:15px;">
+  褒める文化形成プラットフォーム <a href="http://prizy.me/">Prizy &raquo;</a>
+</p>
+</td>
+</tr>
+</table>
+</div><!-- /content -->
+		  
+</td>
+<td></td>
+</tr>
+</table><!-- /BODY -->

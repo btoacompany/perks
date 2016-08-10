@@ -1,13 +1,49 @@
-<pre>
-こんにちは！<%= @user[:receiver] %>さん
+<!-- HEADER -->
+<table class="head-wrap" bgcolor="#FFFFFF">
+<tr>
+<td></td>
+<td class="header container" >
 
-<%= @user[:giver] %>さんよりあなたにボーナスが届きました。
-今すぐ、<b><a href="<%= @user[:prizy_url] %>">チェック</a></b>してみましょう！
-お礼のコメントもお忘れなく☆
+<div class="content">
+<table bgcolor="#FFFFFF">
+<tr>
+<td><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_200x50.png"/></td>
+</tr>
+</table>
+</div>
 
-引き続きPrizyをよろしくお願いいたします。
+</td>
+<td></td>
+</tr>
+</table><!-- /HEADER -->
 
 
-Prizy 運営事務局
-</pre>
+<!-- BODY -->
+<table class="body-wrap">
+<tr>
+<td></td>
+<td class="container" bgcolor="#FFFFFF">
 
+<div class="content">
+<table>
+<tr>
+<td>
+<h3>こんにちは！<%= @user[:receiver] %>さん</h3>
+<p class="lead"><%= @user[:giver] %>さんから、あなたにボーナスが届きました。<br>いますぐ<a href="<%= @user[:prizy_url] %>">コチラ</a>からチェックしてみましょう！</p>
+
+<p>ボーナスのお礼のコメントもお忘れなく！<br><br>
+引き続きPrizyをよろしくお願いいたします。<br><br>Prizy運営事務局
+</p>
+<!-- Callout Panel -->
+<p style="padding:15px;background-color:#ECF8FF;margin-bottom:15px;">
+  褒める文化形成プラットフォーム <a href="http://prizy.me/">Prizy &raquo;</a>
+</p>
+</td>
+</tr>
+</table>
+</div><!-- /content -->
+		
+</td>
+<td></td>
+</tr>
+</table><!-- /BODY -->
