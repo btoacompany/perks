@@ -12,8 +12,7 @@
       <td>
 	<div class="menu_panel">
 	  <ul class="main_menu">
-	    <li class="logo"><a href="<% if session[:company_id] %>/company<% elsif
-	    session[:user_id] %>/user<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
+	    <li class="logo"><a href="<% if request.url.include?("company") %>/company<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
 	  </ul>
 	</div>
       </td>
