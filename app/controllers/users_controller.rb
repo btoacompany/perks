@@ -46,6 +46,7 @@ class UsersController < ApplicationController
 
   def index
     @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
+
     hashtags = Company.find(@company_id).hashtags
     if hashtags.blank?
       @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
@@ -75,11 +76,30 @@ class UsersController < ApplicationController
 	description:	post.description,
 	hashtags:	post.hashtags,
 	comments:	comments,
-	kudos:		kudos
+	kudos:		kudos,
+	create_time:	post.create_time
       }
 
       @posts << data
     end
+
+    top_givers = Post.where(company_id: @company_id).group(:user_id).order("count_all desc").limit(5).count
+
+    @top_givers = []
+    top_givers.each do | k, v |
+      data = { name: User.find(k).name, count: v }
+      @top_givers << data
+    end
+
+    top_receivers = Post.where(company_id: @company_id).group(:receiver_id).order("count_all desc").limit(5).count
+
+    @top_receivers = []
+    top_receivers.each do | k, v |
+      data = { name: User.find(k).name, count: v }
+      @top_receivers << data
+    end
+
+    @top_hashtags = Hashtag.where(company_id: @company_id).group(:hashtag).order("count_id desc").limit(5).count("id")
   end
 
   def give_points
