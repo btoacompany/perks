@@ -668,6 +668,14 @@ hr.style-two {
   text-align: center;
 }
 
+.r_float {
+  float: right;
+}
+
+.l_float {
+  float: left;
+}
+
 .gray {
   color: #6e6e6e;
 }
@@ -773,6 +781,13 @@ hr.style-two {
 
 .font12 {
   font-size: 12pt;
+}
+
+.mt-2 {
+  margin-top: -2px;
+}
+.mt-5 {
+  margin-top: -5px;
 }
 
 /* REWARDS */
@@ -1079,3 +1094,26 @@ hr.style-two {
   font-style: italic;
   font-size: 9pt;
 }
+
+/*** RANKING ***/
+.profilebox .ranking {
+  padding-top: 5px;
+  font-size: 11pt;
+}
+.profilebox .ranking .left {
+  float: left;
+  padding-right: 8px;
+}
+
+.profilebox .ranking .right {
+  width: 100%; 
+  padding: 0px 5px;
+  margin-top: 5px;
+}
+
+.profilebox .ranking .score {
+  float: right;
+  font-weight: bold;
+  color: #a7a7a7;
+}
+

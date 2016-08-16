@@ -23,33 +23,48 @@
       <p><a href="/rewards" class="btn_reward">ポイントを交換する</a></p>
     </div><br>
 
-    <div class="title">
-      <img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/icon_profile.png"/>
-      TOP RECEIVER 
-    </div>
+    <div class="title"> 褒められMVP </div>
     <div class="profilebox">
       <% @top_receivers.each do | item | %>
-	<p><%= item[:name] %>, <%= item[:count] %></p>
+	<div class="ranking">
+	  <div class="left">
+	    <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+	  </div>
+	  <div class="right">
+	    <%= item[:name] %>
+	    <div class="score"><%= item[:count] %></div>
+	  </div>
+	  <div class="clearfix"></div>
+	</div>
       <% end %>
     </div><br>
 
-    <div class="title">
-      <img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/icon_profile.png"/>
-      TOP GIVER 
-    </div>
+    <div class="title"> 褒め上手 </div>
     <div class="profilebox">
       <% @top_givers.each do | item | %>
-	<p><%= item[:name] %>, <%= item[:count] %></p>
+	<div class="ranking">
+	  <div class="left">
+	    <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+	  </div>
+	  <div class="right">
+	    <%= item[:name] %>
+	    <div class="score"><%= item[:count] %></div>
+	  </div>
+	  <div class="clearfix"></div>
+	</div>
       <% end %>
     </div><br>
 
-    <div class="title">
-      <img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/icon_profile.png"/>
-      FAVORITE HASHTAGS 
-    </div>
+    <div class="title"> 褒めポイント・トレンド </div>
     <div class="profilebox">
       <% @top_hashtags.each do | k, v | %>
-	<p><%= k %>, <%= v %></p>
+	<div class="ranking">
+	  <div class="left"><%= k %> </div>
+	  <div class="right"> 
+	    <div class="score"><%= v %></div>
+	  </div>
+	  <div class="clearfix"></div>
+	</div>
       <% end %>
     </div>
   </div>

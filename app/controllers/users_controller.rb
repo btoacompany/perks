@@ -87,7 +87,8 @@ class UsersController < ApplicationController
 
     @top_givers = []
     top_givers.each do | k, v |
-      data = { name: User.find(k).name, count: v }
+      user = User.find(k)
+      data = { name: user.name, img_src: user.img_src, count: v }
       @top_givers << data
     end
 
@@ -95,7 +96,8 @@ class UsersController < ApplicationController
 
     @top_receivers = []
     top_receivers.each do | k, v |
-      data = { name: User.find(k).name, count: v }
+      user = User.find(k)
+      data = { name: user.name, img_src: user.img_src, count: v }
       @top_receivers << data
     end
 
