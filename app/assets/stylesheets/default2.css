@@ -256,6 +256,15 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   background: #E6E6E6; 
 }
 
+/* ---- pagination --- */
+.pagination a {
+  text-decoration:none;
+  display:inline-block;
+  float:left;
+  padding:5px 10px;
+  margin: 0px 1px;
+  border:1px solid #a7a7a7;
+}
 /* --- LOGIN PAGE --- */
 #loginbox {
   border: 1px solid #a7a7a7;

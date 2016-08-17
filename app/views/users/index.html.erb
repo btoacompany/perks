@@ -94,72 +94,78 @@
     <br>
 
     <div class="timeline">
-    <% @posts.each do | post | %>
-      <div id="postsbox">
-	<div class="images">
-	  <table>
-	    <tr>
-	      <td><img src="<%= post[:user_img] %>" class=""/></td>
-	      <td><img src="<%= post[:receiver_img] %>" class=""/></td>
-	    </tr>
-	  </table>
-	</div>
-	<div class="posts">
-	  <div class="time" data-id="<% post[:id] %>"><p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p></div>
-	  From <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 
-	  To <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
-	  <span class="points radius5"><%= post[:points] %> pts</span><br>
-	  
-	  <span class="description"><%= raw post[:description].gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span><br>
-	</div>
-	<hr>
-	<div class="kudos">
-	  <% if post[:kudos].find { |item| item[:user_id] == @user.id } %>
-	    <a data-id="<%= post[:id] %>" class="a_btn btn_unlike"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
-	  <% else %>
-	    <a data-id="<%= post[:id] %>" class="a_btn btn_like"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
-	  <% end %>
-
-	  <span class="kudos_count"><%= post[:kudos].count %>件</span>
-	  <div class="tooltip">
-	    <a class="a_btn user_kudos">
-	      <% if post[:kudos].present? %>
-		<% post[:kudos].each_with_index do | kudo, i | %>
-		  <%= kudo.user.name %>
-		  <% unless i == post[:kudos].count-1 %>,<% end %>
-		  <% if i > 3 %><% break %> <% end %>
-		<% end %>...
-	      <% end %>
-	    </a>
-	    <span class="tooltiptext">
-	      <% post[:kudos].each do | kudo | %>
-		<%= kudo.user.name %><br>
-	      <% end %>
-	    </span>
-	  </div>
-	</div>
-	
-	<div class="comments">
-	  <div class="comment_entry_<%= post[:id] %>">
-	    <% post[:comments].each do | comment | %>
-	    <div class="comment_entry">
-	      <div class="user_comment_img">
-		<img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
-	      </div>
-	      <div class="user_comments">
-		<span class="user" style="font-weight:normal;">@<%= comment.user.name %></span>
-		<span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
-	      </div>
-	    </div> <br> 
-	    <% end %>
-	  </div>
-	  <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments
-	  post_comment_<%= post[:id] %>"
-	  value="" placeholder="コメントする" autocomplete="off"/>
-	  <input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/>
-	</div>
+      <div class="pagination" style="float:right">
+	<% (1..@total_pages).each do | i | %>
+	  <a href="<%= "#{@prizy_url}/?page=#{i}" %>"><%= i %></a>
+	<% end %>
       </div><br>
-    <% end %>
+      <div class="clearfix"></div>
+      <% @posts.each do | post | %>
+	<div id="postsbox">
+	  <div class="images">
+	    <table>
+	      <tr>
+		<td><img src="<%= post[:user_img] %>" class=""/></td>
+		<td><img src="<%= post[:receiver_img] %>" class=""/></td>
+	      </tr>
+	    </table>
+	  </div>
+	  <div class="posts">
+	    <div class="time" data-id="<% post[:id] %>"><p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p></div>
+	    From <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 
+	    To <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
+	    <span class="points radius5"><%= post[:points] %> pts</span><br>
+	    
+	    <span class="description"><%= raw post[:description].gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span><br>
+	  </div>
+	  <hr>
+	  <div class="kudos">
+	    <% if post[:kudos].find { |item| item[:user_id] == @user.id } %>
+	      <a data-id="<%= post[:id] %>" class="a_btn btn_unlike"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
+	    <% else %>
+	      <a data-id="<%= post[:id] %>" class="a_btn btn_like"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
+	    <% end %>
+
+	    <span class="kudos_count"><%= post[:kudos].count %>件</span>
+	    <div class="tooltip">
+	      <a class="a_btn user_kudos">
+		<% if post[:kudos].present? %>
+		  <% post[:kudos].each_with_index do | kudo, i | %>
+		    <%= kudo.user.name %>
+		    <% unless i == post[:kudos].count-1 %>,<% end %>
+		    <% if i > 3 %><% break %> <% end %>
+		  <% end %>...
+		<% end %>
+	      </a>
+	      <span class="tooltiptext">
+		<% post[:kudos].each do | kudo | %>
+		  <%= kudo.user.name %><br>
+		<% end %>
+	      </span>
+	    </div>
+	  </div>
+	  
+	  <div class="comments">
+	    <div class="comment_entry_<%= post[:id] %>">
+	      <% post[:comments].each do | comment | %>
+	      <div class="comment_entry">
+		<div class="user_comment_img">
+		  <img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
+		</div>
+		<div class="user_comments">
+		  <span class="user" style="font-weight:normal;">@<%= comment.user.name %></span>
+		  <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
+		</div>
+	      </div> <br> 
+	      <% end %>
+	    </div>
+	    <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments
+	    post_comment_<%= post[:id] %>"
+	    value="" placeholder="コメントする" autocomplete="off"/>
+	    <input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/>
+	  </div>
+	</div><br>
+      <% end %> <!-- posts -->
     </div>
   </div> <!-- leftbox -->
 </div><!-- row -->

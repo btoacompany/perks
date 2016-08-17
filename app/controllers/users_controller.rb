@@ -63,9 +63,22 @@ class UsersController < ApplicationController
 
     @user = User.find(@id)
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
-    posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
-    #posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc").limit(2)
 
+    posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
+
+    limit = 5
+    page = params[:page] || 1
+    @total_items = posts.count
+    @total_pages = (@total_items/limit.to_f).ceil
+
+    if page.to_i <= 1
+      page = 1
+      offset = 0
+    else
+      offset = (page.to_i * limit) - limit
+    end
+
+    posts = posts.offset(offset).limit(limit)
 
     @posts = []
     data = {}
