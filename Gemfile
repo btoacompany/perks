@@ -61,3 +61,5 @@ gem 'sucker_punch'
 #gem 'paperclip'
 #gem 'rails_12factor', group: :production
 #gem 'pg'
+gem 'time_diff'
+gem 'will_paginate', '~> 3.1.0'

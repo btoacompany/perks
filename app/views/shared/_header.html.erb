@@ -1,9 +1,9 @@
 <div id="header">
   <p class="login_name">
     <%= current_user.name -%>
-    <% if session[:company_id] %> 
+    <% if session[:company_id] || cookies[:company_id] %> 
       <br><a href="/company/logout">ログアウト</a>
-    <% elsif session[:user_id] %>
+    <% elsif session[:user_id] || cookies[:user_id] %>
       <br><a href="/logout">ログアウト</a>
     <% end %>
   </p>
@@ -19,7 +19,7 @@
     </tr>
   </table>
 </div><br> <!-- header -->
-<% if session[:user_id] %>
+<% if session[:user_id] || cookies[:user_id] %>
 <div class="menu">
   <p align="center">
     <a href="/user">タイムライン</a> |

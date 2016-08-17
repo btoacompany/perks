@@ -6,12 +6,14 @@ class CompanyController < ApplicationController
   before_filter :init_url
 
   def init
-    @id = session[:company_id] if session[:company_id].present? 
+    if session[:company_id].present? || cookies[:company_id].present?
+      @id = session[:company_id] || cookies[:company_id]
+    end
   end
 
   def login
-    if session[:company_id]
-      @id = session[:id]
+    if session[:company_id] || cookies[:company_id]
+      @id = session[:company_id] || cookies[:company_id]
       redirect_to "/company"
     end
   end
@@ -20,18 +22,23 @@ class CompanyController < ApplicationController
     authorized_user = Company.authenticate(params[:email],params[:password])
     reset_session
     if authorized_user
-      session[:company_id] = authorized_user.id
+      if params[:remember].to_i == 1 
+	cookies[:company_id] = authorized_user.id
+      else
+	session[:company_id] = authorized_user.id
+      end
+
       flash[:notice] = "" 
       redirect_to "/company"
     else
       flash[:notice] = "ユーザー名かパスワードに誤りがあります"
-      flash[:color]= "invalid"
       render "login"
     end
   end
 
   def logout
     session[:company_id] = nil
+    cookies.delete :company_id
     reset_session
     redirect_to '/company/login'
   end
@@ -45,7 +52,7 @@ class CompanyController < ApplicationController
   end
 
   def create_complete
-    #begin
+    begin
       params[:prizy_url] = @prizy_url + "/company/login"
       params[:hashtags] = hashtags_fix(params[:hashtags])
       company = Company.new
@@ -73,13 +80,13 @@ class CompanyController < ApplicationController
 	})
       end
 
-      session[:id] = company.id
+      session[:company_id] = company.id
       redirect_to_index
-    #rescue Exception => e
-     # puts e.message
-     # flash[:notice] = "メールアドレスはすでにありました"
-     # render 'create'
-    #end
+    rescue Exception => e
+      puts e.message
+      flash[:notice] = "メールアドレスはすでにありました"
+      render 'create'
+    end
   end
 
   def details 

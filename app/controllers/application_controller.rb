@@ -17,10 +17,13 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    if session[:user_id]
-      @current_user||= User.find(session[:user_id])
-    elsif session[:company_id]
-      @current_user||= Company.find(session[:company_id])
+    user_id = session[:user_id] || cookies[:user_id]
+    company_id = session[:company_id] || cookies[:company_id]
+
+    if user_id 
+      @current_user||= User.find(user_id)
+    elsif company_id
+      @current_user||= Company.find(company_id)
     end
 
     if @current_user
@@ -32,9 +35,10 @@ class ApplicationController < ActionController::Base
 
 protected 
   def authenticate_user
-    if session[:user_id]
+    user_id = session[:user_id] || cookies[:user_id]
+    if user_id
       # set current user object to @current_user object variable
-      @current_user = User.find(session[:user_id])
+      @current_user = User.find(user_id)
       return true	
     else
       redirect_to "/login"
@@ -43,9 +47,10 @@ protected
   end
 
   def authenticate_company
-    if session[:company_id]
+    company_id = session[:company_id] || cookies[:company_id]
+    if company_id
       # set current user object to @current_user object variable
-      @current_user = Company.find(session[:company_id])
+      @current_user = Company.find(company_id)
       return true	
     else
       redirect_to "/company/login"
@@ -54,10 +59,10 @@ protected
   end
 
   def save_login_state
-    if session[:user_id]
+    if session[:user_id] || cookies[:user_id]
       redirect_to(:controller => 'top', :action => 'index')
       return false
-    elsif session[:company_id]
+    elsif session[:company_id] || cookies[:company_id]
       redirect_to(:controller => 'company', :action => 'index')
       return false
     else

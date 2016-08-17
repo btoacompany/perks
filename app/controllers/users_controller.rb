@@ -6,14 +6,14 @@ class UsersController < ApplicationController
   before_filter :init_url
 
   def init
-    if session[:user_id].present?
-      @id = session[:user_id]
+    if session[:user_id].present? || cookies[:user_id].present?
+      @id = session[:user_id] || cookies[:user_id]
       @company_id = User.find(@id).company_id
     end
   end
 
   def login
-    if session[:user_id]
+    if session[:user_id] || cookies[:user_id]
       redirect_to "/user"
     end
   end
@@ -21,8 +21,14 @@ class UsersController < ApplicationController
   def login_complete
     authorized_user = User.authenticate(params[:email],params[:password])
     reset_session
+
     if authorized_user
-      session[:user_id] = authorized_user.id
+      if params[:remember].to_i == 1 
+	cookies[:user_id] = authorized_user.id
+      else
+	session[:user_id] = authorized_user.id
+      end
+
       verified = authorized_user.verified
       flash[:notice] = "" 
 
@@ -33,14 +39,15 @@ class UsersController < ApplicationController
       end
     else
       flash[:notice] = "ユーザー名かパスワードに誤りがあります"
-      flash[:color]= "invalid"
       render "login"
     end
   end
 
   def logout
     session[:user_id] = nil
+    cookies.delete :user_id
     reset_session
+
     redirect_to '/login'
   end
 
@@ -57,6 +64,8 @@ class UsersController < ApplicationController
     @user = User.find(@id)
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
+    #posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc").limit(2)
+
 
     @posts = []
     data = {}
@@ -77,7 +86,7 @@ class UsersController < ApplicationController
 	hashtags:	post.hashtags,
 	comments:	comments,
 	kudos:		kudos,
-	create_time:	post.create_time
+	create_time:	post.create_time.strftime("%Y-%m-%d %H:%M:%S")
       }
 
       @posts << data
@@ -101,7 +110,7 @@ class UsersController < ApplicationController
       @top_receivers << data
     end
 
-    @top_hashtags = Hashtag.where(company_id: @company_id).group(:hashtag).order("count_id desc").limit(5).count("id")
+    @top_hashtags = Hashtag.where(company_id: @company_id).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def give_points
@@ -277,4 +286,5 @@ class UsersController < ApplicationController
   def redirect_to_index
     redirect_to "/user" 
   end
+
 end

@@ -256,6 +256,22 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   background: #E6E6E6; 
 }
 
+/* --- LOGIN PAGE --- */
+#loginbox {
+  border: 1px solid #a7a7a7;
+  padding: 15px;
+  width: 360px;
+}
+
+#loginbox td {
+  padding: 5px;
+}
+
+#loginbox th {
+  padding: 5px;
+  text-align: right;
+}
+
 /* --- ITEM LIST PAGE --- */
 
 #item_list {
@@ -834,6 +850,12 @@ hr.style-two {
   width: 100%;
   border: 1px solid #e6e6e6;
   line-height: 1.8em;
+}
+
+#postsbox .posts .time {
+  float: right;
+  font-style: italic;
+  color: #a7a7a7;
 }
 
 #postsbox .images {

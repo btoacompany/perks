@@ -2,24 +2,30 @@
 <div id="contents">
   <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
   <%= form_tag( "/company/login/complete", method: "post", id: "login_form" ) do %>
-  <div id="login_box" class="center toolbox">
-    <h3 class="c_align">企業ログイン</h3><br>
-    <table class="center tbl_tools">
+  <h3 class="c_align">企業ログイン</h3><br>
+  <div id="loginbox" class="center">
+    <table class="center" border="0">
       <tr>
-	<td><br><b>メールアドレス: </b></td>
-	<td><br><input type="text" value="" name="email" size="30" required /></td>
+	<th>メールアドレス: </th>
+	<td><input type="text" value="" name="email" size="30" required /></td>
       </tr>
       <tr>
-	<td><b>パスワード: </b></td>
+	<th>パスワード: </th>
 	<td><input type="password" value="" name="password" size="30" required /></td>
       </tr>
       <tr>
+	<td colspan="2" class="c_align">
+	  <label><input type="checkbox" value="0"> Remember me</label>
+	</td>
+      </tr>
+      <tr>
 	<td align="center" class="btn" colspan="2" style="background-color:#fff">
-	  <input type="submit" value="ログイン" class="btn" /><br><br>
+	  <input type="submit" value="ログイン" class="btn" /><br>
 	</td>
       </tr>	
-    </table><br>
-    <p align="center"><a href="/company/register">新規登録</a></p>
-  </div><br>  <% end %>
+    </table>
+  </div><br>  
+  <p align="center"><a href="/company/register">新規登録</a></p>
+  <% end %>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
