@@ -23,7 +23,7 @@ class CompanyController < ApplicationController
     reset_session
     if authorized_user
       if params[:remember].to_i == 1 
-	cookies[:company_id] = authorized_user.id
+	cookies.permanent[:company_id] = authorized_user.id
       else
 	session[:company_id] = authorized_user.id
       end

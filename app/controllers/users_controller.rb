@@ -24,7 +24,7 @@ class UsersController < ApplicationController
 
     if authorized_user
       if params[:remember].to_i == 1 
-	cookies[:user_id] = authorized_user.id
+	cookies.permanent[:user_id] = authorized_user.id
       else
 	session[:user_id] = authorized_user.id
       end
