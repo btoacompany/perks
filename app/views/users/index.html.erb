@@ -166,6 +166,11 @@
 	  </div>
 	</div><br>
       <% end %> <!-- posts -->
+      <div class="pagination" style="float:right">
+	<% (1..@total_pages).each do | i | %>
+	  <a href="<%= "#{@prizy_url}/?page=#{i}" %>"><%= i %></a>
+	<% end %>
+      </div><br>
     </div>
   </div> <!-- leftbox -->
 </div><!-- row -->
