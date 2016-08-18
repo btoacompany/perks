@@ -13,7 +13,6 @@ class CompanyController < ApplicationController
 
   def login
     if session[:company_id] || cookies[:company_id]
-      @id = session[:company_id] || cookies[:company_id]
       redirect_to "/company"
     end
   end
