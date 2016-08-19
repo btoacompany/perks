@@ -220,6 +220,11 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   margin: 0 auto;
 }
 
+#header .contents {
+  width: 960px;
+  margin: 0 auto;
+}
+
 #header .login_name {
   float: right;
   color: #fff;

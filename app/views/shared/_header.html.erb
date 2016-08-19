@@ -1,38 +1,40 @@
 <div id="header">
-  <div class="menu_panel">
-    <ul class="main_menu">
-      <li class="logo"><a href="<% if request.path.include?("company") %>/company<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
-    </ul>
-  </div>
-
-  <% if session[:user_id] || cookies[:user_id] %>
-    <div class="menu">
-      <p align="center">
-	<a href="/user">タイムライン</a>
-	<a href="/profile">マイページ</a>
-	<a href="/rewards">ギフト</a> 
-	<% if session[:company_id] || cookies[:company_id] %> 
-	  <a href="/company/logout">ログアウト</a>
-	<% elsif session[:user_id] || cookies[:user_id] %>
-	  <a href="/logout">ログアウト</a>
-	<% end %>
-      </p>
+  <div class="contents">
+    <div class="menu_panel">
+      <ul class="main_menu">
+	<li class="logo"><a href="<% if request.path.include?("company") %>/company<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
+      </ul>
     </div>
-    <div class="sp_menu">
-      <div class="sp_dropdown dropdown">
-	<input type="image" class="sp_dropbtn dropbtn" src="<%= @s3_url + '/common/gnav.png'
-	%>"/>
-	<div class="sp_dropdown_content dropdown-content">
+
+    <% if session[:user_id] || cookies[:user_id] %>
+      <div class="menu">
+	<p align="center">
 	  <a href="/user">タイムライン</a>
 	  <a href="/profile">マイページ</a>
-	  <a href="/rewards">ギフト</a>
+	  <a href="/rewards">ギフト</a> 
 	  <% if session[:company_id] || cookies[:company_id] %> 
 	    <a href="/company/logout">ログアウト</a>
 	  <% elsif session[:user_id] || cookies[:user_id] %>
 	    <a href="/logout">ログアウト</a>
 	  <% end %>
+	</p>
+      </div>
+      <div class="sp_menu">
+	<div class="sp_dropdown dropdown">
+	  <input type="image" class="sp_dropbtn dropbtn" src="<%= @s3_url + '/common/gnav.png'
+	  %>"/>
+	  <div class="sp_dropdown_content dropdown-content">
+	    <a href="/user">タイムライン</a>
+	    <a href="/profile">マイページ</a>
+	    <a href="/rewards">ギフト</a>
+	    <% if session[:company_id] || cookies[:company_id] %> 
+	      <a href="/company/logout">ログアウト</a>
+	    <% elsif session[:user_id] || cookies[:user_id] %>
+	      <a href="/logout">ログアウト</a>
+	    <% end %>
+	  </div>
 	</div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+ </div>   
 </div> <!-- header -->
