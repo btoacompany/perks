@@ -50,9 +50,10 @@
   }
 
   #header .sp_dropbtn {
+    margin-top: -12px;
     padding: 15px;
-    width: 52px;
-    height: 52px;
+    width: 70px;
+    height: 70px;
   }
 
   #header .sp_dropdown_content {
