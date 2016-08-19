@@ -66,8 +66,15 @@
 	  <div class="clearfix"></div>
 	</div>
       <% end %>
+    </div><br>
+
+    <div
+      class="fb-like"
+      data-share="true"
+      data-width="450"
+      data-show-faces="true">
     </div>
-  </div>
+  </div><br>
 
   <div class="leftbox col-8">
     <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
@@ -302,7 +309,7 @@ $("#myDropdown").click(function(e) {
   }
 });
 
-$(".dropbtn").click(function() {
+$(".pointsbox .dropbtn").click(function() {
   var symId = $(this).attr("id");
   var className = "";
   var dataId = "";
@@ -335,7 +342,7 @@ $(".dropbtn").click(function() {
 });
 
 $(document).mouseup(function(e) {
-  var subject = $(".dropbtn");
+  var subject = $(".pointsbox .dropbtn");
   if(e.target.id != subject.attr("id")){
     $("#myDropdown").hide();
   }

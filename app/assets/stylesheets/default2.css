@@ -36,6 +36,35 @@
     visibility: hidden;
     display: none;
   }
+
+  #header .sp_menu {
+    background-color: #ff8d07;
+    display: block;
+    float: right;
+    margin-right: 10px;
+  }
+
+  #header .sp_dropdown {
+    position: absolute;
+    right: 8px;
+  }
+
+  #header .sp_dropbtn {
+    padding: 15px;
+    width: 52px;
+    height: 52px;
+  }
+
+  #header .sp_dropdown_content {
+    right: 0;
+    top: 57px;
+    z-index: 5;
+  }
+
+  #header .menu {
+    display: none;
+    visibility: hidden;
+  }
   #postsbox .images td {
     height: 130px;
     width: 310px;
@@ -147,6 +176,7 @@ html[xmlns] .clearfix {
 #wrapper {
   padding: 10px;
   margin-left: -5px;
+  z-index: -1;
 }
 
 /* ---- TABS --- */
@@ -161,25 +191,28 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 .tab-container .panel-container { background: #fff; border: solid #666 1px; padding: 10px;
 -moz-border-radius: 0 4px 4px 4px; -webkit-border-radius: 0 4px 4px 4px; }
 
+/*** HEADER ***/
 /* --- MENU and NAV --- */
-.menu {
+
+#header .menu {
   padding: 15px;
+  float: right;
 }
 
-.menu a {
+#header .menu a {
   text-decoration: none;
-  color: #333;
+  color: #fff;
   width: 80px;
-  font-size: 9pt;
+  font-size: 8pt;
+  font-weight: bold;
   display: inline-block;
 }
 
-.menu a:hover {
-  color: blue;
+#header .menu a:hover {
+  color: gray;
   font-weight: bold;
 }
 
-/*** HEADER ***/
 #header {
   background-color: #ff8d07;
   height: 70px;
@@ -197,6 +230,7 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 
 #nav {
   margin: 0;
+  float:left;
 }
 
 #nav td {
@@ -237,11 +271,10 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   white-space: nowrap;
 }
 .main_menu li.logo a { 
-  padding-right: 200px;
+  padding-right: 20px;
 
 }
 .main_menu li.logo img { 
-  margin-top: -10px;
 }
 .main_menu li a { 
   background: #ff8d07; 
@@ -368,6 +401,10 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   /* For desktop: */
   body {
   }
+  #header .sp_menu {
+    display: none;
+    visibility: hidden;
+  }
   .mypage .rightbox {
     padding: 10px;
   }
@@ -384,9 +421,9 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
     padding: 0;
   }
 
-  .menu a {
-    width: 120px;
-    font-size: 12pt;
+  #header .menu a {
+    width: 100px;
+    font-size: 11pt;
   }
   #postsbox .images td {
     height: 220px;
@@ -819,15 +856,14 @@ hr.style-two {
 
 /* USER INDEX - TIMELINE */
 .dropbtn {
-  color: white;
   padding: 0px;
   font-size: 16px;
   border: none;
   cursor: pointer;
-  z-index: 2;
+  z-index: 99;
 }
 
-.dropbtn:hover, .dropbtn:focus {
+.dropbtn:hover, .dropbtn {
 }
 
 .dropdown {
@@ -837,8 +873,8 @@ hr.style-two {
 
 .dropdown-content {
   display: none;
-  position: absolute;
   background-color: #f9f9f9;
+  position: absolute;
   min-width: 160px;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -848,6 +884,10 @@ hr.style-two {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
   display: block;
 }
 
@@ -1105,8 +1145,8 @@ hr.style-two {
   margin-top: 15px;
   text-decoration: none;
   display: inline-block;
-  font-size: 13pt;
-  width: 270px;
+  font-size: 12pt;
+  width: 250px;
   height: 50px;
   color: #fff;
   background-color: #303030;

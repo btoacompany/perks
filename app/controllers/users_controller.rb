@@ -8,7 +8,9 @@ class UsersController < ApplicationController
   def init
     if session[:user_id].present? || cookies[:user_id].present?
       @id = session[:user_id] || cookies[:user_id]
-      @company_id = User.find(@id).company_id
+      user = User.find(@id)
+      @company_id = user.company_id
+      @admin_flag = Company.exists?(:email => user.email) ? 1 : 0
     end
   end
 
