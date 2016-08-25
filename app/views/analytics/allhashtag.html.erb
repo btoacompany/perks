@@ -1,0 +1,109 @@
+<div class="analytics_holder">
+  <div class="analytics_time_select" >
+    <%= form_tag({:controller => 'analytics', :action => 'giver'}, remote: true, :class => "analytics_form") do%>
+      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
+      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
+      <input type="submit" value="適用">
+    <% end %>
+    <div class="analytics_clearfix"></div>
+  </div>
+
+  <%= render 'analytics'%>
+
+  <div class-"analytics_container">
+    <div id="all_hashtag" style="min-
+    height: 450px; width: 85%;"></div>
+    <% @hashtags.first(10).each do |hashtag| %>
+      <div id="<%= hashtag[0] %>" class="a", style="min-height: 450px; width: 85%;"></div>
+    <% end %>
+    
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+window.onload = function () {
+  var chart = new CanvasJS.Chart("all_hashtag", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "全てのハッシュタグ",
+      fontSize: 16,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3",
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3",  
+      },
+    dataPointWidth: 15,
+    data: [              
+    {
+      // Change type to "doughnut", "line", "splineArea", etc.
+      type: "bar",
+      color: "#ff8d07",
+      dataPoints: [
+        <% @hashtags.first(10).each do |hashtag| %>
+        { label: "<%= hashtag[0] %>",  y: <%= hashtag[1] %>, click: onClick},
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+  function onClick(e){
+    <% @hashtags.first(10).each do |hashtag| %>
+    var chart = new CanvasJS.Chart("<%= hashtag[0] %>", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "<%= hashtag[0] %>" ,
+      fontSize: 16,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3",
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3",  
+      },
+    dataPointWidth: 15,
+    data: [              
+    {
+      // Change type to "doughnut", "line", "splineArea", etc.
+      type: "bar",
+      color: "#ff8d07",
+      dataPoints: [
+        <% @hash[hashtag[0]].each do |key, value| %>
+        { label: "<%= key %>",  y: <%= value %>, },
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+  <% end %>
+
+  }
+}
+
+$(function() {
+  $("#datepicker_start").datepicker();
+});
+$(function() {
+  $("#datepicker_end").datepicker();
+});
+
+</script>

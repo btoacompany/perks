@@ -1,0 +1,71 @@
+<div class="analytics_holder">
+  <div class="analytics_time_select" >
+    <%= form_tag({:controller => 'analytics', :action => 'hashtag'}, remote: true, :class => "analytics_form") do%>
+      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
+      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
+      <input type="submit" value="適用">
+    <% end %>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="analytics_main">
+    <%= render 'analytics'%>
+
+    <div class-"analytics_container">
+      <% @hashtags.each do |hashtag| %>
+        <div id="<%= hashtag %>" class="analytics_graphs" style="min-height: 450px; width: 85%;"></div>
+      <% end %>
+    </div>
+    <div class="analytics_clearfix"></div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+window.onload = function () {
+  <% @array.each do |hashtag, ranking| %>
+  var chart = new CanvasJS.Chart("<%= hashtag %>", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "#<%= hashtag %>",
+      fontSize: 20,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointWidth: 15,
+    data: [              
+    {
+      type: "bar",
+      color: "#ff8d07",
+      dataPoints: [
+      <% ranking.each do |key, value| %>
+        { label: "<%= key %>",  y: <%= value %>, },
+      <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+  <% end %>
+}
+
+$(function() {
+  $("#datepicker_start").datepicker();
+});
+$(function() {
+  $("#datepicker_end").datepicker();
+});
+
+</script>

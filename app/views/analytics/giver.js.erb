@@ -1,0 +1,37 @@
+var chart = new CanvasJS.Chart("top_giver", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "ポイント贈与回数",
+      fontSize: 16,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      reversed: true,
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointMaxWidth: 15,
+    dataPointMinWidth: 15,
+    dataPointWidth: 15,
+    data: [              
+    {
+      // Change type to "doughnut", "line", "splineArea", etc.
+      type: "bar",
+      color: "#ff8d07",
+      dataPoints: [
+        <% @hash_ajax_custom.first(10).each do |key, value| %>
+        { label: "<%= key %>",  y: <%= value %>, },
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();

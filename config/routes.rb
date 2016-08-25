@@ -52,4 +52,16 @@ Rails.application.routes.draw do
   post	'/rewards/request'	    => 'users#rewards_request'
   get	'/rewards/status'	    => 'users#rewards_status'
   post	'/rewards/cancel'	    => 'users#rewards_cancel'
+
+  #analytics
+  get 'analytics' => 'analytics#overall'
+  post 'analytics' => 'analytics#overall'
+  get 'analytics/receiver' => 'analytics#index'
+  post 'analytics/receiver' => 'analytics#index'
+  get 'analytics/giver' => 'analytics#giver'
+  post 'analytics/giver' => 'analytics#giver'
+  get 'analytics/hashtag' => 'analytics#hashtag'
+  post 'analytics/hashtag' => 'analytics#hashtag'
+  get 'analytics/hashtag/all' => 'analytics#allhashtag'
+  get 'analytics/user' => 'analytics#user'
 end
