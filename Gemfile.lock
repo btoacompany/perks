@@ -36,6 +36,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.4.0)
     airbrussh (1.0.2)
       sshkit (>= 1.6.1, != 1.7.0)
     arel (6.0.3)
@@ -107,6 +108,10 @@ GEM
     json (1.8.3)
     json_pure (1.8.3)
     jwt (1.5.4)
+    koala (1.10.1)
+      addressable
+      faraday
+      multi_json
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
@@ -235,6 +240,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
+  koala (~> 1.10.0rc)
   mysql2 (~> 0.3.20)
   omniauth-facebook (~> 1.4.1)
   puma

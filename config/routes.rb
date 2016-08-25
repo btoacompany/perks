@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'users#index'
+  root to: 'users#index', via: :get
   
   # for testing
   get	'/tests'		  => 'tests#index'
@@ -52,4 +52,8 @@ Rails.application.routes.draw do
   post	'/rewards/request'	    => 'users#rewards_request'
   get	'/rewards/status'	    => 'users#rewards_status'
   post	'/rewards/cancel'	    => 'users#rewards_cancel'
+
+  #facebook auth
+  get 'auth/facebook', as: "auth_provider"
+  get 'auth/facebook/callback',to: "users#fb_auth"
 end

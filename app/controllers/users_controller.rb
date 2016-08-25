@@ -1,5 +1,7 @@
 #coding:utf-8
 require 'util.rb'
+require 'uri'
+require 'net/http'
 
 class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout]
@@ -54,6 +56,7 @@ class UsersController < ApplicationController
   end
 
   def index
+
     @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
 
     hashtags = Company.find(@company_id).hashtags
@@ -237,7 +240,6 @@ class UsersController < ApplicationController
   end
 
   def rewards_cancel
-    #TODO: send accept/reject email to user
     res = RequestReward.find(params[:id])
 
     if res.status == 0
@@ -253,6 +255,8 @@ class UsersController < ApplicationController
   end
 
   def update 
+    @fb_data = params[:fb_data].blank? ? 0:1
+    
     @user = User.find(@id)
     @years = Util.years
 
@@ -267,6 +271,24 @@ class UsersController < ApplicationController
       @b_day	= bday[2].to_i
     end
   end
+  
+  def fb_auth
+    fb_user = User.koala(request.env['omniauth.auth']['credentials'])
+    url = "https://graph.facebook.com/#{fb_user['id']}/picture?width=300&height=300"
+    res = Net::HTTP.get_response(URI(url))
+    fb_pic = res['location']
+
+    fb_data = {
+      :fb_data	  => 1,
+      :fb_name	  => fb_user['name'],
+      :fb_lname	  => fb_user['last_name'],
+      :fb_fname	  => fb_user['first_name'],
+      :fb_gender  => fb_user['gender'],
+      :fb_pic	  => fb_pic 
+    }
+
+    redirect_to update_path(fb_data)
+  end
 
   def update_complete 
     b_year = params[:b_year]
@@ -277,14 +299,16 @@ class UsersController < ApplicationController
     res = User.find(@id)
 
     if params[:img_src].present?
-      src = params[:img_src]
-      src_ext = File.extname(src.original_filename)
+      unless params[:fb_data].to_i == 1
+	src = params[:img_src]
+	src_ext = File.extname(src.original_filename)
 
-      s3 = Aws::S3::Resource.new
-      obj = s3 .bucket("btoa-img").object("profile/user_#{res.id}_pic#{src_ext}")
-      obj.upload_file src.tempfile, {acl: 'public-read'}
+	s3 = Aws::S3::Resource.new
+	obj = s3 .bucket("btoa-img").object("profile/user_#{res.id}_pic#{src_ext}")
+	obj.upload_file src.tempfile, {acl: 'public-read'}
 
-      params[:img_src] = obj.public_url
+	params[:img_src] = obj.public_url
+      end
     else
       if res.verified == 0
 	params[:img_src] = "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 

@@ -64,3 +64,4 @@ gem 'sucker_punch'
 gem 'time_diff'
 gem 'will_paginate', '~> 3.1.0'
 gem 'omniauth-facebook', '~> 1.4.1'
+gem "koala", "~> 1.10.0rc"
