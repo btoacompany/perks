@@ -17,6 +17,12 @@ class User < ActiveRecord::Base
   after_save 	:clear_password
   before_create :set_create_time
   before_update :set_update_time
+
+  def self.koala(auth)
+    access_token = auth['token']
+    facebook = Koala::Facebook::API.new(access_token)
+    facebook.get_object("me?fields=id,first_name,last_name,gender,name,picture")
+  end
   
   def save_record(params)
     @password = params[:password]
