@@ -56,7 +56,6 @@ class UsersController < ApplicationController
   end
 
   def index
-
     @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
 
     hashtags = Company.find(@company_id).hashtags
@@ -104,7 +103,7 @@ class UsersController < ApplicationController
 	hashtags:	post.hashtags,
 	comments:	comments,
 	kudos:		kudos,
-	create_time:	post.create_time.strftime("%Y-%m-%d %H:%M:%S")
+	create_time:	post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
 
       @posts << data

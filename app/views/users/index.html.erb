@@ -352,10 +352,10 @@ $(document).ready(function() {
   $(".time p").each(function() {
     $(this).html(timeSince($(this).html()));
   });
-  console.log(navigator.cookieEnabled);
 });
 
 function timeSince(time) {
+  console.log(time);
   var currentTime = new Date();
   var time = new Date(time);
 
