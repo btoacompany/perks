@@ -1,31 +1,4 @@
-<div class="analytics_holder">
-  <div class="analytics_time_select" >
-    <%= form_tag({:controller => 'analytics', :action => 'allhashtag'}, remote: true, :class => "analytics_form") do%>
-      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
-      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
-      <input type="submit" value="適用">
-    <% end %>
-    <div class="analytics_clearfix"></div>
-  </div>
-
-  <%= render 'analytics'%>
-
-
-  <div class="analytics_container"> 
-    <div id="all_hashtag" style="min-height: 450px; width: 85%; margin-bottom: 25px;"> </div>
-      <% @hashtags.each do |hashtag| %>
-        <div id="<%= @num1 %>" class="analytics_allhashtag_float" style="min-height: 300px; width: 85%;"> </div>
-        <% @num1 += 1 %>
-      <% end %>
-      <div class="analytics_clearfix"></div>
-  </div>
-
-</div>
-
-
-<script type="text/javascript">
-window.onload = function () {
-  var chart = new CanvasJS.Chart("all_hashtag", {
+var chart = new CanvasJS.Chart("all_hashtag", {
     backgroundColor: "#3a3a3c",
     animationEnabled: true, 
     animationDuration: 3000,
@@ -104,13 +77,3 @@ window.onload = function () {
   chart.render();
   <% @num2 += 1 %>
   <% end %>
-}
-
-$(function() {
-  $("#datepicker_start").datepicker();
-});
-$(function() {
-  $("#datepicker_end").datepicker();
-});
-
-</script>

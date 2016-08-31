@@ -1,4 +1,3 @@
-
   <div class="analytics_sidebar">
     <ul>
       <li><%= link_to "利用状況", "/analytics/" %></li>
@@ -6,8 +5,10 @@
       <li><%= link_to "ポイント贈与状況", "/analytics/giver" %></li>
       <li><%= link_to "ハッシュタグ (コアバリュー)", "/analytics/hashtag" %></li>
       <li><%= link_to "ハッシュタグ (トレンド)", "/analytics/hashtag/all" %></li>
-      <li><%= link_to "従業員別", "/analytics/user"　%></li>
+      <% @users.each do |user| %>
+      <li><%= link_to "#{user.name}", "/analytics/user/#{user.id}" %></li>
       <% end %>
     </ul>
   </div>
+
 

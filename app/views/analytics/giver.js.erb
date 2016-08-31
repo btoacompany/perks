@@ -27,7 +27,7 @@ var chart = new CanvasJS.Chart("top_giver", {
       type: "bar",
       color: "#ff8d07",
       dataPoints: [
-        <% @hash_ajax_custom.first(10).each do |key, value| %>
+        <% @hash_custom.first(10).each do |key, value| %>
         { label: "<%= key %>",  y: <%= value %>, },
         <% end %>
       ]

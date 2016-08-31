@@ -16,7 +16,6 @@
   width: 15%;
   color: #E0E0E3;
   float: left;
-  height: auto;
 }
 
 .analytics_sidebar ul{
@@ -41,14 +40,6 @@
   background-color: #3a3a3c;
 }
 
-.analytics_sidebar {
-  float: left;
-}
-
-.analytics_container{
-  background-color: #535356;
-  float: left;
-}
 
 .analytics_graphs{
   float: right;
@@ -62,4 +53,79 @@
   font-size:0;  
   clear: both; 
   visibility:hidden;
+}
+
+/*analytics/hashtag/all*/
+.analytics_allhashtag_float{
+  float: right;
+  margin-bottom: 25px;
+}
+
+
+
+/*analytics/user*/
+.analytics_user_container{
+  float: right;
+  background-color: #6c6c70;
+  color: white;
+}
+
+.analytics_top{
+  background-color: #3a3a3c;
+  padding: 10px 0;
+  margin-bottom: 25px;
+}
+
+
+.analytics_picture, .analytics_profile{
+  float: left;
+  background-color: #3a3a3c;
+}
+
+.analytics_picture{
+  margin: 0 30px 0 30px;
+}
+
+.analytics_profile h2, .analytics_profile h3{
+  margin-top: 10px;
+}
+
+.analytics_post_toget, .analytics_post_togive{
+  float: left;
+  padding: 5px 5px;
+  margin-left: 10px;
+}
+
+.analytics_post_togive{
+  margin-left: 15px;
+}
+
+.analytics_post_toget h4, .analytics_post_togive h4{
+  border-bottom: 1px solid white;
+  padding: 5px 0;
+}
+
+.analytics_post_toget p , .analytics_post_togive p{
+  padding-top: 5px;
+}
+
+.analytics_post_wrapper{
+  padding: 10px 0;
+  border-bottom: 1px dotted white;
+}
+
+.analytics_post_top img, .analytics_post_top p{
+  float: left;
+}
+
+.analytics_post_top p{
+  margin-left: 5px;
+}
+
+.analytics_middle, .analytics_bottom{
+  float: left;
+}
+
+#analytics_useage ,#company_hashtag{
+  margin-bottom: 25px ;
 }
