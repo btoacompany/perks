@@ -31,6 +31,10 @@
 	<td>ハッシュタグ: </td>
 	<td><%= @company[:hashtags] %></td>
       </tr>
+      <tr>
+	<td>招待リンク: </td>
+	<td><a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></td>
+      </tr>
     </table><br>
     <p align="center">
       <input type="button" value="戻る" class="btn btn_back" />
