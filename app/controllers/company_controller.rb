@@ -54,11 +54,22 @@ class CompanyController < ApplicationController
     begin
       params[:prizy_url] = @prizy_url + "/company/login"
       params[:hashtags] = hashtags_fix(params[:hashtags])
+
       company = Company.new
       company.save_record(params)
 
+      c_code = (Time.now.to_i).to_s + "_" + (company.id).to_s
+      company.invite_link = @prizy_url + "/invite?c_code=" + c_code
+      company.save
+
       if company.save
 	CompanyMailer.welcome_email(params).deliver_later
+
+	invite_link = InviteLink.new
+	invite_link.save_record({
+	  :company_id   => company.id,
+	  :c_code	=> c_code
+	})
 
 	reward = Reward.new
 	reward.save_record({
@@ -78,9 +89,8 @@ class CompanyController < ApplicationController
 	  :img_src      => @s3_url + "/common/img_05.png"
 	})
       end
-
       session[:company_id] = company.id
-      redirect_to_index
+      redirect_to "/company/details"
     rescue Exception => e
       puts e.message
       flash[:notice] = "メールアドレスはすでにありました"

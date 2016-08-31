@@ -24,6 +24,7 @@ class Company < ActiveRecord::Base
     self.url	      = params[:url]
     self.logo	      = params[:logo]
     self.hashtags     = params[:hashtags]
+    self.invite_link  = params[:invite_link]
     self.plan	      = params[:plan]	  || 0
     self.verified     = params[:verified] || 0
     self.save

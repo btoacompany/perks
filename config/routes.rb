@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   post	'/company/register/complete'  => 'company#create_complete'
   get	'/update'		      => 'users#update'
   post	'/update/complete'	      => 'users#update_complete', :as => 'user'
+  get	'/invite'		      => 'users#invite'
+  post	'/invite/complete'	      => 'users#invite_complete'
 
   # company
   get	'/company'			    => 'company#index'

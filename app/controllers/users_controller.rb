@@ -4,7 +4,8 @@ require 'uri'
 require 'net/http'
 
 class UsersController < ApplicationController
-  before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout]
+  before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout,
+  :invite, :invite_complete, :fb_auth]
   before_filter :init_url
 
   def init
@@ -17,6 +18,7 @@ class UsersController < ApplicationController
   end
 
   def login
+    $c_code = ""
     if session[:user_id] || cookies[:user_id]
       redirect_to "/user"
     end
@@ -27,19 +29,25 @@ class UsersController < ApplicationController
     reset_session
 
     if authorized_user
-      if params[:remember].to_i == 1 
-	cookies.permanent[:user_id] = authorized_user.id
+      if authorized_user.delete_flag == 1
+	reset_session
+	flash[:notice] = "ユーザー名かパスワードに誤りがあります"
+	redirect_to "/login"
       else
-	session[:user_id] = authorized_user.id
-      end
+	if params[:remember].to_i == 1 
+	  cookies.permanent[:user_id] = authorized_user.id
+	else
+	  session[:user_id] = authorized_user.id
+	end
 
-      verified = authorized_user.verified
-      flash[:notice] = "" 
+	verified = authorized_user.verified
+	flash[:notice] = "" 
 
-      if verified == 0
-	redirect_to "/update"
-      else
-	redirect_to "/user"
+	if verified == 0
+	  redirect_to "/update"
+	else
+	  redirect_to "/user"
+	end
       end
     else
       flash[:notice] = "ユーザー名かパスワードに誤りがあります"
@@ -254,14 +262,9 @@ class UsersController < ApplicationController
   end
 
   def update 
-    @fb_data = params[:fb_data].blank? ? 0:1
-    
-    @user = User.find(@id)
-    @years = Util.years
+    update_details
 
-    @b_year   = 0
-    @b_month  = 0
-    @b_day    = 0
+    @user = User.find(@id)
 
     if @user.birthday?
       bday = @user.birthday.to_s.split("-")
@@ -270,8 +273,46 @@ class UsersController < ApplicationController
       @b_day	= bday[2].to_i
     end
   end
+
+  def invite
+    $c_code = params[:c_code] if params[:c_code].present?
+
+    if $c_code.present?
+      invite_link = InviteLink.where(c_code: $c_code)
+
+      unless invite_link.empty?
+	update_details
+	company = Company.find(invite_link[0][:company_id])
+	@company_name = company.name
+	@company_id = company.id
+      else
+	redirect_to "/login"
+      end
+    else
+      redirect_to "/login"
+    end
+  end
+
+  def update_details
+    @fb_data = params[:fb_data].blank? ? 0:1
+    
+    @years = Util.years
+    @b_year   = 0
+    @b_month  = 0
+    @b_day    = 0
+  end
   
   def fb_auth
+    fb_data = fb_auth_details
+
+    if $c_code.present? 
+      redirect_to invite_path(fb_data)
+    else
+      redirect_to update_path(fb_data)
+    end
+  end
+
+  def fb_auth_details
     fb_user = User.koala(request.env['omniauth.auth']['credentials'])
     url = "https://graph.facebook.com/#{fb_user['id']}/picture?width=300&height=300"
     res = Net::HTTP.get_response(URI(url))
@@ -286,16 +327,39 @@ class UsersController < ApplicationController
       :fb_pic	  => fb_pic 
     }
 
-    redirect_to update_path(fb_data)
+    if $c_code.present?
+      fb_data[:c_code] = $c_code
+    end
+
+    return fb_data
+  end
+
+  def invite_complete
+    update_complete_details
+    redirect_to_index
   end
 
   def update_complete 
+    update_complete_details
+    redirect_to_index
+  end
+
+  def update_complete_details
+    url = request.original_url
+
     b_year = params[:b_year]
     b_month = params[:b_month]
     b_day = params[:b_day]
     params[:birthday] = DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d") 
 
-    res = User.find(@id)
+    verified = 0
+
+    unless url.include?("invite")
+      res = User.find(@id)
+      verified = res.verified
+    else
+      res = User.new
+    end
 
     if params[:img_src].present?
       unless params[:fb_data].to_i == 1
@@ -309,16 +373,15 @@ class UsersController < ApplicationController
 	params[:img_src] = obj.public_url
       end
     else
-      if res.verified == 0
+      if verified == 0
 	params[:img_src] = "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 
       end
     end
 
-    params[:out_points] = 150 if res.verified == 0
+    params[:out_points] = 150 if verified == 0
     params[:verified] = 1 
-    
+      
     res.save_record(params)
-    redirect_to_index
   end
 
   def redirect_to_index

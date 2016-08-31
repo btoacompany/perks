@@ -65,6 +65,11 @@
 var passwd1 = document.getElementById("passwd1");
 var passwd2 = document.getElementById("passwd2");
 
+function invitationLink() {
+  var code = $.now();
+}
+
+
 function validatePassword(){
   if(passwd1.value != passwd2.value) {
     $(".notice").text("パスワードに誤りがあります");

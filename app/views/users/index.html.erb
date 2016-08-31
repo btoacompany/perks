@@ -262,9 +262,11 @@ function getTag () {
 
 function getName () {
   items = {};
-  <% @users.each do | user | %>
-    <% unless (user.name).match(@user.name) %> 
-      items["<%= user.id %>"] = "<%= user.name %>";
+  <% if @users.present? %>
+    <% @users.each do | user | %>
+      <% unless (user.name).match(@user.name) %> 
+	items["<%= user.id %>"] = "<%= user.name %>";
+      <% end %>
     <% end %>
   <% end %>
   return items;
