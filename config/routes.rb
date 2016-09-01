@@ -55,6 +55,21 @@ Rails.application.routes.draw do
   get	'/rewards/status'	    => 'users#rewards_status'
   post	'/rewards/cancel'	    => 'users#rewards_cancel'
 
+  #analytics
+  get 'analytics' => 'analytics#overall'
+  post 'analytics' => 'analytics#overall'
+  get 'analytics/receiver' => 'analytics#index'
+  post 'analytics/receiver' => 'analytics#index'
+  get 'analytics/giver' => 'analytics#giver'
+  post 'analytics/giver' => 'analytics#giver'
+  get 'analytics/hashtag' => 'analytics#hashtag'
+  post 'analytics/hashtag' => 'analytics#hashtag'
+  get 'analytics/hashtag/all' => 'analytics#allhashtag'
+  post 'analytics/hashtag/all' => 'analytics#allhashtag'
+  get 'analytics/user/:id' => 'analytics#user'
+  post 'analytics/user/:id' => 'analytics#user'
+
+
   #facebook auth
   get 'auth/facebook', as: "auth_provider"
   get 'auth/facebook/callback',to: "users#fb_auth"
