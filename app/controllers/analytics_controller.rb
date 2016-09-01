@@ -2,7 +2,7 @@ class AnalyticsController < ApplicationController
 
   before_filter :init, :authenticate_company
   before_filter :init_url
-  before_action :time_definition, only:[:index, :giver, :hashtag, :allhashtag, :user]
+  before_action :time_definition, only:[:overall, :index, :giver, :hashtag, :allhashtag, :user]
   before_action :basic_info, only:[:overall, :index, :giver, :hashtag, :allhashtag, :user]
 
   def init
@@ -12,41 +12,15 @@ class AnalyticsController < ApplicationController
   end
 
   def overall
-    # before_ajax
-    @start_register = @company.create_time.to_date
-    @time_now = Date.today
-    @time_range = @start_register..@time_now
     @hash = {}
-    @time_range.each do |time|
+    @time_custom.each do |time|
       @a = time..time.tomorrow
       @post = Post.where(company_id: @id, create_time: @a).count
       @hash[time] = @post
     end
-
-    # after_ajax
-    if params[:start_time].blank?
-      @start_time_ajax = @company.create_time.to_date
-    else  
-      @start_time_ajax = params[:start_time].to_date
-    end
-
-    if params[:end_time].blank?
-      @end_time_ajax = Date.today
-    else
-      @end_time_ajax = params[:end_time].to_date
-    end
-    @time_custom = @start_time_ajax..@end_time_ajax
-
-    @ajaxhash = {}
-    @time_custom.each do |time|
-      @a_ajax = time..time.tomorrow
-      @post_ajax = Post.where(company_id: @id, create_time: @a_ajax).count
-      @ajaxhash[time] = @post_ajax
-    end
   end
 
   def index
-    # before_ajax
     @hash = {}
     @post_recieved = Post.where(create_time: @time_custom).group('receiver_id').count
     @users.each do |user|
@@ -93,18 +67,18 @@ class AnalyticsController < ApplicationController
     @num1 = 1
     @num2 = 1
     @hashtags = Hashtag.where(company_id: @id, create_time: @time_custom).group(:hashtag).order("count_id desc").limit(10).count(:id)
+    if @hashtags.empty?
+      @hashtags = {}
+      @lists = Hashtag.where(company_id: @id).group(:hashtag).order("count_id desc").limit(10).count(:id)
+      @lists.each do |key, value|
+        @hashtags[key] = 0
+      end
+    end
     @hash = {}
     @hashtags.each do |hashtag|
       @ranking = Hashtag.where(company_id: @id, hashtag: hashtag[0], create_time: @time_custom).group(:receiver_id).count
-      if @ranking.blank?
-        @ranking = 0
-      end
-      logger.debug "-------------"
-      logger.debug @ranking
       @hash[hashtag[0]] = Hash[ @ranking.sort_by{ |_, v| -v } ]
     end
-    logger.debug "-----aaa-----"
-    logger.debug @hash
   end
 
   def user
@@ -126,19 +100,8 @@ class AnalyticsController < ApplicationController
       @post_toget = Post.where(receiver_id: @userid)
       @post_togive = Post.where(user_id: @userid)
       # useage
-      if params[:start_time].blank?
-        @register_date = @user.create_time.to_date
-      else
-        @register_date = params[:start_time]
-      end
-      if params[:end_time].blank?
-        @endtime = Date.today
-      else
-        @endtime = params[:end_time]
-      end
-      @default_time = @register_date.to_date..@endtime.to_date
       @hash = {}
-      @default_time.each do |time|
+      @time_custom.each do |time|
         @a = time..time.tomorrow
         @posts = Post.where(receiver_id: @userid, create_time: @a).count
         @hash[time] = @posts
@@ -148,13 +111,13 @@ class AnalyticsController < ApplicationController
       @hashtags = @company.hashtags.split(",")
       @company_hash = {}
       @hashtags.each do |hashtag|
-        @company_hashtag = Hashtag.where(receiver_id: @userid, hashtag: "##{hashtag}", create_time: @default_time).count
+        @company_hashtag = Hashtag.where(receiver_id: @userid, hashtag: "##{hashtag}", create_time: @time_custom).count
         @company_hash[hashtag] = @company_hashtag
       end
       @company_hash_custom = Hash[ @company_hash.sort_by{ |_, v| v } ]
 
       #all_hashtags
-      @all_hashtags = Hashtag.where(receiver_id: @userid, create_time: @default_time).group(:hashtag).count
+      @all_hashtags = Hashtag.where(receiver_id: @userid, create_time: @time_custom).group(:hashtag).count
       @all_hashtags_custom = Hash[ @all_hashtags.sort_by{ |_, v| -v } ]
     else
       redirect_to :action => "overall"
@@ -168,7 +131,6 @@ class AnalyticsController < ApplicationController
     else
       @start_time = params[:start_time]
     end
-
     if params[:end_time].blank?
       @end_time = Date.today
     else
@@ -180,6 +142,7 @@ class AnalyticsController < ApplicationController
   def basic_info
     @company = Company.find(@id)
     @users = User.where(company_id: @id)
+    @users_custom = User.where(company_id: @id, delete_flag: 0)
   end
 
 

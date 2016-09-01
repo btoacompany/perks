@@ -40,10 +40,13 @@
   background-color: #3a3a3c;
 }
 
-
 .analytics_graphs{
   float: right;
   margin-bottom: 25px;
+}
+
+.analytics_container{
+  padding-bottom: 50px;
 }
 
 .analytics_clearfix:after{
@@ -61,13 +64,12 @@
   margin-bottom: 25px;
 }
 
-
-
 /*analytics/user*/
 .analytics_user_container{
   float: right;
   background-color: #6c6c70;
   color: white;
+  padding-bottom: 50px;
 }
 
 .analytics_top{
@@ -128,4 +130,85 @@
 
 #analytics_useage ,#company_hashtag{
   margin-bottom: 25px ;
+}
+
+
+/*header*/
+#header_analytics .menu {
+  padding: 15px;
+  float: right;
+}
+
+#header_analytics .menu a {
+  text-decoration: none;
+  color: #fff;
+  width: 80px;
+  font-size: 8pt;
+  font-weight: bold;
+  display: inline-block;
+}
+
+#header_analytics .menu a:hover {
+  color: gray;
+  font-weight: bold;
+}
+
+#header_analytics {
+  background-color: black;
+  height: 70px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#header_analytics .contents {
+  width: 960px;
+}
+
+#header_analytics .login_name {
+  float: right;
+  color: #fff;
+  vertical-align: middle;
+  padding: 15px;
+  margin-top: 5px;
+}
+
+#header_analytics hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px dotted #c5c5c5;
+  padding: 0;
+  margin: 0;
+}
+
+/*** main menu ***/
+.menu_panel {
+  white-space: nowrap;
+}
+.main_menu_analytics { 
+  padding: 0; 
+  clear: both; 
+  font-family: Arial;
+}
+.main_menu_analytics li { 
+  display: inline; 
+  white-space: nowrap;
+}
+.main_menu_analytics li.logo a { 
+  padding-right: 20px;
+
+}
+.main_menu_analytics li.logo img { 
+}
+.main_menu_analytics li a { 
+  background: black; 
+  padding: 0 20px; 
+  float:left; 
+  border-bottom: none; 
+  text-decoration: none; 
+  color: #fff; 
+  font-weight: bold;
+}
+.main_menu_analytics li.active a { 
+  background: #E6E6E6; 
 }

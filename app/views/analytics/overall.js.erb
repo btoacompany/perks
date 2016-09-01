@@ -26,7 +26,7 @@ var chart = new CanvasJS.Chart("top_receiver", {
       type: "area",
       color: "#ff8d07",
       dataPoints: [
-        <% @ajaxhash.each do |key, value| %>
+        <% @hash.each do |key, value| %>
         { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
         <% end %>
       ]
