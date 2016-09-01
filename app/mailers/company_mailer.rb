@@ -10,4 +10,9 @@ class CompanyMailer < ApplicationMailer
     @company = data 
     mail(to: @company[:email], subject: "【Prizy】ポイントの交換が申請されました！")
   end
+
+  def reset_password(data)
+    @company = data 
+    mail(to: @company[:email], subject: "【Prizy】Reset Password")
+  end
 end

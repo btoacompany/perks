@@ -16,17 +16,14 @@ class Company < ActiveRecord::Base
   
   def save_record(params)
     @password = params[:password]
-    self.name	      = params[:name]
-    self.owner	      = params[:owner]
-    self.email	      = params[:email]
-    self.address      = params[:address]
-    self.phone	      = params[:phone]
-    self.url	      = params[:url]
-    self.logo	      = params[:logo]
-    self.hashtags     = params[:hashtags]
-    self.invite_link  = params[:invite_link]
-    self.plan	      = params[:plan]	  || 0
-    self.verified     = params[:verified] || 0
+    self.name	      = params[:name]	      if params[:name].present?
+    self.owner	      = params[:owner]	      if params[:owner].present?
+    self.email	      = params[:email]	      if params[:email].present?
+    self.address      = params[:address]      if params[:address].present?
+    self.phone	      = params[:phone]	      if params[:phone].present?
+    self.url	      = params[:url]	      if params[:url].present?
+    self.hashtags     = params[:hashtags]     if params[:hashtags].present?
+    self.invite_link  = params[:invite_link]  if params[:invite_link].present?
     self.save
   end
   

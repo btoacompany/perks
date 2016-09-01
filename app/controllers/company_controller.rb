@@ -2,7 +2,8 @@
 require 'securerandom'
 
 class CompanyController < ApplicationController
-  before_filter :init, :authenticate_company, :except => [:login, :login_complete, :logout, :create, :create_complete]
+  before_filter :init, :authenticate_company, :except => [:login, :login_complete,
+  :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
   before_filter :init_url
 
   def init
@@ -12,6 +13,7 @@ class CompanyController < ApplicationController
   end
 
   def login
+    flash[:notice] = "" 
     if session[:company_id] || cookies[:company_id]
       redirect_to "/company"
     end
@@ -239,6 +241,31 @@ class CompanyController < ApplicationController
     end
 
     redirect_to "/company/rewards/request"
+  end
+
+  def forgot_password
+  end
+
+  def forgot_password_submit
+    company = Company.where("email LIKE '#{params[:email]}'").first
+    flash[:notice] = "" 
+
+    if company.present?
+      temp_password = SecureRandom.hex(4)
+      company.save_record({:password => temp_password})
+
+      data = {
+	:email	  => params[:email],
+	:password => temp_password,
+	:prizy_url  => @prizy_url + "/company"
+      }
+
+      CompanyMailer.reset_password(data).deliver_later
+      redirect_to_index 
+    else
+      flash[:notice] = "The email you entered does not exist"
+      render 'forgot_password'
+    end
   end
 
   def redirect_to_index

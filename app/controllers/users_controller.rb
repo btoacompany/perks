@@ -5,7 +5,7 @@ require 'net/http'
 
 class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout,
-  :invite, :invite_complete, :fb_auth]
+  :invite, :invite_complete, :forgot_password, :forgot_password_submit, :fb_auth]
   before_filter :init_url
 
   def init
@@ -336,6 +336,13 @@ class UsersController < ApplicationController
 
   def invite_complete
     update_complete_details
+    data = {
+      :email	  => params[:email],
+      :name	  => params[:name],
+      :password	  => params[:password],
+      :prizy_url  => @prizy_url
+    }
+    UserMailer.invite_welcome_email(data).deliver_later
     redirect_to_index
   end
 
@@ -384,8 +391,31 @@ class UsersController < ApplicationController
     res.save_record(params)
   end
 
+  def forgot_password
+  end
+
+  def forgot_password_submit
+    user = User.where("email LIKE '#{params[:email]}'").first
+
+    if user.present?
+      temp_password = SecureRandom.hex(4)
+      user.save_record({:password => temp_password})
+
+      data = {
+	:email	  => params[:email],
+	:password => temp_password,
+	:prizy_url  => @prizy_url
+      }
+
+      UserMailer.reset_password(data).deliver_later
+      redirect_to_index 
+    else
+      flash[:notice] = "The email you entered does not exist"
+      render 'forgot_password'
+    end
+  end
+
   def redirect_to_index
     redirect_to "/user" 
   end
-
 end

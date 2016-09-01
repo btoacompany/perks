@@ -34,11 +34,11 @@ class User < ActiveRecord::Base
     self.name	      = params[:name]	      if params[:name].present?
     self.email	      = params[:email]	      if params[:email].present?
     self.company_id   = params[:company_id]   if params[:company_id].present?
-    self.firstname    = params[:firstname]
-    self.lastname     = params[:lastname]
-    self.birthday     = params[:birthday]
-    self.job_title    = params[:job_title]
-    self.gender	      = params[:gender]	 || 0
+    self.firstname    = params[:firstname]    if params[:firstname].present?
+    self.lastname     = params[:lastname]     if params[:lastname].present?
+    self.birthday     = params[:birthday]     if params[:birthday].present?
+    self.job_title    = params[:job_title]    if params[:job_title].present?
+    self.gender	      = params[:gender]	      if params[:gender].present?
     self.in_points    = params[:in_points]    if params[:in_points].present?
     self.out_points   = params[:out_points]   if params[:out_points].present?
     self.verified     = params[:verified]     if params[:verified].present?

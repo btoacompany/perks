@@ -58,4 +58,11 @@ Rails.application.routes.draw do
   #facebook auth
   get 'auth/facebook', as: "auth_provider"
   get 'auth/facebook/callback',to: "users#fb_auth"
+
+  #forget password
+  get	'/forgot_password'		    => 'users#forgot_password'
+  post	'/forgot_password/submit'	    => 'users#forgot_password_submit'
+  get	'/company/forgot_password'	    => 'company#forgot_password'
+  post	'/company/forgot_password/submit'   => 'company#forgot_password_submit'
+
 end

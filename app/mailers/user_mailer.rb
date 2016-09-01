@@ -15,4 +15,14 @@ class UserMailer < ApplicationMailer
     @user = data 
     mail(to: @user[:email], subject: "【Prizy】#{@user[:giver]}さんより#{@user[:points]}pointのボーナスが届きました")
   end
+
+  def reset_password(data)
+    @user = data 
+    mail(to: @user[:email], subject: "【Prizy】パスワードの再設定")
+  end
+
+  def invite_welcome_email(data)
+    @user = data 
+    mail(to: @user[:email], subject: "【Prizy】ご登録ありがとうございます")
+  end
 end
