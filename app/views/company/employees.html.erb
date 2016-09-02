@@ -5,6 +5,7 @@
   <br><br>
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
   <div class="toolbox">
+    <p class="c_align">招待リンク: <a href="#"><%= @company[:invite_link] %></a></p><br>
     <% if @users.count == 0 %>
       <p><i>社員を追加してください</i></p><br>
     <% else %>

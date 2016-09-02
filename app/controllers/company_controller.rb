@@ -133,6 +133,7 @@ class CompanyController < ApplicationController
   end
 
   def employees
+    @company = Company.find(@id)
     @users = User.where(:company_id => @id, :delete_flag => 0)
   end
 
