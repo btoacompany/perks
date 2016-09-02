@@ -44,7 +44,7 @@
         <% @post_togive.last(5).reverse_each do |post| %>
         <div class="analytics_post_wrapper">
           <div class="analytics_post_top" >
-            <img src="<%= post.user.img_src %>" width="30px" height="30px">
+            <img src="<%= post.receiver.img_src %>" width="30px" height="30px">
             <p><%= post.receiver.name %>へ</p>
             <div class="analytics_clearfix"></div>
           </div>
