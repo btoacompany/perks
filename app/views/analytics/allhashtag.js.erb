@@ -1,0 +1,79 @@
+var chart = new CanvasJS.Chart("all_hashtag", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "全てのハッシュタグ",
+      fontSize: 16,
+      fontColor: "#E0E0E3",
+    },
+    axisX:{
+      reversed: true,
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointMaxWidth: 15,
+    dataPointMinWidth: 15,
+    dataPointWidth: 15,
+    data: [
+    {
+      type: "bar",
+      color: "#ff8d07",
+      dataPoints: [
+        <% @hashtags.each do |hashtag| %>
+        { label: "<%= hashtag[0] %>",  y: <%= hashtag[1] %> },
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+
+  <% @hash.each do |key, value| %>
+  var chart = new CanvasJS.Chart("<%= @num2 %>", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "<%= key %>",
+      fontSize: 16,
+      fontColor: "#E0E0E3",
+    },
+    axisX:{
+      reversed: true,
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointMaxWidth: 15,
+    dataPointMinWidth: 15,
+    dataPointWidth: 15,
+    data: [              
+    {
+      type: "bar",
+      dataPoints: [
+        <% value.first(10).each do |a, b| %>
+        <% @user = User.find(a) %>
+        <% if @user.lastname.blank? %>
+          { label: "<%= @user.name %>", y: <%= b %> },
+        <% else %>
+          { label: "<%= @user.firstname %><%= @user.lastname %>", y: <%= b %> },
+        <% end %>
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+  <% @num2 += 1 %>
+  <% end %>

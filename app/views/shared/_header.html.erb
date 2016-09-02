@@ -1,3 +1,12 @@
+<% if request.path.include?("analytics")%>
+<div id="header_analytics">
+  <div class="contents">
+    <div class="menu_panel">
+      <ul class="main_menu_analytics">
+  <li class="logo"><a href="<% if request.path.include?("analytics") %>/company<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
+      </ul>
+    </div>
+<% else %>
 <div id="header">
   <div class="contents">
     <div class="menu_panel">
@@ -5,6 +14,7 @@
 	<li class="logo"><a href="<% if request.path.include?("company") %>/company<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
       </ul>
     </div>
+<% end %>
 
     <% if session[:user_id] || cookies[:user_id] %>
       <div class="menu">
