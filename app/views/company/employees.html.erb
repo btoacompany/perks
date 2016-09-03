@@ -46,7 +46,7 @@
 $('.delete_item').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
 
-  if (confirm("本当に削除しましか？")) {
+  if (confirm("本当に削除しますか？")) {
     $.post("/company/employees/delete", { 'id': _id }); //send post request
     $(".item_" + _id).remove(); //remove item upon deletion
   }
