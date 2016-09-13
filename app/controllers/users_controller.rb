@@ -92,6 +92,13 @@ class UsersController < ApplicationController
 
     posts = posts.offset(offset).limit(limit)
 
+    @page_now = params[:page].to_i
+    if @page_now == 0
+      @page_now = 1
+    end
+    @previous_page = @page_now - 1
+    @next_page = @page_now + 1
+
     @posts = []
     data = {}
 
