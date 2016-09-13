@@ -208,6 +208,127 @@ class UsersController < ApplicationController
 
   def profile
     @user = User.find(@id)
+    posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
+
+    limit = 5
+    page = params[:page] || 1
+    @total_items = posts.count
+    @total_pages = (@total_items/limit.to_f).ceil
+
+    if page.to_i <= 1
+      page = 1
+      offset = 0
+    else
+      offset = (page.to_i * limit) - limit
+    end
+
+    posts = posts.offset(offset).limit(limit)
+
+    @page_now = params[:page].to_i
+    if @page_now == 0
+      @page_now = 1
+    end
+    @previous_page = @page_now - 1
+    @next_page = @page_now + 1
+
+    @posts = []
+    data = {}
+
+    posts.each do | post |
+      comments = Comment.where(:post_id => post.id, :delete_flag => 0)
+      kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
+
+      data = {
+  id:   post.id,
+  user_id:  post.user_id,
+  user_name:  post.user.name,
+  receiver_name:  post.receiver.name,
+  user_img: post.user.img_src,
+  receiver_img: post.receiver.img_src,
+  points:   post.points,
+  description:  post.description,
+  hashtags: post.hashtags,
+  comments: comments,
+  kudos:    kudos,
+  create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+      }
+
+      @posts << data
+    end
+
+    top_givers = Post.where(receiver_id: @id).group(:user_id).order("count_all desc").limit(5).count
+
+    @top_givers = []
+    top_givers.each do | k, v |
+      user = User.find(k)
+      data = { name: user.name, img_src: user.img_src, count: v }
+      @top_givers << data
+    end
+
+    @top_hashtags = Hashtag.where(receiver_id: @id).group(:hashtag).order("count_id desc").limit(7).count("id")
+
+  end
+
+  def given
+    @user = User.find(@id)
+    posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
+
+    limit = 5
+    page = params[:page] || 1
+    @total_items = posts.count
+    @total_pages = (@total_items/limit.to_f).ceil
+
+    if page.to_i <= 1
+      page = 1
+      offset = 0
+    else
+      offset = (page.to_i * limit) - limit
+    end
+
+    posts = posts.offset(offset).limit(limit)
+
+    @page_now = params[:page].to_i
+    if @page_now == 0
+      @page_now = 1
+    end
+    @previous_page = @page_now - 1
+    @next_page = @page_now + 1
+
+    @posts = []
+    data = {}
+
+    posts.each do | post |
+      comments = Comment.where(:post_id => post.id, :delete_flag => 0)
+      kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
+
+      data = {
+  id:   post.id,
+  user_id:  post.user_id,
+  user_name:  post.user.name,
+  receiver_name:  post.receiver.name,
+  user_img: post.user.img_src,
+  receiver_img: post.receiver.img_src,
+  points:   post.points,
+  description:  post.description,
+  hashtags: post.hashtags,
+  comments: comments,
+  kudos:    kudos,
+  create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+      }
+
+      @posts << data
+    end
+
+    top_givers = Post.where(user_id: @id).group(:receiver_id).order("count_all desc").limit(5).count
+
+    @top_givers = []
+    top_givers.each do | k, v |
+      user = User.find(k)
+      data = { name: user.name, img_src: user.img_src, count: v }
+      @top_givers << data
+    end
+
+    @top_hashtags = Hashtag.where(user_id: @id).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def rewards

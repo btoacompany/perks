@@ -1,5 +1,6 @@
 .analytics_holder{
   background-color: #6c6c70;
+  overflow: auto;
 }
 
 .analytics_time_select{
