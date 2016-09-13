@@ -22,8 +22,10 @@
 	  <td style="width:300px;"><%= item[:description] %></td>
 	  <td><%= number_with_delimiter(item[:points], :delimiter => ',') %></td>
 	  <td class="c_align">
-	    <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="編集" /> 
-	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
+	    <% unless item[:img_src].match(/img_07|img_05/) %>
+	      <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="編集" /> 
+	      <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
+	    <% end %>
 	  </td>
 	</tr>
 	<% end %>

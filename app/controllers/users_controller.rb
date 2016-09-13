@@ -487,6 +487,7 @@ class UsersController < ApplicationController
       verified = res.verified
     else
       res = User.new
+      res.save_record(params)
     end
 
     if params[:img_src].present?
@@ -509,7 +510,15 @@ class UsersController < ApplicationController
     params[:out_points] = 150 if verified == 0
     params[:verified] = 1 
       
-    res.save_record(params)
+    if url.include?("invite")
+      res.img_src = params[:img_src]
+      res.out_points = params[:out_points]
+      res.verified = params[:verified]
+      res.deliver_invite_mail = 3
+      res.save
+    else
+      res.save_record(params)
+    end
   end
 
   def forgot_password

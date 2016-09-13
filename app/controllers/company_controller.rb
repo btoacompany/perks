@@ -187,7 +187,6 @@ class CompanyController < ApplicationController
   end
 
   def add_rewards
-    #do nothing
   end
 
   def add_rewards_complete
@@ -201,6 +200,9 @@ class CompanyController < ApplicationController
 
   def edit_rewards
     @reward = Reward.find(params[:reward_id])
+    if @reward[:img_src].match(/img_07|img_05/)
+      redirect_to "/company/rewards"
+    end
   end
 
   def edit_rewards_complete
