@@ -1,0 +1,14 @@
+    <div class="profile">
+      <div class="profile_pic col-4">
+       <img src="<%= @user.img_src %>" class="radius10"/>
+       <p><input type="button" value="編集する" class="btncmn w100p btn_edit" /></p>
+      </div>
+      <div class="info col-8">
+       <h1 class="name"><%= @user.lastname %> <%= @user.firstname %> (<%= @user.name %>)</h1>
+       <h3 class="gray"><%= @user.company.name %></h3>
+       <h4 class="gray"><u><%= @user.email %></u></h4><br>
+       <h2>もらったポイント: <%= number_with_delimiter(@user.in_points, :delimiter => ',') %></h2>
+       <h2>贈れるポイント: <%= number_with_delimiter(@user.out_points, :delimiter => ',') %></h2>
+      </div>
+      <div class="clearfix"></div>
+    </div>

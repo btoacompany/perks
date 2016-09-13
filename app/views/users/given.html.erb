@@ -1,19 +1,19 @@
 <div id="wrapper">
 <div id="contents">
   <div class="row">
-    
+
     <%= render 'topprofile' %>
 
     <div class="col-4 chose_box">
-      <%= link_to "もらった投稿", "/profile", :class => "receiving_box", :style => "background-color:white;" %>
-      <%= link_to "贈った投稿", "/profile/given", :class => "giving_box" %>
+      <%= link_to "もらった投稿", "/profile", :class => "receiving_box" %>
+      <%= link_to "贈った投稿", "/profile/given", :class => "giving_box", :style => "background-color:white;"%>
       <%= link_to "ギフト交換履歴", "/rewards/status", :class => "present_box" %>
     </div>
     <div class="analytics_clearfix"></div>
     
     <div class="mypage row">
     <div class="rightbox col-4">
-      <div class="title"> 最も褒めてくれる人 </div>
+      <div class="title"> あなたが最も褒めている人 </div>
       <div class="profilebox">
         <% @top_givers.each do | item | %>
           <div class="ranking">
@@ -29,7 +29,7 @@
         <% end %>
       </div><br>
 
-      <div class="title"> 褒められポイント </div>
+      <div class="title"> あなたが褒めているポイント </div>
       <div class="profilebox">
         <% @top_hashtags.each do | k, v | %>
         <div class="ranking">
@@ -48,31 +48,43 @@
       <div class="pagination" style="float:right">
         <% if @total_pages > 8 %>
           <% unless @page_now == 1 %>
-            <a href="<%= "#{@prizy_url}/profile/?page=1" %>">最初</a>
-            <a href="<%= "#{@prizy_url}/profile/?page=#{@previous_page}" %>">前へ</a>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=1" %>">最初</a>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=#{@previous_page}" %>">前へ</a>
           <% end %>
-          <a href="<%= "#{@prizy_url}/profile/?page=#{@page_now}" %>"><%= @page_now %></a>
+          <a href="<%= "#{@prizy_url}/profile/given/?page=#{@page_now}" %>"><%= @page_now %></a>
           <% unless @page_now == @total_pages %>
-            <a href="<%= "#{@prizy_url}/profile/?page=#{@next_page}" %>">次へ</a>
-            <a href="<%= "#{@prizy_url}/profile/?page=#{@total_pages}" %>">最後</a>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=#{@next_page}" %>">次へ</a>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=#{@total_pages}" %>">最後</a>
           <% end %>
         <% else %>
           <% (1..@total_pages).each do | i | %>
-            <a href="<%= "#{@prizy_url}/profile/?page=#{i}" %>"><%= i %></a>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=#{i}" %>"><%= i %></a>
           <% end %>
         <% end %>
       </div><br>
       <div class="clearfix"></div>
       <%= render 'bottomprofile' %>
       <div class="pagination" style="float:right">
-        <% (1..@total_pages).each do | i | %>
-          <a href="<%= "#{@prizy_url}/profile/?page=#{i}" %>"><%= i %></a>
+        <% if @total_pages > 8 %>
+          <% unless @page_now == 1 %>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=1" %>">最初</a>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=#{@previous_page}" %>">前へ</a>
+          <% end %>
+          <a href="<%= "#{@prizy_url}/profile/given/?page=#{@page_now}" %>"><%= @page_now %></a>
+          <% unless @page_now == @total_pages %>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=#{@next_page}" %>">次へ</a>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=#{@total_pages}" %>">最後</a>
+          <% end %>
+        <% else %>
+          <% (1..@total_pages).each do | i | %>
+            <a href="<%= "#{@prizy_url}/profile/given/?page=#{i}" %>"><%= i %></a>
+          <% end %>
         <% end %>
       </div><br>
       <div class="clearfix"></div>
     </div><!-- timeline -->
     </div>
-    
+
     </div>
   </div><!-- row -->
 </div> <!-- contents -->

@@ -104,9 +104,21 @@
 
     <div class="timeline">
       <div class="pagination" style="float:right">
-	<% (1..@total_pages).each do | i | %>
-	  <a href="<%= "#{@prizy_url}/?page=#{i}" %>"><%= i %></a>
-	<% end %>
+        <% if @total_pages > 8 %>
+          <% unless @page_now == 1 %>
+            <a href="<%= "#{@prizy_url}/?page=1" %>">最初</a>
+            <a href="<%= "#{@prizy_url}/?page=#{@previous_page}" %>">前へ</a>
+          <% end %>
+          <a href="<%= "#{@prizy_url}/?page=#{@page_now}" %>"><%= @page_now %></a>
+          <% unless @page_now == @total_pages %>
+            <a href="<%= "#{@prizy_url}/?page=#{@next_page}" %>">次へ</a>
+            <a href="<%= "#{@prizy_url}/?page=#{@total_pages}" %>">最後</a>
+          <% end %>
+        <% else %>
+          <% (1..@total_pages).each do | i | %>
+            <a href="<%= "#{@prizy_url}/?page=#{i}" %>"><%= i %></a>
+          <% end %>
+        <% end %>
       </div><br>
       <div class="clearfix"></div>
       <% @posts.each do | post | %>
@@ -176,9 +188,21 @@
 	</div><br>
       <% end %> <!-- posts -->
       <div class="pagination" style="float:right">
-	<% (1..@total_pages).each do | i | %>
-	  <a href="<%= "#{@prizy_url}/?page=#{i}" %>"><%= i %></a>
-	<% end %>
+        <% if @total_pages > 8 %>
+          <% unless @page_now == 1 %>
+            <a href="<%= "#{@prizy_url}/?page=1" %>">最初</a>
+            <a href="<%= "#{@prizy_url}/?page=#{@previous_page}" %>">前へ</a>
+          <% end %>
+          <a href="<%= "#{@prizy_url}/?page=#{@page_now}" %>"><%= @page_now %></a>
+          <% unless @page_now == @total_pages %>
+            <a href="<%= "#{@prizy_url}/?page=#{@next_page}" %>">次へ</a>
+            <a href="<%= "#{@prizy_url}/?page=#{@total_pages}" %>">最後</a>
+          <% end %>
+        <% else %>
+          <% (1..@total_pages).each do | i | %>
+            <a href="<%= "#{@prizy_url}/?page=#{i}" %>"><%= i %></a>
+          <% end %>
+        <% end %>
       </div><br>
     </div>
   </div> <!-- leftbox -->

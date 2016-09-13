@@ -304,6 +304,14 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   margin: 0px 1px;
   border:1px solid #a7a7a7;
 }
+
+.pagination span{
+  float: left;
+  padding:5px 10px;
+  margin: 0px 1px;
+}
+
+
 /* --- LOGIN PAGE --- */
 #loginbox {
   border: 1px solid #a7a7a7;
@@ -1201,4 +1209,45 @@ hr.style-two {
   height: 30px;
   font-size: 12pt;
 }
+
+
+
+/*profile timeline*/
+.profile{
+  overflow: auto;
+}
+
+.mypage_change_btn{
+  width: 33%;
+}
+
+.chose_box{
+  margin-top: 30px;
+  padding: 0 0 0 0px;
+}
+
+.chose_box a{
+  color: black;
+}
+
+.receiving_box, .giving_box, .present_box{
+  display: block;
+  width: 33%;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  font-size:13px;
+  font-weight:bold;
+  text-decoration:none;
+  text-align:center;
+  padding: 15px 0;
+  float: left;
+  margin-bottom: 10px;
+  background-color: #f0f0f0;
+}
+
+.present_box{
+  border-right: 1px solid black;
+}
+
+
 

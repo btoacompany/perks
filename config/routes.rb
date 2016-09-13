@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   post	'/user/give_comments'	    => 'users#give_comments'
   post	'/user/give_kudos'	    => 'users#give_kudos'
   get	'/profile'		    => 'users#profile'
+  get '/profile/given'        => 'users#given'
   get	'/rewards'		    => 'users#rewards'
   post	'/rewards/request'	    => 'users#rewards_request'
   get	'/rewards/status'	    => 'users#rewards_status'
