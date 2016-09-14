@@ -76,6 +76,9 @@ class UsersController < ApplicationController
     @user = User.find(@id)
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
 
+    today = Date.today
+    @birthday_users = @users.where('MONTH(birthday)=? AND DAYOFMONTH(birthday)=?', today.month, today.day)
+    
     posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
 
     limit = 5
