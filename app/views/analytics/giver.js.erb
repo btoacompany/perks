@@ -28,7 +28,8 @@ var chart = new CanvasJS.Chart("top_giver", {
       color: "#ff8d07",
       dataPoints: [
         <% @hash_custom.first(10).each do |key, value| %>
-        { label: "<%= key %>",  y: <%= value %>, },
+        <% @key = User.find(key) %>
+        { label: "<%= @key.name %>",  y: <%= value %>, },
         <% end %>
       ]
     }
