@@ -12,7 +12,7 @@
       <% end %>
       の<span style="color:red;">お誕生日</span>です。お祝いを贈ってみませんか？</p>
     <% else %>
-      <p><b><span class="font16"><%= @user.out_points %></span> ポイント</b> 持っています。誰かにボーナスを贈ってみましょう。</p>
+      <p data-intro="あなたが持っているポイント数です。誰かを褒める時にこのポイントの一部をプレゼントとして贈ることができます。" data-step="1"><b><span class="font16"><%= @user.out_points %></span> ポイント</b> 持っています。誰かにボーナスを贈ってみましょう。</p>
     <% end %>
   </div>
   <div class="rightbox col-4">

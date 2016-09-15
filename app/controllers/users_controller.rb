@@ -66,6 +66,10 @@ class UsersController < ApplicationController
   end
 
   def index
+    path = Rails.application.routes.recognize_path(request.referrer)
+    @controller = path[:controller]
+    @action = path[:action] 
+
     @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
 
     hashtags = Company.find(@company_id).hashtags
