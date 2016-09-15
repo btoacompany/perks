@@ -13,8 +13,6 @@ Rails.application.routes.draw do
   post	'/login/complete'	      => 'users#login_complete'
   get	'/logout'		      => 'users#logout'
   get	'/company/login'	      => 'company#login'
-  post	'/company/login/complete'     => 'company#login_complete'
-  get	'/company/logout'	      => 'company#logout'
 
   # registration
   get	'/company/register'	      => 'company#create'
@@ -50,7 +48,7 @@ Rails.application.routes.draw do
   post	'/user/give_comments'	    => 'users#give_comments'
   post	'/user/give_kudos'	    => 'users#give_kudos'
   get	'/profile'		    => 'users#profile'
-  get '/profile/given'        => 'users#given'
+  get	'/profile/given'	    => 'users#given'
   get	'/rewards'		    => 'users#rewards'
   post	'/rewards/request'	    => 'users#rewards_request'
   get	'/rewards/status'	    => 'users#rewards_status'
@@ -78,7 +76,4 @@ Rails.application.routes.draw do
   #forget password
   get	'/forgot_password'		    => 'users#forgot_password'
   post	'/forgot_password/submit'	    => 'users#forgot_password_submit'
-  get	'/company/forgot_password'	    => 'company#forgot_password'
-  post	'/company/forgot_password/submit'   => 'company#forgot_password_submit'
-
 end

@@ -2,46 +2,22 @@
 require 'securerandom'
 
 class CompanyController < ApplicationController
-  before_filter :init, :authenticate_company, :except => [:login, :login_complete,
-  :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
-  before_filter :init_url
+  before_filter :init, :authenticate_user, :except => [:login, :create, :create_complete, :forgot_password, :forgot_password_submit]
+  before_filter :init_url, :validate_user
 
   def init
-    if session[:company_id].present? || cookies[:company_id].present?
-      @id = session[:company_id] || cookies[:company_id]
+    if session[:id].present? || cookies[:id].present?
+      @id = session[:id] || cookies[:id]
     end
   end
-
+  
   def login
     flash[:notice] = "" 
-    if session[:company_id] || cookies[:company_id]
-      redirect_to "/company"
-    end
-  end
-
-  def login_complete
-    authorized_user = Company.authenticate(params[:email],params[:password])
-    reset_session
-    if authorized_user
-      if params[:remember].to_i == 1 
-	cookies.permanent[:company_id] = authorized_user.id
-      else
-	session[:company_id] = authorized_user.id
-      end
-
-      flash[:notice] = "" 
+    if session[:id] || cookies[:id]
       redirect_to "/company"
     else
-      flash[:notice] = "ユーザー名かパスワードに誤りがあります"
-      render "login"
+      redirect_to "/"
     end
-  end
-
-  def logout
-    session[:company_id] = nil
-    cookies.delete :company_id
-    reset_session
-    redirect_to '/company/login'
   end
 
   def index
@@ -54,11 +30,23 @@ class CompanyController < ApplicationController
 
   def create_complete
     begin
-      params[:prizy_url] = @prizy_url + "/company/login"
+      params[:prizy_url] = @prizy_url + "/login"
       params[:hashtags] = hashtags_fix(params[:hashtags])
 
       company = Company.new
       company.save_record(params)
+
+      user = User.new
+      user.save_record({
+	:email	    => params[:email],
+	:password   => params[:password],
+	:img_src    => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+	:name	    => params[:email].split("@")[0],
+	:company_id => company.id,
+	:out_points => 150,
+	:admin	    => 1,
+	:deliver_invite_mail => 3,
+      })
 
       c_code = (Time.now.to_i).to_s + "_" + (company.id).to_s
       company.invite_link = @prizy_url + "/invite?c_code=" + c_code
@@ -91,8 +79,8 @@ class CompanyController < ApplicationController
 	  :img_src      => @s3_url + "/common/img_05.png"
 	})
       end
-      session[:company_id] = company.id
-      redirect_to "/company/details"
+      session[:id] = user.id
+      reset_session
     rescue Exception => e
       puts e.message
       flash[:notice] = "メールアドレスはすでにありました"
@@ -113,11 +101,7 @@ class CompanyController < ApplicationController
     res = Company.find(@id)
     res.save_record(params)
     
-    if params[:password].present?
-      redirect_to '/company/logout'
-    else
-      redirect_to_index
-    end
+    redirect_to_index
   end
 
   def hashtags_fix(hashtags)
@@ -162,7 +146,7 @@ class CompanyController < ApplicationController
 	  :email	=> email,
 	  :password	=> temp_password,
 	  :name		=> name,
-	  :img_src	=> "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+	  :img_src	=> "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
 	  :prizy_url	=> @prizy_url + "/login"
 	}
 	@user = User.new
@@ -244,31 +228,6 @@ class CompanyController < ApplicationController
     end
 
     redirect_to "/company/rewards/request"
-  end
-
-  def forgot_password
-  end
-
-  def forgot_password_submit
-    company = Company.where("email LIKE '#{params[:email]}'").first
-    flash[:notice] = "" 
-
-    if company.present?
-      temp_password = SecureRandom.hex(4)
-      company.save_record({:password => temp_password})
-
-      data = {
-	:email	  => params[:email],
-	:password => temp_password,
-	:prizy_url  => @prizy_url + "/company"
-      }
-
-      CompanyMailer.reset_password(data).deliver_later
-      redirect_to_index 
-    else
-      flash[:notice] = "The email you entered does not exist"
-      render 'forgot_password'
-    end
   end
 
   def redirect_to_index

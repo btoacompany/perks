@@ -1,0 +1,17 @@
+<div id="wrapper">
+<div id="contents">
+  <p align="center">
+    登録完了いたしました。
+    <br>ご登録いただきまして誠にありがとうございます。
+    <br>ご登録いただきました、メールアドレスとパスワードにて、
+    <br><a href="<%= @prizy_url %>">コチラ</a>のリンクよりログイン後ご利用いただけます。
+    <br>引き続きPrizyをなにとぞよろしくお願いいたします。
+  </p>
+</div> <!-- contents -->
+</div> <!-- wrapper -->
+
+<script>
+window.setTimeout(function(){
+  window.location.href = "<%= @prizy_url %>";
+}, 5000);
+</script>

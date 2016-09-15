@@ -21,21 +21,6 @@
 	<td><input type="email" name="email" value="<%= @company[:email] %>" required /></td>
       </tr>
       <tr>
-	<td>パスワード: </td>
-	<td><input type="button" value="パスワード変更" class="btn_change_password"/></td>
-      </tr>
-      <tr class="password">
-	<td>新しいパスワード: </td>
-	<td><input type="password" name="password" id="passwd1" value=""  size="10"/></td>
-      </tr>
-      <tr class="password">
-	<td>パスワード確認: </td>
-	<td>
-	  <input type="password" name="password" id="passwd2" value=""  size="10"/><br> 
-	  <span class="notice"></span>
-	</td>
-      </tr>
-      <tr>
 	<td>電話番号: </td>
 	<td><input type="text" name="phone" value="<%= @company[:phone] %>"  size="10"/></td>
       </tr>
@@ -68,7 +53,6 @@ var passwd2 = document.getElementById("passwd2");
 function invitationLink() {
   var code = $.now();
 }
-
 
 function validatePassword(){
   if(passwd1.value != passwd2.value) {
