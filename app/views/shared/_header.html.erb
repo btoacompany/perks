@@ -19,8 +19,10 @@
     <% if session[:id] || cookies[:id] %>
       <div class="menu">
 	<p align="center">
-	  <% if @current_user.admin == 1 %>
-	    <a href="/company">Admin</a>
+	  <% if @current_user.present? %>
+	    <% if @current_user.admin == 1 %>
+	      <a href="/company">管理画面</a>
+	    <% end %>
 	  <% end %>
 	  <a href="/user">タイムライン</a>
 	  <a href="/profile">マイページ</a>
@@ -33,8 +35,10 @@
 	  <input type="image" class="sp_dropbtn dropbtn" src="<%= @s3_url + '/common/gnav.png'
 	  %>"/>
 	  <div class="sp_dropdown_content dropdown-content">
-	    <% if @current_user.admin == 1 %>
-	      <a href="/company">Admin</a>
+	    <% if @current_user.present? %>
+	      <% if @current_user.admin == 1 %>
+		<a href="/company">管理画面</a>
+	      <% end %>
 	    <% end %>
 	    <a href="/user">タイムライン</a>
 	    <a href="/profile">マイページ</a>
