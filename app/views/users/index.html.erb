@@ -5,7 +5,15 @@
 
 <div class="mypage row">
   <div class="outofboxmsg col-12">
-    <p><b><span class="font16"><%= @user.out_points %></span> ポイント</b> 持っています。誰かにボーナスを贈ってみましょう。</p>
+    <% if @birthday_users.present? %>
+      <p>今日は
+      <% @birthday_users.each do |user| %>
+        <b><span class="font14"><%= user.name %>さん </span></b>
+      <% end %>
+      の<span style="color:red;">お誕生日</span>です。お祝いを贈ってみませんか？</p>
+    <% else %>
+      <p><b><span class="font16"><%= @user.out_points %></span> ポイント</b> 持っています。誰かにボーナスを贈ってみましょう。</p>
+    <% end %>
   </div>
   <div class="rightbox col-4">
     <div class="title">

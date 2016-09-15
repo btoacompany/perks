@@ -22,12 +22,12 @@ class AnalyticsController < ApplicationController
 
   def index
     @hash = {}
-    @post_recieved = Post.where(create_time: @time_custom).group('receiver_id').count
-    @users.each do |user|
+    @post_recieved = Post.where(company_id: @id, create_time: @time_custom).group('receiver_id').count
+    @users_custom.each do |user|
       if @post_recieved[user.id].blank?
-        @hash[user.name] = 0
+        @hash[user.id] = 0
       else
-        @hash[user.name] = @post_recieved[user.id]
+        @hash[user.id] = @post_recieved[user.id]
       end
     end 
     @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
@@ -35,12 +35,12 @@ class AnalyticsController < ApplicationController
 
   def giver
     @hash = {}
-    @post_giving = Post.where(:create_time => @time_custom).group('user_id').count
-    @users.each do |user|
+    @post_giving = Post.where(company_id: @id, create_time: @time_custom).group('user_id').count
+    @users_custom.each do |user|
       if @post_giving[user.id].blank?
-        @hash[user.name] = 0
+        @hash[user.id] = 0
       else
-        @hash[user.name] = @post_giving[user.id]
+        @hash[user.id] = @post_giving[user.id]
       end
     end 
     @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
