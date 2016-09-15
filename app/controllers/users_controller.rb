@@ -59,7 +59,6 @@ class UsersController < ApplicationController
 
   def logout
     session[:id] = nil
-    #cookies.delete :user_id
     cookies.delete :id
     reset_session
 
