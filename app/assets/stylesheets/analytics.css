@@ -135,6 +135,19 @@
 
 
 /*header*/
+@media only screen and (min-width: 650px) {
+  #header_analytics .sp_menu {
+    display: none;
+    visibility: hidden;
+  }
+
+  #header_analytics .sp_menu {
+    background-color: #ff8d07;
+    display: block;
+    float: right;
+    margin-right: 10px;
+  }
+}
 #header_analytics .menu {
   padding: 15px;
   float: right;

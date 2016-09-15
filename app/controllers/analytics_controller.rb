@@ -1,13 +1,13 @@
 class AnalyticsController < ApplicationController
 
-  before_filter :init, :authenticate_company
-  before_filter :init_url
+  before_filter :init, :authenticate_user
+  before_filter :init_url, :validate_user
   before_action :time_definition, only:[:overall, :index, :giver, :hashtag, :allhashtag, :user]
   before_action :basic_info, only:[:overall, :index, :giver, :hashtag, :allhashtag, :user]
 
   def init
-    if session[:company_id].present? || cookies[:company_id].present?
-      @id = session[:company_id] || cookies[:company_id]
+    if session[:id].present? || cookies[:id].present?
+      @id = session[:id] || cookies[:id]
     end
   end
 

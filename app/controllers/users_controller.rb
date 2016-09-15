@@ -9,8 +9,8 @@ class UsersController < ApplicationController
   before_filter :init_url
 
   def init
-    if session[:user_id].present? || cookies[:user_id].present?
-      @id = session[:user_id] || cookies[:user_id]
+    if session[:id].present? || cookies[:id].present?
+      @id = session[:id] || cookies[:id]
       user = User.find(@id)
       @company_id = user.company_id
       @admin_flag = Company.exists?(:email => user.email) ? 1 : 0
@@ -19,9 +19,11 @@ class UsersController < ApplicationController
 
   def login
     $c_code = ""
-    if session[:user_id] || cookies[:user_id]
+    if session[:id] || cookies[:id]
       redirect_to "/user"
     end
+
+    reset_session
   end
 
   def login_complete
@@ -35,9 +37,9 @@ class UsersController < ApplicationController
 	redirect_to "/login"
       else
 	if params[:remember].to_i == 1 
-	  cookies.permanent[:user_id] = authorized_user.id
+	  cookies.permanent[:id] = authorized_user.id
 	else
-	  session[:user_id] = authorized_user.id
+	  session[:id] = authorized_user.id
 	end
 
 	verified = authorized_user.verified
@@ -56,8 +58,9 @@ class UsersController < ApplicationController
   end
 
   def logout
-    session[:user_id] = nil
-    cookies.delete :user_id
+    session[:id] = nil
+    #cookies.delete :user_id
+    cookies.delete :id
     reset_session
 
     redirect_to '/login'
@@ -246,18 +249,18 @@ class UsersController < ApplicationController
       kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
       data = {
-  id:   post.id,
-  user_id:  post.user_id,
-  user_name:  post.user.name,
-  receiver_name:  post.receiver.name,
-  user_img: post.user.img_src,
-  receiver_img: post.receiver.img_src,
-  points:   post.points,
-  description:  post.description,
-  hashtags: post.hashtags,
-  comments: comments,
-  kudos:    kudos,
-  create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+	id:   post.id,
+	user_id:  post.user_id,
+	user_name:  post.user.name,
+	receiver_name:  post.receiver.name,
+	user_img: post.user.img_src,
+	receiver_img: post.receiver.img_src,
+	points:   post.points,
+	description:  post.description,
+	hashtags: post.hashtags,
+	comments: comments,
+	kudos:    kudos,
+	create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
 
       @posts << data
@@ -273,7 +276,6 @@ class UsersController < ApplicationController
     end
 
     @top_hashtags = Hashtag.where(receiver_id: @id).group(:hashtag).order("count_id desc").limit(7).count("id")
-
   end
 
   def given
@@ -503,14 +505,14 @@ class UsersController < ApplicationController
 	src_ext = File.extname(src.original_filename)
 
 	s3 = Aws::S3::Resource.new
-	obj = s3 .bucket("btoa-img").object("profile/user_#{res.id}_pic#{src_ext}")
+	obj = s3 .bucket(@s3_bucket).object("profile/user_#{res.id}_pic#{src_ext}")
 	obj.upload_file src.tempfile, {acl: 'public-read'}
 
 	params[:img_src] = obj.public_url
       end
     else
       if verified == 0
-	params[:img_src] = "https://btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 
+	params[:img_src] = "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 
       end
     end
 

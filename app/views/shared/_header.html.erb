@@ -16,17 +16,16 @@
     </div>
 <% end %>
 
-    <% if session[:user_id] || cookies[:user_id] %>
+    <% if session[:id] || cookies[:id] %>
       <div class="menu">
 	<p align="center">
+	  <% if @current_user.admin == 1 %>
+	    <a href="/company">Admin</a>
+	  <% end %>
 	  <a href="/user">タイムライン</a>
 	  <a href="/profile">マイページ</a>
 	  <a href="/rewards">ギフト</a> 
-	  <% if session[:company_id] || cookies[:company_id] %> 
-	    <a href="/company/logout">ログアウト</a>
-	  <% elsif session[:user_id] || cookies[:user_id] %>
-	    <a href="/logout">ログアウト</a>
-	  <% end %>
+	  <a href="/logout">ログアウト</a>
 	</p>
       </div>
       <div class="sp_menu">
@@ -34,14 +33,13 @@
 	  <input type="image" class="sp_dropbtn dropbtn" src="<%= @s3_url + '/common/gnav.png'
 	  %>"/>
 	  <div class="sp_dropdown_content dropdown-content">
+	    <% if @current_user.admin == 1 %>
+	      <a href="/company">Admin</a>
+	    <% end %>
 	    <a href="/user">タイムライン</a>
 	    <a href="/profile">マイページ</a>
 	    <a href="/rewards">ギフト</a>
-	    <% if session[:company_id] || cookies[:company_id] %> 
-	      <a href="/company/logout">ログアウト</a>
-	    <% elsif session[:user_id] || cookies[:user_id] %>
-	      <a href="/logout">ログアウト</a>
-	    <% end %>
+	    <a href="/logout">ログアウト</a>
 	  </div>
 	</div>
       </div>

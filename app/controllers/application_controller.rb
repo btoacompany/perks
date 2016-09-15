@@ -8,22 +8,30 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def init_url
-    @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
     if Rails.env.production?
       @prizy_url = "http://prizy.me"
+      @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
+      @s3_bucket = "prizy"
     elsif Rails.env.development?
       @prizy_url = "http://localhost:3000"
+      @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
+      @s3_bucket = "btoa-img"
+    end
+  end
+
+  def validate_user
+    if @current_user.present?
+      unless @current_user.admin == 1
+	redirect_to "/"
+      end
     end
   end
 
   def current_user
-    user_id = session[:user_id] || cookies[:user_id]
-    company_id = session[:company_id] || cookies[:company_id]
+    user_id = session[:id] || cookies[:id]
 
     if user_id 
       @current_user||= User.find(user_id)
-    elsif company_id
-      @current_user||= Company.find(company_id)
     end
 
     if @current_user
@@ -35,7 +43,7 @@ class ApplicationController < ActionController::Base
 
 protected 
   def authenticate_user
-    user_id = session[:user_id] || cookies[:user_id]
+    user_id = session[:id] || cookies[:id]
     if user_id
       # set current user object to @current_user object variable
       @current_user = User.find(user_id)
@@ -46,24 +54,9 @@ protected
     end
   end
 
-  def authenticate_company
-    company_id = session[:company_id] || cookies[:company_id]
-    if company_id
-      # set current user object to @current_user object variable
-      @current_user = Company.find(company_id)
-      return true	
-    else
-      redirect_to "/company/login"
-      return false
-    end
-  end
-
   def save_login_state
-    if session[:user_id] || cookies[:user_id]
+    if session[:id] || cookies[:id]
       redirect_to(:controller => 'top', :action => 'index')
-      return false
-    elsif session[:company_id] || cookies[:company_id]
-      redirect_to(:controller => 'company', :action => 'index')
       return false
     else
       return true
