@@ -12,7 +12,7 @@
       <% end %>
       の<span style="color:red;">お誕生日</span>です。お祝いを贈ってみませんか？</p>
     <% else %>
-      <p data-intro="あなたが持っているポイント数です。誰かを褒める時にこのポイントの一部をプレゼントとして贈ることができます。" data-step="1"><b><span class="font16"><%= @user.out_points %></span> ポイント</b> 持っています。誰かにボーナスを贈ってみましょう。</p>
+      <p data-intro="あなたが持っているポイント数です。誰かを褒める時にポイントの一部をボーナス贈ることができます。" data-step="1"><b><span class="font16"><%= @user.out_points %></span> ポイント</b> 持っています。誰かにボーナスを贈ってみましょう。</p>
     <% end %>
   </div>
   <div class="rightbox col-4">
@@ -91,14 +91,14 @@
     <div class="pointsbox">
       <p align="center">
 	<div class="dropdown">
-	  <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" data-intro="ボタンをクリックすることで、ボーナスを送る相手を選択できます。" data-step="2"/>
-	  <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" data-intro="何ポイント送るかを選ぶことができます。選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
-	  <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。また選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" data-step="4"/>
+	  <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
+	  <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
+	  <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" data-step="4"/>
 	  <div id="myDropdown" class="dropdown-content"> </div>
 	</div><br><hr>
 
 	<div class="description">
-	  <textarea name="description" class="taginput" align="center" rows="5" cols="80" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、またどのような点を褒めているのか明確にすると、もらう側も嬉しさが高まります。" data-step="5"></textarea><br>
+	  <textarea name="description" class="taginput" align="center" rows="5" cols="80" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" data-step="5"></textarea><br>
 	</div><br>
 
 	<div class="tags" style="float:left">

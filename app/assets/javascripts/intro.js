@@ -31,17 +31,17 @@
 
     this._options = {
       /* Next button label in tooltip box */
-      nextLabel: '次へ &rarr;',
-      /* Previous button label in tooltip box */
-      prevLabel: '&larr; 戻る',
       /* Skip button label in tooltip box */
       skipLabel: 'スキップ',
       /* Done button label in tooltip box */
       doneLabel: '完了',
+      nextLabel: '次へ &rarr;',
+      /* Previous button label in tooltip box */
+      prevLabel: '&larr; 戻る',
       /* Hide previous button in the first step? Otherwise, it will be disabled button. */
-      hidePrev: false,
+      hidePrev: true,
       /* Hide next button in the last step? Otherwise, it will be disabled button. */
-      hideNext: false,
+      hideNext: true,
       /* Default tooltip box position */
       tooltipPosition: 'bottom',
       /* Next CSS class for tooltip boxes */
@@ -51,7 +51,7 @@
       /* Close introduction when pressing Escape button? */
       exitOnEsc: true,
       /* Close introduction when clicking on overlay layer? */
-      exitOnOverlayClick: true,
+      exitOnOverlayClick: false,
       /* Show step numbers in introduction? */
       showStepNumbers: true,
       /* Let user use keyboard to navigate the tour? */
