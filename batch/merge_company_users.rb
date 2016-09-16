@@ -1,37 +1,39 @@
 if Rails.env.production?
   prizy_url = "http://prizy.me"
+  s3_bucket = "prizy"
 elsif Rails.env.development?
   prizy_url = "http://localhost:3000"
+  s3_bucket = "btoa-img"
 end
 
-users = User.where(deliver_invite_mail: 0, delete_flag: 0)
+company = Company.where(delete_flag: 0)
 
-users.each do | user |
-  begin
-    temp_password = SecureRandom.hex(4)
-    data = {
-      :company_name   => user.company.name,
-      :company_owner  => user.company.owner,
-      :email	    => user.email,
-      :password	    => temp_password,
-      :name	    => user.name,
-      :prizy_url    => prizy_url + "/login",
-      :deliver_invite_mail => 2 #processing
-    }
+company.each do | c |
+  user_exist = User.find_by_email(c.email)
 
-    user.save_record(data)
+  p "-- company_#{c.id}: #{c.email} --"
 
-    UserMailer.verify_account(data).deliver_now
-    user_update = User.find(user.id)
-    user_update.deliver_invite_mail = 3 #delivered
-    user_update.save
-  rescue Exception => e
-    puts "#---- ERROR ----#"
-    puts e.message
-
-    user_update = User.find(user.id)
-    user_update.deliver_invite_mail = 0 #error
-    user_update.save
+  if user_exist.nil?
+    p "new company user"
+    user = User.new
+    user.email	    = c.email
+    user.password   = c.password
+    user.salt	    = c.salt
+    user.img_src    = "https://#{s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
+    user.name	    = (c.email).split("@")[0]
+    user.company_id = c.id
+    user.out_points = 150
+    user.admin	    = 1
+    user.verified   = 0
+    user.deliver_invite_mail = 3
+    user.save
+  else
+    p "existing company user"
+    user_exist.admin	= 1
+    user_exist.deliver_invite_mail = 3
+    user_exist.verified   = 1
+    user_exist.save
   end
+
   sleep(1)
 end

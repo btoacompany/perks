@@ -475,7 +475,7 @@ class UsersController < ApplicationController
       :prizy_url  => @prizy_url
     }
     UserMailer.invite_welcome_email(data).deliver_later
-    redirect_to_index
+    logout
   end
 
   def update_complete 
