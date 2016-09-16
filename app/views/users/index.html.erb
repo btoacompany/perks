@@ -307,7 +307,7 @@ function getName () {
   items = {};
   <% if @users.present? %>
     <% @users.each do | user | %>
-      <% unless (user.name).match(@user.name) %> 
+      <% unless user.id == @user.id %> 
 	items["<%= user.id %>"] = "<%= user.name %>";
       <% end %>
     <% end %>
