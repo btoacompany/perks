@@ -8,7 +8,7 @@ class CompanyController < ApplicationController
   def init
     if session[:id].present? || cookies[:id].present?
       @user_id = session[:id] || cookies[:id]
-      @id = User.find(@id).company_id
+      @id = User.find(@user_id).company_id
     end
   end
   
