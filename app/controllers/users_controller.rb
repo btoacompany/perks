@@ -41,6 +41,7 @@ class UsersController < ApplicationController
 	  cookies.permanent[:email] = authorized_user.email
 	else
 	  session[:id] = authorized_user.id
+	  session[:email] = authorized_user.email
 	end
 
 	verified = authorized_user.verified
@@ -60,6 +61,7 @@ class UsersController < ApplicationController
 
   def logout
     session[:id] = nil
+    session[:email] = nil
     cookies.delete :id
     cookies.delete :email
     reset_session

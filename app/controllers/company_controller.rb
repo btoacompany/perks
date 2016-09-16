@@ -2,13 +2,15 @@
 require 'securerandom'
 
 class CompanyController < ApplicationController
-  before_filter :init, :authenticate_user, :except => [:login, :create, :create_complete, :forgot_password, :forgot_password_submit]
+  before_filter :init, :authenticate_user, :except => [:login, :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
   before_filter :init_url, :validate_user
 
   def init
     if session[:email].present? || cookies[:email].present?
       email = session[:email] || cookies[:email]
-      @id = User.find_by_email(email).company_id
+      @id = Company.find_by_email(email).id
+    else
+      logout
     end
   end
   
@@ -19,6 +21,16 @@ class CompanyController < ApplicationController
     else
       redirect_to "/"
     end
+  end
+
+  def logout
+    session[:id] = nil
+    session[:email] = nil
+    cookies.delete :id
+    cookies.delete :email
+    reset_session
+
+    redirect_to '/login'
   end
 
   def index
