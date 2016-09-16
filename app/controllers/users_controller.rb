@@ -487,23 +487,37 @@ class UsersController < ApplicationController
     redirect_to_index
   end
 
+  def check_uniq_names(url_name)
+    name_exist = User.where(name: params[:name], company_id: @company_id)
+    if name_exist.present?
+      flash[:notice] = "ユーザー名は既にありました"
+      redirect_to "/#{url_name}"
+      return
+    end
+  end
+
   def update_complete_details
+    #TODO: fix redirect
     url = request.original_url
+    url_name = ""
+    verified = 0
+
+    unless url.include?("invite")
+      #url_name = "invite"
+      #check_uniq_names(url_name)
+      res = User.find(@id)
+      verified = res.verified
+    else
+      #url_name = "update"
+      #check_uniq_names(url_name)
+      res = User.new
+      res.save_record(params)
+    end
 
     b_year = params[:b_year]
     b_month = params[:b_month]
     b_day = params[:b_day]
     params[:birthday] = DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d") 
-
-    verified = 0
-
-    unless url.include?("invite")
-      res = User.find(@id)
-      verified = res.verified
-    else
-      res = User.new
-      res.save_record(params)
-    end
 
     if params[:img_src].present?
       unless params[:fb_data].to_i == 1

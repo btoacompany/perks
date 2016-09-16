@@ -6,9 +6,22 @@ class AnalyticsController < ApplicationController
   before_action :basic_info, only:[:overall, :index, :giver, :hashtag, :allhashtag, :user]
 
   def init
-    if session[:id].present? || cookies[:id].present?
-      @id = session[:id] || cookies[:id]
+    if session[:email].present? || cookies[:email].present?
+      email = session[:email] || cookies[:email]
+      @id = Company.find_by_email(email).id
+    else
+      logout
     end
+  end
+
+  def logout
+    session[:id] = nil
+    session[:email] = nil
+    cookies.delete :id
+    cookies.delete :email
+    reset_session
+
+    redirect_to '/login'
   end
 
   def overall
