@@ -79,7 +79,8 @@ class CompanyController < ApplicationController
 	  :img_src      => @s3_url + "/common/img_05.png"
 	})
       end
-      session[:id] = user.id
+      session[:id] = nil
+      cookies.delete :id
       reset_session
     rescue Exception => e
       puts e.message
@@ -98,8 +99,10 @@ class CompanyController < ApplicationController
 
   def edit_complete
     params[:hashtags] = hashtags_fix(params[:hashtags])
-    res = Company.find(@id)
-    res.save_record(params)
+    company = Company.find(@id)
+    user = User.find_by_email(company.email).update(:email => params[:email])
+
+    company.save_record(params)
     
     redirect_to_index
   end

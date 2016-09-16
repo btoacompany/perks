@@ -1,6 +1,9 @@
 #coding:utf-8
+#require 'bcrypt'
 
 class Company < ActiveRecord::Base
+  #include BCrypt
+
   self.table_name = "company"
 
   has_many :users
@@ -9,8 +12,11 @@ class Company < ActiveRecord::Base
 
   before_create :set_create_time
   before_update :set_update_time
+  #before_save 	:encrypt_password
+  #after_save 	:clear_password
   
   def save_record(params)
+    #@password = params[:password]
     self.name	      = params[:name]	      if params[:name].present?
     self.owner	      = params[:owner]	      if params[:owner].present?
     self.email	      = params[:email]	      if params[:email].present?
@@ -41,4 +47,17 @@ class Company < ActiveRecord::Base
   def set_time
     return Time.now.strftime("%Y-%m-%d %H:%M:%S")
   end
+
+=begin
+  def encrypt_password
+    if @password.present?
+      self.salt = BCrypt::Engine.generate_salt
+      self.password = BCrypt::Engine.hash_secret(@password, salt)
+    end
+  end
+
+  def clear_password
+    @password = nil
+  end
+=end  
 end
