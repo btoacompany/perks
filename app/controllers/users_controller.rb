@@ -38,6 +38,7 @@ class UsersController < ApplicationController
       else
 	if params[:remember].to_i == 1 
 	  cookies.permanent[:id] = authorized_user.id
+	  cookies.permanent[:email] = authorized_user.email
 	else
 	  session[:id] = authorized_user.id
 	end
@@ -60,6 +61,7 @@ class UsersController < ApplicationController
   def logout
     session[:id] = nil
     cookies.delete :id
+    cookies.delete :email
     reset_session
 
     redirect_to '/login'

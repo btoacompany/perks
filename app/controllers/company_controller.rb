@@ -6,9 +6,9 @@ class CompanyController < ApplicationController
   before_filter :init_url, :validate_user
 
   def init
-    if session[:id].present? || cookies[:id].present?
-      @user_id = session[:id] || cookies[:id]
-      @id = User.find(@user_id).company_id
+    if session[:email].present? || cookies[:email].present?
+      email = session[:email] || cookies[:email]
+      @id = User.find_by_email(email).company_id
     end
   end
   

@@ -27,12 +27,18 @@ company.each do | c |
     user.verified   = 0
     user.deliver_invite_mail = 3
     user.save
+
+    c.user_id = user.id
+    c.save 
   else
     p "existing company user"
     user_exist.admin	= 1
     user_exist.deliver_invite_mail = 3
     user_exist.verified   = 1
     user_exist.save
+
+    c.user_id = user_exist.id
+    c.save 
   end
 
   sleep(1)
