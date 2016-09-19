@@ -430,3 +430,78 @@ function timeSince(time) {
   return Math.floor(seconds) + "秒前";
 }
 </script>
+
+<script type="text/javascript">
+$(function(){
+  <% if @current_user.admin == 1 %>
+    <% if @users.count < 2 %>
+    new PNotify({
+      title: '社員を登録しましょう。',
+      text: 'Prizyをご利用になる社員の方を登録してください。登録は<%= link_to "コチラ", "/company/employees"%>から。',
+      hide: false,
+      type: 'error',
+      animate: {
+        animate: true,
+        in_class: 'slideInDown',
+        out_class: 'slideOutUp'
+      },
+      });
+    <% end %>
+
+    <% if @num_rewards < 3 %>
+    new PNotify({
+      title: 'オリジナルギフトを登録しましょう。',
+      text: 'Prizyポイントを交換できるギフトは社員のインセンティブに！もらってうれしい、オリジナルのギフトを登録しましょう♪<br>登録は<%= link_to "コチラ", "company/rewards"%>から。',
+      hide: false,
+      type: 'error',
+      animate: {
+        animate: true,
+        in_class: 'slideInDown',
+        out_class: 'slideOutUp'
+      },
+      });
+    <% end %>
+  <% end %>
+
+  <% if @user.firstname.blank? %>
+  new PNotify({
+    title: 'ユーザー名を登録しましょう。',
+    text: '本名もしくは、会社の人が、あなたのことだと分かる名前を登録しましょう。登録は<%= link_to "コチラ", "/update"%>から。',
+    hide: false,
+    type: 'error',
+    animate: {
+      animate: true,
+      in_class: 'slideInDown',
+      out_class: 'slideOutUp'
+    },
+    });
+  <% end %>
+
+  <% if @user.img_src.include?("noimg_pc") %>
+  new PNotify({
+    title: 'あなたのアバター(写真)を登録しましょう。',
+    text: 'あなたの写真を登録してください。みんながあなただと分かる写真にしましょう♪<br>登録は<%= link_to "コチラ", "/update"%>から。',
+    hide: false,
+    type: 'error',
+    animate: {
+      animate: true,
+      in_class: 'slideInDown',
+      out_class: 'slideOutUp'
+    },
+    });
+  <% end %>
+
+  <% if @user.birthday.to_s == @default_birthday %>
+  new PNotify({
+    title: '誕生日を登録しましょう。',
+    text: '誕生日にはPrizy運営事務局から素敵なプレゼントがあります。是非ご登録ください♪<br>登録は<%= link_to "コチラ", "/update"%>から。',
+    hide: false,
+    animate: {
+      animate: true,
+      in_class: 'slideInDown',
+      out_class: 'slideOutUp'
+    },
+    });
+  <% end %>
+});
+</script>
