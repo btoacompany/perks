@@ -155,8 +155,6 @@ class UsersController < ApplicationController
 
     @default_birthday = "2016-01-01"
     @num_rewards = Reward.where(company_id: @company_id, delete_flag: 0).count
-    logger.debug "-------"
-    logger.debug @num_rewards
   end
 
   def give_points
