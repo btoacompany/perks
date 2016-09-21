@@ -144,10 +144,29 @@
   #header_analytics .sp_menu {
     background-color: #ff8d07;
     display: block;
-    float: right;
     margin-right: 10px;
   }
+
+  #header_analytics .sp_dropdown {
+    position: absolute;
+    float: right;
+    right: 8px;
+  }
+
+  #header_analytics .sp_dropbtn {
+    margin-top: -12px;
+    padding: 15px;
+    width: 70px;
+    height: 70px;
+  }
+
+  #header_analytics .sp_dropdown_content {
+    right: 0;
+    top: 57px;
+    z-index: 5;
+  }
 }
+
 #header_analytics .menu {
   padding: 15px;
   float: right;
@@ -175,7 +194,7 @@
 }
 
 #header_analytics .contents {
-  width: 960px;
+  width: 100%;
 }
 
 #header_analytics .login_name {

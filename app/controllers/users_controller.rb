@@ -152,6 +152,11 @@ class UsersController < ApplicationController
     end
 
     @top_hashtags = Hashtag.where(company_id: @company_id).group(:hashtag).order("count_id desc").limit(7).count("id")
+
+    @default_birthday = "2016-01-01"
+    @num_rewards = Reward.where(company_id: @company_id, delete_flag: 0).count
+    logger.debug "-------"
+    logger.debug @num_rewards
   end
 
   def give_points
