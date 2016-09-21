@@ -155,8 +155,6 @@ class UsersController < ApplicationController
 
     @default_birthday = "2016-01-01"
     @num_rewards = Reward.where(company_id: @company_id, delete_flag: 0).count
-    logger.debug "-------"
-    logger.debug @num_rewards
   end
 
   def give_points
@@ -403,6 +401,7 @@ class UsersController < ApplicationController
   end
 
   def update 
+    session[:redirect] = nil
     update_details
 
     @user = User.find(@id)
@@ -416,6 +415,7 @@ class UsersController < ApplicationController
   end
 
   def invite
+    session[:redirect] = nil
     $c_code = params[:c_code] if params[:c_code].present?
 
     if $c_code.present?
@@ -477,44 +477,54 @@ class UsersController < ApplicationController
 
   def invite_complete
     update_complete_details
-    data = {
-      :email	  => params[:email],
-      :name	  => params[:name],
-      :password	  => params[:password],
-      :prizy_url  => @prizy_url
-    }
-    UserMailer.invite_welcome_email(data).deliver_later
-    logout
+
+    if session[:redirect].nil?
+      data = {
+	:email	    => params[:email],
+	:name	    => params[:name],
+	:password   => params[:password],
+	:prizy_url  => @prizy_url
+      }
+      UserMailer.invite_welcome_email(data).deliver_later
+      logout
+    end
   end
 
   def update_complete 
     update_complete_details
-    redirect_to_index
-  end
 
-  def check_uniq_names(url_name)
-    name_exist = User.where(name: params[:name], company_id: @company_id)
-    if name_exist.present?
-      flash[:notice] = "ユーザー名は既にありました"
-      redirect_to "/#{url_name}"
-      return
+    if session[:redirect].nil?
+      redirect_to_index
     end
   end
 
   def update_complete_details
-    #TODO: fix redirect
+    name_exist = "ユーザー名は既にありました"
+    session[:redirect] = nil
+
     url = request.original_url
-    url_name = ""
     verified = 0
 
     unless url.include?("invite")
-      #url_name = "invite"
-      #check_uniq_names(url_name)
+      username_exist = User.where(name: params[:name], company_id: @company_id)
       res = User.find(@id)
       verified = res.verified
+
+      unless res.name == params[:name]
+	if username_exist.present?
+	  flash[:notice] = name_exist 
+	  session[:redirect] = 1
+	  redirect_to "/update" and return
+	end
+      end
     else
-      #url_name = "update"
-      #check_uniq_names(url_name)
+      username_exist = User.where(name: params[:name], company_id: params[:company_id])
+      if username_exist.present?
+	flash[:notice] = name_exist 
+	session[:redirect] = 1
+	redirect_to "/invite" and return
+      end
+
       res = User.new
       res.save_record(params)
     end
