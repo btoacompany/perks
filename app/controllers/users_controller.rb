@@ -499,7 +499,7 @@ class UsersController < ApplicationController
   end
 
   def update_complete_details
-    name_exist = "ユーザー名は既にありました"
+    name_exist = "そのユーザー名はすでに使われております。他のユーザー名をご指定ください。"
     session[:redirect] = nil
 
     url = request.original_url
