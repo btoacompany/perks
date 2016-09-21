@@ -1,8 +1,9 @@
 <div id="wrapper">
 <div id="contents">
   <h3 class="c_align">ユーザー情報編集</h3><br>
-  <%= form_tag( "/invite/complete", method: "post", id: "login_form", multipart: true ) do %>
+  <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
 
+  <%= form_tag( "/invite/complete", method: "post", id: "login_form", multipart: true ) do %>
   <div class="toolbox center">
     <input type="hidden" name="fb_data" value="<%= @fb_data %>"/>
     <input type="hidden" name="company_id" value="<%= @company_id %>"/>
