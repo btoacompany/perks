@@ -1,0 +1,57 @@
+<div id="wrapper">
+<div id="container">
+  <div class="toolbox">
+    <div class="c_align">
+      <h2>ボーナスチャレンジの登録・編集</h2><br>
+      <a href="/company/bonus/add" class="a_btncmn radius5" style="font-size:14pt">+ 新規追加</a>
+    </div><br>
+
+    <% if @bonus.count == 0 %>
+      <p align="center"><i>ボーナスチャレンジが追加されていません</i></p><br>
+    <% else %>
+      <table class="tbl_tools center" border="1">
+	<tr>
+	  <th>タイトル</th>
+	  <th>詳細</th>
+	  <th>ポイント</th>
+	  <th class="c_align">編集・削除</th>
+	</tr>
+	<% @bonus.each do | item | %>
+	<tr class="item_<%= item[:id] %>">
+	  <td style="width:250px;"><%= item[:title] %></td>
+	  <td style="width:300px;"><%= item[:description] %></td>
+	  <td><%= number_with_delimiter(item[:points], :delimiter => ',') %></td>
+	  <td class="c_align">
+	    <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="編集" /> 
+	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
+	  </td>
+	</tr>
+	<% end %>
+      </table><br>
+    <% end %>
+    <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="メニュへ戻る" /></p>
+  </div> <!-- toolbox -->
+</div> <!-- container -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+
+$('.delete_item').click(function() {
+  var item_id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if (confirm("本当に削除しましか？")) {
+    $.post("/company/bonus/delete", { 'id': item_id }); //send post request
+    $(".item_" + item_id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
+});
+
+$('.edit_item').click(function() {
+  var item_id = ($(this).attr('data-id'));
+  window.location.href = "/company/bonus/edit/"+item_id; //redirect to assigned url
+});
+
+$(".btn_back").click(function() {
+  window.location = "/company";
+});
+</script>

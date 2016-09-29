@@ -75,25 +75,84 @@
 	</div>
       <% end %>
     </div><br>
-
-<!--
-    <div
-      class="fb-like"
-      data-share="true"
-      data-width="450"
-      data-show-faces="true">
-    </div>
--->    
   </div><br>
 
   <div class="leftbox col-8">
+    <% if @user.admin == 1 %>
+      <%= form_tag( "/user/give_bonus", method: "post", id: "login_form" ) do %>
+	<div id="modal">
+	  <div id="modal-ct">
+	    <div id="modal-header">
+	      <h3>ボーナスチャレンジ</h4><br>
+	      <h4>今月・残り：<%= @user.company.bonus_points %> ボーナスチャレンジポイント</h4>
+	    </div>
+	    <div class="txt-fld">
+	      <table>
+		<tr>
+		  <th>公開設定： </th>
+		  <td>
+		    <label><input type="radio" name="privacy" value="0" style="width:auto" checked>全員に公開</label><br>
+		    <label><input type="radio" name="privacy" value="1" style="width:auto">あなたと受賞者にのみ公開</label>
+		  </td>
+		</tr>
+		<tr>
+		  <th>受賞者： </th>
+		  <td>
+		    <select name="bonus_receiver_id">
+		    <% if @users.present? %>
+		      <% @users.each do | user | %>
+			<% unless user.id == @user.id %> 
+			    <option value="<%= user.id %>"><%= user.name %></option>
+			<% end %>
+		      <% end %>
+		    <% end %>
+		    </select>
+		  </td>
+		</tr>
+		<tr>
+		  <th>カテゴリー： </th>
+		  <td>
+		    <select id="sel_bonus" name="bonus_title">
+		      <% @bonuses.each do | bonus| %>
+			<option value="<%= bonus.title %>_<%= bonus.points %>" data-id="<%= bonus.id %>"><%= bonus.title %> - (<%= bonus.points %> pts)</option>
+		      <% end %>
+		      <option class="special_bonus" value="SpecialBonus_0" data-id="0">特別ボーナス(ご自由に設定できます。)</option>
+		    </select>
+		  </td>
+		</tr>
+		<tr class="bonus_points">
+		  <th>ポイント: </th>
+		  <td><input type="number" name="bonus_points" value="" min="1" max="<%= @user.company.bonus_points %>" required /></td>
+		</tr>
+		<tr>
+		  <th colspan="2" align="left">コメント: </th>
+		</tr>
+		<tr>
+		  <td colspan="2"><textarea rows="2" cols="36" name="bonus_comments"></textarea></td>
+		</tr>
+	      </table>
+	    </div>
+	    <div class="btn-fld">
+	      <input type="submit" class="button r_float" value="贈る" />
+	    </div>
+	  </div>
+	</div> <!-- bonus modal -->
+      <% end %>  
+    <% end %>  
+
+
     <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
+
     <div class="pointsbox">
       <p align="center">
 	<div class="dropdown">
 	  <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
 	  <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
 	  <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" data-step="4"/>
+	  
+	  <% if @user.admin == 1 %>
+	    <a id="bonus_trigger_id" rel="leanModal" name="modal" href="#modal"><img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png"/></a>
+	  <% end %>  
 	  <div id="myDropdown" class="dropdown-content"> </div>
 	</div><br><hr>
 
@@ -230,6 +289,9 @@ $(document).ready(function() {
 
 
 <script type="text/javascript">
+// for modal dialog box
+$("#bonus_trigger_id").leanModal({ top: 200, overlay: 0.4, closeButton: ".modal_close"});
+
 $.urlParam = function(name){
   var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
   if (results != null) {
@@ -396,6 +458,14 @@ $(document).mouseup(function(e) {
 });
 
 $(document).ready(function() {
+  var bonusId = $(this).find(':selected').attr('data-id');
+  if(bonusId == 0) {
+    $(".bonus_points").show();
+    $(".bonus_points input").prop('disabled', false);
+  } else {
+    $(".bonus_points").hide();
+    $(".bonus_points input").prop('disabled', true);
+  }
   $(".time p").each(function() {
     $(this).html(timeSince($(this).html()));
   });
@@ -429,79 +499,64 @@ function timeSince(time) {
   }
   return Math.floor(seconds) + "秒前";
 }
+
+$("#sel_bonus").change(function() {
+  var bonusId = $(this).find(':selected').attr('data-id');
+  if(bonusId == 0) {
+    $(".bonus_points").show();
+    $(".bonus_points input").prop('disabled', false);
+  } else {
+    $(".bonus_points").hide();
+    $(".bonus_points input").prop('disabled', true);
+  }
+});
 </script>
 
 <script type="text/javascript">
 $(function(){
   <% if @current_user.admin == 1 %>
     <% if @users.count < 2 %>
-    new PNotify({
-      title: '社員を登録しましょう。',
-      text: 'Prizyをご利用になる社員の方を登録してください。登録は<%= link_to "コチラ", "/company/employees"%>から。',
-      hide: false,
-      type: 'error',
-      animate: {
-        animate: true,
-        in_class: 'slideInDown',
-        out_class: 'slideOutUp'
-      },
-      });
+      title = '社員を登録しましょう。';
+      text = 'Prizyをご利用になる社員の方を登録してください。登録は<%= link_to "コチラ", "/company/employees"%>から。';
+      pNotify(title, text);
     <% end %>
 
     <% if @num_rewards < 3 %>
-    new PNotify({
-      title: 'オリジナルギフトを登録しましょう。',
-      text: 'Prizyポイントを交換できるギフトは社員のインセンティブに！もらってうれしい、オリジナルのギフトを登録しましょう♪<br>登録は<%= link_to "コチラ", "company/rewards"%>から。',
-      hide: false,
-      type: 'error',
-      animate: {
-        animate: true,
-        in_class: 'slideInDown',
-        out_class: 'slideOutUp'
-      },
-      });
+      title = 'オリジナルギフトを登録しましょう。';
+      text = 'Prizyポイントを交換できるギフトは社員のインセンティブに！もらってうれしい、オリジナルのギフトを登録しましょう♪<br>登録は<%= link_to "コチラ", "company/rewards"%>から。';
+      pNotify(title, text);
     <% end %>
   <% end %>
 
   <% if @user.firstname.blank? %>
-  new PNotify({
-    title: 'ユーザー名を登録しましょう。',
-    text: '本名もしくは、会社の人が、あなたのことだと分かる名前を登録しましょう。登録は<%= link_to "コチラ", "/update"%>から。',
-    hide: false,
-    type: 'error',
-    animate: {
-      animate: true,
-      in_class: 'slideInDown',
-      out_class: 'slideOutUp'
-    },
-    });
+    title = 'ユーザー名を登録しましょう。';
+    text = '本名もしくは、会社の人が、あなたのことだと分かる名前を登録しましょう。登録は<%= link_to "コチラ", "/update"%>から。';
+    pNotify(title, text);
   <% end %>
 
   <% if @user.img_src.include?("noimg_pc") %>
-  new PNotify({
-    title: 'あなたのアバター(写真)を登録しましょう。',
-    text: 'あなたの写真を登録してください。みんながあなただと分かる写真にしましょう♪<br>登録は<%= link_to "コチラ", "/update"%>から。',
-    hide: false,
-    type: 'error',
-    animate: {
-      animate: true,
-      in_class: 'slideInDown',
-      out_class: 'slideOutUp'
-    },
-    });
+    title = 'あなたのアバター(写真)を登録しましょう。';
+    text = 'あなたの写真を登録してください。みんながあなただと分かる写真にしましょう♪<br>登録は<%= link_to "コチラ", "/update"%>から。';
+    pNotify(title, text);
   <% end %>
 
   <% if @user.birthday.to_s == @default_birthday %>
+    title = '誕生日を登録しましょう。';
+    text = '誕生日にはPrizy運営事務局から素敵なプレゼントが届きます。是非ご登録ください♪<br>登録は<%= link_to "コチラ", "/update"%>から。';
+    pNotify(title, text);
+  <% end %>
+});
+
+function pNotify(pTitle, pText) {
   new PNotify({
-    title: '誕生日を登録しましょう。',
-    text: '誕生日にはPrizy運営事務局から素敵なプレゼントが届きます。是非ご登録ください♪<br>登録は<%= link_to "コチラ", "/update"%>から。',
+    title: pTitle,
+    text: pText,
     hide: false,
     animate: {
       animate: true,
       in_class: 'slideInDown',
       out_class: 'slideOutUp'
     },
-    });
-  <% end %>
-});
+  });
+}
 </script>

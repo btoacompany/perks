@@ -8,7 +8,11 @@ class CompanyController < ApplicationController
   def init
     if session[:email].present? || cookies[:email].present?
       email = session[:email] || cookies[:email]
-      @id = Company.find_by_email(email).id
+      user = User.find_by_email(email)
+      if user.admin == 1
+	@id = user.company_id
+	@user_id = user.id
+      end
     else
       logout
     end
@@ -244,6 +248,55 @@ class CompanyController < ApplicationController
     end
 
     redirect_to "/company/rewards/request"
+  end
+
+  def bonus 
+    @bonus = Bonus.where(:company_id => @id, :delete_flag => 0)
+  end
+
+  def add_bonus
+  end
+
+  def add_bonus_complete
+    params[:company_id] = @id
+
+    @bonus = Bonus.new
+    @bonus.save_record(params)
+    redirect_to '/company/bonus'
+  end
+
+  def edit_bonus
+    @bonus = Bonus.find(params[:bonus_id])
+  end
+
+  def edit_bonus_complete
+    params[:company_id] = @id
+
+    result = Bonus.find(params[:bonus_id])
+    result.save_record(params)
+    redirect_to '/company/bonus'
+  end
+
+  def delete_bonus
+    result =  Bonus.find(params[:id])
+    result.delete_record
+    redirect_to '/company/bonus'
+  end
+
+  def make_admin
+    result =  User.find(params[:id])
+    result.admin = 1
+    result.save
+
+    redirect_to '/company/employees'
+  end
+
+  def make_user
+    result =  User.find(params[:id])
+    result.admin = 0
+    result.save
+    
+    redirect_to '/company/employees'
   end
 
   def redirect_to_index

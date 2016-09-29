@@ -16,7 +16,8 @@
 	  <th>ステータス</th>
 	  <th>取得ポイント</th>
 	  <th>ポイント</th>
-	  <th>編集</th>
+	  <th>管理者</th>
+	  <th>アカウント削除</th>
 	</tr>
 	<% @users.each do | item | %>
 	  <tr class="item_<%= item[:id] %>">
@@ -30,19 +31,42 @@
 	    <td><%= item[:in_points] %></td>
 	    <td><%= item[:out_points] %></td>
 	    <td align="center">
-	      <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
+	      <input type="checkbox" class="chk_admin" data-id="<%= item[:id] %>" value="1" <% if item[:admin] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>
+	    </td>
+	    <td align="center">
+	      <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
 	    </td>
 	  </tr>
 	<% end %>
       </table><br>
     <% end %>
-    <p align="center"><input type="button" class="btn btn_back"
-    style="width:200px;height:50px" value="戻る" /></p>
+    <p align="center">
+      <input type="button" class="btn btn_back" style="width:200px;height:50px" value="戻る" />
+    </p>
   </div><br>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
 
 <script type="text/javascript">
+$('.chk_admin').change(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if ($(this).is(":checked")) {
+    if (confirm("管理者にしますか？")) {
+      $.post("/company/employees/make_admin", { 'id': _id }); //send post request
+    } else {
+      $(this).prop("checked", false);
+      return false; //do nothing
+    }
+  } else {
+    if (confirm("ユーザーにしますか？")) {
+      $.post("/company/employees/make_user", { 'id': _id }); //send post request
+    } else {
+      $(this).prop("checked", true);
+      return false; //do nothing
+    }
+  }
+});
 $('.delete_item').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
 

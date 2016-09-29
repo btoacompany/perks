@@ -1160,7 +1160,7 @@ hr.style-two {
   text-decoration: none;
   display: inline-block;
   font-size: 12pt;
-  width: 250px;
+  width: 270px;
   height: 50px;
   color: #fff;
   background-color: #303030;
@@ -1250,4 +1250,79 @@ hr.style-two {
 }
 
 
+/* --- for modal --*/
+#lean_overlay {
+  position: fixed;
+  z-index:100;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+  background: #000;
+  display: none;
+}
+#modal {
+  width: 404px;
+  margin-top: -100px;
+  padding-bottom: 2px;
+  display:none;
+  background: #FFF;
+  border-radius: 5px; 
+    -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px;
+  box-shadow: 0px 0px 4px rgba(0,0,0,0.7); 
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7); 
+    -moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
+}
 
+#modal-header { padding: 18px 18px 14px 18px; border-bottom: 1px solid #CCC; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; }
+
+#modal-header  h2 { color: #444; font-size: 2em; font-weight: 700; margin-bottom: 3px; text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5); }
+#modal-header  p { color: #444; font-size: 1.3em; margin: 0; text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5); text-shadow: none; }
+
+#modal .txt-fld { position: relative; width: 100%; padding: 14px 30px; margin-left: -5px; border-bottom: 1px solid #EEE; text-align: left; }
+#modal .btn-fld { width: auto; overflow: hidden; padding: 12px 34px; margin-left: 2px;}
+
+#modal .txt-fld input { width: 100%; padding: 8px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; font-size: 1.2em; color: #222; background: #F7F7F7; font-family: "Helvetica Neue"; outline: none; border-top: 1px solid #CCC; border-left: 1px solid #CCC; border-right: 1px solid #E7E6E6; border-bottom: 1px solid #E7E6E6; }
+#modal .txt-fld input.good_input { background: #DEF5E1  236px center no-repeat; }
+#modal .txt-fld input.error_input { background: #FDE0E0; }
+.txt-fld input:focus, .txt-fld textarea:focus { background-color: #FAF9DC; }
+
+
+#modal .button {
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  background: #3F9D4A; 
+  border: none;
+  width: auto;
+  overflow: visible;
+  font-size: 1.0em;
+  color: #FFF;
+  padding: 7px 10px;  border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; font-weight: bold; text-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+
+#modal table {
+  width: 100%;
+}
+
+#modal select {
+  width: 100%;
+  font-size: 11pt;
+  margin-top: 5px;
+}
+
+#modal th {
+  padding: 10px; 
+  padding-right: 15px;
+  vertical-align: top;
+  width: 120px;
+}
+
+#modal textarea {
+  margin-left: 10px;
+  width: 97%;
+}
+
+#bonus_trigger_id {
+  text-decoration: none;
+  background-color: #fff;
+}

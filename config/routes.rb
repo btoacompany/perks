@@ -41,18 +41,28 @@ Rails.application.routes.draw do
   post	'/company/rewards/delete'	    => 'company#delete_rewards'
   get	'/company/rewards/request'	    => 'company#rewards_request'
   post	'/company/rewards/request/action'   => 'company#rewards_request_action'
+  get	'/company/bonus'		    => 'company#bonus'
+  get	'/company/bonus/add'		    => 'company#add_bonus'
+  post	'/company/bonus/add/complete'	    => 'company#add_bonus_complete'
+  get	'/company/bonus/edit/:bonus_id'     => 'company#edit_bonus'
+  post	'/company/bonus/edit/complete'	    => 'company#edit_bonus_complete'
+  post	'/company/bonus/delete'		    => 'company#delete_bonus'
+  post	'/company/employees/make_admin'	    => 'company#make_admin'
+  post	'/company/employees/make_user'	    => 'company#make_user'
 
   # users
   get	'/user'			    => 'users#index'
   post	'/user/give_points'	    => 'users#give_points'
   post	'/user/give_comments'	    => 'users#give_comments'
   post	'/user/give_kudos'	    => 'users#give_kudos'
+  post	'/user/give_bonus'	    => 'users#give_bonus'
   get	'/profile'		    => 'users#profile'
   get	'/profile/given'	    => 'users#given'
   get	'/rewards'		    => 'users#rewards'
   post	'/rewards/request'	    => 'users#rewards_request'
   get	'/rewards/status'	    => 'users#rewards_status'
   post	'/rewards/cancel'	    => 'users#rewards_cancel'
+  get	'/bonus'		    => 'users#bonus'
 
   #analytics
   get	'analytics'		=> 'analytics#overall'
