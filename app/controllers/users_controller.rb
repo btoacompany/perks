@@ -81,11 +81,15 @@ class UsersController < ApplicationController
 
     @user = User.find(@id)
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @bonuses = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
 
     today = Date.today
     @birthday_users = @users.where('MONTH(birthday)=? AND DAYOFMONTH(birthday)=?', today.month, today.day)
     
-    posts = Post.where(:company_id => @company_id, :delete_flag => 0).order("update_time desc")
+    posts = Post.where(:company_id => @company_id, :privacy => 0, :delete_flag => 0)
+    bonus_posts = Post.where(:company_id => @company_id, :privacy => 1, :delete_flag => 0).where("receiver_id = #{@user.id} OR user_id = #{@user.id}")
+    all_posts = (posts + bonus_posts)
+    posts = Post.where(id: all_posts.map(&:id)).order("update_time desc")
 
     limit = 5
     page = params[:page] || 1
@@ -587,6 +591,75 @@ class UsersController < ApplicationController
       flash[:notice] = "The email you entered does not exist"
       render 'forgot_password'
     end
+  end
+
+  def give_bonus
+    bonus_title = params[:bonus_title].gsub(/\s+/, "").split("_")
+
+    if params[:bonus_points].present?
+      points = params[:bonus_points].to_i
+      bonus_title.pop
+    else
+      points = (bonus_title.pop).to_i
+    end
+
+    params[:bonus_title] = bonus_title.join("")
+
+    @user = User.find(@id)
+
+    if (params[:bonus_receiver_id].present?)
+      if (points <= @user.company.bonus_points)
+	@user.company.bonus_points -= points.to_i 
+	@user.company.save
+
+	comments = [ "+#{points}", params[:bonus_comments] ].reject { |e| e.to_s.empty? }
+	comments << "#bonus_challenge ##{params[:bonus_title]}"
+	params[:bonus_comments] = comments.join(" ")
+	hashtags = params[:bonus_comments].scan(/\#[^\s|　]+/)
+
+	receiver = User.find(params[:bonus_receiver_id])
+	receiver.in_points += points.to_i
+	receiver.save
+
+=begin
+	UserMailer.receive_points_email({
+	  receiver: receiver.name, 
+	  email: receiver.email,
+	  giver: @user.name,
+	  points: params[:bonus_points],
+	  prizy_url: @prizy_url + "/user"
+	}).deliver_later
+=end
+	post = Post.new
+	data = {
+	  :company_id	    => @company_id,
+	  :user_id	    => @id,
+	  :receiver_id	    => params[:bonus_receiver_id],
+	  :points	    => points,
+	  :description	    => params[:bonus_comments],
+	  :privacy	    => params[:privacy],
+	  :post_type	    => 1
+	}
+
+	post.save_record(data)
+	data[:post_id] = post.id
+
+	hashtags.each do | tag |
+	  data[:hashtag] = tag 
+	  hashtag = Hashtag.new
+	  hashtag.save_record(data)
+	end
+      else
+	flash[:notice] = "ポイントが足りません"
+      end
+    end
+
+    redirect_to_index
+  end
+
+  def bonus
+    user = User.find(@id)
+    @bonus = Bonus.where(:company_id => user.company_id, :delete_flag => 0).order("points").order("title")
   end
 
   def redirect_to_index

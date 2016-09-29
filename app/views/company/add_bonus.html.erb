@@ -1,7 +1,7 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 align="center">ギフト追加</h3><br>
-  <%= form_tag( "/company/rewards/add/complete", method: "post", id: "new_form" ) do %>
+  <h3 align="center">ボーナス追加</h3><br>
+  <%= form_tag( "/company/bonus/add/complete", method: "post", id: "new_form" ) do %>
   <div class="toolbox">
     <table class="tbl_tools">
       <tr>
@@ -31,6 +31,6 @@
 
 <script type="text/javascript">
 $(".btn_back").click(function() {
-  window.location = "/company/rewards";
+  window.location = "/company/bonus";
 });
 </script>

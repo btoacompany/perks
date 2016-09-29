@@ -1,21 +1,21 @@
 <div id="wrapper">
 <div id="contents">
-  <h3 align="center">ギフト編集</h3><br>
-  <%= form_tag( "/company/rewards/edit/complete", method: "post", id: "new_form" ) do %>
-  <input type="hidden" name="reward_id" value="<%= params[:reward_id] %>"/>
+  <h3 align="center">ボーナス編集</h3><br>
+  <%= form_tag( "/company/bonus/edit/complete", method: "post", id: "new_form" ) do %>
+  <input type="hidden" name="bonus_id" value="<%= params[:bonus_id] %>"/>
   <div class="toolbox">
     <table class="tbl_tools">
       <tr>
 	<td>タイトル: </td>
-	<td><input type="text" name="title" value="<%= @reward.title %>" size="32"  maxlength="25 "required /></td>
+	<td><input type="text" name="title" value="<%= @bonus.title %>" size="32"  maxlength="25 "required /></td>
       </tr>
       <tr>
 	<td>詳細: </td>
-	<td><textarea name="description" rows="5" cols="25" placeholder="100文字以内" maxlength="100"><%= @reward.description %></textarea></td>
+	<td><textarea name="description" rows="5" cols="25" placeholder="100文字以内" maxlength="100"><%= @bonus.description %></textarea></td>
       </tr>
       <tr>
 	<td>ポイント: </td>
-	<td><input type="number" name="points" value="<%= @reward.points %>" min="0" required/></td>
+	<td><input type="number" name="points" value="<%= @bonus.points %>" min="0" required/></td>
       </tr>
       <tr>
 	<td colspan="2" align="right">
@@ -32,6 +32,6 @@
 
 <script type="text/javascript">
 $(".btn_back").click(function() {
-  window.location = "/company/rewards";
+  window.location = "/company/bonus";
 });
 </script>

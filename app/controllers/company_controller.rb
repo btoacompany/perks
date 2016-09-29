@@ -246,6 +246,39 @@ class CompanyController < ApplicationController
     redirect_to "/company/rewards/request"
   end
 
+  def bonus 
+    @bonus = Bonus.where(:company_id => @id, :delete_flag => 0)
+  end
+
+  def add_bonus
+  end
+
+  def add_bonus_complete
+    params[:company_id] = @id
+
+    @bonus = Bonus.new
+    @bonus.save_record(params)
+    redirect_to '/company/bonus'
+  end
+
+  def edit_bonus
+    @bonus = Bonus.find(params[:bonus_id])
+  end
+
+  def edit_bonus_complete
+    params[:company_id] = @id
+
+    result = Bonus.find(params[:bonus_id])
+    result.save_record(params)
+    redirect_to '/company/bonus'
+  end
+
+  def delete_bonus
+    result =  Bonus.find(params[:id])
+    result.delete_record
+    redirect_to '/company/bonus'
+  end
+
   def redirect_to_index
     redirect_to "/company" 
   end

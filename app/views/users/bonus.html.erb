@@ -1,0 +1,20 @@
+<div id="wrapper">
+<div id="contents">
+  <div class="row">
+    <div id="item_list">
+      <% @bonus.each_with_index do | item, i | %>
+	<div class="item" >
+	  <img src="<%= item.img_src %>"/><br>
+	  <div class="details">
+	    <p class="name" align="left"><b><%= item[:title] %></b></p>
+	    <p align="left"><%= item[:description] %></p>
+	  </div>
+	  <div class="buy">
+	    <p><%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</p> 
+	  </div>
+	</div>
+      <% end %>
+    </div>
+  </div> <!-- row -->
+</div> <!-- contents -->
+</div> <!-- wrapper -->
