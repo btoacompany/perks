@@ -17,7 +17,7 @@
 	  <th>取得ポイント</th>
 	  <th>ポイント</th>
 	  <th>管理者</th>
-	  <th>編集</th>
+	  <th>アカウント削除</th>
 	</tr>
 	<% @users.each do | item | %>
 	  <tr class="item_<%= item[:id] %>">
@@ -34,7 +34,7 @@
 	      <input type="checkbox" class="chk_admin" data-id="<%= item[:id] %>" value="1" <% if item[:admin] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>
 	    </td>
 	    <td align="center">
-	      <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
+	      <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="アカウント削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
 	    </td>
 	  </tr>
 	<% end %>

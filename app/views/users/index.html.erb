@@ -84,20 +84,20 @@
 	<div id="modal">
 	  <div id="modal-ct">
 	    <div id="modal-header">
-	      <h2>Give bonus points</h2><br>
-	      <h3>You have <%= @user.company.bonus_points %> points left to give</h3>
+	      <h2>ボーナスチャレンジ</h2><br>
+	      <h3>今月の残りのボーナスチャレンジ・ポイントは<%= @user.company.bonus_points %> です。</h3>
 	    </div>
 	    <div class="txt-fld">
 	      <table>
 		<tr>
-		  <th>Privacy</th>
+		  <th>公開設定</th>
 		  <td>
-		    <label><input type="radio" name="privacy" value="0" style="width:auto" checked>Public</label>
-		    <label><input type="radio" name="privacy" value="1" style="width:auto">Private</label>
+		    <label><input type="radio" name="privacy" value="0" style="width:auto" checked>全員に公開</label>
+		    <label><input type="radio" name="privacy" value="1" style="width:auto">あなたと受賞者にのみ公開</label>
 		  </td>
 		</tr>
 		<tr>
-		  <th>Reward user: </th>
+		  <th>ボーナスチャレンジ受賞者： </th>
 		  <td>
 		    <select name="bonus_receiver_id">
 		    <% if @users.present? %>
@@ -111,22 +111,22 @@
 		  </td>
 		</tr>
 		<tr>
-		  <th>In category: </th>
+		  <th>ボーナスチャレンジ・カテゴリー </th>
 		  <td>
 		    <select id="sel_bonus" name="bonus_title">
 		      <% @bonuses.each do | bonus| %>
 			<option value="<%= bonus.title %>_<%= bonus.points %>" data-id="<%= bonus.id %>"><%= bonus.title %> - (<%= bonus.points %> pts)</option>
 		      <% end %>
-		      <option class="special_bonus" value="SpecialBonus_0" data-id="0">SpecialBonus</option>
+		      <option class="special_bonus" value="SpecialBonus_0" data-id="0">特別ボーナス(ご自由に設定できます。)</option>
 		    </select>
 		  </td>
 		</tr>
 		<tr class="bonus_points">
-		  <th>Points: </th>
+		  <th>ポイント: </th>
 		  <td><input type="number" name="bonus_points" value="" min="1" max="<%= @user.company.bonus_points %>" required /></td>
 		</tr>
 		<tr>
-		  <th colspan="2" align="left">Comment: </th>
+		  <th colspan="2" align="left">コメント: </th>
 		</tr>
 		<tr>
 		  <td colspan="2"><textarea rows="2" cols="36" name="bonus_comments"></textarea></td>
