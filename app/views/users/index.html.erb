@@ -84,20 +84,20 @@
 	<div id="modal">
 	  <div id="modal-ct">
 	    <div id="modal-header">
-	      <h2>ボーナスチャレンジ</h2><br>
-	      <h3>今月の残りのボーナスチャレンジ・ポイントは<%= @user.company.bonus_points %> です。</h3>
+	      <h3>ボーナスチャレンジ</h4><br>
+	      <h4>今月・残り：<%= @user.company.bonus_points %> ボーナスチャレンジポイント</h4>
 	    </div>
 	    <div class="txt-fld">
 	      <table>
 		<tr>
 		  <th>公開設定</th>
 		  <td>
-		    <label><input type="radio" name="privacy" value="0" style="width:auto" checked>全員に公開</label>
+		    <label><input type="radio" name="privacy" value="0" style="width:auto" checked>全員に公開</label><br>
 		    <label><input type="radio" name="privacy" value="1" style="width:auto">あなたと受賞者にのみ公開</label>
 		  </td>
 		</tr>
 		<tr>
-		  <th>ボーナスチャレンジ受賞者： </th>
+		  <th>受賞者： </th>
 		  <td>
 		    <select name="bonus_receiver_id">
 		    <% if @users.present? %>
@@ -111,7 +111,7 @@
 		  </td>
 		</tr>
 		<tr>
-		  <th>ボーナスチャレンジ・カテゴリー </th>
+		  <th>カテゴリー </th>
 		  <td>
 		    <select id="sel_bonus" name="bonus_title">
 		      <% @bonuses.each do | bonus| %>
@@ -134,8 +134,8 @@
 	      </table>
 	    </div>
 	    <div class="btn-fld">
-	      <input type="button" class="button l_float" value="Cancel" />
-	      <input type="submit" class="button r_float" value="Reward" />
+	      <input type="button" class="button l_float" value="キャンセル" />
+	      <input type="submit" class="button r_float" value="贈る" />
 	    </div>
 	  </div>
 	</div> <!-- bonus modal -->
