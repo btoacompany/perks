@@ -621,15 +621,14 @@ class UsersController < ApplicationController
 	receiver.in_points += points.to_i
 	receiver.save
 
-=begin
 	UserMailer.receive_points_email({
 	  receiver: receiver.name, 
 	  email: receiver.email,
 	  giver: @user.name,
-	  points: params[:bonus_points],
+	  points: points,
 	  prizy_url: @prizy_url + "/user"
 	}).deliver_later
-=end
+
 	post = Post.new
 	data = {
 	  :company_id	    => @company_id,

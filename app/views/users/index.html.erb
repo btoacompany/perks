@@ -133,7 +133,6 @@
 	      </table>
 	    </div>
 	    <div class="btn-fld">
-	      <input type="button" class="button l_float" value="キャンセル" />
 	      <input type="submit" class="button r_float" value="贈る" />
 	    </div>
 	  </div>
@@ -459,8 +458,14 @@ $(document).mouseup(function(e) {
 });
 
 $(document).ready(function() {
-  $(".bonus_points").hide();
-  $(".bonus_points input").prop('disabled', true);
+  var bonusId = $(this).find(':selected').attr('data-id');
+  if(bonusId == 0) {
+    $(".bonus_points").show();
+    $(".bonus_points input").prop('disabled', false);
+  } else {
+    $(".bonus_points").hide();
+    $(".bonus_points input").prop('disabled', true);
+  }
   $(".time p").each(function() {
     $(this).html(timeSince($(this).html()));
   });
