@@ -1295,7 +1295,7 @@ hr.style-two {
   border: none;
   width: auto;
   overflow: visible;
-  font-size: 1.2em;
+  font-size: 1.0em;
   color: #FFF;
   padding: 7px 10px;  border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; font-weight: bold; text-shadow: 0 1px 0 rgba(0,0,0,0.4);
 }
@@ -1313,11 +1313,16 @@ hr.style-two {
 #modal th {
   padding: 10px; 
   padding-right: 15px;
-  vertical-align: middle;
+  vertical-align: top;
+  width: 120px;
 }
-
 
 #modal textarea {
   margin-left: 10px;
   width: 97%;
+}
+
+#bonus_trigger_id {
+  text-decoration: none;
+  background-color: #fff;
 }

@@ -80,7 +80,6 @@
   <div class="leftbox col-8">
     <% if @user.admin == 1 %>
       <%= form_tag( "/user/give_bonus", method: "post", id: "login_form" ) do %>
-	<a id="bonus_trigger_id" rel="leanModal" name="modal" href="#modal">bonus</a>
 	<div id="modal">
 	  <div id="modal-ct">
 	    <div id="modal-header">
@@ -90,7 +89,7 @@
 	    <div class="txt-fld">
 	      <table>
 		<tr>
-		  <th>公開設定</th>
+		  <th>公開設定： </th>
 		  <td>
 		    <label><input type="radio" name="privacy" value="0" style="width:auto" checked>全員に公開</label><br>
 		    <label><input type="radio" name="privacy" value="1" style="width:auto">あなたと受賞者にのみ公開</label>
@@ -111,7 +110,7 @@
 		  </td>
 		</tr>
 		<tr>
-		  <th>カテゴリー </th>
+		  <th>カテゴリー： </th>
 		  <td>
 		    <select id="sel_bonus" name="bonus_title">
 		      <% @bonuses.each do | bonus| %>
@@ -151,6 +150,10 @@
 	  <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
 	  <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
 	  <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" data-step="4"/>
+	  
+	  <% if @user.admin == 1 %>
+	    <a id="bonus_trigger_id" rel="leanModal" name="modal" href="#modal"><img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png"/></a>
+	  <% end %>  
 	  <div id="myDropdown" class="dropdown-content"> </div>
 	</div><br><hr>
 
