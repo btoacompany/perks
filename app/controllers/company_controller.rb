@@ -8,7 +8,11 @@ class CompanyController < ApplicationController
   def init
     if session[:email].present? || cookies[:email].present?
       email = session[:email] || cookies[:email]
-      @id = Company.find_by_email(email).id
+      user = User.find_by_email(email)
+      if user.admin == 1
+	@id = user.company_id
+	@user_id = user.id
+      end
     else
       logout
     end
@@ -277,6 +281,22 @@ class CompanyController < ApplicationController
     result =  Bonus.find(params[:id])
     result.delete_record
     redirect_to '/company/bonus'
+  end
+
+  def make_admin
+    result =  User.find(params[:id])
+    result.admin = 1
+    result.save
+
+    redirect_to '/company/employees'
+  end
+
+  def make_user
+    result =  User.find(params[:id])
+    result.admin = 0
+    result.save
+    
+    redirect_to '/company/employees'
   end
 
   def redirect_to_index

@@ -44,9 +44,11 @@ Rails.application.routes.draw do
   get	'/company/bonus'		    => 'company#bonus'
   get	'/company/bonus/add'		    => 'company#add_bonus'
   post	'/company/bonus/add/complete'	    => 'company#add_bonus_complete'
-  get	'/company/bonus/edit/:bonus_id'    => 'company#edit_bonus'
+  get	'/company/bonus/edit/:bonus_id'     => 'company#edit_bonus'
   post	'/company/bonus/edit/complete'	    => 'company#edit_bonus_complete'
   post	'/company/bonus/delete'		    => 'company#delete_bonus'
+  post	'/company/employees/make_admin'	    => 'company#make_admin'
+  post	'/company/employees/make_user'	    => 'company#make_user'
 
   # users
   get	'/user'			    => 'users#index'

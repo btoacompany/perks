@@ -8,7 +8,11 @@ class AnalyticsController < ApplicationController
   def init
     if session[:email].present? || cookies[:email].present?
       email = session[:email] || cookies[:email]
-      @id = Company.find_by_email(email).id
+      user = User.find_by_email(email)
+      if user.admin == 1
+	@id = user.company_id
+	@user_id = user.id
+      end
     else
       logout
     end
