@@ -458,7 +458,7 @@ $(document).mouseup(function(e) {
 });
 
 $(document).ready(function() {
-  var bonusId = $(this).find(':selected').attr('data-id');
+  var bonusId = $("#sel_bonus").find(':selected').attr('data-id');
   if(bonusId == 0) {
     $(".bonus_points").show();
     $(".bonus_points input").prop('disabled', false);
