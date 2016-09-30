@@ -59,7 +59,7 @@ $('.chk_admin').change(function() {
       return false; //do nothing
     }
   } else {
-    if (confirm("ユーザーにしますか？")) {
+    if (confirm("本当に管理者から外しますか？")) {
       $.post("/company/employees/make_user", { 'id': _id }); //send post request
     } else {
       $(this).prop("checked", true);
