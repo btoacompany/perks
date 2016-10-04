@@ -278,17 +278,6 @@
 </div> <!-- wrapper -->
 
 <script type="text/javascript">
-$(document).ready(function() {
- var firstTime = localStorage.getItem("first_time");
- if(!firstTime) {
-   localStorage.setItem("first_time", "1");
-   introJs().start();
- }
-});
-</script>
-
-
-<script type="text/javascript">
 // for modal dialog box
 $("#bonus_trigger_id").leanModal({ top: 200, overlay: 0.4, closeButton: ".modal_close"});
 
@@ -512,60 +501,72 @@ $("#sel_bonus").change(function() {
 });
 </script>
 
+
 <script type="text/javascript">
-$(function(){
+$(document).ready(function() {
+  var delaytime = 0;
+  var firstTime = localStorage.getItem("first_time");
+
+  if(!firstTime) {
+    delaytime = 30000;
+    localStorage.setItem("first_time", "1");
+    introJs().start();
+  }
+  setTimeout(function(){
+    pNotifyTexts();
+  }, delaytime);
+
+});
+
+function pNotifyTexts(){
   <% if @current_user.admin == 1 %>
     <% if @users.count < 2 %>
       title = '社員を登録しましょう。';
       text = 'Prizyをご利用になる社員の方を登録してください。登録は<%= link_to "コチラ", "/company/employees"%>から。';
       pNotify(title, text);
-    <% end %>
 
-    <% if @num_rewards < 3 %>
-      title = 'オリジナルギフトを登録しましょう。';
-      text = 'Prizyポイントを交換できるギフトは社員のインセンティブに！もらってうれしい、オリジナルのギフトを登録しましょう♪<br>登録は<%= link_to "コチラ", "company/rewards"%>から。';
-      pNotify(title, text);
-    <% end %>
-
-    <% if @num_rewards < 3 %>
-      title = 'オリジナルギフトを登録しましょう。';
-      text = 'Prizyポイントを交換できるギフトは社員のインセンティブに！もらってうれしい、オリジナルのギフトを登録しましょう♪<br>登録は<%= link_to "コチラ", "company/rewards"%>から。';
-      pNotify(title, text);
-    <% end %>
-
-    <% if @num_bonus < 1 %>
+    <% elsif @num_bonus < 1 %>
       title = 'ボーナスチャレンジを設定しましょう！';
       text = 'オリジナルのボーナスチャレンジを設定できます。<br>・勤務継続半年：1000 points<br>・初受注：5000 points<br>などオリジナルのボーナスチャレンジを登録しましょう。登録は<%= link_to "コチラ", "company/bonus"%>から。';
       pNotify(title, text);
+
+    <% else @num_rewards < 3 %>
+      title = 'オリジナルギフトを登録しましょう。';
+      text = 'Prizyポイントを交換できるギフトは社員のインセンティブに！もらってうれしい、オリジナルのギフトを登録しましょう♪<br>登録は<%= link_to "コチラ", "company/rewards"%>から。';
+      pNotify(title, text);
     <% end %>
-
-
   <% end %>
 
   <% if @user.firstname.blank? %>
-    title = 'ユーザー名を登録しましょう。';
+    title = '名前を登録しましょう。';
     text = '本名もしくは、会社の人が、あなたのことだと分かる名前を登録しましょう。登録は<%= link_to "コチラ", "/update"%>から。';
     pNotify(title, text);
-  <% end %>
 
-  <% if @user.img_src.include?("noimg_pc") %>
+  <% elsif @user.img_src.include?("noimg_pc") %>
     title = 'あなたのアバター(写真)を登録しましょう。';
     text = 'あなたの写真を登録してください。みんながあなただと分かる写真にしましょう♪<br>登録は<%= link_to "コチラ", "/update"%>から。';
     pNotify(title, text);
-  <% end %>
 
-  <% if @user.birthday.to_s == @default_birthday %>
+  <% elsif @user.birthday.to_s == @default_birthday %>
     title = '誕生日を登録しましょう。';
     text = '誕生日にはPrizy運営事務局から素敵なプレゼントが届きます。是非ご登録ください♪<br>登録は<%= link_to "コチラ", "/update"%>から。';
     pNotify(title, text);
   <% end %>
-});
+}
 
 function pNotify(pTitle, pText) {
   new PNotify({
     title: pTitle,
     text: pText,
-    hide: false,
+    animate_speed: 'fast',
+    <% if @current_user.admin == 1 %>
+    mobile: {
+      swipe_dismiss: false
+    },
+    <% end %>
+    buttons: {
+        sticker: false
+    },
     animate: {
       animate: true,
       in_class: 'slideInDown',
@@ -573,4 +574,10 @@ function pNotify(pTitle, pText) {
     },
   });
 }
+
 </script>
+
+
+
+
+
