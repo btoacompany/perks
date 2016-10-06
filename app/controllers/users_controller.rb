@@ -272,6 +272,7 @@ class UsersController < ApplicationController
 	receiver_name:  post.receiver.name,
 	user_img: post.user.img_src,
 	receiver_img: post.receiver.img_src,
+	receiver_id: post.receiver_id,
 	points:   post.points,
 	description:  post.description,
 	hashtags: post.hashtags,

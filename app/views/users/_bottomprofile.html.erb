@@ -1,5 +1,5 @@
       <% @posts.each do | post | %>
-        <div id="postsbox">
+        <div id="postsbox" class="post_<%= post[:id] %>">
           <div class="images">
             <table>
               <tr>
@@ -9,9 +9,24 @@
             </table>
           </div>
           <div class="posts">
-            <div class="time" data-id="<% post[:id] %>">
-              <p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
-            </div>
+	    <div class="r_float">
+	      <div class="editnav dropdown">
+		<div><a href="" class="dropbtn">▽</a></div>
+		<div class="dropdown-content">
+		  <% if post[:receiver_id].to_i == @user.id || post[:user_id].to_i == @user.id %> 
+		    <a><input type="button" class="del del_post" data-id="<%= post[:id] %>" value="削除"/></a>
+		  <% else %>  
+		    <a><input type="button" class="del del_post disabled" data-id="<%= post[:id] %>" value="削除" disabled/></a>
+		  <% end %>
+		  <!-- for future 
+		  <a><input type="button" class="disabled" value="編集" disabled /></a>
+		  -->
+		</div>
+	      </div><br>
+	      <div class="time" data-id="<% post[:id] %>">
+		<p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
+	      </div>
+	    </div>
             From <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 
             To <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
             <span class="points radius5"><%= post[:points] %> pts</span><br>
@@ -48,7 +63,7 @@
           <div class="comments">
             <div class="comment_entry_<%= post[:id] %>">
               <% post[:comments].each do | comment | %>
-                <div class="comment_entry">
+                <div class="comment_entry comment_<%= comment.id %>">
                   <div class="user_comment_img">
                     <img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
                   </div>
@@ -56,7 +71,18 @@
                     <span class="user" style="font-weight:normal;">@<%= comment.user.name %></span>
                     <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
                   </div>
-                </div> <br> 
+		  <% if comment.user_id == @user.id || post[:receiver_id].to_i == @user.id %>
+		    <div class="r_float">
+		      <div class="editnav dropdown">
+			<div><a href="" class="dropbtn">▽</a></div>
+			<div class="dropdown-content">
+			  <a><input type="button" class="del del_comment" data-id="<%= comment.id %>" value="削除"/></a>
+			</div>
+		      </div><br>
+		    </div>
+		  <% end %>  
+		  <br>
+                </div>
               <% end %>
             </div>
             <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="コメントする" autocomplete="off"/>
