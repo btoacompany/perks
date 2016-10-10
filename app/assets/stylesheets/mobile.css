@@ -1,0 +1,100 @@
+@media only screen and (max-width: 650px) {
+  /* For mobile phones: */
+  [class*="col-"] {
+      width: 100%;
+  }
+
+  body {
+    font-size: 10pt;
+    line-height: 1.5em;
+  }
+
+  .rightbox {
+    visibility: hidden;
+    display: none;
+  }
+
+  #header .sp_menu {
+    background-color: #ff8d07;
+    display: block;
+    float: right;
+    margin-right: 10px;
+  }
+
+  #header .sp_dropdown {
+    position: absolute;
+    right: 8px;
+  }
+
+  #header .sp_dropbtn {
+    margin-top: -12px;
+    padding: 15px;
+    width: 70px;
+    height: 70px;
+  }
+
+  #header .sp_dropdown_content {
+    right: 0;
+    top: 57px;
+    z-index: 5;
+  }
+
+  #header .menu {
+    display: none;
+    visibility: hidden;
+  }
+  #postsbox .images td {
+    height: 130px;
+    width: 310px;
+  }
+
+  #postsbox hr {
+    margin: 0px 10px;
+    border: 1px solid #e6e6e6;
+  }
+
+  #postsbox .posts {
+    padding: 10px 10px;
+    line-height: 1.6em;
+    font-size: 9pt;
+  }
+
+  #postsbox .kudos {
+    padding: 10px 10px;
+    font-size: 9pt;
+  }
+
+  #postsbox .comments {
+    padding: 10px 10px;
+    font-size: 9pt;
+  }
+
+  #postsbox .comments input.give_comments {
+    width: 100%;
+  }
+
+  #postsbox .comments input.btn_comment{
+    text-align: center;
+    width: 17%;
+    display: initial;
+    visibility: visible;
+  }
+
+  #postsbox .comments .user_comment_img img {
+    float: left;
+    margin-left: 0px;
+  }
+  #postsbox .comments .user_comments {
+    padding-left: 15px;
+  }
+  .mypage .rightbox {
+    padding: 0px;
+  }
+
+  .mypage .leftbox {
+    padding: 0px;
+  }
+  .mypage .outofboxmsg {
+    padding: 0px 5px;
+  }
+}
