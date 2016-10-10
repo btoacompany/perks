@@ -32,14 +32,14 @@ class AnalyticsController < ApplicationController
     @hash = {}
     @time_custom.each do |time|
       @a = time..time.tomorrow
-      @post = Post.where(company_id: @id, create_time: @a).count
+      @post = Post.where(company_id: @id, create_time: @a, delete_flag: 0).count
       @hash[time] = @post
     end
   end
 
   def index
     @hash = {}
-    @post_recieved = Post.where(company_id: @id, create_time: @time_custom).group('receiver_id').count
+    @post_recieved = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('receiver_id').count
     @users_custom.each do |user|
       if @post_recieved[user.id].blank?
         @hash[user.id] = 0
@@ -52,7 +52,7 @@ class AnalyticsController < ApplicationController
 
   def giver
     @hash = {}
-    @post_giving = Post.where(company_id: @id, create_time: @time_custom).group('user_id').count
+    @post_giving = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('user_id').count
     @users_custom.each do |user|
       if @post_giving[user.id].blank?
         @hash[user.id] = 0
@@ -67,7 +67,7 @@ class AnalyticsController < ApplicationController
     @hashtags = @company.hashtags.split(",")
     @array = {}
     @hashtags.each do |hashtag|
-      @rankings = Hashtag.where(company_id: @id, hashtag: "##{hashtag}", create_time: @time_custom ).group(:receiver_id).count
+      @rankings = Hashtag.where(company_id: @id, hashtag: "##{hashtag}", create_time: @time_custom, delete_flag: 0 ).group(:receiver_id).count
       @hash = {}
       @users.each do |user|
         if @rankings[user.id].blank?
@@ -83,17 +83,17 @@ class AnalyticsController < ApplicationController
   def allhashtag
     @num1 = 1
     @num2 = 1
-    @hashtags = Hashtag.where(company_id: @id, create_time: @time_custom).group(:hashtag).order("count_id desc").limit(10).count(:id)
+    @hashtags = Hashtag.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group(:hashtag).order("count_id desc").limit(10).count(:id)
     if @hashtags.empty?
       @hashtags = {}
-      @lists = Hashtag.where(company_id: @id).group(:hashtag).order("count_id desc").limit(10).count(:id)
+      @lists = Hashtag.where(company_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(10).count(:id)
       @lists.each do |key, value|
         @hashtags[key] = 0
       end
     end
     @hash = {}
     @hashtags.each do |hashtag|
-      @ranking = Hashtag.where(company_id: @id, hashtag: hashtag[0], create_time: @time_custom).group(:receiver_id).count
+      @ranking = Hashtag.where(company_id: @id, hashtag: hashtag[0], create_time: @time_custom, delete_flag: 0).group(:receiver_id).count
       @hash[hashtag[0]] = Hash[ @ranking.sort_by{ |_, v| -v } ]
     end
   end
@@ -114,13 +114,13 @@ class AnalyticsController < ApplicationController
       else
         @user_gender = "未定"
       end
-      @post_toget = Post.where(receiver_id: @userid)
-      @post_togive = Post.where(user_id: @userid)
+      @post_toget = Post.where(receiver_id: @userid, delete_flag: 0)
+      @post_togive = Post.where(user_id: @userid, delete_flag: 0)
       # useage
       @hash = {}
       @time_custom.each do |time|
         @a = time..time.tomorrow
-        @posts = Post.where(receiver_id: @userid, create_time: @a).count
+        @posts = Post.where(receiver_id: @userid, create_time: @a, delete_flag: 0).count
         @hash[time] = @posts
       end
 
@@ -128,13 +128,13 @@ class AnalyticsController < ApplicationController
       @hashtags = @company.hashtags.split(",")
       @company_hash = {}
       @hashtags.each do |hashtag|
-        @company_hashtag = Hashtag.where(receiver_id: @userid, hashtag: "##{hashtag}", create_time: @time_custom).count
+        @company_hashtag = Hashtag.where(receiver_id: @userid, hashtag: "##{hashtag}", create_time: @time_custom, delete_flag: 0).count
         @company_hash[hashtag] = @company_hashtag
       end
       @company_hash_custom = Hash[ @company_hash.sort_by{ |_, v| v } ]
 
       #all_hashtags
-      @all_hashtags = Hashtag.where(receiver_id: @userid, create_time: @time_custom).group(:hashtag).count
+      @all_hashtags = Hashtag.where(receiver_id: @userid, create_time: @time_custom, delete_flag: 0).group(:hashtag).count
       @all_hashtags_custom = Hash[ @all_hashtags.sort_by{ |_, v| -v } ]
     else
       redirect_to :action => "overall"
@@ -158,7 +158,7 @@ class AnalyticsController < ApplicationController
 
   def basic_info
     @company = Company.find(@id)
-    @users = User.where(company_id: @id)
+    @users = User.where(company_id: @id, delete_flag: 0)
     @users_custom = User.where(company_id: @id, delete_flag: 0)
   end
 

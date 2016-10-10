@@ -205,4 +205,24 @@ function timeSince(time) {
   }
   return Math.floor(seconds) + "秒前";
 }
+
+$('.del_comment').click(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if (confirm("本当にこのコメントを削除しますか？")) {
+    $.post("/user/delete_comment", { 'comment_id': _id }); //send post request
+    $(".comment_" + _id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
+});
+
+$('.del_post').click(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if (confirm("本当にこの投稿を削除しますか？")) {
+    $.post("/user/delete_post", { 'post_id': _id }); //send post request
+    $(".post_" + _id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
+});
 </script>

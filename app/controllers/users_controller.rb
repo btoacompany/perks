@@ -84,16 +84,17 @@ class UsersController < ApplicationController
     @bonuses = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
 
     today = Date.today
-    @birthday_users = @users.where('MONTH(birthday)=? AND DAYOFMONTH(birthday)=?', today.month, today.day)
+    @birthday_users = @users.where('MONTH(birthday)=? AND DAYOFMONTH(birthday)=?', today.month, today.day).where(delete_flag: 0)
     
     posts = Post.where(:company_id => @company_id, :privacy => 0, :delete_flag => 0)
     bonus_posts = Post.where(:company_id => @company_id, :privacy => 1, :delete_flag => 0).where("receiver_id = #{@user.id} OR user_id = #{@user.id}")
-    all_posts = (posts + bonus_posts)
-    posts = Post.where(id: all_posts.map(&:id)).order("update_time desc")
+
+    all_posts = ((posts + bonus_posts).sort_by &:update_time).reverse
+    posts_count = all_posts.count
 
     limit = 5
     page = params[:page] || 1
-    @total_items = posts.count
+    @total_items = posts_count
     @total_pages = (@total_items/limit.to_f).ceil
 
     if page.to_i <= 1
@@ -103,7 +104,8 @@ class UsersController < ApplicationController
       offset = (page.to_i * limit) - limit
     end
 
-    posts = posts.offset(offset).limit(limit)
+    all_posts = all_posts[offset, limit]
+    posts = Post.where(id: all_posts.map(&:id)).order("update_time desc")
 
     @page_now = params[:page].to_i
     if @page_now == 0
@@ -123,6 +125,7 @@ class UsersController < ApplicationController
 	id:		post.id,
 	user_id:	post.user_id,
 	user_name:	post.user.name,
+	receiver_id:	post.receiver_id,
 	receiver_name:	post.receiver.name,
 	user_img:	post.user.img_src,
 	receiver_img:	post.receiver.img_src,
@@ -137,7 +140,7 @@ class UsersController < ApplicationController
       @posts << data
     end
 
-    top_givers = Post.where(company_id: @company_id).group(:user_id).order("count_all desc").limit(5).count
+    top_givers = Post.where(company_id: @company_id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
 
     @top_givers = []
     top_givers.each do | k, v |
@@ -146,7 +149,7 @@ class UsersController < ApplicationController
       @top_givers << data
     end
 
-    top_receivers = Post.where(company_id: @company_id).group(:receiver_id).order("count_all desc").limit(5).count
+    top_receivers = Post.where(company_id: @company_id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
 
     @top_receivers = []
     top_receivers.each do | k, v |
@@ -155,7 +158,7 @@ class UsersController < ApplicationController
       @top_receivers << data
     end
 
-    @top_hashtags = Hashtag.where(company_id: @company_id).group(:hashtag).order("count_id desc").limit(7).count("id")
+    @top_hashtags = Hashtag.where(company_id: @company_id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
 
     @default_birthday = "2016-01-01"
     @num_rewards = Reward.where(company_id: @company_id, delete_flag: 0).count
@@ -217,7 +220,7 @@ class UsersController < ApplicationController
   def give_kudos
     params[:user_id] = @id
 
-    kudo = Kudos.where(:user_id => @id, :post_id => params[:post_id]).first
+    kudo = Kudos.where(:user_id => @id, :post_id => params[:post_id], delete_flag: 0).first
 
     if kudo.present?
       kudo.kudos = params[:kudos]
@@ -269,6 +272,7 @@ class UsersController < ApplicationController
 	receiver_name:  post.receiver.name,
 	user_img: post.user.img_src,
 	receiver_img: post.receiver.img_src,
+	receiver_id: post.receiver_id,
 	points:   post.points,
 	description:  post.description,
 	hashtags: post.hashtags,
@@ -280,7 +284,7 @@ class UsersController < ApplicationController
       @posts << data
     end
 
-    top_givers = Post.where(receiver_id: @id).group(:user_id).order("count_all desc").limit(5).count
+    top_givers = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
 
     @top_givers = []
     top_givers.each do | k, v |
@@ -289,7 +293,7 @@ class UsersController < ApplicationController
       @top_givers << data
     end
 
-    @top_hashtags = Hashtag.where(receiver_id: @id).group(:hashtag).order("count_id desc").limit(7).count("id")
+    @top_hashtags = Hashtag.where(receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def given
@@ -342,7 +346,7 @@ class UsersController < ApplicationController
       @posts << data
     end
 
-    top_givers = Post.where(user_id: @id).group(:receiver_id).order("count_all desc").limit(5).count
+    top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
 
     @top_givers = []
     top_givers.each do | k, v |
@@ -351,7 +355,7 @@ class UsersController < ApplicationController
       @top_givers << data
     end
 
-    @top_hashtags = Hashtag.where(user_id: @id).group(:hashtag).order("count_id desc").limit(7).count("id")
+    @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def rewards
@@ -424,7 +428,7 @@ class UsersController < ApplicationController
     $c_code = params[:c_code] if params[:c_code].present?
 
     if $c_code.present?
-      invite_link = InviteLink.where(c_code: $c_code)
+      invite_link = InviteLink.where(c_code: $c_code, delete_flag: 0)
 
       unless invite_link.empty?
 	update_details
@@ -574,7 +578,7 @@ class UsersController < ApplicationController
   end
 
   def forgot_password_submit
-    user = User.where("email LIKE '#{params[:email]}'").first
+    user = User.where("email LIKE '#{params[:email]}' AND delete_flag = 0").first
 
     if user.present?
       temp_password = SecureRandom.hex(4)
@@ -660,6 +664,25 @@ class UsersController < ApplicationController
   def bonus
     user = User.find(@id)
     @bonus = Bonus.where(:company_id => user.company_id, :delete_flag => 0).order("points").order("title")
+  end
+
+  def delete_comment
+    comment = Comment.find(params[:comment_id])
+    comment.delete_record
+
+    redirect_to "/user" 
+  end
+
+  def delete_post
+    #TODO: delete design
+    post_id = params[:post_id]
+
+    post = Post.where(id: post_id).update_all(delete_flag: 1)
+    comments = Comment.where(post_id: post_id).update_all(delete_flag: 1)
+    kudos = Kudos.where(post_id: post_id).update_all(delete_flag: 1)
+    hashtags = Hashtag.where(post_id: post_id).update_all(delete_flag: 1)
+
+    redirect_to "/user" 
   end
 
   def redirect_to_index

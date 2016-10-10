@@ -56,6 +56,8 @@ Rails.application.routes.draw do
   post	'/user/give_comments'	    => 'users#give_comments'
   post	'/user/give_kudos'	    => 'users#give_kudos'
   post	'/user/give_bonus'	    => 'users#give_bonus'
+  post	'/user/delete_post'	    => 'users#delete_post'
+  post	'/user/delete_comment'	    => 'users#delete_comment'
   get	'/profile'		    => 'users#profile'
   get	'/profile/given'	    => 'users#given'
   get	'/rewards'		    => 'users#rewards'
