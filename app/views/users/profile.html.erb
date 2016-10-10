@@ -219,7 +219,7 @@ $('.del_comment').click(function() {
 $('.del_post').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
 
-  if (confirm("本当に投稿削除しましか？")) {
+  if (confirm("本当にこの投稿を削除しますか？")) {
     $.post("/user/delete_post", { 'post_id': _id }); //send post request
     $(".post_" + _id).remove(); //remove item upon deletion
   }

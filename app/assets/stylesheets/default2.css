@@ -866,6 +866,11 @@ hr.style-two {
   margin-top: -5px;
 }
 
+.inactive_link {
+  pointer-events: none;
+  cursor: default;
+}
+
 /* REWARDS */
 
 /* USER INDEX - TIMELINE */
