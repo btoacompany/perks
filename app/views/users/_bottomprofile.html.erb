@@ -10,20 +10,20 @@
           </div>
           <div class="posts">
 	    <div class="r_float">
-	      <div class="editnav dropdown">
-		<% if post[:receiver_id].to_i == @user.id || post[:user_id].to_i == @user.id %> 
-		  <div><a href="" class="dropbtn inactive_link">▽</a></div>
+	      <div class="time" data-id="<% post[:id] %>">
+		<p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
+	      </div>
+	      <% if post[:receiver_id].to_i == @user.id || post[:user_id].to_i == @user.id %> 
+		<div class="editnav dropdown r_float">
+		  <div><input type="button" class="dropbtn" value="▽"></div>
 		  <div class="dropdown-content">
 		      <a><input type="button" class="del del_post" data-id="<%= post[:id] %>" value="削除"/></a>
 		    <!-- for future 
 		    <a><input type="button" class="disabled" value="編集" disabled /></a>
 		    -->
 		  </div>
-		<% end %>
-	      </div><br>
-	      <div class="time" data-id="<% post[:id] %>">
-		<p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
-	      </div>
+		</div><br>
+	      <% end %>
 	    </div>
             From <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 
             To <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
@@ -65,20 +65,20 @@
                   <div class="user_comment_img">
                     <img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
                   </div>
-                  <div class="user_comments">
-                    <span class="user" style="font-weight:normal;">@<%= comment.user.name %></span>
-                    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
-                  </div>
-		  <% if comment.user_id == @user.id || post[:receiver_id].to_i == @user.id %>
-		    <div class="r_float">
-		      <div class="editnav dropdown">
-			<div><a href="" class="dropbtn inactive_link">▽</a></div>
-			<div class="dropdown-content">
-			  <a><input type="button" class="del del_comment" data-id="<%= comment.id %>" value="削除"/></a>
-			</div>
-		      </div><br>
-		    </div>
-		  <% end %>  
+		  <div class="user_comments">
+		    <span class="user" style="font-weight:normal;">@<%= comment.user.name %></span>
+		    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
+		    <% if comment.user_id == @user.id || post[:receiver_id].to_i == @user.id %>
+		      <div class="r_float">
+			<div class="editnav dropdown">
+			  <input type="button" class="dropbtn" value="▽">
+			  <div class="dropdown-content">
+			    <a><input type="button" class="del del_comment" data-id="<%= comment.id %>" value="削除"/></a>
+			  </div>
+			</div><br>
+		      </div>
+		    <% end %>  
+		  </div>
 		  <br>
                 </div>
               <% end %>
