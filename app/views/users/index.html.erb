@@ -621,4 +621,10 @@ $('.del_post').click(function() {
   }
   return false; //do nothing
 });
+$(window).click(function() {
+  $(".editnav .dropdown_content").hide();
+});
+$("#wrapper").click(function(event) {
+  event.stopPropagation();
+});
 </script>
