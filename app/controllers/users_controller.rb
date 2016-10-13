@@ -34,7 +34,8 @@ class UsersController < ApplicationController
       if authorized_user.delete_flag == 1
 	reset_session
 	flash[:notice] = "ユーザー名かパスワードに誤りがあります"
-	redirect_to "/login"
+	render 'login', :status => :unauthorized
+	#redirect_to "/login"
       else
 	if params[:remember].to_i == 1 
 	  cookies.permanent[:id] = authorized_user.id
@@ -55,7 +56,7 @@ class UsersController < ApplicationController
       end
     else
       flash[:notice] = "ユーザー名かパスワードに誤りがあります"
-      render "login"
+      render 'login', :status => :unauthorized
     end
   end
 
