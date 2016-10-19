@@ -163,7 +163,7 @@ function getName () {
   <% if @users.present? %>
     <% @users.each do | user | %>
       <% unless user.id == @user.id %> 
-  items["<%= user.id %>"] = "<%= user.name %>";
+	items["<%= user.id %>"] = "<%= user.lastname %> <%= user.firstname %>";
       <% end %>
     <% end %>
   <% end %>
