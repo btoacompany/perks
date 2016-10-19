@@ -403,8 +403,8 @@ $(".btn_give").click(function() {
   isPoint = input.match(/\+[^\s|　]+/);
   isTag = input.match(/\#[^\s|　]+/);
   
-  if(dataReceive == null || !isPoint || !isTag ) {
-    $("span.notice").text("投稿に不備があります。(誰に贈るのか、ポイント数、ハッシュタグが必須です。)");
+  if(dataReceive == null || !isPoint ) {
+    $("span.notice").text("投稿に不備があります。(誰に贈るのか、ポイント数が必須です。)");
     return false;
   } 
 });
