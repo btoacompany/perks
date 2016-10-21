@@ -59,20 +59,22 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
   </div>
 </div>
 
-
-<div class="landing_microbonus">
-  <div class="landing_microbonus_text landing_pc">
-    <h2>「<span>褒める言葉</span>」や「<span>感謝の気持ち</span>」と一緒に、<br>マイクロボーナスを贈ることができます。</h2>
-    <p>(Prizyポイント)</p>
-  </div>
-  <div class="landing_microbonus_text landing_sp">
-  <h2>「<span>褒める言葉</span>」や「<span>感謝の気持ち</span>」<br>と一緒にマイクロボーナス<br>を贈ることができます。<br><span class="microbonus_span">(Prizyポイント)</span></h2>
-  </div>
-</div>
-
 <div class="landing_bonus_budget">
+  <div class="landing_microbonus">
+    <div class="landing_microbonus_text landing_pc">
+      <h2>「<span>褒める言葉</span>」や「<span>感謝の気持ち</span>」と一緒に、<br>マイクロボーナスを贈ることができます。</h2>
+      <p>(Prizyポイント)</p>
+      <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/img_toukou.png" %>
+    </div>
+
+    <div class="landing_microbonus_text landing_sp">
+      <h2>「<span>褒める言葉</span>」や「<span>感謝の気持ち</span>」<br>と一緒にマイクロボーナス<br>を贈ることができます。<br><span class="microbonus_span">(Prizyポイント)</span></h2>
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/img_toukou.png") %>
+    </div>
+  </div>
+
   <div class="landing_bonus_budget_wrapper landing_pc">
-    <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content2_text(fixed).png") %>
+    <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content2_text.png") %>
     <div class="landing_bonus_budget_left">
       <div class="budget_left_top">
         <h4>ボーナス予算</h4>
@@ -97,16 +99,18 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
   </div><!-- landing_bonus_budget_wrapper -->
   <div class="landing_bonus_budget_wrapper landing_sp">
     <div class="landing_bonus_budget_left">
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content2_text1.png") %>
       <div class="budget_left_top">
         <h4>ボーナス予算</h4>
         <p>毎月1日に各従業員様に一定のボーナス予算が付与されます。各従業員さまは、毎月その予算内で、お互いにマイクロボーナスを贈り合います。</p>
       </div>
       <div class="budget_left_bottom">
         <h4>コメント&ハッシュタグ</h4>
-        <p>ボーナスは必ずコメントと一緒に贈ります。なぜ感謝しているのか、どう評価しているのかなど、見える化することで、「褒め合う」雰囲気の醸成に。<br>また、ハッシュタグなどをつけることも可能なため、堅苦しくならず遊び心あふれる「褒め」を実現できます。</p>
+        <p>ボーナスは必ずコメントと一緒に贈ります。なぜ感謝しているのか、どう評価しているのかなど、見える化することで「褒め合う」文化の醸成に。<br>ハッシュタグなどをつけることで、堅苦しくならず遊び心あふれる「褒め」を実現できます。</p>
       </div>
     </div> <!-- landing_bonus_budget_left -->
     <div class="landing_bonus_budget_right">
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content2_text2.png") %>
       <div class="budget_right_top">
         <h4>特別ボーナス</h4>
         <p>普段の投稿だけではなく、特別ボーナスをあげることも可能。事前に設定しておいたボーナスチャレンジをクリアした社員に特別ボーナスを贈ることができます♪<br>
@@ -136,14 +140,69 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
       <h2 class="prizy_catalog_float"><span>オリジナルカタログ</span>とは</h2>
       <p class="prizy_catalog_float">オリジナルカタログは、企業独自で設計が可能。<br>シンプルな操作性のもと、従業員様が最も喜ぶギフトをカスタム可能に。</p>
       <div class="landing_clearfix"></div>
+      <div class="landing_original_wrapper">
       <div class="landing_gift_each">
-        <div class="landing_gift_each_image"></div>
-        <div class="landing_gift_each_text"></div>
-        <div class="landing_gift_each_point"></div>
+        <div class="landing_gift_each_wrapper">
+          <div class="landing_gift_each_image">
+            <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/img_meeting.png" %>
+          </div>
+          <div class="landing_gift_each_text">
+          <p><span>CEOとちょぴり豪華ランチ<span></p>
+          <p class="landing_gift_text_align" style="font-size: 12px;">CEOがランチをごちそう！<br>普段は言えない、会社への思い、新しい事業や制度の提案など、想いの丈を直接CEOにぶつけるいい機会！もちろんいつもより、ちょっと豪華なランチも魅力的！？</p>
+          </div>
+          <div class="landing_gift_each_point">
+          <p>1500ポイント</p>
+          </div>
+        </div>
+      </div><!-- landing_gift_each -->
+      <div class="landing_gift_each">
+        <div class="landing_gift_each_wrapper">
+          <div class="landing_gift_each_image">
+            <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/img_pizza.png" %>
+          </div>
+          <div class="landing_gift_each_text">
+          <p><span>チームでピザパーティー券<span></p>
+          <p class="landing_gift_text_align" style="font-size: 12px;">
+          いつも一緒に一緒に頑張っている仲間と過ごす大切な時間。たまには、仕事をちょっと休憩し、仲間とピザパーティーなんていかがでしょうか。ピザとお酒を片手にリフレッシュ♪
+          </p>
+          </div>
+          <div class="landing_gift_each_point">
+          <p>2500ポイント</p>
+          </div>
+        </div>
+      </div><!-- landing_gift_each -->
+      <div class="landing_gift_each">
+        <div class="landing_gift_each_wrapper">
+          <div class="landing_gift_each_image">
+            <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/icon_friend.png" %>
+          </div>
+          <div class="landing_gift_each_text">
+          <p><span>今日だけ残業無し券！<span></p>
+          <p class="landing_gift_text_align" style="font-size: 12px;">いつも頑張ってるご褒美に、今日だけ残業無し！たまの息抜きも必要です。<br>今日は早く帰って、友達と遊んだり、家族サービスしてみてリフレッシュしましょう！</p>
+          </div>
+          <div class="landing_gift_each_point">
+          <p>1000ポイント</p>
+          </div>
+        </div>
+      </div><!-- landing_gift_each -->
+      <div class="landing_gift_each">
+        <div class="landing_gift_each_wrapper">
+          <div class="landing_gift_each_image">
+            <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/icon_book.png" %>
+          </div>
+          <div class="landing_gift_each_text">
+          <p><span>スキルアップに？お好きな本をプレゼント！<span></p>
+          <p class="landing_gift_text_align" style="font-size: 12px;">
+            スキルアップは仕事を効率よく進める上でとっても大事。頑張ってる皆さんのスキルアップをサポートします！好きな本を申請してください♪
+          </p>
+          </div>
+          <div class="landing_gift_each_point">
+          <p>1500ポイント</p>
+          </div>
+        </div>
+      </div><!-- landing_gift_each -->
+      <div class="landing_clearfix"></div>
       </div>
-
-
-
     </div>
   </div>
   <div class="landing_catalog_wrapper landing_sp">
@@ -154,12 +213,75 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
     <div class="prizy_catalog_middle">
       <h2 class="prizy_catalog_float"><span>Prizyカタログ</span>とは</h2>
       <p class="prizy_catalog_float">人気のあるギフトをご用意。<br>シンプルかつインパクトのある<br>インセンティブを実現しています。</p>
-      <%= image_tag(" 
-https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.logo.jpg") %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.logo.jpg") %>
     </div>
     <div class="prizy_catalog_bottom">
       <h2 class="prizy_catalog_float"><span>オリジナルカタログ</span>とは</h2>
       <p class="prizy_catalog_float">企業独自で設計が可能。<br>シンプルな操作性のもと、<br>従業員様が喜ぶギフトをカスタム可能。</p>
+      <div class="landing_clearfix"></div>
+      <div class="landing_original_wrapper">
+      <div class="landing_gift_each">
+        <div class="landing_gift_each_wrapper">
+          <div class="landing_gift_each_image">
+            <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/img_meeting.png" %>
+          </div>
+          <div class="landing_gift_each_text">
+          <p><span>CEOと<br>ちょぴり豪華ランチ<span></p>
+          <p class="landing_gift_text_align" style="font-size: 12px;">CEOがランチをごちそう！新しい事業や制度の提案など、想いの丈を直接CEOにぶつけるいい機会！いつもよりちょっと豪華なランチも魅力的！？</p>
+          </div>
+          <div class="landing_gift_each_point">
+          <p>1500ポイント</p>
+          </div>
+        </div>
+      </div><!-- landing_gift_each -->
+      <div class="landing_gift_each">
+        <div class="landing_gift_each_wrapper">
+          <div class="landing_gift_each_image">
+            <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/img_pizza.png" %>
+          </div>
+          <div class="landing_gift_each_text">
+          <p><span>みんなで<br>ピザパーティー券<span></p>
+          <p class="landing_gift_text_align" style="font-size: 12px;">
+          いつも一緒に一緒に頑張っている仲間と過ごす大切な時間。たまには仲間とピザパーティーなんていかがでしょうか。
+          </p>
+          </div>
+          <div class="landing_gift_each_point">
+          <p>2500ポイント</p>
+          </div>
+        </div>
+      </div><!-- landing_gift_each -->
+      <div class="landing_gift_each">
+        <div class="landing_gift_each_wrapper">
+          <div class="landing_gift_each_image">
+            <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/icon_friend.png" %>
+          </div>
+          <div class="landing_gift_each_text">
+          <p><span>今日は<br>残業無し券！<span></p>
+          <p class="landing_gift_text_align" style="font-size: 12px;">いつも頑張ってるご褒美に、今日だけ残業無し！早く帰って、友達と遊んだり、家族サービスしてみてはいかがでしょうか。</p>
+          </div>
+          <div class="landing_gift_each_point">
+          <p>1000ポイント</p>
+          </div>
+        </div>
+      </div><!-- landing_gift_each -->
+      <div class="landing_gift_each">
+        <div class="landing_gift_each_wrapper">
+          <div class="landing_gift_each_image">
+            <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/icon_book.png" %>
+          </div>
+          <div class="landing_gift_each_text">
+          <p><span>好きな本を<br>プレゼント！<span></p>
+          <p class="landing_gift_text_align" style="font-size: 12px;">
+            スキルアップは仕事を効率よく進める上でとっても大事。頑張ってる皆さんのスキルアップをサポートします！好きな本を申請してください♪
+          </p>
+          </div>
+          <div class="landing_gift_each_point">
+          <p>1500ポイント</p>
+          </div>
+        </div>
+      </div><!-- landing_gift_each -->
+      <div class="landing_clearfix"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -185,25 +307,25 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.logo.jpg") %>
     <div class="landing_chart_wrapper">
       <div id="landing_chart1" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p>テキストテキストテキストテキストテキストテキストテキストテキスト</p>
+        <p><span>エンゲージメント60%向上</span><br><br>「褒める文化」が強い企業の従業員エンゲージメントは60%近く高くなる。<br><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart2" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p>テキストテキストテキストテキストテキストテキストテキストテキスト</p>
+        <p><span>離職率の25%削減</span><br><br>従業員エンゲージメントの高い企業は、25%近く低い離職率を実現している。<br><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart3" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p>テキストテキストテキストテキストテキストテキストテキストテキスト</p>
+        <p><span>生産性の21%向上</span><br><br>従業員エンゲージメントの高い企業は、21%近く高い生産性を実現している。<br><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart4" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p>テキストテキストテキストテキストテキストテキストテキストテキスト</p>
+        <p><span>利益率6%向上</span><br><br>エンゲージメントが高い社員は低い社員に比べて、6%高い利益率を実現。<br><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
     <div class="clearfix"></div>
@@ -218,25 +340,25 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.logo.jpg") %>
     <div class="landing_chart_wrapper">
       <div id="landing_chart1_sp" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p>テキストテキストテキストテキストテキストテキストテキストテキスト</p>
+        <p><span>エンゲージメント<br>60%向上</span><br><br>「褒める文化」が強い企業の従業員エンゲージメントは60%近く高くなる。<br><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart2_sp" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p>テキストテキストテキストテキストテキストテキストテキストテキスト</p>
+        <p><span>離職率<br>25%削減</span><br><br>従業員エンゲージメントの高い企業は、25%近く低い離職率を実現している。<br><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart3_sp" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p>テキストテキストテキストテキストテキストテキストテキストテキスト</p>
+        <p><span>生産性<br>21%向上</span><br><br>従業員エンゲージメントの高い企業は、21%近く高い生産性を実現している。<br><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart4_sp" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p>テキストテキストテキストテキストテキストテキストテキストテキスト</p>
+        <p><span>利益率<br>6%向上</span><br><br>エンゲージメントが高い社員は低い社員に比べて、6%高い利益率を実現。<br><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
     <div class="clearfix"></div>
@@ -247,29 +369,15 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.logo.jpg") %>
 <div class="landing_signup landing_pc">
   <div class="landing_signup_back"></div>
   <div class="landing_signup_line">
-    <h2>Prizyを1ヶ月無料で試す。</h2>
-    <div class="landing_signup_text">
-      <p>「褒める」を社風に。</p>
-      <div></div>
-    </div>
-    
+    <h2>Prizyを1ヶ月無料で試す。</h2><%= link_to "/company/register" do %><%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/btn_arrow.jpg") %><% end %>
   </div>
 </div>
 <div class="landing_signup landing_sp">
   <div class="landing_signup_back"></div>
   <div class="landing_signup_line">
-    <h2>Prizyを1ヶ月無料で試す。</h2>
-    <div class="landing_signup_text">
-      <p>「褒める」を社風に。</p>
-      <div></div>
-    </div>
-    
+    <h2>Prizyを1ヶ月無料で試す。</h2><%= link_to "/company/register" do %><%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/btn_arrow.jpg") %><% end %>
   </div>
-</div>    
-
-
-
-
+</div>
 
 
 <script type="text/javascript">
@@ -293,8 +401,8 @@ window.onload = function () {
       radius:  "90%", 
       innerRadius: "85q%",
       dataPoints: [
-        { x: "a",  y: 22, },
-        { y: "b",  y: 78, },
+        { x: "a",  y: 60, },
+        { y: "b",  y: 40, },
       ]
     }
     ]
@@ -314,8 +422,8 @@ window.onload = function () {
       radius:  "90%", 
       innerRadius: "85q%",
       dataPoints: [
-        { x: "a",  y: 22, },
-        { y: "b",  y: 78, },
+        { x: "a",  y: 25, },
+        { y: "b",  y: 75, },
       ]
     }
     ]
@@ -335,8 +443,8 @@ window.onload = function () {
       radius:  "90%", 
       innerRadius: "85q%",
       dataPoints: [
-        { x: "a",  y: 22, },
-        { y: "b",  y: 78, },
+        { x: "a",  y: 21, },
+        { y: "b",  y: 79, },
       ]
     }
     ]
@@ -356,8 +464,8 @@ window.onload = function () {
       radius:  "90%", 
       innerRadius: "85q%",
       dataPoints: [
-        { x: "a",  y: 22, },
-        { y: "b",  y: 78, },
+        { x: "a",  y: 6, },
+        { x: "b",  y: 94, },
       ]
     }
     ]
@@ -377,8 +485,8 @@ window.onload = function () {
       radius:  "90%", 
       innerRadius: "85q%",
       dataPoints: [
-        { x: "a",  y: 22, },
-        { y: "b",  y: 78, },
+        { x: "a",  y: 60, },
+        { y: "b",  y: 40, },
       ]
     }
     ]
@@ -398,8 +506,8 @@ window.onload = function () {
       radius:  "90%", 
       innerRadius: "85q%",
       dataPoints: [
-        { x: "a",  y: 22, },
-        { y: "b",  y: 78, },
+        { x: "a",  y: 25, },
+        { y: "b",  y: 75, },
       ]
     }
     ]
@@ -419,8 +527,8 @@ window.onload = function () {
       radius:  "90%", 
       innerRadius: "85q%",
       dataPoints: [
-        { x: "a",  y: 22, },
-        { y: "b",  y: 78, },
+        { x: "a",  y: 21, },
+        { y: "b",  y: 79, },
       ]
     }
     ]
@@ -440,8 +548,8 @@ window.onload = function () {
       radius:  "90%", 
       innerRadius: "85q%",
       dataPoints: [
-        { x: "a",  y: 22, },
-        { y: "b",  y: 78, },
+        { x: "a",  y: 6, },
+        { y: "b",  y: 94, },
       ]
     }
     ]

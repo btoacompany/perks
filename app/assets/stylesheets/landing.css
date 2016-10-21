@@ -147,12 +147,15 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 /*landing_microbonus*/
 .landing_microbonus_text{
   text-align: center;
-  margin-top: 60px;
-  margin-bottom: 30px;
+  padding-top: 60px;
 }
 
-.landing_microbonus_text span{
-  color: #ff8d07;
+.landing_microbonus_text span, .landing_microbonus_text p{
+  color: white;
+}
+
+.landing_microbonus img{
+  margin-top: 30px;
 }
 
 /*landing_bonus_budget*/
@@ -177,7 +180,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
   color: #fffc00;
 }
 
-.landing_bonus_budget p{
+.landing_bonus_budget_wrapper p{
   font-size: 14px;
   color: #fff;
   margin-top: 20px;
@@ -208,6 +211,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 /*landing_prizy_catalog*/
 .landing_prizy_catalog{
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content3_bkg.jpg);
+  padding-bottom: 50px;
 }
 
 .prizy_catalog_top{
@@ -240,6 +244,45 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 .prizy_catalog_bottom{
   padding-bottom: 30px;
 }
+
+.landing_original_wrapper{
+  margin-top: 30px;
+}
+
+.landing_gift_each{
+  background-color: white;
+  width: 25%;
+  padding: 10px;
+  float: left;
+}
+
+.landing_gift_each_wrapper{
+  background-color: #fafafa;
+  border: 1px solid black;
+  text-align: center;
+  padding: 15px;
+  height: 400px;
+  position: relative;
+}
+
+.landing_gift_each_wrapper p{
+  margin-top: 15px;
+}
+
+.landing_gift_text_align{
+  text-align: left;
+  padding: 0 10px;
+}
+
+.landing_gift_each_point{
+  position: absolute;
+  top: 85%;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+
 
 /*landing_analytics*/
 
@@ -278,7 +321,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 }
 
 .landing_workforce_top{
-  padding-top: 80px;
+  padding-top: 60px;
 }
 
 .landing_workforce p{
@@ -345,8 +388,25 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 
 .landing_signup_line h2{
   color: white;
-  margin-top: 30px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
 }
+
+.landing_signup_line img{
+  color: white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 63%;
+  margin: auto;
+}
+
+
 } 
 /* end of PC View*/
 
@@ -428,6 +488,10 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
   padding-left: 10px;
 }
 
+.landing_footer_top_left img{
+  width: 120px;
+}
+
 .landing_footer_top_right{
   float: right;
 }
@@ -437,6 +501,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
   padding: 0 0 ;
 
 }
+
 
 .landing_footer_top_right li{
   float: left;
@@ -448,6 +513,14 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 
 .landing_footer_twitter{
   padding-top: 5px;
+}
+
+.landing_footer_facebook img{
+  width: 20px;
+}
+
+.landing_footer_twitter img{
+  width: 40px;
 }
 
 .landing_footer_bottom{
@@ -506,41 +579,74 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 
 .landing_microbonus{
   text-align: center;
-  padding-top: 20px;
+  padding-top: 30px;
   margin-bottom: 30px;
 }
 
 .landing_microbonus_text span{
-  color: #ff8d07;
+  color: white;
 }
 
 .microbonus_span{
   font-size: 12px;
-  color: #333;
+  color: white;
+}
+
+.landing_microbonus_text img{
+  margin-top: 30px;
+  width: 95%;
 }
 
 /*landing_bonus_budget*/
 .landing_bonus_budget{
-  background-size: 100% 1000px;
-  height: 1000px;
-  background-image: url(
-https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content2_bkg.jpg);
+  background: -webkit-linear-gradient(left, #ff6c00, #ffcc00);
+  height: 1400px;
 }
 
 .landing_bonus_budget_wrapper{
   height: 100%;
-  position: relative;
 }
 
 .landing_bonus_budget_left{
+  position: relative;
+  text-align: center;
+}
+
+.landing_bonus_budget_wrapper img{
+  width: 95%;
+}
+
+.landing_bonus_budget_right{
+  margin-top: 30px;
+  position: relative;
+  text-align: center;
+}
+
+.budget_left_top{
   position: absolute;
-  top: 12%;
+  top: 18%;
   left: 0;
   right: 0;
   margin: auto;
 }
 
-.landing_bonus_budget_right{
+.budget_left_bottom{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.budget_right_top{
+  position: absolute;
+  top: 18%;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.budget_right_bottom{
   position: absolute;
   top: 60%;
   left: 0;
@@ -565,8 +671,8 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content2_bkg.jpg
 
 /*landing_prizy_catalog*/
 .landing_prizy_catalog{
-  background-size: 100% 800px;
-  height: 800px;
+  background-size: 100% 1500px;
+  height: 1500px;
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content3_bkg_repeat.jpg);
 }
 
@@ -580,7 +686,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content2_bkg.jpg
   color: #333;
 }
 
-.landing_prizy_catalog p{
+.prizy_catalog_top p, .prizy_catalog_middle p{
   line-height: 1.4;
   font-size: 16px;
   margin-top: 10px;
@@ -599,6 +705,55 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content2_bkg.jpg
    width: 95%;
    margin-bottom: 20px;
 }
+
+.prizy_catalog_bottom p{
+  line-height: 1.4;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+.landing_original_wrapper{
+  margin-top: 30px;
+}
+
+.landing_gift_each{
+  width: 50%;
+  padding: 8px;
+  float: left;
+}
+
+.landing_gift_each_wrapper{
+  background-color: #fafafa;
+  border: 1px solid black;
+  text-align: center;
+  padding: 10px;
+  height: 350px;
+  position: relative;
+}
+
+.landing_gift_each_wrapper img{
+  width: 100%;
+}
+
+.landing_gift_each_wrapper p{
+  margin-top: 10px;
+}
+
+.landing_gift_text_align{
+  text-align: left;
+  padding: 0 10px;
+}
+
+.landing_gift_each_point{
+  position: absolute;
+  top: 85%;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
 
 /*landing_analytics*/
 .landing_analytics{
@@ -630,13 +785,13 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content2_bkg.jpg
 
 /*landing_workforce*/
 .landing_workforce{
-  background-size: 100% 700px;
-  height: 700px;
+  background-size: 100% 1000px;
+  height: 1000px;
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content5_bkg.jpg);
 }
 
 .landing_workforce h2{
-  padding-top: 20px;
+  padding-top: 10px;
   line-height: 1.4;
   font-size: 20px;
   color: white;
@@ -671,6 +826,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content2_bkg.jpg
 
 .landing_chart{
   height: 140px;
+  margin-top: 30px;
 }
 
 .landing_chart a{
@@ -716,8 +872,23 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content2_bkg.jpg
 }
 
 .landing_signup_line h2{
+  height: 20px;
   color: white;
-  margin-top: 30px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.landing_signup_line img{
+  height: 40px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 85% ;
+  margin: auto;
 }
 
 
