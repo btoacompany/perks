@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     if @current_user.present?
       unless @current_user.admin == 1
 	#redirect_to "/"
-	redirect_page("users", "index")
+	redirect_page("users", "user")
       end
     end
   end
