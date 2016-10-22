@@ -20,7 +20,8 @@ class UsersController < ApplicationController
   def login
     $c_code = ""
     if session[:id] || cookies[:id]
-      redirect_to "/user", :protocol => @protocol
+      #redirect_to "/user", :protocol => @protocol
+      redirect_page("users", "user")
     end
 
     reset_session
@@ -49,9 +50,11 @@ class UsersController < ApplicationController
 	flash[:notice] = "" 
 
 	if verified == 0
-	  redirect_to "/update"
+	  #redirect_to "/update"
+	  redirect_page("users", "update")
 	else
-	  redirect_to "/user"
+	  #redirect_to "/user"
+	  redirect_page("users", "login")
 	end
       end
     else
@@ -67,7 +70,8 @@ class UsersController < ApplicationController
     cookies.delete :email
     reset_session
 
-    redirect_to '/login', :protocol => @protocol
+    #redirect_to '/login', :protocol => @protocol
+    redirect_page("users", "login")
   end
 
   def index
@@ -206,7 +210,8 @@ class UsersController < ApplicationController
 	flash[:notice] = "ポイントが足りません"
       end
     end
-    redirect_to '/user', :protocol => @protocol
+    redirect_page("users", "user")
+    #redirect_to '/user', :protocol => @protocol
   end
 
   def give_comments 
