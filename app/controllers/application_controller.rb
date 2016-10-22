@@ -41,6 +41,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
 protected 
   def authenticate_user
     user_id = session[:id] || cookies[:id]
