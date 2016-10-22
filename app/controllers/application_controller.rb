@@ -8,10 +8,15 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def init_url
+    @protocol = "http://"
     if Rails.env.production?
       @prizy_url = "http://prizy.me"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
       @s3_bucket = "prizy"
+      sub_domain = request.subdomain
+      if sub_domain == "www"
+	@protocol = "https://"
+      end
     elsif Rails.env.development?
       @prizy_url = "http://localhost:3000"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
@@ -50,14 +55,14 @@ protected
       @current_user = User.find(user_id)
       return true	
     else
-      redirect_to "/login"
+      redirect_to "/login", :protocol => @protocol
       return false
     end
   end
 
   def save_login_state
     if session[:id] || cookies[:id]
-      redirect_to(:controller => 'top', :action => 'index')
+      redirect_to(:controller => 'top', :action => 'index', :protocol => @protocol)
       return false
     else
       return true
