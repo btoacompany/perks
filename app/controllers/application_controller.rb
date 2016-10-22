@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
       @prizy_url = "http://prizy.me"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
       @s3_bucket = "prizy"
+      
       sub_domain = request.subdomain
       if sub_domain == "www"
 	@protocol = "https://"

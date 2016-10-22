@@ -210,7 +210,7 @@ class UsersController < ApplicationController
 	flash[:notice] = "ポイントが足りません"
       end
     end
-    redirect_page("users", "user")
+    redirect_page("users", "index")
     #redirect_to '/user', :protocol => @protocol
   end
 
@@ -220,7 +220,7 @@ class UsersController < ApplicationController
 
     res = Comment.new
     res.save_record(params)
-    redirect_to "/user"
+    redirect_page("users", "index")
   end
 
   def give_kudos
@@ -236,7 +236,7 @@ class UsersController < ApplicationController
       res.save_record(params)
     end
 
-    redirect_to "/user"
+    redirect_page("users", "index")
   end
 
   def profile
