@@ -54,7 +54,7 @@ class UsersController < ApplicationController
 	  redirect_page("users", "update")
 	else
 	  #redirect_to "/user"
-	  redirect_page("users", "login")
+	  redirect_page("users", "user")
 	end
       end
     else
