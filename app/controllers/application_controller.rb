@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def init_url
-    @protocol = "https://"
+    @protocol = "http://"
     if Rails.env.production?
       @prizy_url = "http://prizy.me"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
