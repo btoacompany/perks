@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     $c_code = ""
     if session[:id] || cookies[:id]
       #redirect_to "/user", :protocol => @protocol
-      redirect_page("users", "user")
+      redirect_page("users", "index")
     end
 
     reset_session
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
 	  redirect_page("users", "update")
 	else
 	  #redirect_to "/user"
-	  redirect_page("users", "user")
+	  redirect_page("users", "index")
 	end
       end
     else

@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     if @current_user.present?
       unless @current_user.admin == 1
 	#redirect_to "/"
-	redirect_page("users", "user")
+	redirect_page("users", "index")
       end
     end
   end
@@ -66,7 +66,7 @@ protected
 
   def save_login_state
     if session[:id] || cookies[:id]
-      redirect_page("top", "index")
+      redirect_page("users", "index")
       #redirect_to(:controller => 'top', :action => 'index', :protocol => @protocol)
       return false
     else
