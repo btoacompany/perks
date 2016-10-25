@@ -130,8 +130,10 @@ class UsersController < ApplicationController
 	id:		post.id,
 	user_id:	post.user_id,
 	user_name:	post.user.name,
+	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
 	receiver_id:	post.receiver_id,
 	receiver_name:	post.receiver.name,
+	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
 	user_img:	post.user.img_src,
 	receiver_img:	post.receiver.img_src,
 	points:		post.points,
@@ -150,7 +152,7 @@ class UsersController < ApplicationController
     @top_givers = []
     top_givers.each do | k, v |
       user = User.find(k)
-      data = { name: user.name, img_src: user.img_src, count: v }
+      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
       @top_givers << data
     end
 
@@ -159,7 +161,7 @@ class UsersController < ApplicationController
     @top_receivers = []
     top_receivers.each do | k, v |
       user = User.find(k)
-      data = { name: user.name, img_src: user.img_src, count: v }
+      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
       @top_receivers << data
     end
 
@@ -279,6 +281,8 @@ class UsersController < ApplicationController
 	user_img: post.user.img_src,
 	receiver_img: post.receiver.img_src,
 	receiver_id: post.receiver_id,
+	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
+	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
 	points:   post.points,
 	description:  post.description,
 	hashtags: post.hashtags,
@@ -295,7 +299,7 @@ class UsersController < ApplicationController
     @top_givers = []
     top_givers.each do | k, v |
       user = User.find(k)
-      data = { name: user.name, img_src: user.img_src, count: v }
+      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
       @top_givers << data
     end
 
