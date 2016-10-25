@@ -20,7 +20,8 @@ class UsersController < ApplicationController
   def login
     $c_code = ""
     if session[:id] || cookies[:id]
-      redirect_to "/user"
+      #redirect_to "/user", :protocol => @protocol
+      redirect_page("users", "index")
     end
 
     reset_session
@@ -34,7 +35,8 @@ class UsersController < ApplicationController
       if authorized_user.delete_flag == 1
 	reset_session
 	flash[:notice] = "ユーザー名かパスワードに誤りがあります"
-	redirect_to "/login"
+	render 'login', :status => :unauthorized
+	#redirect_to "/login"
       else
 	if params[:remember].to_i == 1 
 	  cookies.permanent[:id] = authorized_user.id
@@ -48,14 +50,16 @@ class UsersController < ApplicationController
 	flash[:notice] = "" 
 
 	if verified == 0
-	  redirect_to "/update"
+	  #redirect_to "/update"
+	  redirect_page("users", "update")
 	else
-	  redirect_to "/user"
+	  #redirect_to "/user"
+	  redirect_page("users", "index")
 	end
       end
     else
       flash[:notice] = "ユーザー名かパスワードに誤りがあります"
-      render "login"
+      render 'login', :status => :unauthorized
     end
   end
 
@@ -66,7 +70,8 @@ class UsersController < ApplicationController
     cookies.delete :email
     reset_session
 
-    redirect_to '/login'
+    #redirect_to '/login', :protocol => @protocol
+    redirect_page("users", "login")
   end
 
   def index
@@ -125,8 +130,10 @@ class UsersController < ApplicationController
 	id:		post.id,
 	user_id:	post.user_id,
 	user_name:	post.user.name,
+	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
 	receiver_id:	post.receiver_id,
 	receiver_name:	post.receiver.name,
+	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
 	user_img:	post.user.img_src,
 	receiver_img:	post.receiver.img_src,
 	points:		post.points,
@@ -145,7 +152,7 @@ class UsersController < ApplicationController
     @top_givers = []
     top_givers.each do | k, v |
       user = User.find(k)
-      data = { name: user.name, img_src: user.img_src, count: v }
+      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
       @top_givers << data
     end
 
@@ -154,7 +161,7 @@ class UsersController < ApplicationController
     @top_receivers = []
     top_receivers.each do | k, v |
       user = User.find(k)
-      data = { name: user.name, img_src: user.img_src, count: v }
+      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
       @top_receivers << data
     end
 
@@ -205,7 +212,8 @@ class UsersController < ApplicationController
 	flash[:notice] = "ポイントが足りません"
       end
     end
-    redirect_to '/user'
+    redirect_page("users", "index")
+    #redirect_to '/user', :protocol => @protocol
   end
 
   def give_comments 
@@ -214,7 +222,7 @@ class UsersController < ApplicationController
 
     res = Comment.new
     res.save_record(params)
-    redirect_to "/user"
+    redirect_page("users", "index")
   end
 
   def give_kudos
@@ -230,7 +238,7 @@ class UsersController < ApplicationController
       res.save_record(params)
     end
 
-    redirect_to "/user"
+    redirect_page("users", "index")
   end
 
   def profile
@@ -273,6 +281,8 @@ class UsersController < ApplicationController
 	user_img: post.user.img_src,
 	receiver_img: post.receiver.img_src,
 	receiver_id: post.receiver_id,
+	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
+	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
 	points:   post.points,
 	description:  post.description,
 	hashtags: post.hashtags,
@@ -289,7 +299,7 @@ class UsersController < ApplicationController
     @top_givers = []
     top_givers.each do | k, v |
       user = User.find(k)
-      data = { name: user.name, img_src: user.img_src, count: v }
+      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
       @top_givers << data
     end
 

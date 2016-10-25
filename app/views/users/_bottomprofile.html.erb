@@ -25,8 +25,8 @@
 		</div><br>
 	      <% end %>
 	    </div>
-            From <span class="user giver"><b>@<%= post[:user_name] %></b></span><br> 
-            To <span class="user receiver"><b>@<%= post[:receiver_name] %>: </b></span>
+	    From <span class="user giver"><b>@<%= post[:full_user_name] %></b></span><br> 
+	    To <span class="user receiver"><b>@<%= post[:full_receiver_name] %>: </b></span>
             <span class="points radius5"><%= post[:points] %> pts</span><br>
       
             <span class="description"><%= raw post[:description].gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span><br>
@@ -44,7 +44,7 @@
               <a class="a_btn user_kudos">
               <% if post[:kudos].present? %>
                 <% post[:kudos].each_with_index do | kudo, i | %>
-                  <%= kudo.user.name %>
+		  <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
                   <% unless i == post[:kudos].count-1 %>,<% end %>
                   <% if i > 3 %><% break %> <% end %>
                 <% end %>...
@@ -52,7 +52,7 @@
               </a>
               <span class="tooltiptext">
               <% post[:kudos].each do | kudo | %>
-                <%= kudo.user.name %><br>
+		<%= "#{kudo.user.lastname} #{kudo.user.firstname}" %><br>
               <% end %>
               </span>
             </div>
@@ -66,7 +66,7 @@
                     <img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
                   </div>
 		  <div class="user_comments">
-		    <span class="user" style="font-weight:normal;">@<%= comment.user.name %></span>
+		    <span class="user" style="font-weight:normal;">@<%= "#{comment.user.lastname} #{comment.user.firstname}" %></span>
 		    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
 		    <% if comment.user_id == @user.id || post[:receiver_id].to_i == @user.id %>
 		      <div class="r_float">
