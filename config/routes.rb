@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
+  # for landing
   root to: 'landing#index'
-    
+  get '/price' => 'landing#price'
   # for testing
   get	'/tests'		  => 'tests#index'
   get	'/tests/create'		  => 'tests#create'

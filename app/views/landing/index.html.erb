@@ -1,23 +1,23 @@
 <div class="landing_top">
   <div class="landing_header landing_pc">
     <div class="landing_header_left">
-      <%= image_tag(" 
-https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/logo.png") %>
+      <%= link_to "/" do %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/logo.png") %>
+      <% end %>
     </div>
     <div class="landing_header_right">
       <ul>
-        <li><%= link_to "サービス", ""%></li>
-        <li><%= link_to "プライス", ""%></li>
+        <li><%= link_to "サービス", root_path%></li>
+        <li><%= link_to "プランと料金", "/price"%></li>
         <li><%= link_to "ブログ", ""%></li>
-        <li><%= link_to "ログイン", ""%></li>
+        <li><%= link_to "ログイン", "/login"%></li>
         <div class="landing_clearfix"></div>
       </ul>
     </div>
     <div class="landing_clearfix"></div>
   </div>
   <div class="landing_top_text landing_pc" >
-    <%= image_tag ("
-https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_title(fixed).png") %>
+    <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_title(fixed).png") %>
   </div>
   <div class="landing_top_bottom_img landing_pc">
     <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/btn_schorll.png") %>
@@ -25,19 +25,20 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_title(fixed).png
 
   <div class="landing_header landing_sp">
     <div class="landing_header_left">
+      <%= link_to "/" do %>
       <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.logo.png") %>
+      <% end %>
     </div>
     <div class="landing_header_right">
-      <%= image_tag ("
-https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
     </div>
     <div class="landing_clearfix"></div>
     <div class="sp_landing_ul landing_click">
       <ul>
-        <li><%= link_to "サービス", ""%></li>
-        <li><%= link_to "プライス", ""%></li>
+        <li><%= link_to "サービス", "/"%></li>
+        <li><%= link_to "プランと料金", "/price"%></li>
         <li><%= link_to "ブログ", ""%></li>
-        <li><%= link_to "ログイン", ""%></li>
+        <li><%= link_to "ログイン", "/login"%></li>
         <div class="landing_clearfix"></div>
       </ul>
     </div>
@@ -62,8 +63,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
 <div class="landing_bonus_budget">
   <div class="landing_microbonus">
     <div class="landing_microbonus_text landing_pc">
-      <h2>「<span>褒める言葉</span>」や「<span>感謝の気持ち</span>」と一緒に、<br>マイクロボーナスを贈ることができます。</h2>
-      <p>(Prizyポイント)</p>
+      <h2>社員同士で<span>毎日</span>伝える<br>みんなの<span>ホメる</span>が見える<br>だから、ホメるが<span>文化</span>になる</h2>
       <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/img_toukou.png" %>
     </div>
 
@@ -134,7 +134,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
       <h2 class="prizy_catalog_float"><span>Prizyカタログ</span>とは</h2>
       <p class="prizy_catalog_float">生活によりそった人気のあるギフトをご用意。<br>シンプルかつインパクトのあるインセンティブを実現しています。</p>
       <div class="landing_clearfix"></div>
-      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content3_img.png") %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/gift_logos.png") %>
     </div>
     <div class="prizy_catalog_bottom">
       <h2 class="prizy_catalog_float"><span>オリジナルカタログ</span>とは</h2>
@@ -161,10 +161,10 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
             <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/img_pizza.png" %>
           </div>
           <div class="landing_gift_each_text">
-          <p><span>チームでピザパーティー券<span></p>
-          <p class="landing_gift_text_align" style="font-size: 12px;">
-          いつも一緒に一緒に頑張っている仲間と過ごす大切な時間。たまには、仕事をちょっと休憩し、仲間とピザパーティーなんていかがでしょうか。ピザとお酒を片手にリフレッシュ♪
-          </p>
+            <p><span>チームでピザパーティー券<span></p>
+            <p class="landing_gift_text_align" style="font-size: 12px;">
+            いつも一緒に一緒に頑張っている仲間と過ごす大切な時間。たまには、仕事をちょっと休憩し、仲間とピザパーティーなんていかがでしょうか。ピザとお酒を片手にリフレッシュ♪
+            </p>
           </div>
           <div class="landing_gift_each_point">
           <p>2500ポイント</p>
@@ -213,7 +213,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
     <div class="prizy_catalog_middle">
       <h2 class="prizy_catalog_float"><span>Prizyカタログ</span>とは</h2>
       <p class="prizy_catalog_float">人気のあるギフトをご用意。<br>シンプルかつインパクトのある<br>インセンティブを実現しています。</p>
-      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.logo.jpg") %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/gift_sp_logo.png") %>
     </div>
     <div class="prizy_catalog_bottom">
       <h2 class="prizy_catalog_float"><span>オリジナルカタログ</span>とは</h2>
@@ -307,25 +307,33 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
     <div class="landing_chart_wrapper">
       <div id="landing_chart1" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p><span>エンゲージメント60%向上</span><br><br>「褒める文化」が強い企業の従業員エンゲージメントは60%近く高くなる。<br><span class="landing_chart_refferal">- Towers Watson</span></p>
+        <p class="landing_chart_text_top"><span style="font-weight:bold;">エンゲージメント60%向上</span></p>
+        <p>「褒める文化」が強い企業の従業員エンゲージメントは60%近く高くなる。</p>
+        <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart2" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p><span>離職率の25%削減</span><br><br>従業員エンゲージメントの高い企業は、25%近く低い離職率を実現している。<br><span class="landing_chart_refferal">- Gallup</span></p>
+        <p class="landing_chart_text_top"><span style="font-weight:bold;">離職率の25%削減</span></p>
+        <p>従業員エンゲージメントの高い企業は、25%近く低い離職率を実現している。</p>
+        <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart3" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p><span>生産性の21%向上</span><br><br>従業員エンゲージメントの高い企業は、21%近く高い生産性を実現している。<br><span class="landing_chart_refferal">- Gallup</span></p>
+      <p class="landing_chart_text_top"><span style="font-weight:bold;">生産性の21%向上</span></p>
+      <p>従業員エンゲージメントの高い企業は、21%近く高い生産性を実現している。</p>
+      <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart4" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p><span>利益率6%向上</span><br><br>エンゲージメントが高い社員は低い社員に比べて、6%高い利益率を実現。<br><span class="landing_chart_refferal">- Towers Watson</span></p>
+        <p class="landing_chart_text_top"><span style="font-weight:bold;">利益率6%向上</span></p>
+        <p>エンゲージメントが高い社員は低い社員に比べて、6%高い利益率を実現。</p>
+        <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
     <div class="clearfix"></div>
@@ -340,45 +348,40 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.gnav.png") %>
     <div class="landing_chart_wrapper">
       <div id="landing_chart1_sp" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p><span>エンゲージメント<br>60%向上</span><br><br>「褒める文化」が強い企業の従業員エンゲージメントは60%近く高くなる。<br><span class="landing_chart_refferal">- Towers Watson</span></p>
+        <p class="landing_chart_text_top"><span>エンゲージメント<br>60%向上</span></p>
+        <p>褒める文化が強い企業の従業員エンゲージメントは60%近く高くなる。</p>
+        <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart2_sp" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p><span>離職率<br>25%削減</span><br><br>従業員エンゲージメントの高い企業は、25%近く低い離職率を実現している。<br><span class="landing_chart_refferal">- Gallup</span></p>
+        <p class="landing_chart_text_top"><span>離職率<br>25%削減</span></p>
+        <p>従業員エンゲージメントの高い企業は、25%近く低い離職率を実現している。</p>
+        <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart3_sp" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p><span>生産性<br>21%向上</span><br><br>従業員エンゲージメントの高い企業は、21%近く高い生産性を実現している。<br><span class="landing_chart_refferal">- Gallup</span></p>
+        <p class="landing_chart_text_top"><span>生産性<br>21%向上</span></p>
+        <p>従業員エンゲージメントの高い企業は、21%近く高い生産性を実現している。</p>
+        <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
     <div class="landing_chart_wrapper">
       <div id="landing_chart4_sp" class="landing_chart"></div>
       <div class="landing_chart_text">
-        <p><span>利益率<br>6%向上</span><br><br>エンゲージメントが高い社員は低い社員に比べて、6%高い利益率を実現。<br><span class="landing_chart_refferal">- Towers Watson</span></p>
+        <p class="landing_chart_text_top"><span>利益率<br>6%向上</span></p>
+        <p>エンゲージメントが高い社員は低い社員に比べて、6%高い利益率を実現。</p>
+        <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
     <div class="clearfix"></div>
   </div>
 </div>
 
-
-<div class="landing_signup landing_pc">
-  <div class="landing_signup_back"></div>
-  <div class="landing_signup_line">
-    <h2>Prizyを1ヶ月無料で試す。</h2><%= link_to "/company/register" do %><%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/btn_arrow.jpg") %><% end %>
-  </div>
-</div>
-<div class="landing_signup landing_sp">
-  <div class="landing_signup_back"></div>
-  <div class="landing_signup_line">
-    <h2>Prizyを1ヶ月無料で試す。</h2><%= link_to "/company/register" do %><%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/btn_arrow.jpg") %><% end %>
-  </div>
-</div>
-
+<%= render "signup" %>
 
 <script type="text/javascript">
 window.onload = function () {
