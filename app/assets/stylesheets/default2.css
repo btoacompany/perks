@@ -131,6 +131,7 @@ body {
   font-family: "游ゴシック", "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, "ＭＳ ゴシック", sans-serif; 
   font-size: 10pt;
   line-height: 1.2em;
+  margin: 0 0;
 }
 
 pre {
