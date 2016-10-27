@@ -402,6 +402,26 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
   color: white;
 }
 
+.landing_chart_one, .landing_chart_two, .landing_chart_three, .landing_chart_four{
+  position: relative;
+}
+
+.landing_chartone_title, .landing_charttwo_title, .landing_chartthree_title, .landing_chartfour_title{
+  position: absolute;
+  top: 21%;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+}
+
+.landing_chartone_title p, .landing_charttwo_title p, .landing_chartthree_title p, .landing_chartfour_title p{
+  font-size: 34px;
+  color: #ff8d07;
+  font-weight: bold;
+}
+
+
 /*landing_signup*/
 .landing_signup{
   width: 100%;
@@ -1090,6 +1110,26 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   width: 90%;
   margin: 0 auto;
 }
+
+.landing_chart_one, .landing_chart_two, .landing_chart_three, .landing_chart_four{
+  position: relative;
+}
+
+.landing_chartone_title, .landing_charttwo_title, .landing_chartthree_title, .landing_chartfour_title{
+  position: absolute;
+  top: 15%;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+}
+
+.landing_chartone_title p, .landing_charttwo_title p, .landing_chartthree_title p, .landing_chartfour_title p{
+  font-size: 24px;
+  color: #ff8d07;
+  font-weight: bold;
+}
+
 
 /*landing_signup*/
 .landing_signup{

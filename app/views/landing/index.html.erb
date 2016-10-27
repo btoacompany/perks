@@ -7,9 +7,10 @@
     </div>
     <div class="landing_header_right">
       <ul>
-        <li style="border-bottom: 2px solid white;"><%= link_to "サービス", root_path%></li>
+        <li style="border-bottom: 2px solid white;"><%= link_to "Prizyとは", root_path%></li>
         <li><%= link_to "プランと料金", "/price"%></li>
         <li><%= link_to "ログイン", "/login"%></li>
+        <li><%= link_to "お試し無料登録", "/company/register"%></li>
         <div class="landing_clearfix"></div>
       </ul>
     </div>
@@ -36,9 +37,10 @@
     <div class="landing_clearfix"></div>
     <div class="sp_landing_ul landing_click">
       <ul>
-        <li ><%= link_to "サービス", "/"%></li>
+        <li ><%= link_to "Prizyとは", "/"%></li>
         <li><%= link_to "プランと料金", "/price"%></li>
         <li><%= link_to "ログイン", "/login"%></li>
+        <li><%= link_to "お試し無料登録", "/company/register"%></li>
         <div class="landing_clearfix"></div>
       </ul>
     </div>
@@ -49,11 +51,11 @@
 <div id="1" class="landing_sns">
   <div class="landing_sns_text landing_pc">
     <h2>Prizy(プライジー)は、<br>「褒め合う」文化を形成する社内SNSです。</h2>
-    <p>上司から部下へ、従業員同士での、「感謝」や「褒め」を見える化することで、<br>会社の文化にスパイスを加え、チームをより強くします。</p>
+    <p>上司から部下へ、従業員同士での、「感謝」や「褒め」を見える化することで、<br>会社の文化にスパイスを加え、強い組織を、活発な組織を実現します。</p>
   </div>
   <div class="landing_sns_text landing_sp">
     <h2>Prizy(プライジー)は<br>「褒め合う」文化を形成する<br>社内SNSです。</h2>
-    <p>上司から部下へ、従業員同士での、<br>「感謝」や「褒め」を見える化することで、<br>会社の文化にスパイスを加え、<br>チームをより強くします。</p>
+    <p>上司から部下へ、従業員同士での、<br>「感謝」や「褒め」を見える化することで、<br>会社の文化にスパイスを加え、<br>強い組織、活発な組織を実現します。</p>
   </div>
   <div class="landing_sns_image">
     <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/opacity_img.png") %>
@@ -299,32 +301,36 @@
     <p>「褒め合う」文化の定着は、従業員のエンゲージメントの向上、離職率の改善、ひいては生産性の向上や、売上げのアップに。<br>人事戦略こそが最大の経営戦略に。</p>
   </div>
   <div class="landing_workforce_bottom">
-    <div class="landing_chart_wrapper">
+    <div class="landing_chart_wrapper landing_chart_one">
       <div id="landing_chart1" class="landing_chart"></div>
+      <div class="landing_chartone_title"><p>60%</p></div>
       <div class="landing_chart_text">
         <p class="landing_chart_text_top"><span style="font-weight:bold;">エンゲージメント60%向上</span></p>
         <p>「褒める文化」が強い企業の従業員エンゲージメントは60%近く高くなる。</p>
         <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
-    <div class="landing_chart_wrapper">
+    <div class="landing_chart_wrapper landing_chart_two">
       <div id="landing_chart2" class="landing_chart"></div>
+      <div class="landing_charttwo_title"><p>25%</p></div>
       <div class="landing_chart_text">
         <p class="landing_chart_text_top"><span style="font-weight:bold;">離職率の25%削減</span></p>
         <p>従業員エンゲージメントの高い企業は、25%近く低い離職率を実現している。</p>
         <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
-    <div class="landing_chart_wrapper">
+    <div class="landing_chart_wrapper landing_chart_three">
       <div id="landing_chart3" class="landing_chart"></div>
+      <div class="landing_chartthree_title"><p>21%</p></div>
       <div class="landing_chart_text">
       <p class="landing_chart_text_top"><span style="font-weight:bold;">生産性の21%向上</span></p>
       <p>従業員エンゲージメントの高い企業は、21%近く高い生産性を実現している。</p>
       <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
-    <div class="landing_chart_wrapper">
+    <div class="landing_chart_wrapper landing_chart_four">
       <div id="landing_chart4" class="landing_chart"></div>
+      <div class="landing_chartfour_title"><p>6%</p></div>
       <div class="landing_chart_text">
         <p class="landing_chart_text_top"><span style="font-weight:bold;">利益率6%向上</span></p>
         <p>エンゲージメントが高い社員は低い社員に比べて、6%高い利益率を実現。</p>
@@ -340,32 +346,36 @@
     <p>「褒め合う」文化の定着は<br>エンゲージメントの向上、<br>離職率の改善、生産性の向上<br>売上げのアップに。<br>人事戦略が最大の経営戦略に。</p>
   </div>
   <div class="landing_workforce_bottom">
-    <div class="landing_chart_wrapper">
+    <div class="landing_chart_wrapper landing_chart_one">
       <div id="landing_chart1_sp" class="landing_chart"></div>
+      <div class="landing_chartone_title"><p>60%</p></div>
       <div class="landing_chart_text">
         <p class="landing_chart_text_top"><span>エンゲージメント<br>60%向上</span></p>
         <p>褒める文化が強い企業の従業員エンゲージメントは60%近く高くなる。</p>
         <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Towers Watson</span></p>
       </div>
     </div>
-    <div class="landing_chart_wrapper">
+    <div class="landing_chart_wrapper landing_chart_two">
       <div id="landing_chart2_sp" class="landing_chart"></div>
+      <div class="landing_charttwo_title"><p>25%</p></div>
       <div class="landing_chart_text">
         <p class="landing_chart_text_top"><span>離職率<br>25%削減</span></p>
         <p>従業員エンゲージメントの高い企業は、25%近く低い離職率を実現している。</p>
         <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
-    <div class="landing_chart_wrapper">
+    <div class="landing_chart_wrapper landing_chart_three">
       <div id="landing_chart3_sp" class="landing_chart"></div>
+      <div class="landing_chartthree_title"><p>21%</p></div>
       <div class="landing_chart_text">
         <p class="landing_chart_text_top"><span>生産性<br>21%向上</span></p>
         <p>従業員エンゲージメントの高い企業は、21%近く高い生産性を実現している。</p>
         <p class="landing_chart_text_bottom"><span class="landing_chart_refferal">- Gallup</span></p>
       </div>
     </div>
-    <div class="landing_chart_wrapper">
+    <div class="landing_chart_wrapper landing_chart_four">
       <div id="landing_chart4_sp" class="landing_chart"></div>
+      <div class="landing_chartfour_title"><p>6%</p></div>
       <div class="landing_chart_text">
         <p class="landing_chart_text_top"><span>利益率<br>6%向上</span></p>
         <p>エンゲージメントが高い社員は低い社員に比べて、6%高い利益率を実現。</p>
@@ -394,6 +404,7 @@ window.onload = function () {
     dataPointWidth: 0.5,
     data: [              
     {
+      indexLabelPlacement: "inside",
       type: "doughnut",
       startAngle: 270,
       radius:  "90%", 
