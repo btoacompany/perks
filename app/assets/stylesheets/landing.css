@@ -12,15 +12,12 @@
 }
 
 
-
-
 /*PC View*/
 @media only screen and (min-width: 650px) {
 /*common_width*/
 .landing_top, .landing_sns, .landing_bonus_budget, .landing_prizy_catalog, .landing_analytics, .landing_workforce, .price_top, .price_middle, .price_qa{
   background-size:100% auto;
-  background-repeat: no-repeat;
-  min-width: 1400px;
+  min-width: 1080px;
 }
 
 .landing_sp{
@@ -51,9 +48,9 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 .landing_footer{
   background-color: #333333;
   width: 100%;
-  height: 100px;
+  height: 150px;
   position: relative;
-  min-width: 1400px;
+  min-width: 1080px;
 }
 
 .landing_header, .landing_footer_wrapper{
@@ -72,6 +69,28 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
   right: 0;
   margin: auto;
 }
+
+.pc_footer_fb img{
+  width: 18px;
+  margin-right: 20px;
+}
+
+.pc_footer_tw img{
+  width: 35px;
+  margin-top: 5px;
+}
+
+.footer_bottom ul{
+  margin: 0 0;
+  padding: 0 0;
+  float: right;
+}
+
+.footer_bottom li{
+  list-style: none;
+  float: left;
+}
+
 
 .landing_header_left, .landing_footer_left{
   float: left;
@@ -110,7 +129,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 
 .landing_top_bottom_img{
   width: 100%;
-  min-width: 1400px;
+  min-width: 1080px;
   height: 620px;
   text-align: center;
 }
@@ -186,18 +205,22 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
   margin-top: 20px;
 }
 
-.landing_bonus_budget_left, .landing_bonus_budget_right{
-  width: 350px;
+.landing_bonus_budget_left, .landing_bonus_budget_center, .landing_bonus_budget_right{
+  width: 250px;
   position: absolute;
-  top: 150px;
+  top: 120px;
 }
 
 .landing_bonus_budget_left{
-  left: 90px;
+  left: 4%;
+}
+
+.landing_bonus_budget_center{
+  left: 375px;
 }
 
 .landing_bonus_budget_right{
-  right: 90px;
+  right: 4%;
 }
 
 .budget_left_top, .budget_right_top{
@@ -382,7 +405,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 /*landing_signup*/
 .landing_signup{
   width: 100%;
-  min-width: 1400px;
+  min-width: 1080px;
   height: 600px;
   position: relative;
 }
@@ -438,7 +461,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
   background: #ff8d07;
   margin: 0 auto;
   height: 70px;
-  min-width: 1400px;
+  min-width: 1080px;
 }
 
 .landing_price_header_wrapper{
@@ -658,7 +681,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 @media only screen and (max-width: 650px) {
 
 /*common_size*/
-.landing_top, .landing_sns, .landing_bonus_budget, .landing_prizy_catalog, .landing_analytics, .landing_workforce, .price_top{
+.landing_top, .landing_sns, .landing_bonus_budget, .landing_analytics, .landing_workforce, .price_top{
   background-repeat: no-repeat;
 }
 
@@ -796,7 +819,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 .landing_top{
   background-size:100% 500px;
   height: 500px;
-  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.mv.jpg);
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp_fixed_top_01.png);
 }
 
 .landing_sns{
@@ -847,55 +870,24 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 /*landing_bonus_budget*/
 .landing_bonus_budget{
   background: -webkit-linear-gradient(left, #ff6c00, #ffcc00);
-  height: 1500px;
+  min-height: 1300px;
+  padding-bottom: 30px;
 }
 
-.landing_bonus_budget_wrapper{
+.landing_bonus_budget_left, .landing_bonus_budget_center, .landing_bonus_budget_right{
   height: 100%;
-}
-
-.landing_bonus_budget_left{
-  position: relative;
   text-align: center;
+  position: relative;
 }
 
 .landing_bonus_budget_wrapper img{
   width: 95%;
+  margin-top: 25px;
 }
 
-.landing_bonus_budget_right{
-  margin-top: 30px;
-  position: relative;
-  text-align: center;
-}
-
-.budget_left_top{
+.budget_left_top, .budget_center_top, .budget_bottom_top{
   position: absolute;
-  top: 18%;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-
-.budget_left_bottom{
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-
-.budget_right_top{
-  position: absolute;
-  top: 18%;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-
-.budget_right_bottom{
-  position: absolute;
-  top: 60%;
+  top: 22%;
   left: 0;
   right: 0;
   margin: auto;
@@ -918,8 +910,9 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 
 /*landing_prizy_catalog*/
 .landing_prizy_catalog{
-  background-size: 100% 1680px;
-  height: 1680px;
+  background-size: 100% 1550px;
+  min-height: 1550px;
+  padding-bottom: 30px;
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content3_bkg_repeat.jpg);
 }
 
@@ -1364,9 +1357,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   color: #333333;
   margin-top: 15px;
 }
-
-
-
 
 
 }
