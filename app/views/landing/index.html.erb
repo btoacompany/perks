@@ -16,10 +16,12 @@
     <div class="landing_clearfix"></div>
   </div>
   <div class="landing_top_text landing_pc" >
-    <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_title(fixed).png") %>
+    <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_finla_fixed_ttl.png") %>
   </div>
   <div class="landing_top_bottom_img landing_pc">
-    <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/btn_schorll.png") %>
+    <%= link_to "#1", data: {no_turbolink: true} do %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/btn_schorll.png") %>
+    <% end %>
   </div>
 
   <div class="landing_header landing_sp">
@@ -44,7 +46,7 @@
   </div>
 </div>
 
-<div class="landing_sns">
+<div id="1" class="landing_sns">
   <div class="landing_sns_text landing_pc">
     <h2>Prizy(プライジー)は、<br>「褒め合う」文化を形成する社内SNSです。</h2>
     <p>上司から部下へ、従業員同士での、「感謝」や「褒め」を見える化することで、<br>会社の文化にスパイスを加え、チームをより強くします。</p>
@@ -72,51 +74,47 @@
   </div>
 
   <div class="landing_bonus_budget_wrapper landing_pc">
-    <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content2_text.png") %>
+    <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/fixed_text.png") %>
     <div class="landing_bonus_budget_left">
       <div class="budget_left_top">
-        <h4>ボーナス予算</h4>
-        <p>毎月1日に各従業員様に一定のボーナス予算が付与されます。各従業員さまは、毎月その予算内で、お互いにマイクロボーナスを贈り合います。</p>
-      </div>
-      <div class="budget_left_bottom">
         <h4>コメント&ハッシュタグ</h4>
-        <p>ボーナスは必ずコメントと一緒に贈ります。<br>なぜ感謝しているのか、どう評価しているのかなど<br>見える化することで、「褒め合う」雰囲気の醸成に。<br><br>また、ハッシュタグなどをつけることも可能なため、堅苦しくならず遊び心あふれる「褒め」を実現できます。</p>
+        <p>「ホメる」に遊び心を。<br><br>褒める投稿には、ハッシュタグをつけて遊び心満点な投稿に。堅苦しい投稿だけではなく、少し "くだけた" 投稿で「ホメる」を楽しく実現できます。<br><br>もちろん「イイネ」や「コメント」で、社内コミュニケーションをさらに活性化できます。</p>
       </div>
     </div> <!-- landing_bonus_budget_left -->
+    <div class="landing_bonus_budget_center">
+      <div class="budget_right_top">
+        <h4>Prizyポイント</h4>
+        <p>「褒める言葉」や「感謝の気持ち」にプラスして贈るのがPrizyポイント。<br><br>貯まったポイントは、様々な商品や、ギフト券、また企業が独自に設定したオリジナルギフトに交換が可能なため、ちょっとしたボーナス気分。<br><br>社員同士がみんなで贈り合う<br>マイクロボーナスです。</p>
+      </div>
+    </div><!-- landing_bonus_budget_right -->
     <div class="landing_bonus_budget_right">
       <div class="budget_right_top">
-        <h4>特別ボーナス</h4>
-        <p>普段の投稿だけではなく、特別ボーナスをあげることも可能。事前に設定しておいたボーナスチャレンジをクリアした社員に特別ボーナスを贈ることができます♪<br>
-      （例）初めての受注、勤続1年など</p>
-      </div>
-      <div class="budget_right_bottom">
-        <h4>特別ボーナスコメント</h4>
-        <p>特別ボーナスをあげる際も、もちろんコメントを記入可能。なぜその人が評価されているのか、どのように頑張って特別ボーナスに至ったのかを記入できます。</p>
+        <h4>SlackやLINE連携</h4>
+        <p>褒めたいと思った時に褒める。<br><br>Prizyは、SlackやLineなどの普段職場で使うコミュニケーションツールと連携が可能。またスマホアプリも用意されているため、仕事中「ありがとう」と思った瞬間、「頑張ってるな」と感じた瞬間など、いつでも、どこでも、気軽に「ホメる」を実現できます。</p>
       </div>
     </div><!-- landing_bonus_budget_right -->
   </div><!-- landing_bonus_budget_wrapper -->
+
   <div class="landing_bonus_budget_wrapper landing_sp">
     <div class="landing_bonus_budget_left">
-      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content2_text1.png") %>
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/word_01.png") %>
       <div class="budget_left_top">
-        <h4>ボーナス予算</h4>
-        <p>毎月1日に各従業員様に一定のボーナス予算が付与されます。各従業員さまは、毎月その予算内で、お互いにマイクロボーナスを贈り合います。</p>
-      </div>
-      <div class="budget_left_bottom">
         <h4>コメント&ハッシュタグ</h4>
-        <p>ボーナスは必ずコメントと一緒に贈ります。なぜ感謝しているのか、どう評価しているのかなど、見える化することで「褒め合う」文化の醸成に。<br>ハッシュタグなどをつけることで、堅苦しくならず遊び心あふれる「褒め」を実現できます。</p>
+        <p>「ホメる」に遊び心を。<br>褒める投稿には、ハッシュタグをつけて遊び心満点な投稿に。堅苦しい投稿だけではなく、少し"くだけた"投稿で「ホメる」を楽しく実現できます。<br><br>「イイネ」や「コメント」で社内コミュニケーションをさらに活性化できます。</p>
       </div>
     </div> <!-- landing_bonus_budget_left -->
-    <div class="landing_bonus_budget_right">
-      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content2_text2.png") %>
-      <div class="budget_right_top">
-        <h4>特別ボーナス</h4>
-        <p>普段の投稿だけではなく、特別ボーナスをあげることも可能。事前に設定しておいたボーナスチャレンジをクリアした社員に特別ボーナスを贈ることができます♪<br>
-      （例）初めての受注、勤続1年など</p>
+    <div class="landing_bonus_budget_center">
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/word_02.png") %>
+      <div class="budget_center_top">
+        <h4>Prizyポイント</h4>
+        <p>「褒める言葉」や「感謝の気持ち」にプラスして贈るのがPrizyポイント。<br><br>貯まったポイントは、様々な商品や、ギフト券、また企業が独自に設定したオリジナルギフトに交換が可能なため、ちょっとしたボーナス気分。社員同士がみんなで贈り合うマイクロボーナスです。</p>
       </div>
-      <div class="budget_right_bottom">
-        <h4>特別ボーナスコメント</h4>
-        <p>特別ボーナスをあげる際も、もちろんコメントを記入可能。なぜその人が評価されているのか、どのように頑張って特別ボーナスに至ったのかを記入できます。</p>
+    </div><!-- landing_bonus_budget_right -->
+    <div class="landing_bonus_budget_right">
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/word_03.png") %>
+      <div class="budget_bottom_top">
+        <h4>SlackやLINE連携</h4>
+        <p>褒めたいと思った時に褒める。<br>Prizyは、SlackやLineなどの普段職場で使うコミュニケーションツールと連携が可能。またスマホアプリも用意されているため、仕事中「ありがとう」と思った瞬間、「頑張ってるな」と感じた瞬間など、いつでも、どこでも、気軽に「ホメる」を実現できます。</p>
       </div>
     </div><!-- landing_bonus_budget_right -->
   </div><!-- landing_bonus_budget_wrapper -->
@@ -132,7 +130,7 @@
       <h2 class="prizy_catalog_float"><span>Prizyカタログ</span>とは</h2>
       <p class="prizy_catalog_float">生活によりそった人気のあるギフトをご用意。<br>シンプルかつインパクトのあるインセンティブを実現しています。</p>
       <div class="landing_clearfix"></div>
-      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/gift_logos.png") %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/fixed_logo_01.png") %>
     </div>
     <div class="prizy_catalog_bottom">
       <h2 class="prizy_catalog_float"><span>オリジナルカタログ</span>とは</h2>
@@ -161,7 +159,7 @@
           <div class="landing_gift_each_text">
             <p><span>チームでピザパーティー券<span></p>
             <p class="landing_gift_text_align" style="font-size: 12px;">
-            いつも一緒に一緒に頑張っている仲間と過ごす大切な時間。たまには、仕事をちょっと休憩し、仲間とピザパーティーなんていかがでしょうか。ピザとお酒を片手にリフレッシュ♪
+            いつも一緒に頑張っている仲間と過ごす大切な時間。たまには、仕事をちょっと休憩し、仲間とピザパーティーなんていかがでしょうか。ピザとお酒を片手にリフレッシュ♪
             </p>
           </div>
           <div class="landing_gift_each_point">
@@ -210,7 +208,7 @@
     <div class="prizy_catalog_middle">
       <h2 class="prizy_catalog_float"><span>Prizyカタログ</span>とは</h2>
       <p class="prizy_catalog_float">人気のあるギフトをご用意。<br>シンプルかつインパクトのある<br>インセンティブを実現しています。</p>
-      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/gift_sp_logo.png") %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp_fixed_logo.png") %>
     </div>
     <div class="prizy_catalog_bottom">
       <h2 class="prizy_catalog_float"><span>オリジナルカタログ</span>とは</h2>
@@ -239,7 +237,7 @@
           <div class="landing_gift_each_text">
           <p><span>みんなで<br>ピザパーティー券<span></p>
           <p class="landing_gift_text_align" style="font-size: 12px;">
-          いつも一緒に一緒に頑張っている仲間と過ごす大切な時間。たまには仲間とピザパーティーなんていかがでしょうか。
+          いつも一緒に頑張っている仲間と過ごす大切な時間。たまには仲間とピザパーティーなんていかがでしょうか。
           </p>
           </div>
           <div class="landing_gift_each_point">
@@ -570,4 +568,20 @@ window.onload = function () {
     }
   });
 
+</script>
+
+<script>
+   $(document).on("click", "a[href^='#']", function(){
+      // スクロールの速度
+      var speed = 500; // ミリ秒
+      // アンカーの値取得
+      var href= $(this).attr("href");
+      // 移動先を取得
+      var target = $(href == "#" || href == "" ? 'html' : href);
+      // 移動先を数値で取得
+      var position = target.offset().top;
+      // スムーススクロール
+      $('body,html').animate({scrollTop:position}, speed, 'swing');
+      return false;
+   });
 </script>

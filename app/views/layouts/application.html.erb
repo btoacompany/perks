@@ -67,9 +67,24 @@
       </div>
       <div class="landing_footer_right">
         <ul>
-          <li><%= link_to "サービス", ""%></li>
+          <li><%= link_to "サービス", "/"%></li>
           <li><%= link_to "プランと料金", "/price"%></li>
-          <li><%= link_to "運営会社", ""%></li>
+          <li><%= link_to "運営会社", "http://www.btoa-company.co.jp/", :target => "_blank"%></li>
+        </ul>
+      </div>
+      <div class="landing_clearfix"></div>
+      <div class="footer_bottom">
+        <ul>
+          <li class="pc_footer_fb">
+            <%= link_to "https://www.facebook.com/prizy.official/", :target => "_blank" do %>
+              <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.icon_facebook.png") %>
+            <% end %>
+          </li>
+          <li class="pc_footer_tw">
+            <%= link_to "https://twitter.com/BtoACompany", :target => "_blank" do %>
+              <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.icon_twitter.png") %>
+            <% end %>
+          </li>
         </ul>
       </div>
     </div>
@@ -81,8 +96,16 @@
       </div>
       <div class="landing_footer_top_right">
         <ul>
-          <li class="landing_footer_facebook"><%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.icon_facebook.png") %></li>
-          <li class="landing_footer_twitter"><%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.icon_twitter.png") %></li>
+          <li class="landing_footer_facebook">
+            <%= link_to "https://www.facebook.com/prizy.official/", :target => "_blank" do %>
+              <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.icon_facebook.png") %>
+            <% end %>
+          </li>
+          <li class="landing_footer_twitter">
+            <%= link_to "https://twitter.com/BtoACompany", :target => "_blank" do %>
+            <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.icon_twitter.png") %>
+            <% end %>
+          </li>
         <div class="landing_clearfix"></div>
         </ul>
       </div>
@@ -92,7 +115,7 @@
       <ul>
         <li><%= link_to "サービス", "prizy.me" %></li>
         <li><%= link_to "プランと料金", "/price"%></li>
-        <li><%= link_to "運営会社", "http://www.btoa-company.co.jp/"%></li>
+        <li><%= link_to "運営会社", "http://www.btoa-company.co.jp/", :target => "_blank"%></li>
         <div class="landing_clearfix"></div>
       </ul>
     </div>
