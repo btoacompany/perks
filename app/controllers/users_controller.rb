@@ -228,6 +228,12 @@ class UsersController < ApplicationController
   def give_kudos
     params[:user_id] = @id
 
+    logger.debug "-------"
+    logger.debug @id
+    logger.debug params[:user_id]
+    logger.debug params
+
+
     kudo = Kudos.where(:user_id => @id, :post_id => params[:post_id], delete_flag: 0).first
 
     if kudo.present?
