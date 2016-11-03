@@ -230,6 +230,7 @@ class UsersController < ApplicationController
 
     logger.debug "-------"
     logger.debug @id
+    logger.debug session
     logger.debug params[:user_id]
     logger.debug params
 
