@@ -176,6 +176,11 @@ class UsersController < ApplicationController
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user = User.find(@id)
 
+
+    logger.debug "-------"
+    logger.debug params
+
+
     points = params[:description].scan(/\+[^\s|　]+/).first.to_i
     params[:user_id] = @id
     params[:company_id] = @company_id
@@ -227,13 +232,6 @@ class UsersController < ApplicationController
 
   def give_kudos
     params[:user_id] = @id
-
-    logger.debug "-------"
-    logger.debug @id
-    logger.debug session
-    logger.debug params[:user_id]
-    logger.debug params
-
 
     kudo = Kudos.where(:user_id => @id, :post_id => params[:post_id], delete_flag: 0).first
 
