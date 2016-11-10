@@ -172,14 +172,14 @@ class UsersController < ApplicationController
     @num_bonus = Bonus.where(company_id: @company_id, delete_flag: 0).count
   end
 
+  def give_points_slack
+    logger.debug "-------"
+    logger.debug params
+  end
+
   def give_points
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user = User.find(@id)
-
-
-    logger.debug "-------"
-    logger.debug params
-
 
     points = params[:description].scan(/\+[^\s|　]+/).first.to_i
     params[:user_id] = @id
@@ -218,7 +218,6 @@ class UsersController < ApplicationController
       end
     end
     redirect_page("users", "index")
-    #redirect_to '/user', :protocol => @protocol
   end
 
   def give_comments 
