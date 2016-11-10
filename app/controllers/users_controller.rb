@@ -5,7 +5,7 @@ require 'net/http'
 
 class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout,
-  :invite, :invite_complete, :forgot_password, :forgot_password_submit, :fb_auth]
+  :invite, :invite_complete, :give_points_slack, :forgot_password, :forgot_password_submit, :fb_auth]
   before_filter :init_url
 
   def init
@@ -174,7 +174,8 @@ class UsersController < ApplicationController
 
   def give_points_slack
     logger.debug "-------"
-    logger.debug params
+    logger.debug params["text"]
+    logger.debug "hello world"
   end
 
   def give_points
