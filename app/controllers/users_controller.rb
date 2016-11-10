@@ -4,11 +4,11 @@ require 'uri'
 require 'net/http'
 
 class UsersController < ApplicationController
-  before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout,
-  :invite, :invite_complete, :give_points_slack, :forgot_password, :forgot_password_submit, :fb_auth]
+  before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout, :invite, :invite_complete, :give_points_slack, :forgot_password, :forgot_password_submit, :fb_auth]
   before_filter :init_url
 
   def init
+    Rails::logger.debug "--hi--"
     if session[:id].present? || cookies[:id].present?
       @id = session[:id] || cookies[:id]
       user = User.find(@id)
