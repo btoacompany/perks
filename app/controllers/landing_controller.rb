@@ -14,5 +14,8 @@ class LandingController < ApplicationController
   def price
   end
 
+  def slack
+  end
+
 
 end
