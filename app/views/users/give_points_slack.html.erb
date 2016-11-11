@@ -1,0 +1,5 @@
+<% if flash[:notice].present? %>
+  <%= flash[:notice] %>
+<% else %>
+  <%= flash[:success] %>
+<% end %>

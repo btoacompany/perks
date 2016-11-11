@@ -4,11 +4,10 @@ require 'uri'
 require 'net/http'
 
 class UsersController < ApplicationController
-  before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout, :invite, :invite_complete, :give_points_slack, :forgot_password, :forgot_password_submit, :fb_auth]
+  before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout, :invite, :invite_complete, :give_points_slack, :give_points_slack_response, :forgot_password, :forgot_password_submit, :fb_auth]
   before_filter :init_url
 
   def init
-    Rails::logger.debug "--hi--"
     if session[:id].present? || cookies[:id].present?
       @id = session[:id] || cookies[:id]
       user = User.find(@id)
@@ -173,9 +172,62 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
-    logger.debug "-------"
-    logger.debug params["text"]
-    logger.debug "hello world"
+    logger.debug "-----------"
+    begin
+      email = "ca1@btoa-company.com"
+      user = User.find_by_email(email)
+
+      params[:user_id] = user.id 
+      params[:company_id] = user.company_id
+      params[:description] = params["text"]
+
+      receiver_name = params["text"].scan(/\@[^\s|　]+/).first.gsub("@","")
+      receiver = User.where(delete_flag: 0, name: receiver_name).first
+      
+      unless receiver.blank?
+	points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
+	params[:points] = points
+	params[:receiver_id] = receiver.id
+
+	if (points <= user[:out_points])
+	  logger.debug points
+	  user.out_points -= params[:points]
+	  user.save
+
+	  hashtags = params["text"].scan(/\#[^\s|　]+/)
+	  receiver.in_points += params[:points]
+	  receiver.save
+
+	  UserMailer.receive_points_email({
+	    receiver: receiver.name, 
+	    email: receiver.email,
+	    giver: user.name,
+	    points: params[:points],
+	    prizy_url: @prizy_url + "/user"
+	  }).deliver_later
+
+	  post = Post.new
+	  post.save_record(params)
+	  params[:post_id] = post.id
+
+	  hashtags.each do | tag |
+	    params[:hashtag] = tag 
+	    hashtag = Hashtag.new
+	    hashtag.save_record(params)
+	  end
+
+	  flash[:success] = "#{params[:description]} was successfully posted!"
+	else
+	  flash[:notice] = "ポイントが足りません"
+	end
+      else
+	flash[:notice] = "User does not exist"
+      end
+    rescue Exception => e
+      flash[:notice] = "There was an error in your post. Please follow this format: /prizy +5 @tanaka #hashtag comment"
+    end
+
+    render :layout => false
   end
 
   def give_points
