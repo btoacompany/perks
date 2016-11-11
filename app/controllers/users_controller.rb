@@ -174,7 +174,7 @@ class UsersController < ApplicationController
   def give_points_slack
     logger.debug "-----------"
     begin
-      email = "ca1@btoa-company.com"
+      email = "f.ishihara@btoa-company.com"
       user = User.find_by_email(email)
 
       params[:user_id] = user.id 
