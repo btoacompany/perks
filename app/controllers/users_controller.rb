@@ -194,10 +194,8 @@ class UsersController < ApplicationController
     userlist = JSON.parse(http.body)
 
     begin
-      logger.debug params
-      #email = userinfo["user"]["profile"]["email"]
-      #channel = userinfo["user"]["profile"]["channel"]
-      email = "c_a@btoa-company.com"
+      email = userinfo["user"]["profile"]["email"]
+      #email = "c_a@btoa-company.com"
 
       user = User.find_by_email(email)
 
