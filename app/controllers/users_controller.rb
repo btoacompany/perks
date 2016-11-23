@@ -174,17 +174,30 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
-    slack_data = {
+    slack_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27"
+    slack_user_info_data = {
       :user	    => params["user_id"],
-      :token	    => "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27",
+      :token	    => slack_token,
+    }
+
+    slack_user_list_data = {
+      :token => slack_token,
+      :presence => 1
     }
 
     uri = URI.parse("https://slack.com/api/users.info")
-    http = Net::HTTP.post_form(uri, slack_data)
-    response = JSON.parse(http.body)
+    http = Net::HTTP.post_form(uri, slack_user_info_data)
+    userinfo = JSON.parse(http.body)
+
+    uri = URI.parse("https://slack.com/api/users.list")
+    http = Net::HTTP.post_form(uri, slack_user_list_data)
+    userlist = JSON.parse(http.body)
 
     begin
-      email = response["user"]["profile"]["email"]
+      logger.debug params
+      #email = userinfo["user"]["profile"]["email"]
+      #channel = userinfo["user"]["profile"]["channel"]
+      email = "c_a@btoa-company.com"
 
       user = User.find_by_email(email)
 
@@ -194,7 +207,15 @@ class UsersController < ApplicationController
 	params[:description] = params["text"]
 
 	receiver_name = params["text"].scan(/\@[^\s|　]+/).first.gsub("@","")
-	receiver = User.where(delete_flag: 0, name: receiver_name).first
+	receiver = ""
+
+	userlist["members"].each do | member |
+	  if member["name"] == receiver_name
+	    receiver_email = member["profile"]["email"] 
+	    receiver = User.where(:email => receiver_email, :delete_flag => 0).first
+	    break
+	  end
+	end
 	
 	unless receiver.blank?
 	  points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
@@ -227,9 +248,12 @@ class UsersController < ApplicationController
 	      hashtag.save_record(params)
 	    end
 
-	    flash[:notice] = "#{params[:description]} was successfully posted from #{params[:user_name]}!"
+	    slack_notif = Slack::Notifier.new(@slack_webhooks) 
+	    slack_notif.ping("#{receiver_name}さんにボーナスを贈りました！")
+
+	    flash[:notice] = "#{params[:user_name]}さんが#{receiver_name}さんにボーナスを贈りました。"
 	  else
-	    flash[:notice] = "ポイントが足りません"
+	    flash[:notice] = "ポイントが足りません！#{user.out_points}ポイント残っています"
 	  end
 	else
 	  flash[:notice] = "User does not exist"
@@ -239,11 +263,23 @@ class UsersController < ApplicationController
 	flash[:notice] = "Your email #{email} is not yet registered to #{team_domain} Prizy"
       end
     rescue Exception => e
-      flash[:notice] = "There was an error in your post. Please follow this format: /prizy +5 @tanaka #hashtag comment"
+      logger.debug e.message
+      flash[:notice] = "入力に不備があります！\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
     end
 
-    slack_notif = Slack::Notifier.new(@slack_webhooks) 
-    slack_notif.ping(flash[:notice])
+=begin
+    slack_chat_data = {
+      :token	  => slack_token,
+      :channel	  => params["channel_id"],
+      :text	  => flash[:notice],
+      :as_user	  => false,
+      :username	  => "Prizy",
+      :icon_url	  => "https://s3-ap-northeast-1.amazonaws.com/prizy/common/img_01.png"
+    }
+
+    uri = URI.parse("https://slack.com/api/chat.postMessage")
+    http = Net::HTTP.post_form(uri, slack_chat_data)
+=end
 
     render :layout => false
   end
