@@ -222,7 +222,7 @@ class UsersController < ApplicationController
 	  end
 	end
 	
-	if error = 0
+	if error == 0
 	  unless receiver.blank?
 	    points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
 	    params[:points] = points
@@ -264,11 +264,11 @@ class UsersController < ApplicationController
 	  else
 	    flash[:notice] = "User does not exist"
 	  end
-	else
-	  team_domain = params["team_domain"].upcase
-	  flash[:notice] = "Your email #{email} is not yet registered to #{team_domain} Prizy"
-	end
-      end	
+	end	
+      else
+	team_domain = params["team_domain"].upcase
+	flash[:notice] = "Your email #{email} is not yet registered to #{team_domain} Prizy"
+      end
     rescue Exception => e
       logger.debug e.message
       flash[:notice] = "入力に不備があります！\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
