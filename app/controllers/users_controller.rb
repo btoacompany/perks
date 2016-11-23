@@ -195,6 +195,7 @@ class UsersController < ApplicationController
 
     begin
       email = userinfo["user"]["profile"]["email"]
+      error = 0
       #email = "c_a@btoa-company.com"
 
       user = User.find_by_email(email)
@@ -212,6 +213,7 @@ class UsersController < ApplicationController
 	    receiver_email = member["profile"]["email"] 
 	    if receiver_email == email
 	      flash[:notice] = "Nice try, but you cannot give points to yourself!"
+	      error = 1
 	    else
 	      receiver = User.where(:email => receiver_email, :delete_flag => 0).first
 	    end
@@ -220,51 +222,53 @@ class UsersController < ApplicationController
 	  end
 	end
 	
-	unless receiver.blank?
-	  points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
-	  params[:points] = points
-	  params[:receiver_id] = receiver.id
+	if error = 0
+	  unless receiver.blank?
+	    points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
+	    params[:points] = points
+	    params[:receiver_id] = receiver.id
 
-	  if (points <= user[:out_points])
-	    user.out_points -= params[:points]
-	    user.save
+	    if (points <= user[:out_points])
+	      user.out_points -= params[:points]
+	      user.save
 
-	    hashtags = params["text"].scan(/\#[^\s|　]+/)
-	    receiver.in_points += params[:points]
-	    receiver.save
+	      hashtags = params["text"].scan(/\#[^\s|　]+/)
+	      receiver.in_points += params[:points]
+	      receiver.save
 
-	    UserMailer.receive_points_email({
-	      receiver: receiver.name, 
-	      email: receiver.email,
-	      giver: user.name,
-	      points: params[:points],
-	      prizy_url: @prizy_url + "/user"
-	    }).deliver_later
+	      UserMailer.receive_points_email({
+		receiver: receiver.name, 
+		email: receiver.email,
+		giver: user.name,
+		points: params[:points],
+		prizy_url: @prizy_url + "/user"
+	      }).deliver_later
 
-	    post = Post.new
-	    post.save_record(params)
-	    params[:post_id] = post.id
+	      post = Post.new
+	      post.save_record(params)
+	      params[:post_id] = post.id
 
-	    hashtags.each do | tag |
-	      params[:hashtag] = tag 
-	      hashtag = Hashtag.new
-	      hashtag.save_record(params)
+	      hashtags.each do | tag |
+		params[:hashtag] = tag 
+		hashtag = Hashtag.new
+		hashtag.save_record(params)
+	      end
+
+	      slack_notif = Slack::Notifier.new(@slack_webhooks) 
+	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんにボーナスを贈りました。")
+
+	      flash[:notice] = "#{receiver_name}さんにボーナスを贈りました！"
+	    else
+	      flash[:notice] = "ポイントが足りません！#{user.out_points}ポイント残っています"
 	    end
-
-	    slack_notif = Slack::Notifier.new(@slack_webhooks) 
-	    slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんにボーナスを贈りました。")
-
-	    flash[:notice] = "#{receiver_name}さんにボーナスを贈りました！"
 	  else
-	    flash[:notice] = "ポイントが足りません！#{user.out_points}ポイント残っています"
+	    flash[:notice] = "User does not exist"
 	  end
 	else
-	  flash[:notice] = "User does not exist"
+	  team_domain = params["team_domain"].upcase
+	  flash[:notice] = "Your email #{email} is not yet registered to #{team_domain} Prizy"
 	end
-      else
-	team_domain = params["team_domain"].upcase
-	flash[:notice] = "Your email #{email} is not yet registered to #{team_domain} Prizy"
-      end
+      end	
     rescue Exception => e
       logger.debug e.message
       flash[:notice] = "入力に不備があります！\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
