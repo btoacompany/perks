@@ -210,7 +210,12 @@ class UsersController < ApplicationController
 	userlist["members"].each do | member |
 	  if member["name"] == receiver_name
 	    receiver_email = member["profile"]["email"] 
-	    receiver = User.where(:email => receiver_email, :delete_flag => 0).first
+	    if receiver_email == email
+	      flash[:notice] = "Nice try, but you cannot give points to yourself!"
+	    else
+	      receiver = User.where(:email => receiver_email, :delete_flag => 0).first
+	    end
+
 	    break
 	  end
 	end
@@ -247,9 +252,9 @@ class UsersController < ApplicationController
 	    end
 
 	    slack_notif = Slack::Notifier.new(@slack_webhooks) 
-	    slack_notif.ping("#{receiver_name}さんにボーナスを贈りました！")
+	    slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんにボーナスを贈りました。")
 
-	    flash[:notice] = "#{params[:user_name]}さんが#{receiver_name}さんにボーナスを贈りました。"
+	    flash[:notice] = "#{receiver_name}さんにボーナスを贈りました！"
 	  else
 	    flash[:notice] = "ポイントが足りません！#{user.out_points}ポイント残っています"
 	  end
