@@ -11,10 +11,17 @@
     <h3 class="landing_pc">PrizyとSlack連携で「ホメる」がもっと簡単に。</h3>
     <h3 class="landing_sp slack_top_text_top">PrizyとSlack連携で</h3>
     <h3 class="landing_sp slack_top_text_bottom">「ホメる」がもっと簡単に。</h3>
-    <%= link_to "" do %>
-    <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_dl.png", :class => "slack_dl_btn") %>
+    <%if @user_login == 1 %>
+      <%= link_to "https://slack.com/oauth/authorize" do %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_dl.png", :class => "slack_dl_btn") %>
+      <% end %>
+      <p>※PrizyおよびSlackで管理者権限が必要です。</p>
+    <% else %>
+      <%= link_to "/company/register" do %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_dl.png", :class => "slack_dl_btn") %>
+      <% end %>
+      <p class="slack_top_link">すでにPrizyアカウントをお持ちですか？<%= link_to "こちら", "/login" %>よりログインしてください。</p>
     <% end %>
-    <p>※PrizyおよびSlackで管理者権限が必要です。</p>
   </div>
 </div>
 
