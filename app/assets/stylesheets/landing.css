@@ -15,7 +15,7 @@
 /*PC View*/
 @media only screen and (min-width: 650px) {
 /*common_width*/
-.landing_top, .landing_sns, .landing_bonus_budget, .landing_prizy_catalog, .landing_analytics, .landing_workforce, .price_top, .price_middle, .price_qa{
+.landing_top, .landing_sns, .landing_bonus_budget, .landing_prizy_catalog, .landing_analytics, .landing_workforce, .price_top, .price_middle, .price_qa, .slack_top, .slack_middle{
   background-size:100% auto;
   min-width: 1080px;
 }
@@ -321,7 +321,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 
 
 /*landing_analytics*/
-
 .landing_analytics{
   text-align: center;
   padding-top: 100px;
@@ -695,13 +694,133 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-top: 15px;
 }
 
+/*slack_top*/
+.slack_top{
+  height: 600px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg.png);
+  position: relative;
+}
+
+.slack_top_wrapper{
+  position: absolute;
+  top: 30%;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.slack_top_wrapper h2{
+  font-size: 38px;
+  color: #ff8d07;
+  margin-top: 40px;
+}
+
+.slack_top_wrapper h3{
+  font-size: 26px;
+  color: #ffffff;
+  margin-top: 40px;
+}
+
+.slack_top_wrapper p{
+  color: #ffffff;
+  margin-top: 15px;
+}
+
+.slack_dl_btn{
+  margin-top: 40px;
+}
+
+/*slack_middle*/
+.slack_middle{
+  height: 600px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
+}
+
+.slack_middle_wrapper{
+  width: 1100px;
+  margin: 0 auto;
+  padding-top: 100px;
+}
+
+.slack_middle_left, .slack_middle_right{
+  float: left;
+}
+
+.slack_middle_right{
+  margin-left: 40px;
+}
+
+.slack_middle_right_top p, .slack_middle_right_bottom p{
+  font-size: 26px;
+  color: #333333;
+}
+
+.slack_middle_hashtag, .slack_middle_hashtag_title{
+  float: left;
+}
+
+.slack_middle_hashtag_title{
+  height: 35px;
+  padding-top: 10px;
+  margin-left: 15px;
+}
+
+.slack_text_img{
+  margin-top: 15px;
+}
+
+.slack_middle_right_bottom{
+  margin-top: 15px;
+}
+
+/*privacy*/
+.privacy_top{
+  height: 2000px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
+}
+
+/*terms*/
+.terms_top{
+  height: 4200px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
+}
+
+/*privacy terms*/
+.privacy_wrapper, .terms_wrapper{
+  width: 920px;
+  margin: 0 auto;
+  padding-top: 60px;
+}
+
+.privacy_wrapper h2, .terms_wrapper h2{
+  margin-bottom: 10px;
+}
+
+.privacy_wrapper h3, .terms_wrapper h3{
+  margin-top: 40px;
+}
+
+.privacy_wrapper p, .terms_wrapper p{
+  margin-top: 20px;
+}
+
+.slack_top_link a{
+  color: white;
+}
+
+
+
+
+
 } /* end of PC View*/
 
 /* SP View*/
 @media only screen and (max-width: 650px) {
 
 /*common_size*/
-.landing_top, .landing_sns, .landing_bonus_budget, .landing_analytics, .landing_workforce, .price_top{
+.landing_top, .landing_sns, .landing_bonus_budget, .landing_analytics, .landing_workforce, .price_top, .slack_top{
   background-repeat: no-repeat;
 }
 
@@ -824,10 +943,11 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 }
 
 .landing_footer_bottom li{
-  width: 25%;
+  width: 33%;
   float: left;
   text-align: center;
   list-style: none;
+  padding-bottom: 10px;
 }
 
 .landing_footer_bottom a{
@@ -1397,6 +1517,137 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   color: #333333;
   margin-top: 15px;
 }
+
+/*slack_top*/
+.slack_top{
+  background-size:100% 400px;
+  height: 400px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg.png);
+  position: relative;
+}
+
+.slack_top_wrapper{
+  position: absolute;
+  top: 10%;
+  right: 0;
+  left: 0;
+  margin: auto;
+  text-align: center;
+}
+
+.slack_top_wrapper h2{
+  font-size: 40px;
+  color: #ff8d07;
+  margin-top: 40px;
+}
+
+.slack_top_wrapper h3{
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.slack_top_text_top{
+  margin-top: 40px;
+}
+
+.slack_top_text_bottom{
+  margin-top: 20px;
+}
+
+.slack_top_wrapper p{
+  color: #ffffff;
+  margin-top: 15px;
+}
+
+.slack_dl_btn{
+  margin-top: 40px;
+}
+
+/*slack_middle*/
+.slack_middle{
+  background-size:100% 1000px;
+  height: 1000px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
+}
+
+.slack_middle_wrapper{
+  width: 95%;
+  height: 1000px;
+  margin: 0 auto;
+  margin-top: 70px;
+}
+
+
+.slack_middle_left img{
+  width:100%;
+}
+
+.slack_sp_text_img{
+  width: 100%;
+}
+
+.slack_middle_right_top p, .slack_middle_right_bottom p{
+  font-size: 26px;
+  color: #333333;
+}
+
+.slack_middle_hashtag, .slack_middle_hashtag_title{
+  float: left;
+}
+
+.slack_middle_hashtag_title{
+  height: 35px;
+  padding-top: 10px;
+  margin-left: 15px;
+}
+
+.slack_middle_right{
+  margin-top: 50px;
+}
+
+.slack_sp_text_img{
+  margin-top: 15px;
+}
+
+.slack_middle_right_bottom{
+  margin-top: 30px;
+}
+
+/*privacy*/
+.privacy_top{
+  background-size:100% 2700px;
+  height: 2700px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
+}
+
+/*terms*/
+.terms_top{
+  background-size:100% 6500px;
+  height: 6500px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
+}
+
+/*privacy terms*/
+.privacy_wrapper, .terms_wrapper{
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-top: 20px;
+}
+
+.privacy_wrapper h2, .terms_wrapper h2{
+  margin-bottom: 10px;
+}
+
+.privacy_wrapper h3, .terms_wrapper h3{
+  margin-top: 40px;
+}
+
+.privacy_wrapper p, .terms_wrapper p{
+  margin-top: 20px;
+}
+
+
+
 
 
 }

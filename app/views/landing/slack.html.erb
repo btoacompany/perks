@@ -1,0 +1,86 @@
+<%if @user_login == 1 %>
+  <%= render "shared/header"%>
+<% else %>
+  <%= render "landingheader" %>
+<% end %>
+
+<div class="slack_top">
+  <div class="slack_top_wrapper">
+    <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_icon_slack.png") %>
+    <h2>Prizy on Slack</h2>
+    <h3 class="landing_pc">PrizyとSlack連携で「ホメる」がもっと簡単に。</h3>
+    <h3 class="landing_sp slack_top_text_top">PrizyとSlack連携で</h3>
+    <h3 class="landing_sp slack_top_text_bottom">「ホメる」がもっと簡単に。</h3>
+    <%if @user_login == 1 %>
+      <%= link_to "https://slack.com/oauth/authorize" do %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_dl.png", :class => "slack_dl_btn") %>
+      <% end %>
+      <p>※PrizyおよびSlackで管理者権限が必要です。</p>
+    <% else %>
+      <%= link_to "/company/register" do %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_dl.png", :class => "slack_dl_btn") %>
+      <% end %>
+      <p class="slack_top_link">すでにPrizyアカウントをお持ちですか？<%= link_to "こちら", "/login" %>よりログインしてください。</p>
+    <% end %>
+  </div>
+</div>
+
+<div class="slack_middle landing_pc">
+  <div class="slack_middle_wrapper">
+    <div class="slack_middle_left">
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/prizypc_slack_image.jpg") %>
+    </div><!--slack_middle_left-->
+
+    <div class="slack_middle_right">
+      <div class="slack_middle_right_top">
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_icon_slack_02.png", :class => "slack_middle_hashtag") %>
+        <p class="slack_middle_hashtag_title">Easy to Use</p>
+        <div class="landing_clearfix"></div>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/text.slack_pc.png", :class => "slack_text_img") %>
+      </div>
+      <div class="slack_middle_right_bottom">
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_icon_slack_02.png", :class=> "slack_middle_hashtag") %>
+        <p class="slack_middle_hashtag_title">Easy to Share</p>
+        <div class="landing_clearfix"></div>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/prizypc_bot_image.jpg", :class => "slack_text_img" ) %>
+      </div>
+    </div><!--slack_middle_right-->
+    <div class="landing_clearfix"></div>
+  </div><!--slack_middle_wrapper-->
+</div><!--slack_middle-->
+
+<div class="slack_middle landing_sp">
+  <div class="slack_middle_wrapper">
+    <div class="slack_middle_left">
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/test.slack_sp_02.png") %>
+    </div><!--slack_middle_left-->
+
+    <div class="slack_middle_right">
+      <div class="slack_middle_right_top">
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_icon_slack_02.png", :class => "slack_middle_hashtag") %>
+        <p class="slack_middle_hashtag_title">Easy to Use</p>
+        <div class="landing_clearfix"></div>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/text.slack_sp.png", :class => "slack_sp_text_img") %>
+      </div>
+      <div class="slack_middle_right_bottom">
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_icon_slack_02.png", :class=> "slack_middle_hashtag") %>
+        <p class="slack_middle_hashtag_title">Easy to Share</p>
+        <div class="landing_clearfix"></div>
+        <%= image_tag("") %>
+      </div>
+    </div><!--slack_middle_right-->
+  </div><!--slack_middle_wrapper-->
+</div><!--slack_middle-->
+
+<script>
+  $(document).on("click", ".price_landing_header_right", function(){
+    if($('.price_landing_header_ul').hasClass("landing_click")){
+      $('.price_landing_header_ul').removeClass("landing_click");
+      $('.price_landing_header').addClass("price_all_landing_click");
+    } else {
+      $('.price_landing_header_ul').addClass("landing_click");
+      $('.price_landing_header').removeClass("price_all_landing_click");
+    }
+  });
+
+</script>
