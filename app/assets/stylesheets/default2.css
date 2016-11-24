@@ -662,6 +662,10 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   color: #000000;
 }
 
+.footer_wrapper{
+  margin-top: 100px;
+}
+
 hr.style-two { 
   border: 0; 
   height: 1px; 

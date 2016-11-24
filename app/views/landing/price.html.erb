@@ -1,46 +1,4 @@
-<div class="landing_price_header landing_pc">
-  <div class="landing_price_header_wrapper">
-    <div class="landing_price_header_left">
-      <%= link_to "/" do %>
-      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png") %>
-      <% end %>
-    </div>
-    <div class="landing_price_header_right">
-      <ul>
-        <li><%= link_to "Prizyとは", root_path%></li>
-        <li style="border-bottom: 2px solid white;"><%= link_to "プランと料金", "/price"%></li>
-        <li><%= link_to "ログイン", "/login"%></li>
-        <li><%= link_to "お試し無料登録", "/company/register"%></li>
-        <div class="landing_clearfix"></div>
-      </ul>
-    </div>
-    <div class="landing_clearfix"></div>
-  </div>
-</div>
-
-<div class="price_landing_header landing_sp">
-  <div class="price_landing_header_wrapper">
-    <div class="price_landing_header_left">
-      <%= link_to "/" do %>
-      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.logo.png") %>
-      <% end %>
-    </div>
-    <div class="price_landing_header_right">
-      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/prizy/common/gnav.png") %>
-    </div>
-    <div class="landing_clearfix"></div>
-  </div>
-  <div class="price_landing_header_ul landing_click">
-    <ul>
-      <li><%= link_to "Prizyとは", "/"%></li>
-      <li><%= link_to "プランと料金", "/price"%></li>
-      <li><%= link_to "ログイン", "/login"%></li>
-      <li><%= link_to "お試し無料登録", "/company/register"%></li>
-      <div class="landing_clearfix"></div>
-    </ul>
-  </div>
-  <div class="landing_clearfix"></div>
-</div>
+<%= render "landingheader" %>
 
 <div class="price_top">
   <div class="price_top_wrapper">
@@ -145,6 +103,8 @@
       $('.price_landing_header').removeClass("price_all_landing_click");
     }
   });
+
+  $("#landing_underline").css("border-bottom", "2px solid white");
 
 </script>
 
