@@ -86,12 +86,15 @@ Rails.application.routes.draw do
   get	'analytics/user/:id'	=> 'analytics#user'
   post	'analytics/user/:id'	=> 'analytics#user'
 
-
   #facebook auth
   get	'auth/facebook', as: "auth_provider"
   get	'auth/facebook/callback',to: "users#fb_auth"
 
   #forget password
-  get	'/forgot_password'		    => 'users#forgot_password'
-  post	'/forgot_password/submit'	    => 'users#forgot_password_submit'
+  get	'/forgot_password'		  => 'users#forgot_password'
+  post	'/forgot_password/submit'	  => 'users#forgot_password_submit'
+
+  #ios register
+  post	'/device/ios/register'		  => 'device#register_ios'
+  post	'/device/ios/unregister'	  => 'device#unregister_ios'
 end
