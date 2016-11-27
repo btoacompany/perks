@@ -6,7 +6,7 @@ class DeviceController < ApplicationController
     email    = "s.karakama@btoa-company.com"
     #email = session[:email]
 
-    user_id = User.find_by_email(email).id
+    user_id = User.find_by_email(email).id.to_s
     arn = "arn:aws:sns:ap-northeast-1:254772566290:app/APNS/Prizy.me.ios.prod"
 
     sns = Aws::SNS::Client.new
