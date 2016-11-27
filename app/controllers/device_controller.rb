@@ -2,34 +2,68 @@
 
 class DeviceController < ApplicationController
   def register_ios
-    params[:token]  = "5cc3647072ee117c9e53e9942f62ca82c40b97014874eb8eba4f646ddcbd0296"
-    email    = "s.karakama@btoa-company.com"
-    #email = session[:email]
+    token     = params[:token]
+    email     = session[:email]
+    #email = "s.karakama@btoa-company.com"
 
     user_id = User.find_by_email(email).id.to_s
-    arn = "arn:aws:sns:ap-northeast-1:254772566290:app/APNS/Prizy.me.ios.prod"
+    device = IosToken.where(:token => token).first
 
-    sns = Aws::SNS::Client.new
-    endpoint = sns.create_platform_endpoint(
-      platform_application_arn: arn,
-      token: params[:token],
-      attributes: { "UserId" => user_id }
-    )
+    if device.nil?
+      endpoint = sns_create_endpoint(token, user_id)
+      
+      begin
+        device = IosToken.new
+        device.token = token
+        device.user_id = user_id
+        device.arn = endpoint[:endpoint_arn]
 
-    begin
-      device = IosToken.new
-      device.save(
-	:token	=> params[:token],
-	:user_id	=> user_id,
-	:arn	=> endpoint[:endpoint_arn] 
-      )
-    rescue Exception => e
-      logger.debug e.message
+        device.save
+      rescue Exception => e
+        logger.debug e.message
+      end
+    else  
+      unless user_id == device.user_id
+        sns.delete_endpoint({ 
+          :endpoint_arn => device.arn 
+        });
+
+        endpoint = sns_create_endpoint(token, user_id)
+
+        device.user_id = user_id
+        device.arn     = endpoint[:endpoint_arn]
+        device.save
+      end
     end
 
     render :layout => false
   end
 
   def unregister_ios
+    token  = params[:token]
+
+    sns = Aws::SNS::Client.new
+    device = IosToken.where(:token => token).first
+
+    unless device.nil?
+      sns.delete_endpoint({ 
+        :endpoint_arn => device.arn 
+      });
+
+      device.delete
+    end
+  end
+
+  def sns_create_endpoint(token, user_id)
+    sns = Aws::SNS::Client.new
+    arn = "arn:aws:sns:ap-northeast-1:254772566290:app/APNS/Prizy.me.ios.prod"
+
+    endpoint = sns.create_platform_endpoint(
+      platform_application_arn: arn,
+      token: token,
+      attributes: { "UserId" => user_id }
+    )
+
+    return endpoint
   end
 end

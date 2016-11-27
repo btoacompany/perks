@@ -21,7 +21,6 @@ class UsersController < ApplicationController
   def login
     $c_code = ""
     if session[:id] || cookies[:id]
-      #redirect_to "/user", :protocol => @protocol
       redirect_page("users", "index")
     end
 
@@ -34,29 +33,27 @@ class UsersController < ApplicationController
 
     if authorized_user
       if authorized_user.delete_flag == 1
-	reset_session
-	flash[:notice] = "ユーザー名かパスワードに誤りがあります"
-	render 'login', :status => :unauthorized
-	#redirect_to "/login"
+      	reset_session
+      	flash[:notice] = "ユーザー名かパスワードに誤りがあります"
+      	render 'login', :status => :unauthorized
+
       else
-	if params[:remember].to_i == 1 
-	  cookies.permanent[:id] = authorized_user.id
-	  cookies.permanent[:email] = authorized_user.email
-	else
-	  session[:id] = authorized_user.id
-	  session[:email] = authorized_user.email
-	end
+      	if params[:remember].to_i == 1 
+      	  cookies.permanent[:id] = authorized_user.id
+      	  cookies.permanent[:email] = authorized_user.email
+      	else
+      	  session[:id] = authorized_user.id
+      	  session[:email] = authorized_user.email
+      	end
 
-	verified = authorized_user.verified
-	flash[:notice] = "" 
+      	verified = authorized_user.verified
+      	flash[:notice] = "" 
 
-	if verified == 0
-	  #redirect_to "/update"
-	  redirect_page("users", "update")
-	else
-	  #redirect_to "/user"
-	  redirect_page("users", "index")
-	end
+      	if verified == 0
+      	  redirect_page("users", "update")
+      	else
+      	  redirect_page("users", "index")
+      	end
       end
     else
       flash[:notice] = "ユーザー名かパスワードに誤りがあります"
@@ -71,7 +68,6 @@ class UsersController < ApplicationController
     cookies.delete :email
     reset_session
 
-    #redirect_to '/login', :protocol => @protocol
     redirect_page("users", "login")
   end
 
@@ -128,21 +124,21 @@ class UsersController < ApplicationController
       kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
       data = {
-	id:		post.id,
-	user_id:	post.user_id,
-	user_name:	post.user.name,
-	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
-	receiver_id:	post.receiver_id,
-	receiver_name:	post.receiver.name,
-	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
-	user_img:	post.user.img_src,
-	receiver_img:	post.receiver.img_src,
-	points:		post.points,
-	description:	post.description,
-	hashtags:	post.hashtags,
-	comments:	comments,
-	kudos:		kudos,
-	create_time:	post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+      	id:		post.id,
+      	user_id:	post.user_id,
+      	user_name:	post.user.name,
+      	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
+      	receiver_id:	post.receiver_id,
+      	receiver_name:	post.receiver.name,
+      	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
+      	user_img:	post.user.img_src,
+      	receiver_img:	post.receiver.img_src,
+      	points:		post.points,
+      	description:	post.description,
+      	hashtags:	post.hashtags,
+      	comments:	comments,
+      	kudos:		kudos,
+      	create_time:	post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
 
       @posts << data
@@ -201,73 +197,75 @@ class UsersController < ApplicationController
       user = User.find_by_email(email)
 
       unless user.blank?
-	params[:user_id] = user.id 
-	params[:company_id] = user.company_id
-	params[:description] = params["text"]
+      	params[:user_id] = user.id 
+      	params[:company_id] = user.company_id
+      	params[:description] = params["text"]
 
-	receiver_name = params["text"].scan(/\@[^\s|　]+/).first.gsub("@","")
-	receiver = ""
+      	receiver_name = params["text"].scan(/\@[^\s|　]+/).first.gsub("@","")
+      	receiver = ""
 
-	userlist["members"].each do | member |
-	  if member["name"] == receiver_name
-	    receiver_email = member["profile"]["email"] 
-	    if receiver_email == email
-	      flash[:notice] = "Nice try, but you cannot give points to yourself!"
-	      error = 1
-	    else
-	      receiver = User.where(:email => receiver_email, :delete_flag => 0).first
-	    end
+      	userlist["members"].each do | member |
+      	  if member["name"] == receiver_name
+      	    receiver_email = member["profile"]["email"] 
+      	    if receiver_email == email
+      	      flash[:notice] = "Nice try, but you cannot give points to yourself!"
+      	      error = 1
+      	    else
+      	      receiver = User.where(:email => receiver_email, :delete_flag => 0).first
+      	    end
 
-	    break
-	  end
-	end
-	
-	if error == 0
-	  unless receiver.blank?
-	    points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
-	    params[:points] = points
-	    params[:receiver_id] = receiver.id
+      	    break
+      	  end
+      	end
+      	
+      	if error == 0
+      	  unless receiver.blank?
+      	    points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
+      	    params[:points] = points
+      	    params[:receiver_id] = receiver.id
 
-	    if (points <= user[:out_points])
-	      user.out_points -= params[:points]
-	      user.save
+      	    if (points <= user[:out_points])
+      	      user.out_points -= params[:points]
+      	      user.save
 
-	      hashtags = params["text"].scan(/\#[^\s|　]+/)
-	      receiver.in_points += params[:points]
-	      receiver.save
+      	      hashtags = params["text"].scan(/\#[^\s|　]+/)
+      	      receiver.in_points += params[:points]
+      	      receiver.save
 
-	      UserMailer.receive_points_email({
-		receiver: receiver.name, 
-		email: receiver.email,
-		giver: user.name,
-		points: params[:points],
-		prizy_url: @prizy_url + "/user"
-	      }).deliver_later
+      	      UserMailer.receive_points_email({
+            		receiver: receiver.name, 
+            		email: receiver.email,
+            		giver: user.name,
+            		points: params[:points],
+            		prizy_url: @prizy_url + "/user"
+      	      }).deliver_later
 
-	      post = Post.new
-	      post.save_record(params)
-	      params[:post_id] = post.id
+      	      post = Post.new
+      	      post.save_record(params)
+      	      params[:post_id] = post.id
 
-	      hashtags.each do | tag |
-		params[:hashtag] = tag 
-		hashtag = Hashtag.new
-		hashtag.save_record(params)
-	      end
+      	      hashtags.each do | tag |
+            		params[:hashtag] = tag 
+            		hashtag = Hashtag.new
+            		hashtag.save_record(params)
+      	      end
 
-	      slack_notif = Slack::Notifier.new(@slack_webhooks) 
-	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんにボーナスを贈りました。")
+              ios_push_notif(receiver.id, "#{user.firstname}さんから「ホメ」が届きました。")
 
-	      flash[:notice] = "#{receiver_name}さんにボーナスを贈りました！"
-	    else
-	      flash[:notice] = "ポイントが足りません！#{user.out_points}ポイント残っています"
-	    end
-	  else
-	    flash[:notice] = "User does not exist"
-	  end
-	end	
+      	      slack_notif = Slack::Notifier.new(@slack_webhooks) 
+      	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんにボーナスを贈りました。")
+
+      	      flash[:notice] = "#{receiver_name}さんにボーナスを贈りました！"
+      	    else
+      	      flash[:notice] = "ポイントが足りません！#{user.out_points}ポイント残っています"
+      	    end
+      	  else
+      	    flash[:notice] = "User does not exist"
+      	  end
+      	end	
       else
-	team_domain = params["team_domain"].upcase
-	flash[:notice] = "Your email #{email} is not yet registered to #{team_domain} Prizy"
+      	team_domain = params["team_domain"].upcase
+      	flash[:notice] = "Your email #{email} is not yet registered to #{team_domain} Prizy"
       end
     rescue Exception => e
       logger.debug e.message
@@ -302,33 +300,36 @@ class UsersController < ApplicationController
     
     if (params[:receiver_id].present?)
       if (points <= @user[:out_points])
-	@user.out_points -= points 
-	@user.save
+      	@user.out_points -= points 
+      	@user.save
 
-	hashtags = params[:description].scan(/\#[^\s|　]+/)
-	receiver = User.find(params[:receiver_id])
-	receiver.in_points += params[:points]
-	receiver.save
+      	hashtags = params[:description].scan(/\#[^\s|　]+/)
+      	receiver = User.find(params[:receiver_id])
+      	receiver.in_points += params[:points]
+      	receiver.save
 
-	UserMailer.receive_points_email({
-	  receiver: receiver.name, 
-	  email: receiver.email,
-	  giver: @user.name,
-	  points: params[:points],
-	  prizy_url: @prizy_url + "/user"
-	}).deliver_later
+      	UserMailer.receive_points_email({
+      	  receiver: receiver.name, 
+      	  email: receiver.email,
+      	  giver: @user.name,
+      	  points: params[:points],
+      	  prizy_url: @prizy_url + "/user"
+      	}).deliver_later
 
-	post = Post.new
-	post.save_record(params)
-	params[:post_id] = post.id
+      	post = Post.new
+      	post.save_record(params)
+      	params[:post_id] = post.id
 
-	hashtags.each do | tag |
-	  params[:hashtag] = tag 
-	  hashtag = Hashtag.new
-	  hashtag.save_record(params)
-	end
+      	hashtags.each do | tag |
+      	  params[:hashtag] = tag 
+      	  hashtag = Hashtag.new
+      	  hashtag.save_record(params)
+      	end
+
+        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
+
       else
-	flash[:notice] = "ポイントが足りません"
+	      flash[:notice] = "ポイントが足りません"
       end
     end
     redirect_page("users", "index")
@@ -340,6 +341,12 @@ class UsersController < ApplicationController
 
     res = Comment.new
     res.save_record(params)
+
+    user = User.find(@id)
+    receiver_id = Post.find(res.post_id).receiver_id
+
+    ios_push_notif(receiver_id, "#{user.firstname}さんがコメントしました。")
+  
     redirect_page("users", "index")
   end
 
@@ -357,6 +364,31 @@ class UsersController < ApplicationController
     end
 
     redirect_page("users", "index")
+  end
+
+  def ios_push_notif(id, message)
+    devices = IosToken.where(:user_id => id)
+
+    devices.each do | device |
+      sns_message = {
+        'default': message,
+        'message': {
+          'APNS_SANDBOX': {
+            'aps': {
+              'alert': 'inner message',
+              'sound': 'mySound.caf'
+            }
+          }
+        }
+      }
+
+      sns = Aws::SNS::Client.new
+      sns.publish(
+        target_arn: device.arn, 
+        message: sns_message.to_json, 
+        message_structure: "json"
+      )
+    end
   end
 
   def profile
@@ -392,21 +424,21 @@ class UsersController < ApplicationController
       kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
       data = {
-	id:   post.id,
-	user_id:  post.user_id,
-	user_name:  post.user.name,
-	receiver_name:  post.receiver.name,
-	user_img: post.user.img_src,
-	receiver_img: post.receiver.img_src,
-	receiver_id: post.receiver_id,
-	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
-	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
-	points:   post.points,
-	description:  post.description,
-	hashtags: post.hashtags,
-	comments: comments,
-	kudos:    kudos,
-	create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+      	id:   post.id,
+      	user_id:  post.user_id,
+      	user_name:  post.user.name,
+      	receiver_name:  post.receiver.name,
+      	user_img: post.user.img_src,
+      	receiver_img: post.receiver.img_src,
+      	receiver_id: post.receiver_id,
+      	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
+      	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
+      	points:   post.points,
+      	description:  post.description,
+      	hashtags: post.hashtags,
+      	comments: comments,
+      	kudos:    kudos,
+      	create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
 
       @posts << data
@@ -457,18 +489,18 @@ class UsersController < ApplicationController
       kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
       data = {
-  id:   post.id,
-  user_id:  post.user_id,
-  user_name:  post.user.name,
-  receiver_name:  post.receiver.name,
-  user_img: post.user.img_src,
-  receiver_img: post.receiver.img_src,
-  points:   post.points,
-  description:  post.description,
-  hashtags: post.hashtags,
-  comments: comments,
-  kudos:    kudos,
-  create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+        id:   post.id,
+        user_id:  post.user_id,
+        user_name:  post.user.name,
+        receiver_name:  post.receiver.name,
+        user_img: post.user.img_src,
+        receiver_img: post.receiver.img_src,
+        points:   post.points,
+        description:  post.description,
+        hashtags: post.hashtags,
+        comments: comments,
+        kudos:    kudos,
+        create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
 
       @posts << data
@@ -559,12 +591,12 @@ class UsersController < ApplicationController
       invite_link = InviteLink.where(c_code: $c_code, delete_flag: 0)
 
       unless invite_link.empty?
-	update_details
-	company = Company.find(invite_link[0][:company_id])
-	@company_name = company.name
-	@company_id = company.id
+      	update_details
+      	company = Company.find(invite_link[0][:company_id])
+      	@company_name = company.name
+      	@company_id = company.id
       else
-	redirect_to "/login"
+        redirect_to "/login"
       end
     else
       redirect_to "/login"
@@ -617,10 +649,10 @@ class UsersController < ApplicationController
 
     if session[:redirect].nil?
       data = {
-	:email	    => params[:email],
-	:name	    => params[:name],
-	:password   => params[:password],
-	:prizy_url  => @prizy_url
+      	:email	    => params[:email],
+      	:name	    => params[:name],
+      	:password   => params[:password],
+      	:prizy_url  => @prizy_url
       }
       UserMailer.invite_welcome_email(data).deliver_later
       logout
@@ -648,18 +680,18 @@ class UsersController < ApplicationController
       verified = res.verified
 
       unless res.name == params[:name]
-	if username_exist.present?
-	  flash[:notice] = name_exist 
-	  session[:redirect] = 1
-	  redirect_to "/update" and return
-	end
+      	if username_exist.present?
+      	  flash[:notice] = name_exist 
+      	  session[:redirect] = 1
+      	  redirect_to "/update" and return
+      	end
       end
     else
       username_exist = User.where(name: params[:name], company_id: params[:company_id])
       if username_exist.present?
-	flash[:notice] = name_exist 
-	session[:redirect] = 1
-	redirect_to "/invite" and return
+      	flash[:notice] = name_exist 
+      	session[:redirect] = 1
+      	redirect_to "/invite" and return
       end
 
       res = User.new
@@ -673,18 +705,18 @@ class UsersController < ApplicationController
 
     if params[:img_src].present?
       unless params[:fb_data].to_i == 1
-	src = params[:img_src]
-	src_ext = File.extname(src.original_filename)
+      	src = params[:img_src]
+      	src_ext = File.extname(src.original_filename)
 
-	s3 = Aws::S3::Resource.new
-	obj = s3 .bucket(@s3_bucket).object("profile/user_#{res.id}_pic#{src_ext}")
-	obj.upload_file src.tempfile, {acl: 'public-read'}
+      	s3 = Aws::S3::Resource.new
+      	obj = s3 .bucket(@s3_bucket).object("profile/user_#{res.id}_pic#{src_ext}")
+      	obj.upload_file src.tempfile, {acl: 'public-read'}
 
-	params[:img_src] = obj.public_url
+      	params[:img_src] = obj.public_url
       end
     else
       if verified == 0
-	params[:img_src] = "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 
+      	params[:img_src] = "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png" 
       end
     end
 
@@ -713,9 +745,9 @@ class UsersController < ApplicationController
       user.save_record({:password => temp_password})
 
       data = {
-	:email	  => params[:email],
-	:password => temp_password,
-	:prizy_url  => @prizy_url
+      	:email	  => params[:email],
+      	:password => temp_password,
+      	:prizy_url  => @prizy_url
       }
 
       UserMailer.reset_password(data).deliver_later
@@ -742,47 +774,47 @@ class UsersController < ApplicationController
 
     if (params[:bonus_receiver_id].present?)
       if (points <= @user.company.bonus_points)
-	@user.company.bonus_points -= points.to_i 
-	@user.company.save
+      	@user.company.bonus_points -= points.to_i 
+      	@user.company.save
 
-	comments = [ "+#{points}", params[:bonus_comments] ].reject { |e| e.to_s.empty? }
-	comments << "#bonus_challenge ##{params[:bonus_title]}"
-	params[:bonus_comments] = comments.join(" ")
-	hashtags = params[:bonus_comments].scan(/\#[^\s|　]+/)
+      	comments = [ "+#{points}", params[:bonus_comments] ].reject { |e| e.to_s.empty? }
+      	comments << "#bonus_challenge ##{params[:bonus_title]}"
+      	params[:bonus_comments] = comments.join(" ")
+      	hashtags = params[:bonus_comments].scan(/\#[^\s|　]+/)
 
-	receiver = User.find(params[:bonus_receiver_id])
-	receiver.in_points += points.to_i
-	receiver.save
+      	receiver = User.find(params[:bonus_receiver_id])
+      	receiver.in_points += points.to_i
+      	receiver.save
 
-	UserMailer.receive_points_email({
-	  receiver: receiver.name, 
-	  email: receiver.email,
-	  giver: @user.name,
-	  points: points,
-	  prizy_url: @prizy_url + "/user"
-	}).deliver_later
+      	UserMailer.receive_points_email({
+      	  receiver: receiver.name, 
+      	  email: receiver.email,
+      	  giver: @user.name,
+      	  points: points,
+      	  prizy_url: @prizy_url + "/user"
+      	}).deliver_later
 
-	post = Post.new
-	data = {
-	  :company_id	    => @company_id,
-	  :user_id	    => @id,
-	  :receiver_id	    => params[:bonus_receiver_id],
-	  :points	    => points,
-	  :description	    => params[:bonus_comments],
-	  :privacy	    => params[:privacy],
-	  :post_type	    => 1
-	}
+      	post = Post.new
+      	data = {
+      	  :company_id	    => @company_id,
+      	  :user_id	    => @id,
+      	  :receiver_id	    => params[:bonus_receiver_id],
+      	  :points	    => points,
+      	  :description	    => params[:bonus_comments],
+      	  :privacy	    => params[:privacy],
+      	  :post_type	    => 1
+      	}
 
-	post.save_record(data)
-	data[:post_id] = post.id
+      	post.save_record(data)
+      	data[:post_id] = post.id
 
-	hashtags.each do | tag |
-	  data[:hashtag] = tag 
-	  hashtag = Hashtag.new
-	  hashtag.save_record(data)
-	end
+      	hashtags.each do | tag |
+      	  data[:hashtag] = tag 
+      	  hashtag = Hashtag.new
+      	  hashtag.save_record(data)
+      	end
       else
-	flash[:notice] = "ポイントが足りません"
+	     flash[:notice] = "ポイントが足りません"
       end
     end
 
