@@ -521,15 +521,21 @@ class UsersController < ApplicationController
   def rewards
     @user = User.find(@id)
     @rewards = Reward.where(:company_id => @user.company_id, :delete_flag => 0).order("points").order("title")
+    @rewards_prizy = RewardsPrizy.where(:delete_flag => 0)
   end
 
   def rewards_request
     data = {
       :company_id   => @company_id,
       :user_id	    => @id,
-      :reward_id    => params["reward_id"],
       :status	    => 0
     }
+
+    if params["type"] == "prizy"
+      data[:reward_prizy_id] = params["reward_id"]
+    else
+      data[:reward_id] = params["reward_id"]
+    end
 
     res = RequestReward.new
     res.save_record(data)

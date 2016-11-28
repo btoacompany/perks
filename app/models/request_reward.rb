@@ -14,6 +14,7 @@ class RequestReward < ActiveRecord::Base
     self.company_id   = params[:company_id]
     self.user_id      = params[:user_id]
     self.reward_id    = params[:reward_id]
+    self.reward_prizy_id    = params[:reward_prizy_id]
     self.status	      = params[:status]
     self.save
   end
