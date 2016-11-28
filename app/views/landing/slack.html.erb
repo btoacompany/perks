@@ -13,14 +13,17 @@
     <h3 class="landing_sp slack_top_text_bottom">「ホメる」がもっと簡単に。</h3>
     <%if @user_login == 1 %>
       <%= link_to "https://slack.com/oauth/authorize" do %>
-        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_dl.png", :class => "slack_dl_btn") %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_02.png", :class => "slack_dl_btn landing_pc") %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp_slack_btn_02.png", :class => "slack_dl_btn landing_sp") %>
       <% end %>
       <p>※PrizyおよびSlackで管理者権限が必要です。</p>
     <% else %>
       <%= link_to "/company/register" do %>
-        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_dl.png", :class => "slack_dl_btn") %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_btn_01.png", :class => "slack_dl_btn landing_pc") %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp_slack_btn_01.png", :class => "slack_dl_btn landing_sp") %>
       <% end %>
-      <p class="slack_top_link">すでにPrizyアカウントをお持ちですか？<%= link_to "こちら", "/login" %>よりログインしてください。</p>
+      <p class="slack_top_link landing_pc">すでにPrizyアカウントをお持ちですか？<%= link_to "こちら", "/login" %>よりログインしてください。</p>
+      <p class="slack_top_link landing_sp">すでにPrizyアカウントをお持ちですか？<br><%= link_to "こちら", "/login" %>よりログインしてください。</p>
     <% end %>
   </div>
 </div>
@@ -28,7 +31,7 @@
 <div class="slack_middle landing_pc">
   <div class="slack_middle_wrapper">
     <div class="slack_middle_left">
-      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/prizypc_slack_image.jpg") %>
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_chat.png") %>
     </div><!--slack_middle_left-->
 
     <div class="slack_middle_right">
@@ -42,7 +45,7 @@
         <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_icon_slack_02.png", :class=> "slack_middle_hashtag") %>
         <p class="slack_middle_hashtag_title">Easy to Share</p>
         <div class="landing_clearfix"></div>
-        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/prizypc_bot_image.jpg", :class => "slack_text_img" ) %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_message.png", :class => "slack_text_img" ) %>
       </div>
     </div><!--slack_middle_right-->
     <div class="landing_clearfix"></div>
@@ -52,7 +55,7 @@
 <div class="slack_middle landing_sp">
   <div class="slack_middle_wrapper">
     <div class="slack_middle_left">
-      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/test.slack_sp_02.png") %>
+      <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp_slack_chat.png") %>
     </div><!--slack_middle_left-->
 
     <div class="slack_middle_right">
@@ -66,7 +69,7 @@
         <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_icon_slack_02.png", :class=> "slack_middle_hashtag") %>
         <p class="slack_middle_hashtag_title">Easy to Share</p>
         <div class="landing_clearfix"></div>
-        <%= image_tag("") %>
+        <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp_slack_message.png", :class=> "slack_sp_message_img") %>
       </div>
     </div><!--slack_middle_right-->
   </div><!--slack_middle_wrapper-->
