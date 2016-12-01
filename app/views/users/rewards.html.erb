@@ -5,34 +5,35 @@
     持っています。景品と交換してみましょう。</p><br>
     <a href="/rewards/status" class="a_btncmn radius5">ステータスを確認する</a>
     <div id="item_list">
-      <% unless @rewards_prizy.count == 0 %>
-	<div class="rewards_box">
-	  <br><p>Prizy Gifts</p>
-	  
-	  <% @rewards_prizy.each do | item | %>
-	    <div class="item <% if @user.in_points < item[:points] %>grayscale<% else %>colored<% end %>">
-	      <% if item.img_src.present? %>
-		<img src="<%= item.img_src %>"/><br>
-	      <% end %>
-	      
-	      <div class="details">
-		<p class="name" align="left"><b><%= item[:title] %></b></p>
-		<p align="left"><%= item[:description] %></p>
-	      </div>
-	      
-	      <div class="buy">
-		<% if @user.in_points < item[:points] %>
-		  <p><%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</p> 
-		<% else %>
-		  <a href="#" class="btn_buy" data-id="<%= item[:id] %>" data-type="prizy">Buy - <%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</a> 
+      <% if @user.company.plan > 0 %>
+	<% unless @rewards_prizy.count == 0 %>
+	  <div class="rewards_box">
+	    <br><p>Prizy Gifts</p>
+	    
+	    <% @rewards_prizy.each do | item | %>
+	      <div class="item <% if @user.in_points < item[:points] %>grayscale<% else %>colored<% end %>">
+		<% if item.img_src.present? %>
+		  <img src="<%= item.img_src %>"/><br>
 		<% end %>
+		
+		<div class="details">
+		  <p class="name" align="left"><b><%= item[:title] %></b></p>
+		  <p align="left"><%= item[:description] %></p>
+		</div>
+		
+		<div class="buy">
+		  <% if @user.in_points < item[:points] %>
+		    <p><%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</p> 
+		  <% else %>
+		    <a href="#" class="btn_buy" data-id="<%= item[:id] %>" data-type="prizy">Buy - <%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</a> 
+		  <% end %>
+		</div>
 	      </div>
-	    </div>
-	  <% end %>
-	</div>
+	    <% end %>
+	  </div>
+	<% end %>
+	<div class="clearfix"></div>
       <% end %>
-
-      <div class="clearfix"></div>
 	
       <% unless @rewards.count == 0 %> 
 	<div class="rewards_box">
