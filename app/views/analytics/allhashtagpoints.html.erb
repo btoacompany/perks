@@ -15,12 +15,12 @@
 
   <div class="analytics_main">
     <div class="analytics_points_select">
-      <%= link_to "回数", "/analytics/hashtag/all/", :class => "analytics_points_select_colorlink" %>
-      <%= link_to "ポイント", "/analytics/hashtag/all/points", :class => "analytics_points_select_link" %>
+      <%= link_to "回数", "/analytics/hashtag/all/", :class => "analytics_points_select_link" %>
+      <%= link_to "ポイント", "/analytics/hashtag/all/points", :class => "analytics_points_select_colorlink" %>
     </div>
 
     <div class="analytics_time_select" >
-      <%= form_tag({:controller => 'analytics', :action => 'hashtag'}, remote: true, :class => "analytics_form") do%>
+      <%= form_tag({:controller => 'analytics', :action => 'allhashtagpoints'}, remote: true, :class => "analytics_form") do%>
         期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
         <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
         <input type="submit" value="適用">
@@ -70,7 +70,7 @@ window.onload = function () {
       type: "bar",
       color: "#ff8d07",
       dataPoints: [
-        <% @hashtags.each do |hashtag| %>
+        <% @hashtag_points.each do |hashtag| %>
         { label: "<%= hashtag[0] %>",  y: <%= hashtag[1] %> },
         <% end %>
       ]
@@ -79,7 +79,7 @@ window.onload = function () {
   });
   chart.render();
 
-  <% @hash.each do |key, value| %>
+  <% @hash_points.each do |key, value| %>
   var chart = new CanvasJS.Chart("<%= @num2 %>", {
     backgroundColor: "#3a3a3c",
     animationEnabled: true, 
@@ -106,7 +106,7 @@ window.onload = function () {
     {
       type: "bar",
       dataPoints: [
-        <% value.first(10).each do |a, b| %>
+        <% value.each do |a, b|%>
         <% @user = User.find(a) %>
         <% if @user.lastname.blank? %>
           { label: "<%= @user.name %>", y: <%= b %> },

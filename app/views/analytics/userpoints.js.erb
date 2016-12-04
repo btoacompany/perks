@@ -1,9 +1,82 @@
-var chart = new CanvasJS.Chart("top_receiver", {
+var chart = new CanvasJS.Chart("analytics_useage", {
     backgroundColor: "#3a3a3c",
     animationEnabled: true, 
     animationDuration: 3000,
     title:{
-      text: "ポイント取得回数",
+      text: "取得ポイント数",
+      fontSize: 16,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointMaxWidth: 15,
+    dataPointMinWidth: 15,
+    dataPointWidth: 15,
+    data: [              
+    {
+      type: "area",
+      color: "#ff8d07",
+      dataPoints: [
+        <% @hash.each do |key, value| %>
+        { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+
+  var chart = new CanvasJS.Chart("company_hashtag", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "会社のコアバリュー",
+      fontSize: 16,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointMaxWidth: 15,
+    dataPointMinWidth: 15,
+    dataPointWidth: 15,
+    data: [              
+    {
+      // Change type to "doughnut", "line", "splineArea", etc.
+      type: "bar",
+      color: "#ff8d07",
+      dataPoints: [
+        <% @company_hash_custom.each do |key, value| %>
+        { label: "<%= key %>",  y: <%= value %>, },
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+
+  var chart = new CanvasJS.Chart("all_hashtags", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "全てのハッシュタグ",
       fontSize: 16,
       fontColor: "#E0E0E3"
     },
@@ -27,52 +100,11 @@ var chart = new CanvasJS.Chart("top_receiver", {
       type: "bar",
       color: "#ff8d07",
       dataPoints: [
-        <% @hash_custom.first(10).each do |key, value| %>
-        <% @key = User.find(key) %>
-        { label: "<%= @key.name %>",  y: <%= value %>, },
+        <% @all_hashtags_custom.first(10).each do |key, value| %>
+        { label: "<%= key %>",  y: <%= value %>, },
         <% end %>
       ]
     }
     ]
   });
   chart.render();
-
-    var chart = new CanvasJS.Chart("top_receiver_points", {
-    backgroundColor: "#3a3a3c",
-    animationEnabled: true, 
-    animationDuration: 3000,
-    title:{
-      text: "ポイント取得数",
-      fontSize: 16,
-      fontColor: "#E0E0E3"
-    },
-    axisX:{
-      reversed: true,
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
-      },
-      axisY:{
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
-      },
-    dataPointMaxWidth: 15,
-    dataPointMinWidth: 15,
-    dataPointWidth: 15,
-    data: [              
-    {
-      // Change type to "doughnut", "line", "splineArea", etc.
-      type: "bar",
-      color: "#ff8d07",
-      dataPoints: [
-        <% @points_custom.first(10).each do |key, value| %>
-        <% @key = User.find(key) %>
-        { label: "<%= @key.name %>",  y: <%= value %>, },
-        <% end %>
-      ]
-    }
-    ]
-  });
-  chart.render();
-

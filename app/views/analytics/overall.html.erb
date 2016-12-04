@@ -11,7 +11,8 @@
   <%= render 'analytics'%>
 
   <div class="analytics_container">
-    <div id="top_receiver" style="min-height: 450px; width: 85%;"></div>
+    <div id="top_receiver" class="analytics_allhashtag_float" style="min-height: 450px; width: 85%;"></div>
+    <div id="top_receiver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 85%;"></div>
   </div>
 </div>
 
@@ -24,7 +25,7 @@ window.onload = function () {
     animationEnabled: true, 
     animationDuration: 1000,
     title:{
-      text: "全体利用回数",
+      text: "社内利用回数",
       fontSize: 16,
       fontColor: "#E0E0E3"
     },
@@ -48,6 +49,43 @@ window.onload = function () {
       color: "#ff8d07",
       dataPoints: [
         <% @hash.each do |key, value| %>
+        { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+
+    var chart = new CanvasJS.Chart("top_receiver_points", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 1000,
+    title:{
+      text: "社内ポイント流通量",
+      fontSize: 16,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointMaxWidth: 15,
+    dataPointMinWidth: 15,
+    dataPointWidth: 15,
+    data: [              
+    {
+      // Change type to "doughnut", "line", "splineArea", etc.
+      type: "area",
+      color: "#ff8d07",
+      dataPoints: [
+        <% @points.each do |key, value| %>
         { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
         <% end %>
       ]

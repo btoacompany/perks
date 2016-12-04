@@ -60,8 +60,8 @@
     <div class="analytics_clearfix"></div>
 
     <div class="analytics_points_select">
-      <%= link_to "回数", "/analytics/user/#{@userid}", :class => "analytics_points_select_colorlink" %>
-      <%= link_to "ポイント", "/analytics/user/#{@userid}/points", :class => "analytics_points_select_link" %>
+      <%= link_to "回数", "/analytics/user/#{@userid}", :class => "analytics_points_select_link" %>
+      <%= link_to "ポイント", "/analytics/user/#{@userid}/points", :class => "analytics_points_select_colorlink" %>
     </div>
 
     <div class="analytics_middle" style="width: 100%;">
@@ -88,7 +88,7 @@ window.onload = function () {
     animationEnabled: true, 
     animationDuration: 3000,
     title:{
-      text: "ポイント取得回数",
+      text: "取得ポイント数",
       fontSize: 16,
       fontColor: "#E0E0E3"
     },
