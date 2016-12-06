@@ -1,66 +1,42 @@
-<div id="wrapper">
-<div id="contents">
-  <h3 class="c_align">新規登録</h3><br>
-  <%= form_tag( "/company/register/complete", method: "post", id: "login_form" ) do %>
-  <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
-  <div class="toolbox center">
-    <table class="center tbl_tools">
-      <tr>
-	<td>会社名: </td>
-	<td><input type="text" name="name" value="" size="30" required /></td>
-      </tr>
-      <tr>
-	<td>会社URL: </td>
-	<td><input type="text" name="url" value="" size="30" /></td>
-      </tr>
-      <tr>
-	<td>担当者名: </td>
-	<td><input type="text" name="owner" value="" required /></td>
-      </tr>
-      <tr>
-	<td>メールアドレス: </td>
-	<td><input type="email" name="email" value="" required /></td>
-      </tr>
-      <tr>
-	<td>パスワード: </td>
-	<td><input type="password" name="password" id="passwd1" value="" size="10" required /></td>
-      </tr>
-      <tr>
-	<td>パスワード確認: </td>
-	<td>
-	  <input type="password" name="password" id="passwd2" value="" size="10" required /><br> 
-	  <span class="notice"></span>
-	</td>
-      </tr>
-      <tr>
-	<td>電話番号: </td>
-	<td><input type="text" name="phone" value="" size="10"/></td>
-      </tr>
-      <tr>
-	<td>会社住所: </td>
-	<td><input type="text" name="address" value="" size="30" required /></td>
-      </tr>
-      <tr>
-	<td valign="top">ハッシュタグ: </td>
-	<td>
-	  <textarea name="hashtags" value="" rows="3" cols="25" placeholder="leadership, hardwork, creativity..."></textarea><br>
-	  <span class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
-	</td>
-      </tr>
-      <tr>
-	<td class="c_align" colspan="2">
-	  <input type="submit" value="送信" class="btn" />
-	</td>
-      </tr>
-    </table>
-    <p align="center">
-      ご登録になる前に下記利用規約をよくご確認ください<br>
-      <a href="https://prizy.herokuapp.com/tip/term">https://prizy.herokuapp.com/tip/term</a>
+<div class="company_create_wrapper">
+<div class="user_login">
+  <div class="login_header">
+    <%= link_to "/" do %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/logo.png") %>
+    <% end %>
+  </div>
+
+  <div id="wrapper">
+  <div id="contents" class="company_create_contents">
+    <%= form_tag( "/company/register/complete", method: "post", id: "login_form" ) do %>
+    <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
+    <div id="loginbox" class="center">
+    <p class="c_align"><input type="text" name="name" value="" placeholder="会社名"required class="login_input_form company_create_form"/></p>
+    <p class="c_align"><input type="text" name="url" value="" placeholder="会社HP URL" class="login_input_form company_create_form"/></p>
+    <p class="c_align"><input type="text" name="owner" value="" required placeholder="担当者名" class="login_input_form company_create_form"/></p>
+    <p class="c_align"><input type="email" name="email" value="" required placeholder="メールアドレス" class="login_input_form company_create_form"/></p>
+    <p class="c_align"><input type="password" name="password" id="passwd1" value="" required placeholder="パスワード" class="login_input_form company_create_form"/></p>
+    <p class="c_align">
+      <input type="password" name="password" id="passwd2" value="" required placeholder="パスワード確認" class="login_input_form company_create_form"/><br><span class="notice"></span>
     </p>
-  </div><br><br>
-  <% end %>
-</div> <!-- contents -->
-</div> <!-- wrapper -->
+    <p class="c_align"><input type="text" name="phone" value="" placeholder="電話番号" class="login_input_form company_create_form"/></p>
+    <p class="c_align"><input type="text" name="address" value="" required placeholder="会社住所" class="login_input_form company_create_form"/></p>
+    <p class="c_align">
+      <textarea name="hashtags" value="" class="company_create_form company_create_textarea" placeholder="leadership, hardwork, creativity..."></textarea><br>
+      <span class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
+    </p>
+    <p class="c_align" colspan="2"><input type="submit" value="送信" class="btn login_submit company_create_submit" /></p>
+    <p align="center" class="company_create_terms">ご登録になる前に<a href="/terms">利用規約</a>をよくご確認ください</p>
+    </div>
+    <% end %>
+  </div>
+  </div>
+</div>
+
+<div class="login_footer">
+  <%= render "shared/footer"%>
+</div>
+</div>
 
 <script type="text/javascript">
 var passwd1 = document.getElementById("passwd1");

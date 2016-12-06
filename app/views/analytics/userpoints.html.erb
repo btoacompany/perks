@@ -1,6 +1,6 @@
 <div class="analytics_holder">
   <div class="analytics_time_select" >
-    <%= form_tag({:controller => 'analytics', :action => 'user'}, remote: true, :class => "analytics_form") do%>
+    <%= form_tag({:controller => 'analytics', :action => 'userpoints'}, remote: true, :class => "analytics_form") do%>
       期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
       <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
       <input type="submit" value="適用">
