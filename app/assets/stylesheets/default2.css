@@ -492,6 +492,10 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
     vertical-align: middle;
   }
 
+  #item_list .rewards_box {
+    height: 450px;
+  }
+
   #postsbox hr {
     margin: 0px 10px;
     border: 1px solid #e6e6e6;

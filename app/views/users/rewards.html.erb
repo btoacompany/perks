@@ -5,22 +5,60 @@
     持っています。景品と交換してみましょう。</p><br>
     <a href="/rewards/status" class="a_btncmn radius5">ステータスを確認する</a>
     <div id="item_list">
-      <% @rewards.each_with_index do | item, i | %>
-	<div class="item <% if @user.in_points < item[:points] %>grayscale<% else %>colored<% end %>">
-	  <% if item.img_src.present? %>
-	    <img src="<%= item.img_src %>"/><br>
-	  <% end %>
-	  <div class="details">
-	    <p class="name" align="left"><b><%= item[:title] %></b></p>
-	    <p align="left"><%= item[:description] %></p>
-	  </div>
-	  <div class="buy">
-	    <% if @user.in_points < item[:points] %>
-	      <p><%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</p> 
-	    <% else %>
-	      <a href="#" class="btn_buy" data-id="<%= item[:id] %>">Buy - <%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</a> 
+      <% if @user.company.plan > 0 %>
+	<% unless @rewards_prizy.count == 0 %>
+	  <div class="rewards_box">
+	    <br><p>Prizy Gifts</p>
+	    
+	    <% @rewards_prizy.each do | item | %>
+	      <div class="item <% if @user.in_points < item[:points] %>grayscale<% else %>colored<% end %>">
+		<% if item.img_src.present? %>
+		  <img src="<%= item.img_src %>"/><br>
+		<% end %>
+		
+		<div class="details">
+		  <p class="name" align="left"><b><%= item[:title] %></b></p>
+		  <p align="left"><%= item[:description] %></p>
+		</div>
+		
+		<div class="buy">
+		  <% if @user.in_points < item[:points] %>
+		    <p><%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</p> 
+		  <% else %>
+		    <a href="#" class="btn_buy" data-id="<%= item[:id] %>" data-type="prizy">Buy - <%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</a> 
+		  <% end %>
+		</div>
+	      </div>
 	    <% end %>
 	  </div>
+	<% end %>
+	<div class="clearfix"></div>
+      <% end %>
+	
+      <% unless @rewards.count == 0 %> 
+	<div class="rewards_box">
+	  <br><p>Your company's gifts</p>
+	  
+	  <% @rewards.each_with_index do | item, i | %>
+	    <div class="item <% if @user.in_points < item[:points] %>grayscale<% else %>colored<% end %>">
+	      <% if item.img_src.present? %>
+		<img src="<%= item.img_src %>"/><br>
+	      <% end %>
+
+	      <div class="details">
+		<p class="name" align="left"><b><%= item[:title] %></b></p>
+		<p align="left"><%= item[:description] %></p>
+	      </div>
+	      
+	      <div class="buy">
+		<% if @user.in_points < item[:points] %>
+		  <p><%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</p> 
+		<% else %>
+		  <a href="#" class="btn_buy" data-id="<%= item[:id] %>" data-type="company">Buy - <%= number_with_delimiter(item[:points], :delimiter => ',') %> ポイント</a> 
+		<% end %>
+	      </div>
+	    </div>
+	  <% end %>
 	</div>
       <% end %>
     </div>
@@ -32,14 +70,15 @@
 <script type="text/javascript">
 $('.btn_buy').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
+  var _type = ($(this).attr('data-type')); //get attributes of clicked item
 
   if (confirm("このアイテムを買いますか?")) {
     $.ajax({
       type: "POST",
       url: "/rewards/request",
-      data: { 'reward_id': _id },
+      data: { 'reward_id': _id, 'type': _type },
       success: function(data){
-	$(".item_" + _id).remove(); //remove item upon deletion
+	//$(".item_" + _id).remove(); //remove item upon deletion
 	window.location.reload(); 
       }
     });

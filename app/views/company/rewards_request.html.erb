@@ -24,8 +24,13 @@
 	  <% @rewards.each do | item | %>
 	  <tr class="item_<%= item.id %>">
 	    <td><%= item.create_time.strftime("%Y-%m-%d %H:%M:%S") %></td>
-	    <td><%= item.reward.title %></td>
-	    <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	    <% if item.reward_id? && item.reward_id != 0 %>
+	      <td><%= item.reward.title %></td>
+	      <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	    <% elsif item.rewards_prizy_id? && item.rewards_prizy_id != 0 %>
+	      <td><%= item.rewards_prizy.title %></td>
+	      <td><%= number_with_delimiter(item.rewards_prizy.points, :delimiter => ',') %></td>
+	    <% end%>
 	    <td align="center"><%= item.user.name %></td>
 	    <td class="c_align">
 	      <input type="button" class="btn accept_item" data-id="<%= item.id %>" value="承認" /> 
@@ -51,8 +56,13 @@
 	  <% @rewards_accepted.each do | item | %>
 	  <tr class="item_<%= item.id %>">
 	    <td><%= item.update_time.strftime("%Y-%m-%d %H:%M:%S") %></td>
-	    <td><%= item.reward.title %></td>
-	    <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	    <% if item.reward_id? && item.reward_id != 0 %>
+	      <td><%= item.reward.title %></td>
+	      <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	    <% elsif item.rewards_prizy_id? && item.rewards_prizy_id != 0 %>
+	      <td><%= item.rewards_prizy.title %></td>
+	      <td><%= number_with_delimiter(item.rewards_prizy.points, :delimiter => ',') %></td>
+	    <% end%>
 	    <td align="center"><%= item.user.name %></td>
 	  </tr>
 	  <% end %>
@@ -74,8 +84,13 @@
 	  <% @rewards_rejected.each do | item | %>
 	  <tr class="item_<%= item.id %>">
 	    <td><%= item.update_time.strftime("%Y-%m-%d %H:%M:%S") %></td>
-	    <td><%= item.reward.title %></td>
-	    <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	    <% if item.reward_id? && item.reward_id != 0 %>
+	      <td><%= item.reward.title %></td>
+	      <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
+	    <% elsif item.rewards_prizy_id? && item.rewards_prizy_id != 0 %>
+	      <td><%= item.rewards_prizy.title %></td>
+	      <td><%= number_with_delimiter(item.rewards_prizy.points, :delimiter => ',') %></td>
+	    <% end%>
 	    <td align="center"><%= item.user.name %></td>
 	  </tr>
 	  <% end %>

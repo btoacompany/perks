@@ -77,24 +77,6 @@ class CompanyController < ApplicationController
 	  :company_id   => company.id,
 	  :c_code	=> c_code
 	})
-
-	reward = Reward.new
-	reward.save_record({
-	  :company_id   => company.id,
-	  :title	=> "Starbucks eGift (500円分)",
-	  :description  => "毎日のちょっとした贅沢に。スターバックのコーヒー片手に仕事の疲れをリフレッシュしたい！そんな方におすすめのギフト券です。（※ギフト券は承認後、メールで届きます。)",
-	  :points	=> 500,
-	  :img_src      => @s3_url + "/common/img_07.png"
-	})
-
-	reward = Reward.new
-	reward.save_record({
-	  :company_id   => company.id,
-	  :title	=> "Amazonギフト券(1000円分)",
-	  :description  => "ちょっとしたお買い物にとっても便利なAmazonギフト券。ちょっぴりお得になる素敵なプレセントです！（※承認後メールで電子ギフト券が届きます。)",
-	  :points	=> 1000,
-	  :img_src      => @s3_url + "/common/img_05.png"
-	})
       end
       session[:id] = nil
       cookies.delete :id
@@ -204,9 +186,6 @@ class CompanyController < ApplicationController
 
   def edit_rewards
     @reward = Reward.find(params[:reward_id])
-    if @reward[:img_src].match(/img_07|img_05/)
-      redirect_to "/company/rewards"
-    end
   end
 
   def edit_rewards_complete

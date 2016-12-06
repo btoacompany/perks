@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def init_url
+    @slack_webhooks = "https://hooks.slack.com/services/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"
     @protocol = "http://"
     if Rails.env.production?
       @prizy_url = "http://prizy.me"

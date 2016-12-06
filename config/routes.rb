@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   # users
   get	'/user'			    => 'users#index'
   post	'/user/give_points'	    => 'users#give_points'
+  post	'/user/give_points_slack'   => 'users#give_points_slack'
   post	'/user/give_comments'	    => 'users#give_comments'
   post	'/user/give_kudos'	    => 'users#give_kudos'
   post	'/user/give_bonus'	    => 'users#give_bonus'
@@ -99,6 +100,10 @@ Rails.application.routes.draw do
   get	'auth/facebook/callback',to: "users#fb_auth"
 
   #forget password
-  get	'/forgot_password'		    => 'users#forgot_password'
-  post	'/forgot_password/submit'	    => 'users#forgot_password_submit'
+  get	'/forgot_password'		  => 'users#forgot_password'
+  post	'/forgot_password/submit'	  => 'users#forgot_password_submit'
+
+  #ios register
+  post	'/device/ios/register'		  => 'device#register_ios'
+  post	'/device/ios/unregister'	  => 'device#unregister_ios'
 end

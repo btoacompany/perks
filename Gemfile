@@ -57,6 +57,7 @@ end
 # custom gems
 gem 'jquery-turbolinks'
 gem 'aws-sdk'
+#gem 'aws-sdk-core'
 gem 'sucker_punch'
 #gem 'paperclip'
 #gem 'rails_12factor', group: :production
@@ -65,3 +66,7 @@ gem 'time_diff'
 gem 'will_paginate', '~> 3.1.0'
 gem 'omniauth-facebook', '~> 1.4.1'
 gem "koala", "~> 1.10.0rc"
+gem 'slack-api'
+gem 'slack-ruby-client'
+gem 'slack-notifier'
+gem 'omniauth-slack'
