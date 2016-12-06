@@ -305,7 +305,12 @@ class UsersController < ApplicationController
 
       	hashtags = params[:description].scan(/\#[^\s|　]+/)
       	receiver = User.find(params[:receiver_id])
-      	receiver.in_points += params[:points]
+
+	if receiver.company_id == 26 
+	  params[:points] = params[:points] * 20
+	end
+
+	receiver.in_points += params[:points]
       	receiver.save
 
       	UserMailer.receive_points_email({
@@ -521,15 +526,21 @@ class UsersController < ApplicationController
   def rewards
     @user = User.find(@id)
     @rewards = Reward.where(:company_id => @user.company_id, :delete_flag => 0).order("points").order("title")
+    @rewards_prizy = RewardsPrizy.where(:delete_flag => 0)
   end
 
   def rewards_request
     data = {
       :company_id   => @company_id,
       :user_id	    => @id,
-      :reward_id    => params["reward_id"],
       :status	    => 0
     }
+
+    if params["type"] == "prizy"
+      data[:reward_prizy_id] = params["reward_id"]
+    else
+      data[:reward_id] = params["reward_id"]
+    end
 
     res = RequestReward.new
     res.save_record(data)
