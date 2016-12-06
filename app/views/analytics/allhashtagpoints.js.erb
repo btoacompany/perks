@@ -1,11 +1,11 @@
-var chart = new CanvasJS.Chart("top_giver", {
+  var chart = new CanvasJS.Chart("all_hashtag", {
     backgroundColor: "#3a3a3c",
     animationEnabled: true, 
     animationDuration: 3000,
     title:{
-      text: "ポイントを贈った回数",
+      text: "全てのハッシュタグ",
       fontSize: 16,
-      fontColor: "#E0E0E3"
+      fontColor: "#E0E0E3",
     },
     axisX:{
       reversed: true,
@@ -21,15 +21,13 @@ var chart = new CanvasJS.Chart("top_giver", {
     dataPointMaxWidth: 15,
     dataPointMinWidth: 15,
     dataPointWidth: 15,
-    data: [              
+    data: [
     {
-      // Change type to "doughnut", "line", "splineArea", etc.
       type: "bar",
       color: "#ff8d07",
       dataPoints: [
-        <% @hash_custom.first(10).each do |key, value| %>
-        <% @key = User.find(key) %>
-        { label: "<%= @key.name %>",  y: <%= value %>, },
+        <% @hashtag_points.each do |hashtag| %>
+        { label: "<%= hashtag[0] %>",  y: <%= hashtag[1] %> },
         <% end %>
       ]
     }
@@ -37,18 +35,18 @@ var chart = new CanvasJS.Chart("top_giver", {
   });
   chart.render();
 
-  var chart = new CanvasJS.Chart("top_giver_points", {
+  <% @hash_points.each do |key, value| %>
+  var chart = new CanvasJS.Chart("<%= @num2 %>", {
     backgroundColor: "#3a3a3c",
     animationEnabled: true, 
     animationDuration: 3000,
     title:{
-      text: "贈ったポイント数",
+      text: "<%= key %>",
       fontSize: 16,
-      fontColor: "#E0E0E3"
+      fontColor: "#E0E0E3",
     },
     axisX:{
       reversed: true,
-      labelAutoFit: false, 
       labelFontSize: 12,
       labelFontColor: "#E0E0E3", 
       },
@@ -62,16 +60,20 @@ var chart = new CanvasJS.Chart("top_giver", {
     dataPointWidth: 15,
     data: [              
     {
-      // Change type to "doughnut", "line", "splineArea", etc.
       type: "bar",
-      color: "#ff8d07",
       dataPoints: [
-        <% @points_custom.first(10).each do |key, value| %>
-        <% @key = User.find(key) %>
-        { label: "<%= @key.name %>",  y: <%= value %>, },
+        <% value.each do |a, b|%>
+        <% @user = User.find(a) %>
+        <% if @user.lastname.blank? %>
+          { label: "<%= @user.name %>", y: <%= b %> },
+        <% else %>
+          { label: "<%= @user.firstname %><%= @user.lastname %>", y: <%= b %> },
+        <% end %>
         <% end %>
       ]
     }
     ]
   });
   chart.render();
+  <% @num2 += 1 %>
+  <% end %>

@@ -71,11 +71,28 @@
   <%= yield %>
   <%= render "shared/footer"%>
 <% else %>
-  <%= render "shared/header"%>
-  <%= yield %>
-  <div class="footer_wrapper">
-    <%= render "shared/footer"%>
-  </div>
+  <!-- definition of @judgement -->
+  <% if controller.controller_name == "users" && controller.action_name == "login" %>
+    <% @judgment = "true" %>
+  <% elsif controller.controller_name == "users" && controller.action_name == "login_complete" %>
+    <% @judgment = "true" %>
+  <% elsif controller.controller_name == "users" && controller.action_name == "forgot_password" %>
+    <% @judgment = "true" %>
+  <% elsif controller.controller_name == "company" && controller.action_name == "create" %>
+    <% @judgment = "true" %>
+  <% else %>
+    <% @judgment = "false" %>
+  <% end %>
+ <!-- check @judgement -->
+  <% if @judgment == "true" %> 
+    <%= yield %>
+  <% else %>
+    <%= render "shared/header"%>
+    <%= yield %>
+    <div class="footer_wrapper">
+      <%= render "shared/footer"%>
+    </div>
+  <% end %>
 <% end %>
 
 </body>

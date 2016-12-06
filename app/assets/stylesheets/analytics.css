@@ -3,6 +3,26 @@
   overflow: auto;
 }
 
+.analytics_points_select{
+  float: left;
+  padding: 7px 0;
+}
+
+.analytics_points_select a{
+  display: inline-block;
+  background-color: #3a3a3c;
+  padding: 2px 5px;
+  text-decoration: none;
+}
+
+.analytics_points_select_link{
+  color: #6c6c70;
+}
+
+.analytics_points_select_colorlink{
+  color: white;
+}
+
 .analytics_time_select{
   text-align: right;
   background-color: #6c6c70;
@@ -110,6 +130,10 @@
 
 .analytics_post_toget p , .analytics_post_togive p{
   padding-top: 5px;
+}
+
+.analytics_post_toget a , .analytics_post_togive a{
+  color: white;
 }
 
 .analytics_post_wrapper{
