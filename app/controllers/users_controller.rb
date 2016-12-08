@@ -306,10 +306,6 @@ class UsersController < ApplicationController
       	hashtags = params[:description].scan(/\#[^\s|　]+/)
       	receiver = User.find(params[:receiver_id])
 
-	if receiver.company_id == 26 
-	  params[:points] = params[:points] * 20
-	end
-
 	receiver.in_points += params[:points]
       	receiver.save
 
@@ -372,6 +368,7 @@ class UsersController < ApplicationController
   end
 
   def ios_push_notif(id, message)
+=begin
     devices = IosToken.where(:user_id => id)
 
     devices.each do | device |
@@ -394,6 +391,7 @@ class UsersController < ApplicationController
         message_structure: "json"
       )
     end
+=end
   end
 
   def profile

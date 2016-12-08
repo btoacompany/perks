@@ -1,32 +1,36 @@
-<div id="wrapper">
-<div id="contents">
+<div class="login_wrapper">
+<div class="user_login">
+  <div class="login_header">
+    <%= link_to "/" do %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/logo.png") %>
+    <% end %>
+  </div>
+
+  <div id="wrapper">
+  <div id="contents" class="login_contents">
   <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
   <%= form_tag( "/login/complete", method: "post", id: "login_form" ) do %>
-  <h3 class="c_align">ユーザーログイン</h3><br>
+  <h3 class="c_align">Prizyにログインする</h3>
   <div id="loginbox" class="center">
-    <table class="center" border="0">
-      <tr>
-	<th>メールアドレス: </th>
-	<td><input type="text" value="" name="email" size="30" required /></td>
-      </tr>
-      <tr>
-	<th>パスワード: </th>
-	<td><input type="password" value="" name="password" size="30" required /></td>
-      </tr>
-      <tr>
-	<td colspan="2" class="c_align">
-	  <label><input type="checkbox" name="remember" value="1" checked <% if cookies[:user_id] %> checked <% end %>> ログイン状態を保持する</label>
-	</td>
-      </tr>
-      <tr>
-	<td align="center" class="btn" colspan="2" style="background-color:#fff">
-	  <input type="submit" value="ログイン" class="btn" /><br>
-	</td>
-      </tr>	
-    </table>
-  </div><br>
+    <p class="c_align"><input type="text" value="" name="email" placeholder="メールアドレス" required class="login_input_form"/></p>
+    <p class="c_align"><input type="password" value="" name="password" placeholder="パスワード" required class="login_input_form login_input_password"/></p>
+    <div class="keep_loggedin">
+      <p class="login_bottom"><input type="checkbox" name="remember" value="1" checked <% if cookies[:user_id] %> checked <% end %>> ログイン状態を保持する</p>
+    </div>
+    <p class="c_align"><input type="submit" value="ログイン >" class="btn login_submit" /></p>
+    <div class="keep_loggedin">
+      <p align="right" class="login_forget_password"><a href="/forgot_password">パスワードを忘れた場合</a></p>
+    </div>
+  </div>
   <% end %>
-  <p align="center"><a href="/forgot_password">パスワードを忘れましたか？</a></p>
+  
 
-</div> <!-- contents -->
-</div> <!-- wrapper -->
+  </div> <!-- contents -->
+  </div> <!-- wrapper -->
+</div>
+
+<div class="login_footer">
+  <%= render "shared/footer"%>
+</div>
+</div>
+

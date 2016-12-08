@@ -40,8 +40,7 @@
 .landing_top{
   height: 690px;
   position: relative;
-  background-image: url(
-https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/mv_bkg.jpg)
 }
 
 /*landing_header, landing_footer*/

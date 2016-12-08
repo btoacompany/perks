@@ -11,20 +11,20 @@
   <%= render 'analytics'%>
 
   <div class="analytics_container">
-    <div id="top_receiver" style="min-height: 450px; width: 85%;"></div>
+    <div id="top_receiver" class="analytics_allhashtag_float" style="min-height: 450px; width: 85%;"></div>
+    <div id="top_receiver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 85%;"></div>
   </div>
 </div>
 
 
 <script type="text/javascript">
-
 window.onload = function () {
   var chart = new CanvasJS.Chart("top_receiver", {
     backgroundColor: "#3a3a3c",
     animationEnabled: true, 
     animationDuration: 3000,
     title:{
-      text: "ポイント取得回数",
+      text: "ポイントをもらった回数",
       fontSize: 16,
       fontColor: "#E0E0E3"
     },
@@ -49,6 +49,45 @@ window.onload = function () {
       color: "#ff8d07",
       dataPoints: [
         <% @hash_custom.first(10).each do |key, value| %>
+        <% @key = User.find(key) %>
+        { label: "<%= @key.name %>",  y: <%= value %>, },
+        <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+
+  var chart = new CanvasJS.Chart("top_receiver_points", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "もらったポイント数",
+      fontSize: 16,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      reversed: true,
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointMaxWidth: 15,
+    dataPointMinWidth: 15,
+    dataPointWidth: 15,
+    data: [              
+    {
+      // Change type to "doughnut", "line", "splineArea", etc.
+      type: "bar",
+      color: "#ff8d07",
+      dataPoints: [
+        <% @points_custom.first(10).each do |key, value| %>
         <% @key = User.find(key) %>
         { label: "<%= @key.name %>",  y: <%= value %>, },
         <% end %>

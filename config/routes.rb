@@ -81,11 +81,19 @@ Rails.application.routes.draw do
   post	'analytics/giver'	=> 'analytics#giver'
   get	'analytics/hashtag'	=> 'analytics#hashtag'
   post	'analytics/hashtag'	=> 'analytics#hashtag'
+  get 'analytics/hashtag/points' => 'analytics#hashtagpoints'
+  post 'analytics/hashtag/points' => 'analytics#hashtagpoints'
   get	'analytics/hashtag/all' => 'analytics#allhashtag'
   post	'analytics/hashtag/all' => 'analytics#allhashtag'
+  get 'analytics/hashtag/all/points' => 'analytics#allhashtagpoints'
+  post  'analytics/hashtag/all/points' => 'analytics#allhashtagpoints'
   get	'analytics/user/:id'	=> 'analytics#user'
   post	'analytics/user/:id'	=> 'analytics#user'
+  get 'analytics/user/:id/points'  => 'analytics#userpoints'
+  post  'analytics/user/:id/points'  => 'analytics#userpoints'
   get 'analytics/user/:id/given' => 'analytics#usergiven'
+  get 'analytics/user/:id/given' => 'analytics#usergiven'
+  get 'analytics/user/:id/received' => 'analytics#userreceived'
 
   #facebook auth
   get	'auth/facebook', as: "auth_provider"
