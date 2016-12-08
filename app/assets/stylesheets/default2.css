@@ -1454,6 +1454,20 @@ hr.style-two {
     color: #ff8d07;
 }
 
+.company_create_textarea::-webkit-input-placeholder{
+    color: #ff8d07;
+}
+.company_create_textarea::-moz-placeholder{
+    color: #ff8d07;
+}
+.company_create_textarea:-moz-placeholder{
+    color: #ff8d07;
+}
+.company_create_textarea:-ms-input-placeholder{
+    color: #ff8d07;
+}
+
+
 .login_input_password{
   margin-top: 20px;
 }
@@ -1518,7 +1532,7 @@ hr.style-two {
 }
 
 .company_create_form{
-  margin-top: 10px;
+  margin: 5px 0;
 }
 
 .company_create_contents span{
@@ -1541,7 +1555,14 @@ hr.style-two {
   border: 0;
   background-color: white;
   opacity: 0.6;
+  border-radius: 3px;
 }
+
+.createbox_th{
+  color: #fff;
+  text-align: left;
+}
+
 
 
 @media only screen and (max-width: 650px){
@@ -1549,7 +1570,7 @@ hr.style-two {
     width: 100%;
   }
 
-  .login_input_form{
+  .login_input_form, .login_submit{
     width: 90%;
   }
 
@@ -1558,23 +1579,46 @@ hr.style-two {
     margin: 0 auto;
   }
 
-  .login_submit{
-    width: 90%;
-  }
-
   /*forgot_password*/
   .password_submit{
     width: 90%;
   }
 
   /*company_create*/
+  #createbox{
+    margin-top: 20px;
+    width: 95%;
+  }
+
   .company_create_wrapper{
-  height: 900px;
+    height: 1100px;
+  }
+
+  .company_create_table{
+    width: 100%;
+  }
+
+  .company_create_table th, .company_create_table td{
+    display:block;
+  }
+
+  .company_create_table td{
+    width: 100%;
+    vertical-align: center;
+  }
+
+  .createbox_th{
+    width: 90%;
+    padding-right: 5px;
+    font-size: 14px;
+    margin: 0 auto;
   }
 
   .company_create_textarea{
     width: 90%;
+    border-radius: 3px;
   }
+
 }
 
 @media only screen and (min-width: 650px) {
@@ -1604,20 +1648,36 @@ hr.style-two {
   }
 
   /*company_create*/
+  #createbox{
+    margin-top: 20px;
+    width: 500px;
+  }
+
   .company_create_wrapper{
-    height: 900px;
+    height: 920px;
+  }
+
+  .company_create_table td{
+    vertical-align: center;
   }
 
   .company_create_form{
-    width: 325px;
+    width: 350px;
   }
 
   .company_create_textarea{
-    width: 325px;
+    width: 350px;
+    border-radius: 3px;
   }
 
   .company_create_submit{
-    width: 325px;
+    width: 500px;
+    margin-bottom: 20px;
+  }
+
+  .createbox_th{
+    padding-right: 20px;
+    font-size: 14px;
   }
 }
 
