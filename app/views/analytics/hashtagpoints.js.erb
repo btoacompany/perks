@@ -1,0 +1,35 @@
+<% @array.each do |hashtag, ranking| %>
+  var chart = new CanvasJS.Chart("<%= hashtag %>", {
+    backgroundColor: "#3a3a3c",
+    animationEnabled: true, 
+    animationDuration: 3000,
+    title:{
+      text: "#<%= hashtag %>",
+      fontSize: 20,
+      fontColor: "#E0E0E3"
+    },
+    axisX:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+      axisY:{
+      labelAutoFit: false, 
+      labelFontSize: 12,
+      labelFontColor: "#E0E0E3", 
+      },
+    dataPointWidth: 15,
+    data: [              
+    {
+      type: "bar",
+      color: "#ff8d07",
+      dataPoints: [
+      <% ranking.each do |key, value| %>
+        { label: "<%= key %>",  y: <%= value %>, },
+      <% end %>
+      ]
+    }
+    ]
+  });
+  chart.render();
+<% end %>

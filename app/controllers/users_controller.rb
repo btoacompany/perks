@@ -306,10 +306,6 @@ class UsersController < ApplicationController
       	hashtags = params[:description].scan(/\#[^\s|　]+/)
       	receiver = User.find(params[:receiver_id])
 
-	if receiver.company_id == 26 
-	  params[:points] = params[:points] * 20
-	end
-
 	receiver.in_points += params[:points]
       	receiver.save
 

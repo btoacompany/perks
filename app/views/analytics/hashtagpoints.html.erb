@@ -1,5 +1,5 @@
 <div class="analytics_holder">
-  
+
   <div class="analytics_sidebar" style="padding-top:34px;">
     <ul>
       <li><%= link_to "利用状況", "/analytics/" %></li>
@@ -15,18 +15,20 @@
 
   <div class="analytics_main">
     <div class="analytics_points_select">
-      <%= link_to "回数", "/analytics/hashtag", :class => "analytics_points_select_colorlink" %>
-      <%= link_to "ポイント", "/analytics/hashtag/points", :class => "analytics_points_select_link" %>
+      <%= link_to "回数", "/analytics/hashtag", :class => "analytics_points_select_link" %>
+      <%= link_to "ポイント", "/analytics/hashtag/points", :class => "analytics_points_select_colorlink" %>
     </div>
 
     <div class="analytics_time_select" >
-      <%= form_tag({:controller => 'analytics', :action => 'hashtag'}, remote: true, :class => "analytics_form") do%>
+      <%= form_tag({:controller => 'analytics', :action => 'hashtagpoints'}, remote: true, :class => "analytics_form") do%>
         期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
         <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
         <input type="submit" value="適用">
       <% end %>
       <div class="clearfix"></div>
     </div>
+
+
     <div class="analytics_container">
       <% @hashtags.each do |hashtag| %>
         <div id="<%= hashtag %>" class="analytics_graphs" style="min-height: 450px; width: 85%;"></div>
