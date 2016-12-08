@@ -12,12 +12,12 @@
   <%= form_tag( "/login/complete", method: "post", id: "login_form" ) do %>
   <h3 class="c_align">Prizyにログインする</h3>
   <div id="loginbox" class="center">
-    <p class="c_align"><input type="text" value="" name="email" placeholder="メールアドレス" required class="login_input_form"/></p>
-    <p class="c_align"><input type="password" value="" name="password" placeholder="パスワード" required class="login_input_form login_input_password"/></p>
+    <p class="c_align"><input type="text" value="" name="email" placeholder=" メールアドレス" required class="login_input_form"/></p>
+    <p class="c_align"><input type="password" value="" name="password" placeholder=" パスワード" required class="login_input_form login_input_password"/></p>
     <div class="keep_loggedin">
       <p class="login_bottom"><input type="checkbox" name="remember" value="1" checked <% if cookies[:user_id] %> checked <% end %>> ログイン状態を保持する</p>
     </div>
-    <p class="c_align"><input type="submit" value="ログイン >" class="btn login_submit" /></p>
+    <p class="c_align"><input type="submit" value="ログイン" class="btn login_submit" /></p>
     <div class="keep_loggedin">
       <p align="right" class="login_forget_password"><a href="/forgot_password">パスワードを忘れた場合</a></p>
     </div>

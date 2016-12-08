@@ -1387,6 +1387,12 @@ hr.style-two {
 
 
 /*ishihara review*/
+/*input_tag common setting*/
+ input[type="submit"] {
+    -webkit-appearance: none;
+    border-radius: 2px;
+  }
+
 /*login_page*/
 .login_wrapper{
   height: 100vh;
@@ -1432,6 +1438,7 @@ hr.style-two {
   border: 0;
   background-color: white;
   opacity: 0.6;
+  border-radius: 2px;
 }
 
 .login_input_form::-webkit-input-placeholder{
@@ -1463,6 +1470,7 @@ hr.style-two {
   height: 32px;
   color: #ff8d07;
   border: 0;
+  border-radius: 2px;
 }
 
 .login_forget_password{
@@ -1492,6 +1500,7 @@ hr.style-two {
   height: 32px;
   color: #ff8d07;
   border: 0;
+  border-radius: 2px;
 }
 
 /*company_create*/
