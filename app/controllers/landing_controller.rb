@@ -18,6 +18,9 @@ class LandingController < ApplicationController
     end
   end
 
+  def slack_add
+  end
+
   def index
   end
 
@@ -32,6 +35,4 @@ class LandingController < ApplicationController
 
   def terms
   end
-
-
 end
