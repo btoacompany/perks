@@ -16,6 +16,23 @@ class UsersController < ApplicationController
       @company_id = user.company_id
       @admin_flag = Company.exists?(:email => user.email) ? 1 : 0
     end
+
+    if params[:code].present?
+      slack_code = params[:code]
+
+      data = {
+	:client_id  => "12258104198.88079493873",
+	:code	    => params[:code],
+	:client_secret	=> "d3cc97422eac0aefbf7c097a3647306c"
+      }
+
+      uri = URI.parse("https://slack.com/api/oauth.access")
+      http = Net::HTTP.post_form(uri, data)
+      userinfo = JSON.parse(http.body)
+      
+      @slack_access_token = userinfo["access_token"]
+
+    end
   end
 
   def login
@@ -170,14 +187,14 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
-    slack_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27"
+    #slack_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27"
     slack_user_info_data = {
       :user	    => params["user_id"],
-      :token	    => slack_token,
+      :token	    => @slack_access_token,
     }
 
     slack_user_list_data = {
-      :token => slack_token,
+      :token => @slack_access_token,
       :presence => 1
     }
 
@@ -253,14 +270,15 @@ class UsersController < ApplicationController
               ios_push_notif(receiver.id, "#{user.firstname}さんから「ホメ」が届きました。")
 
       	      slack_notif = Slack::Notifier.new(@slack_webhooks) 
-      	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんにボーナスを贈りました。")
+      	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんに感謝を伝えました。\n #{receiver_name}の頑張りは<a href='https://www.prizy.me'>コチラ</a> から。")
 
       	      flash[:notice] = "#{receiver_name}さんにボーナスを贈りました！"
       	    else
-      	      flash[:notice] = "ポイントが足りません！#{user.out_points}ポイント残っています"
+	      flash[:notice] = "投稿できませんでした。手持ちのポイント数が足りません。 今月は#{user.out_points}ポイント残っています。"
       	    end
       	  else
-      	    flash[:notice] = "User does not exist"
+      	    flash[:notice] = "投稿できませんでした。ユーザーがPrizyに登録していません！
+	    Prizyへの招待リンクを贈ってあげましょう。\n#{user.company.invite_link}"
       	  end
       	end	
       else
@@ -269,22 +287,9 @@ class UsersController < ApplicationController
       end
     rescue Exception => e
       logger.debug e.message
-      flash[:notice] = "入力に不備があります！\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
+      flash[:notice] = "投稿できませんでした。入力に不備があります。\n
+      （入力例)\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
     end
-
-=begin
-    slack_chat_data = {
-      :token	  => slack_token,
-      :channel	  => params["channel_id"],
-      :text	  => flash[:notice],
-      :as_user	  => false,
-      :username	  => "Prizy",
-      :icon_url	  => "https://s3-ap-northeast-1.amazonaws.com/prizy/common/img_01.png"
-    }
-
-    uri = URI.parse("https://slack.com/api/chat.postMessage")
-    http = Net::HTTP.post_form(uri, slack_chat_data)
-=end
 
     render :layout => false
   end
