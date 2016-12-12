@@ -30,7 +30,11 @@ class UsersController < ApplicationController
       http = Net::HTTP.post_form(uri, data)
       userinfo = JSON.parse(http.body)
       
+      logger.debug "-------"
+      logger.debug userinfo.inspect
       cookies[:slack_token] = userinfo["access_token"]
+
+      logger.debug cookies[:slack_token]
 
     end
   end
