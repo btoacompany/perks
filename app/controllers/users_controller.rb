@@ -192,19 +192,19 @@ class UsersController < ApplicationController
 
   def give_points_slack
     #@slack_access_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27"
-    @slack_access_token = cookies[:slack_token] 
+    @slack_token = cookies[:slack_token] 
     slack_user_info_data = {
       :user	    => params["user_id"],
-      :token	    => @slack_access_token,
+      :token	    => @slack_token,
     }
 
     slack_user_list_data = {
-      :token => @slack_access_token,
+      :token => @slack_token,
       :presence => 1
     }
 
     logger.debug "---------"
-    logger.debug @slack_access_token
+    logger.debug @slack_token
 
     uri = URI.parse("https://slack.com/api/users.info")
     http = Net::HTTP.post_form(uri, slack_user_info_data)
@@ -214,6 +214,10 @@ class UsersController < ApplicationController
     http = Net::HTTP.post_form(uri, slack_user_list_data)
     userlist = JSON.parse(http.body)
 
+    logger.debug "---1---"
+    logger.debug userinfo.inspect
+    logger.debug userlist.inspect
+    
     begin
       email = userinfo["user"]["profile"]["email"]
       error = 0
