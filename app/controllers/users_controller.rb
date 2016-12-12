@@ -30,6 +30,9 @@ class UsersController < ApplicationController
       http = Net::HTTP.post_form(uri, data)
       userinfo = JSON.parse(http.body)
       
+      logger.debug "----"
+      logger.debug userinfo.inspect
+
       slack = SlackToken.where(:user_id => userinfo["user_id"]).first
       
       if slack.blank?
