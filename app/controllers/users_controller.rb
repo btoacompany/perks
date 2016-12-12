@@ -16,8 +16,6 @@ class UsersController < ApplicationController
       @company_id = user.company_id
       @admin_flag = Company.exists?(:email => user.email) ? 1 : 0
     end
-    logger.debug "----"
-    logger.debug cookies[:slack_token]
 
     if params[:code].present?
       slack_code = params[:code]
@@ -32,15 +30,18 @@ class UsersController < ApplicationController
       http = Net::HTTP.post_form(uri, data)
       userinfo = JSON.parse(http.body)
       
-      logger.debug "-------"
-      logger.debug userinfo.inspect
-      cookies.permanent[:slack_token] = {
-	:value => userinfo["access_token"],
-	:expires => 1.year.from_now,
-	:domain	=> "slack.com"
-      }
-      logger.debug cookies[:slack_token]
-
+      slack = SlackToken.where(:user_id => userinfo["user_id"]).first
+      
+      if slack.blank?
+	slack = SlackToken.new
+	slack.token = userinfo["access_token"]
+	slack.user_id = userinfo["user_id"]
+	slack.arn = @id
+	slack.save
+      else
+	slack.token = userinfo["access_token"]
+	slack.save
+      end
     end
   end
 
@@ -196,12 +197,9 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
-    logger.debug "---aa--"
-    logger.debug cookies[:slack_token]
-    logger.debug session[:slack_token]
     #@slack_access_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27"
-    @slack_token = cookies[:slack_token] 
-    #@slack_token = params["token"] 
+    @slack_token = SlackToken.where(:user_id => params["user_id"]).first.token
+
     slack_user_info_data = {
       :user	    => params["user_id"],
       :token	    => @slack_token,
@@ -211,9 +209,6 @@ class UsersController < ApplicationController
       :token => @slack_token,
       :presence => 1
     }
-
-    logger.debug "---------"
-    logger.debug @slack_token
 
     uri = URI.parse("https://slack.com/api/users.info")
     http = Net::HTTP.post_form(uri, slack_user_info_data)
