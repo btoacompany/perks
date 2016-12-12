@@ -30,7 +30,7 @@ class UsersController < ApplicationController
       http = Net::HTTP.post_form(uri, data)
       userinfo = JSON.parse(http.body)
       
-      @slack_access_token = userinfo["access_token"]
+      cookie[:slack_token] = userinfo["access_token"]
 
     end
   end
@@ -187,7 +187,8 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
-    #slack_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27"
+    #@slack_access_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27"
+    @slack_access_token = cookie[:slack_token] 
     slack_user_info_data = {
       :user	    => params["user_id"],
       :token	    => @slack_access_token,
@@ -197,6 +198,9 @@ class UsersController < ApplicationController
       :token => @slack_access_token,
       :presence => 1
     }
+
+    logger.debug "---------"
+    logger.debug @slack_access_token
 
     uri = URI.parse("https://slack.com/api/users.info")
     http = Net::HTTP.post_form(uri, slack_user_info_data)
