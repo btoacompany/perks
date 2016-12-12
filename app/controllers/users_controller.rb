@@ -46,7 +46,7 @@ class UsersController < ApplicationController
       else
 	slack.token = userinfo["access_token"]
 	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
-	slack.bot_token	    = userinfo["bot_access_token"]
+	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
 	slack.save
       end
     end
@@ -204,9 +204,14 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
+    logger.debug "-------"
+
     slack = SlackToken.where(:user_id => params["user_id"]).first
     @slack_token = slack.token
     @slack_webhooks = slack.webhooks_url 
+
+    logger.debug @slack_token
+    logger.debug @slack_webhooks
 
     slack_user_info_data = {
       :user	    => params["user_id"],
