@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 	slack.token	    = userinfo["access_token"]
 	slack.user_id	    = userinfo["user_id"]
 	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
-	slack.bot_token	    = userinfo["bot_access_token"]
+	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
 	slack.arn = @id
 	slack.save
       else
