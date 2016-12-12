@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       
       logger.debug "-------"
       logger.debug userinfo.inspect
-      cookies[:slack_token] = userinfo["access_token"]
+      cookies.permanent[:slack_token] = userinfo["access_token"]
 
       logger.debug cookies[:slack_token]
 
