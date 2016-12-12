@@ -207,8 +207,11 @@ class UsersController < ApplicationController
     logger.debug "-------"
 
     slack = SlackToken.where(:user_id => params["user_id"]).first
-    @slack_token = slack.token
-    @slack_webhooks = slack.webhooks_url 
+    @slack_token = slack[:token]
+    @slack_webhooks = slack[:webhooks_url]
+
+    #@slack_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27" 
+    #@slack_webhooks = "https://hooks.slack.com/services/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"
 
     logger.debug @slack_token
     logger.debug @slack_webhooks
@@ -230,6 +233,9 @@ class UsersController < ApplicationController
     uri = URI.parse("https://slack.com/api/users.list")
     http = Net::HTTP.post_form(uri, slack_user_list_data)
     userlist = JSON.parse(http.body)
+
+    logger.debug userlist.inspect
+    logger.debug userinfo.inspect
 
     begin
       email = userinfo["user"]["profile"]["email"]
