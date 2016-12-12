@@ -216,13 +216,11 @@ class UsersController < ApplicationController
     slack_user_info_data = {
       :user	    => params["user_id"],
       :token	    => @slack_token,
-      :scope	    => "users:read"
     }
 
     slack_user_list_data = {
       :token => @slack_token,
       :presence => 1,
-      :scope	=> "users:read"
     }
 
     uri = URI.parse("https://slack.com/api/users.info")
