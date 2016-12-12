@@ -16,6 +16,8 @@ class UsersController < ApplicationController
       @company_id = user.company_id
       @admin_flag = Company.exists?(:email => user.email) ? 1 : 0
     end
+    logger.debug "----"
+    logger.debug cookies[:slack_token]
 
     if params[:code].present?
       slack_code = params[:code]
@@ -32,9 +34,11 @@ class UsersController < ApplicationController
       
       logger.debug "-------"
       logger.debug userinfo.inspect
-      cookies.permanent[:slack_token] = userinfo["access_token"]
-      session[:slack_token] = userinfo["access_token"]
-
+      cookies.permanent[:slack_token] = {
+	:value => userinfo["access_token"],
+	:expires => 1.year.from_now,
+	:domain	=> "slack.com"
+      }
       logger.debug cookies[:slack_token]
 
     end
@@ -192,9 +196,12 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
+    logger.debug "---aa--"
+    logger.debug cookies[:slack_token]
+    logger.debug session[:slack_token]
     #@slack_access_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27"
-    #@slack_token = session[:slack_token] 
-    @slack_token = params["token"] 
+    @slack_token = cookies[:slack_token] 
+    #@slack_token = params["token"] 
     slack_user_info_data = {
       :user	    => params["user_id"],
       :token	    => @slack_token,
