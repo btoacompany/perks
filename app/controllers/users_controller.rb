@@ -204,8 +204,9 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
-    @slack_token = SlackToken.where(:user_id => params["user_id"]).first.token
-    @slack_webhooks = params["response_url"].gsub("commands", "services")
+    slack = SlackToken.where(:user_id => params["user_id"]).first
+    @slack_token = slack.token
+    @slack_webhooks = slack.webhooks_url 
 
     slack_user_info_data = {
       :user	    => params["user_id"],
