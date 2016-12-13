@@ -204,17 +204,9 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
-    logger.debug "-------"
-
     slack = SlackToken.where(:user_id => params["user_id"]).first
     @slack_token = slack[:token]
     @slack_webhooks = slack[:webhooks_url]
-
-    #@slack_token = "xoxp-12258104198-34997002386-103722474262-7e7a3977f1ce950cd336927032836e27" 
-    #@slack_webhooks = "https://hooks.slack.com/services/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"
-
-    logger.debug @slack_token
-    logger.debug @slack_webhooks
 
     slack_user_info_data = {
       :user	    => params["user_id"],
@@ -568,6 +560,8 @@ class UsersController < ApplicationController
       :status	    => 0
     }
 
+    points = 0
+
     if params["type"] == "prizy"
       data[:reward_prizy_id] = params["reward_id"]
     else
@@ -577,8 +571,14 @@ class UsersController < ApplicationController
     res = RequestReward.new
     res.save_record(data)
 
+    if params["type"] == "prizy"
+      points = res.rewards_prizy.points
+    else
+      points = res.reward.points
+    end
+
     user = User.find(@id)
-    user.in_points -= res.reward.points
+    user.in_points -= points 
     user.save
 
     data[:username] = user.name
