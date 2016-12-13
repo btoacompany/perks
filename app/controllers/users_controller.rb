@@ -599,13 +599,20 @@ class UsersController < ApplicationController
 
   def rewards_cancel
     res = RequestReward.find(params[:id])
+    points = 0
 
     if res.status == 0
       res.delete_flag = 1
       res.save
 
+      if res.rewards_prizy.present? 
+	points = res.rewards_prizy.points
+      else
+	points = res.reward.points
+      end
+
       user = User.find(@id)
-      user.in_points += res.reward.points
+      user.in_points += points 
       user.save
     end
 
