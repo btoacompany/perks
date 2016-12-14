@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   # for landing
   root to: 'landing#index'
-  get '/price' => 'landing#price'
-  get '/integration/slack'  => 'landing#slack'
-  get '/privacy' => 'landing#privacy'
-  get '/terms' => 'landing#terms'
+  
+  get	'/price'	    => 'landing#price'
+  get	'/privacy'	    => 'landing#privacy'
+  get	'/terms'	    => 'landing#terms'
+  get	'/integration/slack'	  => 'landing#slack'
+  get	'/integration/slack/add'  => 'landing#slack_add'	
 
   # for testing
   get	'/tests'		  => 'tests#index'
