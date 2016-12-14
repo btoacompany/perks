@@ -289,15 +289,14 @@ class UsersController < ApplicationController
               ios_push_notif(receiver.id, "#{user.firstname}さんから「ホメ」が届きました。")
 
       	      slack_notif = Slack::Notifier.new(@slack_webhooks) 
-      	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんに感謝を伝えました。\n #{receiver_name}の頑張りは<a href='https://www.prizy.me'>コチラ</a> から。")
+      	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんに感謝を伝えました。\n #{receiver_name}さんの頑張りは<a href='https://www.prizy.me'>コチラ</a> から。")
 
       	      flash[:notice] = "#{receiver_name}さんにボーナスを贈りました！"
       	    else
 	      flash[:notice] = "投稿できませんでした。手持ちのポイント数が足りません。 今月は#{user.out_points}ポイント残っています。"
       	    end
       	  else
-      	    flash[:notice] = "投稿できませんでした。ユーザーがPrizyに登録していません！
-	    Prizyへの招待リンクを贈ってあげましょう。\n#{user.company.invite_link}"
+      	    flash[:notice] = "投稿できませんでした。ユーザーがPrizyに登録していません！\n Prizyへの招待リンクを贈ってあげましょう。\n#{user.company.invite_link}"
       	  end
       	end	
       else
@@ -306,8 +305,7 @@ class UsersController < ApplicationController
       end
     rescue Exception => e
       logger.debug e.message
-      flash[:notice] = "投稿できませんでした。入力に不備があります。\n
-      （入力例)\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
+      flash[:notice] = "投稿できませんでした。入力に不備があります。\n （入力例)\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
     end
 
     render :layout => false
