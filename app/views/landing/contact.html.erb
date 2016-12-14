@@ -1,0 +1,58 @@
+<%if @user_login == 1 %>
+  <%= render "shared/header"%>
+<% else %>
+  <%= render "landingheader" %>
+<% end %>
+
+<div class="contact_top">
+<div class="terms_wrapper" style="text-align:center;">
+<h2>お問い合わせ</h2>
+
+<%= form_tag("/contact/complete") do %>
+  <dl>
+    <div class="contact_wrapper">
+      <dt class="contact_float_left">企業名</dt>
+      <dt class="contact_required">必須</dt>
+      <dt class="contact_float_right">
+        <input type="text" value="" name="company" required class="contact_input"/>
+      </dt>
+      <div class="clearfix"></div>
+    </div>
+    <div class="landing_clearfix"></div>
+
+    <div class="contact_wrapper">
+      <dt class="contact_float_left">お名前</dt>
+      <dt class="contact_required">必須</dt>
+      <dt class="contact_float_right">
+        <input type="text" value="" name="name" required class="contact_input"/>
+      </dt>
+      <div class="clearfix"></div>
+    </div>
+    <div class="landing_clearfix"></div>
+
+    <div class="contact_wrapper">
+      <dt class="contact_float_left">メールアドレス</dt>
+      <dt class="contact_required">必須</dt>
+      <dt class="contact_float_right">
+        <input type="text" value="" name="email" required class="contact_input"/>
+      </dt>
+      <div class="clearfix"></div>
+    </div>
+    <div class="landing_clearfix"></div>
+    
+    <div class="contact_wrapper">
+      <dt class="contact_float_left">お問い合わせ内容</dt>
+      <dt class="contact_required">必須</dt>
+      <dt class="contact_float_right">
+        <textarea name="text" class="contact_textarea"/></textarea>
+      </dt>
+      <div class="landing_clearfix"></div>
+    </div>
+  </dl>
+  <div class="landing_clearfix"></div>
+  
+  <p><input type="submit"  value="" class="user_update_submit"/></p>
+<% end %>
+
+</div>
+</div>

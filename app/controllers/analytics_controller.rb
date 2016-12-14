@@ -286,7 +286,6 @@ class AnalyticsController < ApplicationController
     @userid = params[:id]
     @user = User.find(@id)
     posts = Post.where(:user_id => @userid, :delete_flag => 0).order("update_time desc")
-
     limit = 10
     page = params[:page] || 1
     @total_items = posts.count

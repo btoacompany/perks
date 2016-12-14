@@ -10,23 +10,48 @@
   <div id="contents" class="company_create_contents">
     <%= form_tag( "/company/register/complete", method: "post", id: "login_form" ) do %>
     <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
-    <div id="loginbox" class="center">
-    <p class="c_align"><input type="text" name="name" value="" placeholder="会社名"required class="login_input_form company_create_form"/></p>
-    <p class="c_align"><input type="text" name="url" value="" placeholder="会社HP URL" class="login_input_form company_create_form"/></p>
-    <p class="c_align"><input type="text" name="owner" value="" required placeholder="担当者名" class="login_input_form company_create_form"/></p>
-    <p class="c_align"><input type="email" name="email" value="" required placeholder="メールアドレス" class="login_input_form company_create_form"/></p>
-    <p class="c_align"><input type="password" name="password" id="passwd1" value="" required placeholder="パスワード" class="login_input_form company_create_form"/></p>
-    <p class="c_align">
-      <input type="password" name="password" id="passwd2" value="" required placeholder="パスワード確認" class="login_input_form company_create_form"/><br><span class="notice"></span>
-    </p>
-    <p class="c_align"><input type="text" name="phone" value="" placeholder="電話番号" class="login_input_form company_create_form"/></p>
-    <p class="c_align"><input type="text" name="address" value="" required placeholder="会社住所" class="login_input_form company_create_form"/></p>
-    <p class="c_align">
-      <textarea name="hashtags" value="" class="company_create_form company_create_textarea" placeholder="leadership, hardwork, creativity..."></textarea><br>
-      <span class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
-    </p>
-    <p class="c_align" colspan="2"><input type="submit" value="送信" class="btn login_submit company_create_submit" /></p>
+    <div id="createbox" class="center">
+    <table class="company_create_table">
+      <tr>
+        <th class="createbox_th">会社名</th>
+        <td class="c_align"><input type="text" name="name" value="" placeholder="　株式会社Prizy"required class="login_input_form company_create_form"/></td>
+      </tr>
+      <tr>
+        <th class="createbox_th">会社URL</th>
+        <td class="c_align"><input type="text" name="url" value="" placeholder="　http://prizy.me/" class="login_input_form company_create_form"/></td>
+      </tr>
+      <tr>
+        <th class="createbox_th">担当者</th>
+        <td class="c_align"><input type="text" name="owner" value="" required placeholder="　山田太郎" class="login_input_form company_create_form"/></td>
+      </tr>
+      <tr>
+        <th class="createbox_th">メールアドレス</th>
+        <td class="c_align"><input type="email" name="email" value="" required placeholder="　taro.yamada@mail.com" class="login_input_form company_create_form"/></td>
+      </tr>
+      <tr>
+        <th class="createbox_th">パスワード</th>
+        <td class="c_align"><input type="password" name="password" id="passwd1" value="" required placeholder="　パスワード" class="login_input_form company_create_form"/></td>
+      </tr>
+      <tr>
+        <th class="createbox_th">確認用パスワード</th>
+        <td><p class="c_align"><input type="password" name="password" id="passwd2" value="" required placeholder="　パスワード確認" class="login_input_form company_create_form"/><br><span class="notice"></span></td>
+      </tr>
+      <tr>
+        <th class="createbox_th">電話番号</th>
+        <td class="c_align"><input type="text" name="phone" value="" placeholder="　03-XXXX-XXXX" class="login_input_form company_create_form"/></td>
+      </tr>
+      <tr>
+        <th class="createbox_th">会社住所</th>
+        <td class="c_align"><input type="text" name="address" value="" required placeholder="　東京都XXXXXXXXXXXX" class="login_input_form company_create_form"/></td>
+      </tr>
+      <tr>
+        <th class="createbox_th">コアバリュー</th>
+        <td class="c_align"><textarea name="hashtags" value="" class="company_create_form company_create_textarea" placeholder="　leadership, hardwork, creativity...&#13;&#10;　(カンマ「,」で区切ってください。)"></textarea></td>
+      </tr>
+    </table>
     <p align="center" class="company_create_terms">ご登録になる前に<a href="/terms">利用規約</a>をよくご確認ください</p>
+    <p class="c_align" colspan="2"><input type="submit" value="送信" class="btn login_submit company_create_submit" /></p>
+    
     </div>
     <% end %>
   </div>
