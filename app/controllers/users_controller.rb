@@ -396,7 +396,6 @@ class UsersController < ApplicationController
   end
 
   def ios_push_notif(id, message)
-=begin
     devices = IosToken.where(:user_id => id)
 
     devices.each do | device |
@@ -419,7 +418,6 @@ class UsersController < ApplicationController
         message_structure: "json"
       )
     end
-=end
   end
 
   def profile
