@@ -78,6 +78,10 @@
     <% @judgment = "true" %>
   <% elsif controller.controller_name == "users" && controller.action_name == "forgot_password" %>
     <% @judgment = "true" %>
+  <% elsif controller.controller_name == "users" && controller.action_name == "update" %>
+    <% @judgment = "true" %>
+  <% elsif controller.controller_name == "users" && controller.action_name == "invite" %>
+    <% @judgment = "true" %>
   <% elsif controller.controller_name == "company" && controller.action_name == "create" %>
     <% @judgment = "true" %>
   <% else %>

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get '/integration/slack'  => 'landing#slack'
   get '/privacy' => 'landing#privacy'
   get '/terms' => 'landing#terms'
+  get '/contact' => 'landing#contact'
+  post '/contact/complete' => 'landing#contact_mail'
 
   # for testing
   get	'/tests'		  => 'tests#index'

@@ -1,7 +1,7 @@
 class LandingController < ApplicationController
 
-  before_filter :init, :except => [:slack, :privacy, :terms]
-  before_filter :user_login, :only => [:slack, :privacy, :terms]
+  before_filter :init, :except => [:slack, :privacy, :terms, :contact, :contact_mail]
+  before_filter :user_login, :only => [:slack, :privacy, :terms, :contact, :contact_mail]
   before_filter :init_url
 
   def init
@@ -31,6 +31,19 @@ class LandingController < ApplicationController
   end
 
   def terms
+  end
+
+  def contact
+  end
+
+  def contact_mail
+    @company = params[:company]
+    @name = params[:name]
+    @email = params[:email]
+    @text = params[:text]
+    ContactMailer.contact_mail(@company, @name, @email, @text).deliver
+    ContactMailer.btoa_mail(@company, @name, @email, @text).deliver
+    redirect_to '/contact'
   end
 
 

@@ -809,6 +809,57 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-top: 20px;
 }
 
+/*contact*/
+.contact_input, .contact_textarea{
+  background-color: white;
+  border: 0;
+  border-radius: 2px;
+}
+
+.contact_top{
+  height: 650px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
+}
+
+.contact_wrapper{
+  margin-top: 30px;
+}
+
+.contact_float_left{
+  float: left;
+  width: 180px;
+  font-size: 16px;
+  padding-top: 5px;
+  margin-left: 50px;
+}
+
+.contact_required{
+  float: left;
+  width: 60px;
+  font-size: 16px;
+  padding-top: 5px;
+  background-color: #ff8d07;
+  color: white;
+  padding: 5px 0;
+}
+
+.contact_float_right{
+  float: left;
+  margin-left: 30px;
+}
+
+.contact_input{
+  width: 500px;
+  height: 32px;
+  font-size: 15px
+}
+
+.contact_textarea{
+  width: 500px;
+  height: 128px;
+  font-size: 15px
+}
+
 
 } /* end of PC View*/
 
@@ -1648,6 +1699,55 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 
 .privacy_wrapper p, .terms_wrapper p{
   margin-top: 20px;
+}
+
+/*contact*/
+.contact_input, .contact_textarea{
+  background-color: white;
+  border: 0;
+  border-radius: 2px;
+}
+
+.contact_top{
+  background-size:100% 650;
+  height: 650px;
+  background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
+  padding-top: 30px;
+}
+
+.contact_wrapper{
+  margin-top: 10px;
+}
+
+.contact_float_left{
+  margin-right: 15px;
+  font-size: 16px;
+  padding-top: 5px;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.contact_required{
+  display:none;
+}
+
+.contact_float_right{
+  text-align: left;
+  margin-left: 20px;
+}
+
+.contact_input{
+  width: 90%;
+  height: 32px;
+  margin-top: 10px;
+  font-size: 15px
+}
+
+.contact_textarea{
+  width: 90%;
+  height: 128px;
+  margin-top: 10px;
+  font-size: 15px
 }
 
 
