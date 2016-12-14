@@ -33,15 +33,14 @@ class UsersController < ApplicationController
       logger.debug "----"
       logger.debug userinfo.inspect
 
-      slack = SlackToken.where(:user_id => userinfo["user_id"]).first
+      slack = SlackToken.where(:team_id => userinfo["team_id"]).first
       
       if slack.blank?
 	slack = SlackToken.new
 	slack.token	    = userinfo["access_token"]
-	slack.user_id	    = userinfo["user_id"]
+	slack.team_id	    = userinfo["team_id"]
 	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
 	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
-	slack.arn = @id
 	slack.save
       else
 	slack.token = userinfo["access_token"]
@@ -204,7 +203,7 @@ class UsersController < ApplicationController
   end
 
   def give_points_slack
-    slack = SlackToken.where(:user_id => params["user_id"]).first
+    slack = SlackToken.where(:team_id => params["team_id"]).first
     @slack_token = slack[:token]
     @slack_webhooks = slack[:webhooks_url]
 
@@ -225,9 +224,6 @@ class UsersController < ApplicationController
     uri = URI.parse("https://slack.com/api/users.list")
     http = Net::HTTP.post_form(uri, slack_user_list_data)
     userlist = JSON.parse(http.body)
-
-    logger.debug userlist.inspect
-    logger.debug userinfo.inspect
 
     begin
       email = userinfo["user"]["profile"]["email"]
