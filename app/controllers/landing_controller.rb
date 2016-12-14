@@ -18,6 +18,9 @@ class LandingController < ApplicationController
     end
   end
 
+  def slack_add
+  end
+
   def index
   end
 
@@ -45,6 +48,5 @@ class LandingController < ApplicationController
     ContactMailer.btoa_mail(@company, @name, @email, @text).deliver
     redirect_to '/contact'
   end
-
 
 end
