@@ -67,10 +67,10 @@
 	  </td>
 	</tr>
 	<tr>
-	  <td class="user_update_table_td">姓　<input type="text" name="lastname" value="<%= @user.lastname %>" required />　名　<input type="text" name="firstname" value="<%= @user.firstname %>" required /></td>
+	  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= @user.lastname %>" required />　名 <input type="text" name="firstname" value="<%= @user.firstname %>" required /></td>
 	</tr>
 	<tr>
-	  <td class="user_update_table_td">性　<label><input type="radio" name="gender" value="0" <% if @user.gender==0 %> checked <% end %>/>男</label>
+	  <td class="user_update_table_td">性 <label><input type="radio" name="gender" value="0" <% if @user.gender==0 %> checked <% end %>/>男</label>
       <label><input type="radio" name="gender" value="1" <% if @user.gender==1 %> checked <% end %>/>女</label></td>
 	</tr>
       <% else %>
@@ -89,7 +89,7 @@
 	  </td>
 	</tr>
 	<tr>
-	  <td class="user_update_table_td">姓　<input type="text" name="lastname" value="<%= params[:fb_lname] %>"/>　名　<input type="text" name="firstname" value="<%= params[:fb_fname] %>"/></td>
+	  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= params[:fb_lname] %>"/>　名 <input type="text" name="firstname" value="<%= params[:fb_fname] %>"/></td>
 	</tr>
 	<tr>
 	  <td class="user_update_table_td">性　<label><input type="radio" name="gender" value="0" <% if params[:fb_gender]=="male" %> checked <% end %>/>男</label>

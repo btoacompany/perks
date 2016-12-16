@@ -1625,6 +1625,11 @@ hr.style-two {
     margin-top: 10px;
   }
 
+  .update_name input{
+    width: 35%;
+    margin-bottom: 5px;
+  }
+
   /*forgot_password*/
   .password_submit{
     width: 90%;
