@@ -512,18 +512,21 @@ class UsersController < ApplicationController
       kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
       data = {
-        id:   post.id,
-        user_id:  post.user_id,
-        user_name:  post.user.name,
-        receiver_name:  post.receiver.name,
-        user_img: post.user.img_src,
-        receiver_img: post.receiver.img_src,
-        points:   post.points,
-        description:  post.description,
-        hashtags: post.hashtags,
-        comments: comments,
-        kudos:    kudos,
-        create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+      	id:   post.id,
+      	user_id:  post.user_id,
+      	user_name:  post.user.name,
+      	receiver_name:  post.receiver.name,
+      	user_img: post.user.img_src,
+      	receiver_img: post.receiver.img_src,
+      	receiver_id: post.receiver_id,
+      	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
+      	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
+      	points:   post.points,
+      	description:  post.description,
+      	hashtags: post.hashtags,
+      	comments: comments,
+      	kudos:    kudos,
+      	create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
 
       @posts << data
