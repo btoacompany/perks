@@ -82,3 +82,18 @@ BtoA Co..Ltd.<br>
 info@btoa-company.com</p>
 </div>
 </div>
+
+<script>
+  $(document).on("click", ".price_landing_header_right", function(){
+    if($('.price_landing_header_ul').hasClass("landing_click")){
+      $('.price_landing_header_ul').removeClass("landing_click");
+      $('.price_landing_header').addClass("price_all_landing_click");
+    } else {
+      $('.price_landing_header_ul').addClass("landing_click");
+      $('.price_landing_header').removeClass("price_all_landing_click");
+    }
+  });
+
+  $("#landing_underline").css("border-bottom", "2px solid white");
+
+</script>
