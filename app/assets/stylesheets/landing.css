@@ -11,6 +11,66 @@
   padding: 0 0;
 }
 
+/*common with PC and SP*/
+.ta_center{
+  text-align: center;
+}
+
+  /*text_setting*/
+  .landing_workforce h2, .landing_workforce p, .price_top p, .pricing_list_price h3, .pricing_list_price span, .each_qa h3, .each_qa p, .price_top h2, .price_top p{
+    line-height: 1.5;
+  }
+
+  .prizy_catalog_float, .landing_prizy_catalog span, .prizy_catalog_middle p, .price_common_liststyle span{
+    font-weight: bold;
+  }
+
+  .microbonus_span, .landing_microbonus_text span, .landing_microbonus_text p, .landing_bonus_budget_wrapper p, .landing_bonus_budget p, .landing_workforce h2, .landing_workforce_top p, .landing_signup_line h2, .price_top p, .slack_top_link a, .contact_required{
+    color: #fff;
+  }
+
+  .price_contact, .landing_prizy_catalog span, .landing_workforce span, .landing_analytics span, .price_top h2, .each_pricing_plan_img, .price_common_liststyle span, .pricing_list_price h3, .pricing_list_price span, .price_yen, .each_qa h3, .slack_top_wrapper h2{
+    color: #ff8d07;
+  }
+
+  /* a_tag setting*/
+.landing_header_right a, .landing_footer_right a, .landing_signup_line h2 a, .landing_price_header_right a, .price_contact, .sp_landing_ul a, .landing_footer_bottom a, .price_landing_header_ul a{
+  text-decoration: none;
+  color: #fff;
+}
+
+  /*list_tyle_setteing*/
+.footer_bottom li, .landing_header_right li, .landing_footer_right li, .landing_price_header_right li, .price_middle li, .sp_landing_ul li, .landing_footer_top_right li, .landing_footer_bottom li, .price_landing_header_ul ul, .price_middle li{
+  list-style: none;
+}
+
+/*landing_header and landing_footer*/
+.landing_footer{
+  background-color: #333333;
+  width: 100%;
+}
+
+/*price_middle*/
+.each_pricing_plan, .each_pricing_plan_img{
+  border-radius: 5px 5px 0 0; 
+}
+
+.each_pricing_plan, .each_pricing_plan ul, .price_li_radius{
+  border-radius: 0 0 5px 5px;
+}
+
+.price_contact{
+  font-size: 16px;
+  border-radius: 3px;
+}
+
+/*contact*/
+.contact_input, .contact_textarea{
+  background-color: white;
+  border: 0;
+  border-radius: 2px;
+}
+
 
 /*PC View*/
 @media only screen and (min-width: 650px) {
@@ -20,18 +80,18 @@
   min-width: 1080px;
 }
 
-.landing_sp{
+.landing_sp, .landing_chart a{
   display: none;
 }
 
 /*common_font_size*/
-.landing_sns_text h2, .landing_microbonus_text h2, .landing_prizy_catalog h2, .landing_analytics h2, .landing_workforce h2, .landing_signup h2, .price_top h2{
+.landing_sns_text h2, .landing_microbonus_text h2, .landing_prizy_catalog h2, .landing_analytics h2, .landing_signup h2{
   line-height: 1.5;
   font-size: 32px;
   color: #333;
 }
 
-.landing_sns_text p, .landing_prizy_catalog p, .landing_analytics p, .landing_workforce p, .landing_signup p{
+.landing_sns_text p, .landing_prizy_catalog p, .landing_analytics p, .landing_signup p{
   line-height: 1.5;
   font-size: 16px;
   color: #333;
@@ -45,8 +105,6 @@
 
 /*landing_header, landing_footer*/
 .landing_footer{
-  background-color: #333333;
-  width: 100%;
   height: 150px;
   position: relative;
   min-width: 1080px;
@@ -85,13 +143,7 @@
   float: right;
 }
 
-.footer_bottom li{
-  list-style: none;
-  float: left;
-}
-
-
-.landing_header_left, .landing_footer_left{
+.landing_header_left, .landing_footer_left, .footer_bottom li{
   float: left;
 }
 
@@ -100,7 +152,6 @@
 }
 
 .landing_header_right li, .landing_footer_right li{
-  list-style: none;
   float: left;
   margin-left: 50px;
   padding-bottom: 5px;
@@ -111,14 +162,11 @@
 }
 
 .landing_header_right a, .landing_footer_right a{
-  text-decoration: none;
-  color: #fff;
   font-size: 16px;
 }
 
 .landing_top_text{
   width: 1000px;
-  text-align: center;
   position: absolute;
   top: 40%;
   left: 0;
@@ -130,7 +178,6 @@
   width: 100%;
   min-width: 1080px;
   height: 620px;
-  text-align: center;
 }
 
 .landing_top_bottom_img img{
@@ -144,10 +191,6 @@
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content1_bkg.jpg);
 }
 
-.landing_sns_text{
-  text-align: center;
-}
-
 .landing_sns_text h2{
   padding-top: 90px;
 }
@@ -158,18 +201,12 @@
 
 .landing_sns_image{
   margin-top: 2px;
-  text-align: center;
   vertical-align: middle;
 }
 
 /*landing_microbonus*/
 .landing_microbonus_text{
-  text-align: center;
   padding-top: 60px;
-}
-
-.landing_microbonus_text span, .landing_microbonus_text p{
-  color: white;
 }
 
 .landing_microbonus img{
@@ -184,7 +221,6 @@
 .landing_bonus_budget_wrapper{
   width: 1000px;
   margin: 0 auto;
-  text-align: center;
   position: relative;
 }
 
@@ -200,7 +236,6 @@
 
 .landing_bonus_budget_wrapper p{
   font-size: 14px;
-  color: #fff;
   margin-top: 20px;
 }
 
@@ -237,7 +272,6 @@
 }
 
 .prizy_catalog_top{
-  text-align: center;
   padding-top: 100px;
 }
 
@@ -253,12 +287,6 @@
 .prizy_catalog_float{
   float: left;
   margin-left: 60px;
-  font-weight: bold;
-}
-
-.landing_prizy_catalog span{
-  color: #ff8d07;
-  font-weight: bold;
 }
 
 .prizy_catalog_middle img{
@@ -267,10 +295,6 @@
 
 .prizy_catalog_middle, .prizy_catalog_bottom{
   margin-top: 50px;
-}
-
-.prizy_catalog_middle p{
-  font-weight: bold;
 }
 
 .prizy_catalog_bottom{
@@ -318,47 +342,32 @@
 }
 
 
-
 /*landing_analytics*/
 .landing_analytics{
-  text-align: center;
   padding-top: 100px;
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content4_bkg.jpg);
 }
 
-.landing_analytics span{
-  color: #ff8d07;
-}
-
-.landing_analytics p{
+.landing_analytics p, .landing_analytics img{
   margin-top: 30px;
 }
 
 .landing_analytics img{
-  margin-top: 30px;
   margin-bottom: 100px;
 }
 
 /*landing_workforce*/
 .landing_workforce{
   padding-top: 60px;
-  text-align: center;
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/content6_bkg.jpg);
 }
 
-.landing_workforce h2, .landing_workforce p{
-  color: white;
-}
-
-.landing_workforce span{
-  color: #ff8d07;
-}
-
-.landing_workforce_top{
-
-}
+.landing_workforce h2{
+  font-size: 32px;
+} 
 
 .landing_workforce_top p{
+  font-size: 16px;
   margin-top: 20px;
   padding-bottom: 40px;
 }
@@ -377,13 +386,10 @@
   height: 200px;
 }
 
-.landing_chart a{
-  display: none;
-}
-
 .landing_chart_text p{
   width: 200px;
   margin: 0 auto;
+  color: #fff;
 }
 
 .landing_chart_text_top{
@@ -397,7 +403,6 @@
 
 .landing_chart_text_bottom span{
   font-size: 14px;
-  color: white;
 }
 
 .landing_chart_one, .landing_chart_two, .landing_chart_three, .landing_chart_four{
@@ -419,7 +424,6 @@
   font-weight: bold;
 }
 
-
 /*landing_signup*/
 .landing_signup{
   width: 100%;
@@ -428,44 +432,32 @@
   position: relative;
 }
 
-.landing_signup_back{
-  width: 1000px;
-  height: 400px;
-  background-color: #333333;
+.landing_signup_back, .landing_signup_line, .landing_signup_line h2{
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
+}
+
+.landing_signup_back{
+  width: 1000px;
+  height: 400px;
+  background-color: #333333;
 }
 
 .landing_signup_line{
   width: 100%;
   height: 200px;
   background: -webkit-linear-gradient(left, #ff6c00, #ffcc00);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  text-align: center;
 }
 
 .landing_signup_line h2{
-  color: white;
   height: 50px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  margin: auto;
 }
 
 .landing_signup_line img{
-  color: white;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -496,7 +488,7 @@
   height: 48px;
 }
 
-.landing_price_header_left, .landing_footer_left{
+.landing_price_header_left, .landing_footer_left, .landing_price_header_right li{
   float: left;
 }
 
@@ -506,15 +498,11 @@
 }
 
 .landing_price_header_right li{
-  list-style: none;
-  float: left;
   margin-left: 50px;
   padding-bottom: 5px;
 }
 
 .landing_price_header_right a{
-  text-decoration: none;
-  color: #fff;
   font-size: 16px;
 }
 
@@ -533,18 +521,15 @@
   right: 0;
   left: 0;
   margin: auto;
-  text-align: center;
 }
 
 .price_top h2{
-  color: #ff8d07;
+  font-size: 32px;
 }
 
 .price_top p{
   padding-top: 10px;
   font-size: 26px;
-  color: #fff;
-  line-height: 1.5;
 }
 
 /*price_middle*/
@@ -564,7 +549,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/price_bkg.jpg);
   margin: auto;
 }
 
-
 .each_pricing_plan{
   width: 300px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
@@ -572,14 +556,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/price_bkg.jpg);
   float: left;
   margin: 0 15px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.1)
-}
-
-.each_pricing_plan, .each_pricing_plan_img{
-  border-radius: 5px 5px 0 0; 
-}
-
-.each_pricing_plan, .each_pricing_plan ul, .price_li_radius{
-  border-radius: 0 0 5px 5px;
 }
 
 .each_pricing_plan_img{
@@ -602,9 +578,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/price_bkg.jpg);
 }
 
 .price_middle li{
-  list-style: none;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin: 0 10px;
 }
 
 .price_common_liststyle{
@@ -615,11 +589,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/price_bkg.jpg);
   line-height: 26px;
 }
 
-.price_common_liststyle span{
-  color: #ff8d07;
-  font-weight: bold;
-}
-
 .pricing_list_price{
   display: inline-block;
   height: 150px;
@@ -628,8 +597,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/price_bkg.jpg);
 .pricing_list_price h3{
   height: 80px;
   font-size: 46px;
-  color: #ff8d07;
-  line-height: 1.5;
   padding-top: 20px;
 }
 
@@ -637,14 +604,8 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/price_bkg.jpg);
   margin-bottom: 20px;
 }
 
-.pricing_list_price span{
-  color: #ff8d07;
-  line-height: 1.5;
-}
-
 .price_yen{
   font-size: 26px;
-  color: #ff8d07;
 }
 
 .price_style{
@@ -653,6 +614,15 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/price_bkg.jpg);
 
 .price_user{
   font-size: 16px;
+}
+
+.price_contact_btn{
+  margin-top: 15px;
+}
+
+.price_contact{
+  background-color: #ff8d07;
+  padding: 10px 15px;
 }
 
 /*price_qa*/
@@ -679,15 +649,11 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   border-bottom: 1px solid #dadada;
 }
 
-
 .each_qa h3{
-  line-height: 1.5;
   font-size: 22px;
-  color: #ff8d07;
 }
 
 .each_qa p{
-  line-height: 1.5;
   font-size: 16px;
   color: #333333;
   margin-top: 15px;
@@ -707,33 +673,29 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   right: 0;
   left: 0;
   margin: 0 auto;
-  text-align: center;
+}
+
+.slack_top_wrapper h2, .slack_top_wrapper h3, .slack_dl_btn{
+  margin-top: 40px;
+}
+
+.slack_top_wrapper h3, .slack_top_wrapper p{
+  color: #ffffff;
 }
 
 .slack_top_wrapper h2{
   font-size: 38px;
-  color: #ff8d07;
-  margin-top: 40px;
 }
 
 .slack_top_wrapper h3{
   font-size: 26px;
-  color: #ffffff;
-  margin-top: 40px;
 }
 
 .slack_top_wrapper p{
-  color: #ffffff;
   margin-top: 15px;
 }
 
-.slack_dl_btn{
-  margin-top: 40px;
-}
 
-.slack_top_link a{
-  color: white;
-}
 
 /*slack_middle*/
 .slack_middle{
@@ -747,7 +709,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   padding-top: 100px;
 }
 
-.slack_middle_left, .slack_middle_right{
+.slack_middle_left, .slack_middle_right, .slack_middle_hashtag, .slack_middle_hashtag_title{
   float: left;
 }
 
@@ -760,21 +722,13 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   color: #333333;
 }
 
-.slack_middle_hashtag, .slack_middle_hashtag_title{
-  float: left;
-}
-
 .slack_middle_hashtag_title{
   height: 35px;
   padding-top: 10px;
   margin-left: 15px;
 }
 
-.slack_text_img{
-  margin-top: 15px;
-}
-
-.slack_middle_right_bottom{
+.slack_text_img, .slack_middle_right_bottom{
   margin-top: 15px;
 }
 
@@ -810,12 +764,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 }
 
 /*contact*/
-.contact_input, .contact_textarea{
-  background-color: white;
-  border: 0;
-  border-radius: 2px;
-}
-
 .contact_top{
   height: 650px;
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/pc_slack_bkg_02.png);
@@ -825,39 +773,41 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-top: 30px;
 }
 
-.contact_float_left{
+.contact_float_left, .contact_required, .contact_float_right{
   float: left;
-  width: 180px;
+}
+
+.contact_float_left, .contact_required{
   font-size: 16px;
   padding-top: 5px;
+}
+
+.contact_float_left{
+  width: 180px;
   margin-left: 50px;
 }
 
 .contact_required{
-  float: left;
   width: 60px;
-  font-size: 16px;
-  padding-top: 5px;
   background-color: #ff8d07;
-  color: white;
   padding: 5px 0;
 }
 
 .contact_float_right{
-  float: left;
   margin-left: 30px;
 }
 
-.contact_input{
+.contact_input, .contact_textarea{
   width: 500px;
-  height: 32px;
   font-size: 15px
 }
 
+.contact_input{
+  height: 32px;
+}
+
 .contact_textarea{
-  width: 500px;
   height: 128px;
-  font-size: 15px
 }
 
 
@@ -865,13 +815,12 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 
 /* SP View*/
 @media only screen and (max-width: 650px) {
-
 /*common_size*/
 .landing_top, .landing_sns, .landing_bonus_budget, .landing_analytics, .landing_workforce, .price_top, .slack_top{
   background-repeat: no-repeat;
 }
 
-.landing_pc{
+.landing_pc, .landing_click, .landing_sns_image, .landing_chart a, .contact_required{
   display: none;
 }
 
@@ -881,10 +830,14 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   color: #333;
 }
 
-.landing_sns_text p, .landing_bonus_budget p, .landing_analytics p{
+.landing_sns_text p, .landing_analytics p{
   line-height: 1.5;
   font-size: 16px;
   color: #333;
+}
+
+.landing_microbonus_text h2, .landing_bonus_budget h4, .landing_bonus_budget p, .landing_prizy_catalog h2, .prizy_catalog_bottom p, .landing_analytics h2, .landing_workforce h2, .landing_workforce p{
+  line-height: 1.4;
 }
 
 /*header & footer*/
@@ -908,23 +861,12 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   padding-top: 85px;
   padding-left: 0;
   padding-right: 0;
-  text-align: center;
   height: 1000px;
 }
 
-.landing_click{
-  display: none;
-}
-
 .sp_landing_ul li{
-  list-style: none;
   font-size: 24px;
   margin-bottom: 80px;
-}
-
-.sp_landing_ul a{
-  color: white;
-  text-decoration: none;
 }
 
 .all_landing_click{
@@ -933,8 +875,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 }
 
 .landing_footer{
-  background-color: #333333;
-  width: 100%;
   height: 140px;
   padding-top: 20px;
 }
@@ -962,7 +902,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 .landing_footer_top_right li{
   float: left;
   text-decoration: none;
-  list-style: none;
   margin-right: 20px;
   margin-left: 10px;
 }
@@ -993,13 +932,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   width: 33%;
   float: left;
   text-align: center;
-  list-style: none;
   padding-bottom: 10px;
-}
-
-.landing_footer_bottom a{
-  text-decoration: none;
-  color: white;
 }
 
 /*landing_top*/
@@ -1017,36 +950,24 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 
 .landing_sns_text{
   padding-top: 24px;
-  text-align: center;
 }
 
 .landing_sns_text p{
   margin-top: 20px;
 }
 
-.landing_sns_image{
-  display: none;
-}
-
 .landing_microbonus h2{
-  line-height: 1.4;
   font-size: 20px;
   color: #333;
 }
 
 .landing_microbonus{
-  text-align: center;
   padding-top: 24px;
   margin-bottom: 30px;
 }
 
-.landing_microbonus_text span{
-  color: white;
-}
-
 .microbonus_span{
   font-size: 12px;
-  color: white;
 }
 
 .landing_microbonus_text img{
@@ -1063,7 +984,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 
 .landing_bonus_budget_left, .landing_bonus_budget_center, .landing_bonus_budget_right{
   height: 100%;
-  text-align: center;
   position: relative;
 }
 
@@ -1081,17 +1001,13 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 }
 
 .landing_bonus_budget h4{
-  text-align: center;
-  line-height: 1.4;
   font-size: 20px;
-  color: #333;
+  color: #fffc00;
   margin-top: 10px;
 }
 
 .landing_bonus_budget p{
   margin: 10px 30px 20px 30px;
-  color: white;
-  line-height: 1.5;
   font-size: 14px;
 }
 
@@ -1103,13 +1019,8 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content3_bkg_repeat.jpg);
 }
 
-.landing_catalog_wrapper{
-  text-align: center;
-}
-
 .landing_prizy_catalog h2{
   padding-top: 24px;
-  line-height: 1.4;
   font-size: 20px;
   color: #333;
 }
@@ -1121,23 +1032,16 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-bottom: 20px;
 }
 
-.landing_prizy_catalog span{
-  color: #ff8d07;
-  font-weight: bold;
-}
-
 .prizy_catalog_middle img{
    width: 95%;
    margin-bottom: 20px;
 }
 
 .prizy_catalog_bottom p{
-  line-height: 1.4;
   font-size: 16px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
 
 .landing_original_wrapper{
   margin-top: 30px;
@@ -1151,7 +1055,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 
 .landing_gift_each_wrapper{
   background-color: #fafafa;
-  text-align: center;
   height: 350px;
   position: relative;
   box-shadow: 0 6px 18px rgba(0,0,0,0.1);
@@ -1184,18 +1087,12 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   background-size: 100% 400px;
   height: 400px;
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/sp.content4_bkg.jpg);
-  text-align: center;
 }
 
 .landing_analytics h2{
-  line-height: 1.4;
   font-size: 20px;
   color: #333;
   padding-top: 24px;
-}
-
-.landing_analytics span{
-  color: #ff8d07;
 }
 
 .landing_analytics p{
@@ -1216,21 +1113,11 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 
 .landing_workforce h2{
   padding-top: 66px;
-  line-height: 1.4;
   font-size: 20px;
-  color: white;
-  text-align: center;
-}
-
-.landing_workforce span{
-  color: #ff8d07;
 }
 
 .landing_workforce p{
-  line-height: 1.4;
   font-size: 16px;
-  color: white;
-  text-align: center;
 }
 
 .landing_workforce_top p{
@@ -1253,29 +1140,19 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-top: -6px;
 }
 
-.landing_chart a{
-  display: none;
-}
-
-.landing_chart_text_top{
+.landing_chart_text_top, .landing_chart_text_bottom{
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
 .landing_chart_text_bottom{
   size: 14px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: white;
-}
-
-.landing_chart_text_bottom span{
-  color: white;
 }
 
 .landing_chart_text p{
   width: 90%;
   margin: 0 auto;
+  color: #fff;
 }
 
 .landing_chart_one, .landing_chart_two, .landing_chart_three, .landing_chart_four{
@@ -1305,40 +1182,29 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   position: relative;
 }
 
-.landing_signup_back{
-  width: 90%;
-  height: 200px;
-  background-color: #333333;
+.landing_signup_back, .landing_signup_line, .landing_signup_line h2{
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
+}
+
+.landing_signup_back{
+  width: 90%;
+  height: 200px;
+  background-color: #333333;
 }
 
 .landing_signup_line{
   width: 100%;
   height: 100px;
   background: -webkit-linear-gradient(left, #ff6c00, #ffcc00);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  text-align: center;
 }
 
 .landing_signup_line h2{
   height: 20px;
-  color: white;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
 }
 
 .landing_signup_line img{
@@ -1372,12 +1238,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   padding-right: 5px;
 }
 
-.price_landing_header_ul{
-  text-align: center;
-}
-
 .price_landing_header_ul ul{
-  list-style: none;
   margin: 0 0;
   padding: 0 0;
   padding-top: 84px;
@@ -1395,11 +1256,8 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 .price_landing_header_ul a{
   display: inline-block;
   margin: 5px;
-  text-decoration: none;
-  color: white;
   font-size: 24px;
 }
-
 
 .price_all_landing_click{
   background: -webkit-linear-gradient(left, #ff6c00, #ffcc00);
@@ -1423,7 +1281,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   right: 0;
   left: 0;
   margin: auto;
-  text-align: center;
 }
 
 .price_top_wrapper img{
@@ -1432,39 +1289,22 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 
 .price_top h2{
   font-size: 24px;
-  color: #ff8d07;
-  line-height: 1.5;
   padding-top: 8px;
 }
 
 .price_top p{
   padding-top: 8px;
   font-size: 18px;
-  color: #fff;
-  line-height: 1.5;
 }
 
 /*price_middle*/
-.price_middle{
-  text-align: center;
-}
-
 .price_middle_wrapper{
   margin-top: 10px;
   margin-bottom: 20px;
-  text-align: center;
 }
 
 .each_pricing_plan{
   padding: 10px;
-}
-
-.each_pricing_plan_img{
-  border-radius: 5px 5px 0 0; 
-}
-
-.each_pricing_plan ul, .price_li_radius{
-  border-radius: 0 0 5px 5px;
 }
 
 .each_pricing_plan_img{
@@ -1486,7 +1326,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 }
 
 .price_middle li{
-  list-style: none;
   margin-right: 10px;
   margin-left: 10px;
 }
@@ -1499,11 +1338,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   line-height: 26px;
 }
 
-.price_common_liststyle span{
-  color: #ff8d07;
-  font-weight: bold;
-}
-
 .pricing_list_price{
   display: inline-block;
 }
@@ -1511,8 +1345,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 .pricing_list_price h3{
   height: 80px;
   font-size: 46px;
-  color: #ff8d07;
-  line-height: 1.5;
   padding-top: 10px;
 }
 
@@ -1520,14 +1352,8 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-bottom: 10px;
 }
 
-.pricing_list_price span{
-  color: #ff8d07;
-  line-height: 1.5;
-}
-
 .price_yen{
   font-size: 26px;
-  color: #ff8d07;
 }
 
 .price_style{
@@ -1538,6 +1364,11 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   font-size: 16px;
 }
 
+.price_contact{
+  padding: 7px 10px;
+  background-color: #ff8d07;
+}
+
 /*price_qa*/
 .price_qa{
   background-image: url(https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
@@ -1545,21 +1376,15 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 }
 
 .each_qa{
-  padding-top: 15px;
-  padding-right: 15px;
-  padding-left: 15px;
-  padding-bottom: 15px;
+  padding: 15px;
   border-bottom: 1px solid #dadada;
 }
 
 .each_qa h3{
-  line-height: 1.5;
   font-size: 22px;
-  color: #ff8d07;
 }
 
 .each_qa p{
-  line-height: 1.5;
   font-size: 16px;
   color: #333333;
   margin-top: 15px;
@@ -1579,12 +1404,10 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   right: 0;
   left: 0;
   margin: auto;
-  text-align: center;
 }
 
 .slack_top_wrapper h2{
   font-size: 40px;
-  color: #ff8d07;
   margin-top: 40px;
 }
 
@@ -1593,7 +1416,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   color: #ffffff;
 }
 
-.slack_top_text_top{
+.slack_top_text_top, .slack_dl_btn{
   margin-top: 40px;
 }
 
@@ -1606,13 +1429,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-top: 15px;
 }
 
-.slack_dl_btn{
-  margin-top: 40px;
-}
-
-.slack_top_link a{
-  color: white;
-}
 
 /*slack_middle*/
 .slack_middle{
@@ -1633,8 +1449,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   width:100%;
 }
 
-
-
 .slack_middle_right_top p, .slack_middle_right_bottom p{
   font-size: 26px;
   color: #333333;
@@ -1654,12 +1468,7 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-top: 50px;
 }
 
-.slack_sp_text_img{
-  width: 100%;
-  margin-top: 15px;
-}
-
-.slack_sp_message_img{
+.slack_sp_text_img, .slack_sp_message_img{
   width: 100%;
   margin-top: 15px;
 }
@@ -1702,12 +1511,6 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
 }
 
 /*contact*/
-.contact_input, .contact_textarea{
-  background-color: white;
-  border: 0;
-  border-radius: 2px;
-}
-
 .contact_top{
   background-size:100% 650;
   height: 650px;
@@ -1727,32 +1530,24 @@ https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/qa_bkg.jpg);
   margin-left: 20px;
 }
 
-.contact_required{
-  display:none;
-}
-
 .contact_float_right{
   text-align: left;
   margin-left: 20px;
 }
 
-.contact_input{
+.contact_input, .contact_textarea{
   width: 90%;
-  height: 32px;
   margin-top: 10px;
   font-size: 15px
+}
+
+.contact_input{
+  height: 32px;
 }
 
 .contact_textarea{
-  width: 90%;
   height: 128px;
-  margin-top: 10px;
-  font-size: 15px
 }
-
-
-
-
 
 }
 /*end of sp view*/

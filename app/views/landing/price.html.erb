@@ -1,7 +1,7 @@
 <%= render "landingheader" %>
 
 <div class="price_top">
-  <div class="price_top_wrapper">
+  <div class="price_top_wrapper ta_center">
     <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/ttl_pc.png"), class: :landing_pc %>
     <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/ttl.png"), class: :landing_sp %>
     <h2>Prizyはシンプルな料金プラン</h2>
@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div class="price_middle">
+<div class="price_middle ta_center">
   <div class="price_middle_wrapper">
     <div class="each_pricing_plan">
       <div class="each_pricing_plan_img">
@@ -20,8 +20,8 @@
           <h3 class="price_style">0<span class="price_yen">円</span></h3>
           <p><span class="price_user">1ヶ月無料お試し期間</span></p>
         </li>
-        <li class="price_common_liststyle">ユーザー上限無し</li>
-        <li class="price_common_liststyle">「ホメ」投稿</li>
+        <li class="price_common_liststyle">ユーザー上限：8名</li>
+        <li class="price_common_liststyle"><span>Prizyカタログ</span></li>
         <li class="price_common_liststyle">オリジナルカタログ<br>カスタマイズ</li>
         <li class="price_common_liststyle price_li_radius">Slack 連携</li>
         <li class="price_common_liststyle price_li_radius">アナリティクス</li>
@@ -34,14 +34,15 @@
       <ul>
         <li class="pricing_list_price">
           <h3 class="price_style">300<span class="price_yen">円</span></h3>
-          <p><span class="price_user">1ユーザー / 月</span></p>
+          <p><span class="price_user">1ユーザー / 月<br>＋ボーナス・デポジット</span></p>
         </li>
-        <li class="price_common_liststyle">ユーザー上限無し</li>
-        <li class="price_common_liststyle">「ホメ」投稿</li>
+        <li class="price_common_liststyle">ユーザー上限：100名</li>
+        <li class="price_common_liststyle"><span>特別ボーナス</li>
         <li class="price_common_liststyle"><span>Prizyカタログ</span></li>
         <li class="price_common_liststyle">オリジナルカタログ<br>カスタマイズ</li>
         <li class="price_common_liststyle price_li_radius">Slack 連携</li>
         <li class="price_common_liststyle price_li_radius">アナリティクス</li>
+        <li class="price_common_liststyle price_li_radius">フルサポート</li>
       </ul>
     </div><!-- each_pricing_plan -->
     <div class="each_pricing_plan">
@@ -50,42 +51,42 @@
       </div>
       <ul>
         <li class="pricing_list_price">
-        <h3 class="price_style">400<span class="price_yen">円</span></h3>
-          <p><span class="price_user">1ユーザー / 月<br>＋特別ボーナス・デポジット</span></p>
+        <h3 class="price_style">ASK<span class="price_yen"></span></h3>
+        <p class="price_contact_btn"><%= link_to "料金を確認する","/contact", class: "price_contact" %></p>
         </li>
         <li class="price_common_liststyle">ユーザー上限無し</li>
-        <li class="price_common_liststyle">「ホメ」投稿</li>
         <li class="price_common_liststyle"><span>特別ボーナス</li>
         <li class="price_common_liststyle"><span>Prizyカタログ</li>
         <li class="price_common_liststyle">オリジナルカタログ<br>カスタマイズ</li>
         <li class="price_common_liststyle price_li_radius">Slack 連携</li>
         <li class="price_common_liststyle price_li_radius">アナリティクス</li>
+        <li class="price_common_liststyle price_li_radius">フルサポート</li>
       </ul>
     </div><!-- each_pricing_plan -->
   </div>
 </div>
 
 <div class="price_qa">
-  <div class="price_qa_wrapper">
-    <div class="each_qa">
-      <h3>Q.“Prizyギフトの費用は本当に無料？”</h3>
-      <p>はい。社員様が取得されたポイントを、弊社であらかじめ用意しているPrizyギフト内の商品へと交換を申請された場合、貴社に追加のコストがかかることはございません。<br>※貴社オリジナルのギフトへの交換にかかるコストは貴社負担になります。</p>
-    </div> <!-- each_qa-->
+  <div class="price_qa_wrapper">  
     <div class="each_qa">
       <h3>Q.“Prizyを導入しても定着するか不安です。”</h3>
-      <p>Prizyは、SlackやLINEなどの社内のコミュニケーションツールと連携することが可能です。既存のワークフローの中に取り入れることができ、定着しやすく設計されています。</p>
+      <p>Prizyは、Slackなどの社内のコミュニケーションツールと連携することが可能です。既存のワークフローの中に取り入れることができ、定着しやすく設計されています。</p>
     </div> <!-- each_qa-->
     <div class="each_qa">
       <h3>Q.“スマートフォンでも利用可能ですか？”</h3>
       <p>もちろん可能です。専用のアプリもありますので、いつでもどこでも、好きなタイミングでご利用いただけます。</p>
     </div> <!-- each_qa-->
     <div class="each_qa">
+      <h3>Q.“ボーナス・デポジットとはなんですか？”</h3>
+      <p>毎月、社員様が他の社員様に贈ることのできるポイントの予算のことです。毎月の予算をいくらにするのかは、貴社独自で設定が可能です。使い切らなかったボーナス・デポジットは翌月に繰り越し可能です。</p>
+    </div> <!-- each_qa-->
+    <div class="each_qa">
       <h3>Q.“特別ボーナスとは何ですか？”</h3>
       <p>特別ボーナスとは、貴社があらかじめ設定したタスク・ミッションをクリアした社員に贈られる特別ポイントのことです。例えば、初受注で1000ポイント、勤務継続1年につき1000ポイント、デスクがきれいな人500ポイントなど、各社自由にご設定いただくことができます。</p>
     </div> <!-- each_qa-->
     <div class="each_qa">
-      <h3>Q.“特別ボーナス・デポジットとは何ですか？”</h3>
-      <p>特別ボーナス・デポジットとは、各社さまが特別ボーナスとして毎月社員さまに贈ることの出来るポイントの合計数です。特別ボーナス・デポジットは、ご契約時に決めていただきます。その際、1ポイント1円にて費用をご負担いただきます。</p>
+      <h3>Q.“支払い金額の計算方法は？”</h3>
+      <p>社員数が50名の企業さまの例でご説明します。1ユーザー様あたり300円が利用料としてかかります。また、各社員様のボーナスデポジットが500円と設定いただいた場合、利用料と合計で、1社員様あたり800円になります。50名様の場合ですと、月間40,000円となります。</p>
     </div> <!-- each_qa-->
   </div> <!-- price_qa_wrapper-->
 </div>
