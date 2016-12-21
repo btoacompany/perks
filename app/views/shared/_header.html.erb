@@ -52,7 +52,7 @@
   </div>
   <div class="sp_menu">
     <div class="sp_dropdown dropdown">
-      <input type="image" class="sp_dropbtn dropbtn" src="<%= @s3_url + '/common/gnav.png' %>"/>
+      <input type="image" class="sp_dropbtn dropbtn" src="<%= "#{@s3_url}/common/gnav.png" %>"/>
       <div class="sp_dropdown_content dropdown-content">
         <% if @current_user.present? %>
           <% if @current_user.admin == 1 %>
