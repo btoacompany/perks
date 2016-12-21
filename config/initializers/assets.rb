@@ -11,4 +11,4 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.precompile += %w( default2.css jquery.easytabs.js introjs.css
 intro.js canvasjs.min.js jquery.canvas.min.js pnotify.custom.min.css pnotify.custom.min.js
-jquery.leanModal.min.js)
+jquery.leanModal.min.js jaquery.balloon.min.js)
