@@ -1,6 +1,12 @@
-<div id="wrapper">
+<div id="rewards_wrapper">
 <div id="contents">
   <div class="row">
+    <div class="rewards_top">
+      <%unless @bonus.present? %>
+        <p class="font12" style="padding-top: 20px;">ボーナスはまだ設定されていません。人事の方にお願いしてみてください！</p>
+      <% end %>
+    </div>
+
     <div id="item_list">
       <% @bonus.each_with_index do | item, i | %>
 	<div class="item" >
