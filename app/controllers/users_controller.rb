@@ -312,6 +312,11 @@ class UsersController < ApplicationController
   end
 
   def give_points
+    parse_points(params)
+    redirect_page("users", "index")
+  end
+
+  def parse_points(params)
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user = User.find(@id)
 
@@ -339,9 +344,11 @@ class UsersController < ApplicationController
       	  prizy_url: @prizy_url + "/user"
       	}).deliver_later
 
-      	post = Post.new
-      	post.save_record(params)
-      	params[:post_id] = post.id
+	unless params[:type] == "comment"
+	  post = Post.new
+	  post.save_record(params)
+	  params[:post_id] = post.id
+	end
 
       	hashtags.each do | tag |
       	  params[:hashtag] = tag 
@@ -352,10 +359,9 @@ class UsersController < ApplicationController
         ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
 
       else
-	      flash[:notice] = "ポイントが足りません"
+	flash[:notice] = "ポイントが足りません"
       end
     end
-    redirect_page("users", "index")
   end
 
   def give_comments 
@@ -366,10 +372,18 @@ class UsersController < ApplicationController
     res.save_record(params)
 
     user = User.find(@id)
-    receiver_id = Post.find(res.post_id).receiver_id
 
-    ios_push_notif(receiver_id, "#{user.firstname}さんがコメントしました。")
-  
+    params[:receiver_id] = Post.find(res.post_id).receiver_id
+    params[:description] = params["comments"]
+    params[:points] = params["comments"].scan(/\+[^\s|　]+/).first
+    params[:type] = "comment"
+
+    if params[:points].present?
+      parse_points(params)
+    end
+
+    ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。")
+
     redirect_page("users", "index")
   end
 
@@ -561,6 +575,7 @@ class UsersController < ApplicationController
 
     if params["type"] == "prizy"
       data[:reward_prizy_id] = params["reward_id"]
+      data[:status] = 1
     else
       data[:reward_id] = params["reward_id"]
     end
@@ -568,13 +583,24 @@ class UsersController < ApplicationController
     res = RequestReward.new
     res.save_record(data)
 
+    user = User.find(@id)
+
     if params["type"] == "prizy"
       points = res.rewards_prizy.points
+
+      reward_data = {
+	:reward	  => res.rewards_prizy.title,
+	:points	  => res.rewards_prizy.points,
+	:username => user.name,
+	:email	  => user.email,
+	:company  => user.company.name
+      }
+
+      UserMailer.redeem_prizy_reward(reward_data).deliver_later
     else
       points = res.reward.points
     end
 
-    user = User.find(@id)
     user.in_points -= points 
     user.save
 
