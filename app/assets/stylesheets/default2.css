@@ -1718,6 +1718,7 @@ table.admin_table td textarea{
   #rewards_wrapper{
     width: 100%;
     padding: 10px 20px;
+    min-height: 350px;
   }
 
   .rewards_top{
@@ -1894,6 +1895,11 @@ table.admin_table td textarea{
   }
 
   /*rewards and bonus*/
+  #rewards_wrapper{
+    padding: 10px 20px;
+    min-height: 490px;
+  }
+
   #item_list{
     float: left;
     width: 100%;

@@ -259,7 +259,7 @@
 		  </div>
 		  <div class="user_comments">
 		    <span class="user" style="font-weight:normal;">@<%= "#{comment.user.lastname} #{comment.user.firstname}" %></span>
-		    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
+		    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+|\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
 		    <% if comment.user_id == @user.id || post[:receiver_id].to_i == @user.id %>
 		      <div class="r_float">
 			<div class="editnav dropdown">
@@ -284,17 +284,17 @@
       <div class="pagination" style="float:right">
         <% if @total_pages > 8 %>
           <% unless @page_now == 1 %>
-            <a href="<%= "#{@prizy_url}/?page=1" %>">最初</a>
-            <a href="<%= "#{@prizy_url}/?page=#{@previous_page}" %>">前へ</a>
+            <a href="<%= "#{@prizy_url}/user?page=1" %>">最初</a>
+            <a href="<%= "#{@prizy_url}/user?page=#{@previous_page}" %>">前へ</a>
           <% end %>
-          <a href="<%= "#{@prizy_url}/?page=#{@page_now}" %>"><%= @page_now %></a>
+          <a href="<%= "#{@prizy_url}/user?page=#{@page_now}" %>"><%= @page_now %></a>
           <% unless @page_now == @total_pages %>
-            <a href="<%= "#{@prizy_url}/?page=#{@next_page}" %>">次へ</a>
-            <a href="<%= "#{@prizy_url}/?page=#{@total_pages}" %>">最後</a>
+            <a href="<%= "#{@prizy_url}/user?page=#{@next_page}" %>">次へ</a>
+            <a href="<%= "#{@prizy_url}/user?page=#{@total_pages}" %>">最後</a>
           <% end %>
         <% else %>
           <% (1..@total_pages).each do | i | %>
-            <a href="<%= "#{@prizy_url}/?page=#{i}" %>"><%= i %></a>
+            <a href="<%= "#{@prizy_url}/user?page=#{i}" %>"><%= i %></a>
           <% end %>
         <% end %>
       </div><br>
