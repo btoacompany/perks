@@ -1,19 +1,31 @@
-<div id="wrapper">
-<div id="container" class="request">
-  <div class="toolbox">
-    <h2>交換申請の承認</h2><br>
-    <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
-    <div id="tab-container" class="tab-container">
-      <ul id="tab-menu" class="etabs">
+<div id="admin_wrapper">
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <li><%= link_to "会社情報", "/company/details" %></li>
+    <li><%= link_to "社員情報","/company/employees" %></li>
+    <li><%= link_to "ギフト","/company/rewards" %></li>
+    <li class="admin_li_checked"><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+    <li><%= link_to "Slack連携", "/integration/slack"%></li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
+
+<div id="admin_contents" class="c_align request">
+  <h3>交換申請の承認</h3><br>
+  <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
+  <div id="tab-container" class="tab-container">
+    <ul id="tab-menu" class="etabs">
 	<li class="tab"><a href="#pending">申請中</a></li>
 	<li class="tab"><a href="#accepted">承認</a></li>
 	<li class="tab"><a href="#rejected">非承認</a></li>
-      </ul><br>
-      <div id="pending" class="tab-content">
+    </ul><br>
+    <div id="pending" class="tab-content">
 	<% if @rewards.count == 0 %>
 	  <p><i>申請中のものはありません</i></p>
 	<% else %>
-	<table class="tbl_tools" border="1" style="margin:0">
+  <div class="toolbox center">
+	<table class="admin_table">
 	  <tr>
 	    <th>日時</th>
 	    <th>プレゼント</th>
@@ -39,6 +51,7 @@
 	  </tr>
 	  <% end %>
 	</table><br>
+  </div><!--toolbox -->
 	<% end %>
       </div><!-- pending -->
 
@@ -46,7 +59,8 @@
 	<% if @rewards_accepted.count == 0 %>
 	  <p><i>表示するものがありません</i></p>
 	<% else %>
-	<table class="tbl_tools" border="1" style="margin:0">
+  <div class="toolbox center">
+	<table class="admin_table">
 	  <tr>
 	    <th>日時</th>
 	    <th>プレゼント</th>
@@ -67,6 +81,7 @@
 	  </tr>
 	  <% end %>
 	</table><br>
+  </div><!--toolbox -->
 	<% end %>
       </div><!-- accepted -->
 
@@ -74,7 +89,8 @@
 	<% if @rewards_rejected.count == 0 %>
 	  <p><i>表示するものがありません</i></p>
 	<% else %>
-	<table class="tbl_tools" border="1" style="margin:0">
+  <div class="toolbox center">
+	<table class="admin_table">
 	  <tr>
 	    <th>日時</th>
 	    <th>プレゼント</th>
@@ -95,12 +111,13 @@
 	  </tr>
 	  <% end %>
 	</table><br>
+  </div><!--toolbox -->
 	<% end %>
       </div><!-- rejected -->
     </div><!-- tabs_container -->
     <br>
-    <p><input type="button" class="btn btn_back" style="width:200px;height:50px" value="戻る" /></p>
-  </div> <!-- toolbox -->
+    <p><input type="button" class="btn btn_back btn_bottom" style="width:80px;height:30px" value="戻る" /></p>
+</div> <!-- admin_contents -->
 </div> <!-- container -->
 </div> <!-- wrapper -->
 
@@ -137,6 +154,7 @@ function setRequestAction( id, stats, msg ) {
 }
 
 $(".btn_back").click(function() {
-  window.location = "/company";
+  window.location = "/company/details";
 });
+$('.setting_color').css('color','gray');
 </script>

@@ -3,7 +3,7 @@
   <div class="contents">
     <div class="menu_panel">
       <ul class="main_menu_analytics">
-        <li class="logo"><a href="<% if request.path.include?("analytics") %>/company<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
+        <li class="logo"><a href="<% if request.path.include?("analytics") %>/company/details<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
       </ul>
     </div>
 
@@ -12,7 +12,7 @@
     <p align="center">
     <% if @current_user.present? %>
       <% if @current_user.admin == 1 %>
-        <a href="/company">管理画面</a>
+        <a href="/company/details">管理画面</a>
       <% end %>
     <% end %>
     <a href="/user">タイムライン</a>
@@ -26,12 +26,12 @@
 </div>
 </div> <!-- header -->
 
-<% else %>
-<div id="header">
+<% elsif request.path.include?("company") %>
+<div id="admin_header">
   <div class="contents">
     <div class="menu_panel">
       <ul class="main_menu">
-        <li class="logo"><a href="<% if request.path.include?("company") %>/company<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
+        <li class="logo"><a href="<% if request.path.include?("company") %>/company/details<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
       </ul>
     </div>
 
@@ -40,7 +40,53 @@
     <p align="center">
     <% if @current_user.present? %>
       <% if @current_user.admin == 1 %>
-        <a href="/company">管理画面</a>
+        <a href="/">Timeline</a>
+        <a href="/company/details" class="setting_color">Settings</a>
+        <a href="/analytics">Analytics</a>
+        <a href="/logout">Logout</a>
+      <% end %>
+    <% end %>
+    </p>
+  </div>
+  <div class="sp_menu">
+    <div class="sp_dropdown dropdown">
+      <input type="image" class="sp_dropbtn dropbtn" src="<%= "#{@s3_url}/common/gnav.png" %>"/>
+      <div class="sp_dropdown_content dropdown-content">
+        <% if @current_user.present? %>
+          <% if @current_user.admin == 1 %>
+            <a href="/company/details">会社情報</a>
+            <a href="/company/employees">社員情報</a>
+            <a href="/company/rewards">ギフト</a>
+            <a href="/company/rewards/request">ギフト申請一覧</a>
+            <a href="/company/bonus">特別ボーナス</a>
+            <a href="/integrations/slack">Slack連携</a>
+            <a href="/logout">Logout</a>
+           <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div> <!-- contents -->
+</div> <!-- header -->
+
+
+
+<% else %>
+<div id="header">
+  <div class="contents">
+    <div class="menu_panel">
+      <ul class="main_menu">
+        <li class="logo"><a href="<% if request.path.include?("company") %>/company/details<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
+      </ul>
+    </div>
+
+<% if session[:id] || cookies[:id] %>
+  <div class="menu">
+    <p align="center">
+    <% if @current_user.present? %>
+      <% if @current_user.admin == 1 %>
+        <a href="/company/details">管理画面</a>
       <% end %>
     <% end %>
     <a href="/user">タイムライン</a>
@@ -56,7 +102,7 @@
       <div class="sp_dropdown_content dropdown-content">
         <% if @current_user.present? %>
           <% if @current_user.admin == 1 %>
-		        <a href="/company">管理画面</a>
+		        <a href="/company/details">管理画面</a>
 	         <% end %>
         <% end %>
         <a href="/user">タイムライン</a>

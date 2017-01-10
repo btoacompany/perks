@@ -1,40 +1,50 @@
-<div id="wrapper">
-<div id="contents">
+<div id="admin_wrapper">
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <li class="admin_li_checked"><%= link_to "会社情報", "/company/details" %></li>
+    <li><%= link_to "社員情報","/company/employees" %></li>
+    <li><%= link_to "ギフト","/company/rewards" %></li>
+    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+    <li><%= link_to "Slack連携", "/integration/slack"%></li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
+
+<div id="admin_contents">
   <h3 class="c_align">企業情報編集</h3><br>
   <%= form_tag( "/company/edit/complete", method: "post", id: "login_form" ) do %>
   <div class="toolbox center">
-    <table class="center tbl_tools">
+    <table class="admin_table">
       <tr>
-	<td>会社名: </td>
-	<td><input type="text" name="name" value="<%= @company[:name] %>" size="30" required /></td>
+	       <th scope="row">会社名</th>
+	       <td><input type="text" name="name" value="<%= @company[:name] %>" required /></td>
       </tr>
       <tr>
-	<td>会社URL: </td>
-	<td><input type="text" name="url" value="<%= @company[:url] %>" size="30" /></td>
+        <th scope="row">URL</th>
+        <td><input type="text" name="url" value="<%= @company[:url] %>" /></td>
       </tr>
       <tr>
-	<td>担当者名: </td>
-	<td><input type="text" name="owner" value="<%= @company[:owner] %>" required /></td>
+        <th scope="row">担当者名</th> 
+        <td><input type="text" name="owner" value="<%= @company[:owner] %>" required /></td>
       </tr>
       <tr>
-	<td>メールアドレス: </td>
-	<td><input type="email" name="email" value="<%= @company[:email] %>" required /></td>
+        <th scope="row">メールアドレス</th>
+	     <td><input type="email" name="email" value="<%= @company[:email] %>" required /></td>
       </tr>
       <tr>
-	<td>電話番号: </td>
-	<td><input type="text" name="phone" value="<%= @company[:phone] %>"  size="10"/></td>
+        <th scope="row">電話番号</th>
+        <td><input type="text" name="phone" value="<%= @company[:phone] %>" /></td>
       </tr>
       <tr>
-	<td>会社住所: </td>
-	<td><input type="text" name="address" value="<%= @company[:address] %>" size="30" required /></td>
+        <th scope="row">会社住所</th>
+        <td><input type="text" name="address" value="<%= @company[:address] %>" required /></td>
       </tr>
       <tr>
-	<td valign="top">ハッシュタグ: </td>
-	<td>
-	  <textarea name="hashtags" value="" rows="3" cols="25" placeholder="leadership, hardwork, creativity..."><%= @company.hashtags %></textarea><br>
-	  <span
-	  class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
-	</td>
+        <th scope="row">コアバリュー</th> 
+        <td>
+          <textarea name="hashtags" value="" placeholder="leadership, hardwork, creativity..."><%= @company.hashtags %></textarea><br><span class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
+        </td>
       </tr>
     </table><br>
     <p align="center">
@@ -47,34 +57,8 @@
 </div> <!-- wrapper -->
 
 <script type="text/javascript">
-var passwd1 = document.getElementById("passwd1");
-var passwd2 = document.getElementById("passwd2");
-
-function invitationLink() {
-  var code = $.now();
-}
-
-function validatePassword(){
-  if(passwd1.value != passwd2.value) {
-    $(".notice").text("パスワードに誤りがあります");
-  } else {
-    $(".notice").text("");
-  }
-}
-passwd1.onchange = validatePassword;
-passwd2.onkeyup = validatePassword;
-
-$(document).ready(function() {
-  $(".password").hide();
-});
-
-$(".btn_change_password").click(function() {
-  $(".password input").val("");
-  $(".notice").text("");
-  $(".password").toggle();
-});
-
 $(".btn_back").click(function() {
   window.location = "/company/details";
 });
+$('.setting_color').css('color','gray');
 </script>

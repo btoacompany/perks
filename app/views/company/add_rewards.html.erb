@@ -1,31 +1,42 @@
-<div id="wrapper">
-<div id="contents">
+<div id="admin_wrapper">
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <li><%= link_to "会社情報", "/company/details" %></li>
+    <li><%= link_to "社員情報","/company/employees" %></li>
+    <li class="admin_li_checked"><%= link_to "ギフト","/company/rewards" %></li>
+    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+    <li><%= link_to "Slack連携", "/integration/slack"%></li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
+
+<div id="admin_contents" class="c_align">
   <h3 align="center">ギフト追加</h3><br>
   <%= form_tag( "/company/rewards/add/complete", method: "post", id: "new_form" ) do %>
-  <div class="toolbox">
-    <table class="tbl_tools">
-      <tr>
-	<td>タイトル: </td>
-	<td><input type="text" name="title" value="" size="32" maxlength="25" required/></td>
-      </tr>
-      <tr>
-	<td>詳細: </td>
-	<td><textarea name="description" rows="5" cols="25" maxlength="100" placeholder="100文字以内"></textarea></td>
-      </tr>
-      <tr>
-	<td>ポイント: </td>
-	<td><input type="number" name="points" value="" min="0" required/></td>
-      </tr>
-      <tr>
-	<td colspan="2" align="right">
-	  <br>
-	  <input type="button" value="戻る" class="btn_back btn" />
-	  <input type="submit" value="送信" class="btn_submit btn" />
-	</td>
-      </tr>
+  <div class="toolbox center">
+  <table class="admin_table">
+    <tr>
+      <th>タイトル</th>
+      <td><input type="text" name="title" value="" size="32" maxlength="25" required/></td>
+    </tr>
+    <tr>
+      <th>詳細</th>
+      <td><textarea name="description" rows="5" cols="25" maxlength="100" placeholder="100文字以内"></textarea></td>
+    </tr>
+    <tr>
+      <th>ポイント</th>
+      <td><input type="number" name="points" value="" min="0" required/></td>
+    </tr>
     </table>
   </div><br><br>
+  
+  <p align="center">
+    <input type="button" value="戻る" class="btn_back btn btn_bottom" style="width:80px;height:30px"/>
+    <input type="submit" value="送信" class="btn_submit btn btn_bottom" style="width:80px;height:30px;"/>
+  </p>
   <% end %>
+</div>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
 
@@ -33,4 +44,5 @@
 $(".btn_back").click(function() {
   window.location = "/company/rewards";
 });
+$('.setting_color').css('color','gray');
 </script>

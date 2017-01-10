@@ -75,13 +75,14 @@ $('.btn_buy').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
   var _type = ($(this).attr('data-type')); //get attributes of clicked item
 
-  if (confirm("このアイテムを買いますか?")) {
+  if (confirm("本当に交換しますか？")) {
     $.ajax({
       type: "POST",
       url: "/rewards/request",
       data: { 'reward_id': _id, 'type': _type },
       success: function(data){
-	alert("ギフト交換できました");
+	alert("ギフト交換の申請をしました。メールをお待ちください。");
+
 	window.location.reload(); 
       }
     });

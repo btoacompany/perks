@@ -1,36 +1,46 @@
-<div id="wrapper">
-<div id="container">
-  <div class="toolbox">
-    <div class="c_align">
-      <h2>ボーナスチャレンジの登録・編集</h2><br>
-      <a href="/company/bonus/add" class="a_btncmn radius5" style="font-size:14pt">+ 新規追加</a>
-    </div><br>
+<div id="admin_wrapper">
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <li><%= link_to "会社情報", "/company/details" %></li>
+    <li><%= link_to "社員情報","/company/employees" %></li>
+    <li><%= link_to "ギフト","/company/rewards" %></li>
+    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+    <li class="admin_li_checked"><%= link_to "特別ボーナス","/company/bonus" %></li>
+    <li><%= link_to "Slack連携", "/integration/slack"%></li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
 
-    <% if @bonus.count == 0 %>
-      <p align="center"><i>ボーナスチャレンジが追加されていません</i></p><br>
-    <% else %>
-      <table class="tbl_tools center" border="1">
-	<tr>
-	  <th>タイトル</th>
-	  <th>詳細</th>
-	  <th>ポイント</th>
-	  <th class="c_align">編集・削除</th>
-	</tr>
-	<% @bonus.each do | item | %>
-	<tr class="item_<%= item[:id] %>">
-	  <td style="width:250px;"><%= item[:title] %></td>
-	  <td style="width:300px;"><%= item[:description] %></td>
-	  <td><%= number_with_delimiter(item[:points], :delimiter => ',') %></td>
-	  <td class="c_align">
-	    <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="編集" /> 
-	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
-	  </td>
-	</tr>
-	<% end %>
-      </table><br>
-    <% end %>
-    <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="戻る" /></p>
-  </div> <!-- toolbox -->
+<div id="admin_contents" class="c_align">
+  <h3 class="c_align">特別ボーナスの登録・編集</h3><br>
+  <a href="/company/bonus/add" class="a_btncmn radius5 add_bottom" style="font-size:12pt">+ 新規追加</a>
+
+  <% if @bonus.count == 0 %>
+    <p align="center"><i>ボーナスチャレンジが追加されていません</i></p><br>
+  <% else %>
+    <div class="toolbox center">
+    <table class="admin_table">
+      <tr>
+        <th>タイトル</th>
+        <th>詳細</th>
+        <th>ポイント</th>
+        <th class="c_align">編集・削除</th>
+      </tr>
+    <% @bonus.each do | item | %>
+	    <tr class="item_<%= item[:id] %>">
+        <td style="width:250px;"><%= item[:title] %></td>
+        <td style="width:300px;"><%= item[:description] %></td>
+        <td><%= number_with_delimiter(item[:points], :delimiter => ',') %></td>
+        <td class="c_align"><input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="編集" /> <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" /></td>
+      </tr>
+	  <% end %>
+    </table><br>
+    </div>
+  <% end %>
+  <p align="center">
+    <input type="button" value="戻る" class="btn_back btn btn_bottom" style="width:80px;height:30px" />
+  </p>
+</div> <!-- admin_contents -->
 </div> <!-- container -->
 </div> <!-- wrapper -->
 
@@ -39,7 +49,7 @@
 $('.delete_item').click(function() {
   var item_id = ($(this).attr('data-id')); //get attributes of clicked item
 
-  if (confirm("本当に削除しましか？")) {
+  if (confirm("本当に削除しますか？")) {
     $.post("/company/bonus/delete", { 'id': item_id }); //send post request
     $(".item_" + item_id).remove(); //remove item upon deletion
   }
@@ -52,6 +62,7 @@ $('.edit_item').click(function() {
 });
 
 $(".btn_back").click(function() {
-  window.location = "/company";
+  window.location = "/company/details";
 });
+$('.setting_color').css('color','gray');
 </script>

@@ -71,6 +71,14 @@
   <%= render "shared/header"%>
   <%= yield %>
   <%= render "shared/footer"%>
+<% elsif controller.controller_name == "company"%>
+  <% unless controller.controller_name == "company" && controller.action_name == "create" %>
+    <%= render "shared/header"%>
+    <%= yield %>
+    <%= render "shared/footer"%>
+  <% else %>
+    <%= yield %>
+  <% end %>
 <% else %>
   <!-- definition of @judgement -->
   <% if controller.controller_name == "users" && controller.action_name == "login" %>
@@ -79,11 +87,11 @@
     <% @judgment = "true" %>
   <% elsif controller.controller_name == "users" && controller.action_name == "forgot_password" %>
     <% @judgment = "true" %>
+  <% elsif controller.controller_name == "users" && controller.action_name == "forgot_password_submit" %>
+    <% @judgment = "true" %>
   <% elsif controller.controller_name == "users" && controller.action_name == "update" %>
     <% @judgment = "true" %>
   <% elsif controller.controller_name == "users" && controller.action_name == "invite" %>
-    <% @judgment = "true" %>
-  <% elsif controller.controller_name == "company" && controller.action_name == "create" %>
     <% @judgment = "true" %>
   <% else %>
     <% @judgment = "false" %>

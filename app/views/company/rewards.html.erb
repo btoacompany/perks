@@ -1,17 +1,27 @@
-<div id="wrapper">
-<div id="container">
-  <div class="toolbox">
-    <div class="c_align">
-      <h2>プレゼントの登録・編集</h2><br>
-      <a href="/company/rewards/add" class="a_btncmn radius5" style="font-size:14pt">+ 新規追加</a>
-    </div><br>
+<div id="admin_wrapper">
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <li><%= link_to "会社情報", "/company/details" %></li>
+    <li><%= link_to "社員情報","/company/employees" %></li>
+    <li class="admin_li_checked"><%= link_to "ギフト","/company/rewards" %></li>
+    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+    <li><%= link_to "Slack連携", "/integration/slack"%></li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
 
-    <% if @rewards.count == 0 %>
-      <p align="center"><i>ギフトが追加されていません</i></p><br>
-    <% else %>
-      <table class="tbl_tools center" border="1">
-	<tr>
-	  <th>タイトル</th>
+<div id="admin_contents" class="c_align">
+  <h3>ギフトの登録・編集</h3><br>
+  <a href="/company/rewards/add" class="a_btncmn radius5 add_bottom" style="font-size:12pt">+ 新規追加</a>
+
+  <% if @rewards.count == 0 %>
+    <p align="center"><i>ギフトが追加されていません</i></p><br>
+  <% else %>
+  <div class="toolbox center">
+  <table class="admin_table">
+  <tr>
+    <th>タイトル</th>
 	  <th>詳細</th>
 	  <th>ポイント</th>
 	  <th class="c_align">編集・削除</th>
@@ -27,10 +37,11 @@
 	  </td>
 	</tr>
 	<% end %>
-      </table><br>
-    <% end %>
-    <p align="center"><input type="button" class="btn btn_back" style="width:200px;height:50px" value="戻る" /></p>
-  </div> <!-- toolbox -->
+    </table><br>
+    </div>
+  <% end %>
+  <p align="center"><input type="button" class="btn btn_back btn_bottom" style="width:80px;height:30px" value="戻る" /></p>
+</div>
 </div> <!-- container -->
 </div> <!-- wrapper -->
 
@@ -52,6 +63,7 @@ $('.edit_item').click(function() {
 });
 
 $(".btn_back").click(function() {
-  window.location = "/company";
+  window.location = "/company/details";
 });
+$('.setting_color').css('color','gray');
 </script>

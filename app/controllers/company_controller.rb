@@ -21,7 +21,7 @@ class CompanyController < ApplicationController
   def login
     flash[:notice] = "" 
     if session[:id] || cookies[:id]
-      redirect_to "/company"
+      redirect_to "/company/details"
     else
       redirect_to "/"
     end
@@ -279,6 +279,6 @@ class CompanyController < ApplicationController
   end
 
   def redirect_to_index
-    redirect_to "/company" 
+    redirect_to "/company/details" 
   end
 end
