@@ -30,9 +30,6 @@ class UsersController < ApplicationController
       http = Net::HTTP.post_form(uri, data)
       userinfo = JSON.parse(http.body)
       
-      logger.debug "----"
-      logger.debug userinfo.inspect
-
       slack = SlackToken.where(:team_id => userinfo["team_id"]).first
       
       if slack.blank?
@@ -342,47 +339,56 @@ class UsersController < ApplicationController
   def parse_points(params)
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user = User.find(@id)
+    error = 0
 
     points = params[:description].scan(/\+[^\s|　]+/).first.to_i
     params[:user_id] = @id
     params[:company_id] = @company_id
     params[:points] = points
-    
+
     if (params[:receiver_id].present?)
-      if (points <= @user[:out_points])
-      	@user.out_points -= points 
-      	@user.save
+      if params[:receiver_id].to_i == @id.to_i
+	flash[:notice] = "自分にポイントあげることができません。"
+	error = 1
+      end
+  
+      if error == 0
+	if (points <= @user[:out_points])
+	  @user.out_points -= points 
+	  @user.save
 
-      	hashtags = params[:description].scan(/\#[^\s|　]+/)
-      	receiver = User.find(params[:receiver_id])
+	  hashtags = params[:description].scan(/\#[^\s|　]+/)
+	  receiver = User.find(params[:receiver_id])
 
-	receiver.in_points += params[:points]
-      	receiver.save
+	  receiver.in_points += params[:points]
+	  receiver.save
 
-      	UserMailer.receive_points_email({
-      	  receiver: receiver.name, 
-      	  email: receiver.email,
-      	  giver: @user.name,
-      	  points: params[:points],
-      	  prizy_url: @prizy_url + "/user"
-      	}).deliver_later
+	  unless params[:type] == "comment"
+	    post = Post.new
+	    post.save_record(params)
+	    params[:post_id] = post.id
 
-	unless params[:type] == "comment"
-	  post = Post.new
-	  post.save_record(params)
-	  params[:post_id] = post.id
+	    UserMailer.receive_points_email({
+	      receiver: receiver.name, 
+	      email: receiver.email,
+	      giver: @user.name,
+	      points: params[:points],
+	      prizy_url: @prizy_url + "/user"
+	    }).deliver_later
+
+	  end
+
+	  hashtags.each do | tag |
+	    params[:hashtag] = tag 
+	    hashtag = Hashtag.new
+	    hashtag.save_record(params)
+	  end
+
+	  ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
+
+	else
+	  flash[:notice] = "ポイントが足りません"
 	end
-
-      	hashtags.each do | tag |
-      	  params[:hashtag] = tag 
-      	  hashtag = Hashtag.new
-      	  hashtag.save_record(params)
-      	end
-
-        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
-
-      else
-	flash[:notice] = "ポイントが足りません"
       end
     end
   end
