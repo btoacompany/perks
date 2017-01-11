@@ -455,7 +455,7 @@ class UsersController < ApplicationController
       )
     end
   end
-
+  
   def profile
     @user = User.find(@id)
     posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
