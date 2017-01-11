@@ -31,6 +31,26 @@
       <p><a href="/rewards" class="btn_reward">ポイントを交換する</a></p>
     </div><br>
 
+    <!-- test -->
+    <div class="title"> 人気のギフト一覧 </div>
+    <div class="profilebox">
+      <% @popular_rewards.first(5).each do | item | %>
+      <% if item.img_src.present? %>
+      <div class="ranking">
+    <div class="left">
+      <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+    </div>
+    <div class="right">
+      <%= item[:title] %>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+      <% end %>
+      <% end %>
+    </div><br>
+    <!-- end of test -->
+
+
     <div class="title"> 褒められMVP </div>
     <div class="profilebox">
       <% @top_receivers.each do | item | %>

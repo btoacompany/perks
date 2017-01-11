@@ -200,6 +200,29 @@ class UsersController < ApplicationController
     @default_birthday = "2016-01-01"
     @num_rewards = Reward.where(company_id: @company_id, delete_flag: 0).count
     @num_bonus = Bonus.where(company_id: @company_id, delete_flag: 0).count
+
+    @popular_rewards = []
+    if @user.company.plan > 0
+      rewards_list = RequestReward.where(company_id: @company_id, delete_flag: 0).group(:rewards_prizy_id).order("count_id desc").count("id")
+      if rewards_list.present?
+        rewards_list.each do |key, value|
+          if key.present?
+          @popular_rewards << RewardsPrizy.find(key)
+          end
+        end
+        if @rewards_list.nil?
+          @popular_rewards = RewardsPrizy.all
+        end
+      else
+        @popular_rewards = RewardsPrizy.all
+      end
+
+    else
+      rewards_list = RequestReward.where(company_id: @company_id, delete_flag: 0).group(:reward_id).order("count_id desc").count("id")
+      rewards_list.each do |key, value|
+        @popular_rewards << Reward.find(key)
+      end
+    end
   end
 
   def give_points_slack
