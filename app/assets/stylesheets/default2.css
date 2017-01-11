@@ -1088,6 +1088,38 @@ hr.style-two {
   color: #a7a7a7;
 }
 
+.each_gift_ranking{
+  width: 48%;
+  -webkit-border-radius: 3px; 
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+.f_left{
+  float: left;
+}
+
+.f_right{
+  float: right;
+}
+
+.each_gift_ranking img{
+  width: 100%;
+  height: 100px;
+  margin-top: 10px;
+}
+
+.gift_ranking_title{
+  height: 50px;
+  padding: 5px;
+  text-align: center;
+}
+
+.gift_ranking_title p{
+  font-size: 12px;
+}
+
 .btn_fb {
   background-color: #3b5998;
   color: white;

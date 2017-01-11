@@ -31,25 +31,32 @@
       <p><a href="/rewards" class="btn_reward">ポイントを交換する</a></p>
     </div><br>
 
-    <!-- test -->
-    <div class="title"> 人気のギフト一覧 </div>
-    <div class="profilebox">
-      <% @popular_rewards.first(5).each do | item | %>
-      <% if item.img_src.present? %>
-      <div class="ranking">
-    <div class="left">
-      <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
-    </div>
-    <div class="right">
-      <%= item[:title] %>
-    </div>
-    <div class="clearfix"></div>
-  </div>
-      <% end %>
-      <% end %>
+    <% unless @popular_rewards.blank? %>
+    <div class="title"> 人気のギフト </div>
+    <div class="gift_ranking">
+    <% @num = 0 %>
+    <% @popular_rewards.first(4).each do | item | %>
+    <% if item.img_src.present? %>
+    <%= link_to "/rewards" do %>
+    <% if @num.even? %>
+      <div class="each_gift_ranking f_left">
+    <% else %>
+      <div class="each_gift_ranking f_right">
+    <% end %>
+        <div class="gift_ranking_img">
+          <img src="<%= item[:img_src] %>" />
+        </div>
+        <div class="gift_ranking_title center">
+          <p><%= item[:title].truncate(20) %></p>
+        </div>
+      </div>
+    <% @num = @num + 1 %>
+    <% end %>
+    <% end %>
+    <% end %>
+    <div class="landing_clearfix"></div>
     </div><br>
-    <!-- end of test -->
-
+    <% end %>
 
     <div class="title"> 褒められMVP </div>
     <div class="profilebox">

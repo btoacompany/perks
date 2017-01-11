@@ -207,13 +207,12 @@ class UsersController < ApplicationController
           @popular_rewards << RewardsPrizy.find(key)
           end
         end
-        if @rewards_list.nil?
+        if @popular_rewards.blank?
           @popular_rewards = RewardsPrizy.all
         end
       else
         @popular_rewards = RewardsPrizy.all
       end
-
     else
       rewards_list = RequestReward.where(company_id: @company_id, delete_flag: 0).group(:reward_id).order("count_id desc").count("id")
       rewards_list.each do |key, value|
