@@ -1493,6 +1493,11 @@ hr.style-two {
   border-radius: 2px;
 }
 
+/*index*/
+.youtube_none{
+  display: none;
+}
+
 /*rewards and bonus*/
 .rewards_top p{
   line-height: 20px

@@ -16,6 +16,15 @@
     <% end %>
   </div>
   <div class="rightbox col-4">
+    <div class="title youtube_none"> Prizyイントロダクション </div>
+    <div class="youtube youtube_none" style="margin: 5px 0 10px 0;">
+      <iframe width="293px" src="https://www.youtube.com/embed/WFzYfWVXV94" frameborder="0"></iframe>
+    </div>
+    <div class="title youtube_none"> SlackでPrizyを使おう！ </div>
+    <div class="youtube youtube_none" style="margin: 5px 0 10px 0;">
+      <iframe width="293px" src="https://www.youtube.com/embed/V8dj4OdiQTI" frameborder="0" allowfullscreen></iframe>
+    </div>
+
     <div class="title">
       <img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/icon_profile.png"/>
       プロフィール
@@ -567,6 +576,8 @@ $(document).ready(function() {
     setTimeout(function(){
       pNotifyTexts();
     }, delaytime);
+    $('.youtube').removeClass("youtube_none");
+    $('.title').removeClass("youtube_none");
   }
   /*
   setTimeout(function(){
