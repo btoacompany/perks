@@ -40,6 +40,24 @@
       <p><a href="/rewards" class="btn_reward">ポイントを交換する</a></p>
     </div><br>
 
+    <% if @b_users.present? %>
+    <div class="title"> もうすぐ誕生日の人 </div>
+    <div class="profilebox">
+      <% @b_users.each do | item | %>
+  <div class="ranking">
+    <div class="left">
+      <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+    </div>
+    <div class="right">
+      <%= item[:lastname] %> <%= item[:firstname] %>
+      <div class="score"><%= item[:birthday].strftime('%m月%d日') %></div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+      <% end %>
+    </div><br>
+    <% end %>
+
     <% unless @popular_rewards.blank? %>
     <div class="title"> 人気のギフト </div>
     <div class="gift_ranking">
@@ -112,6 +130,7 @@
       <% end %>
     </div><br>
   </div><br>
+  
 
   <div class="leftbox col-8">
     <% if @user.admin == 1 %>

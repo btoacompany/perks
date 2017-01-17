@@ -115,8 +115,20 @@ class UsersController < ApplicationController
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     @bonuses = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
 
+    # birthday user today
     today = Date.today
     @birthday_users = @users.where('MONTH(birthday)=? AND DAYOFMONTH(birthday)=?', today.month, today.day).where(delete_flag: 0)
+    # upcoming birthday
+    range_time = today.mday..today.end_of_month.mday
+    b_users = @users.where('MONTH(birthday) = ?', today.month).where(delete_flag: 0)
+    @b_users = []
+    b_users.each do |bu|
+      if range_time.cover?(bu.birthday.mday)
+        @b_users << bu
+      end
+    end
+    # definition for pnotify 
+    @default_birthday = "2016-01-01"
     
     posts = Post.where(:company_id => @company_id, :privacy => 0, :delete_flag => 0)
     bonus_posts = Post.where(:company_id => @company_id, :privacy => 1, :delete_flag => 0).where("receiver_id = #{@user.id} OR user_id = #{@user.id}")
@@ -194,7 +206,6 @@ class UsersController < ApplicationController
 
     @top_hashtags = Hashtag.where(company_id: @company_id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
 
-    @default_birthday = "2016-01-01"
     @num_rewards = Reward.where(company_id: @company_id, delete_flag: 0).count
     @num_bonus = Bonus.where(company_id: @company_id, delete_flag: 0).count
 
