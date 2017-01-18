@@ -1,14 +1,28 @@
+<div class="company_create_wrapper">
+<div class="user_login">
+  <div class="login_header">
+    <%= link_to "/" do %>
+      <%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/landingpage/logo.png") %>
+    <% end %>
+  </div>
+
 <div id="wrapper">
-<div id="contents">
-  <p align="center">
-    登録完了いたしました。
-    <br>ご登録いただきまして誠にありがとうございます。
+<div id="contents" class="company_create_contents">
+  <p align="center" style="color: white;">
+    <br><br>登録完了いたしました。
+    <br><br>ご登録いただきまして誠にありがとうございます。
     <br>ご登録いただきました、メールアドレスとパスワードにて、
     <br><a href="<%= @prizy_url %>">コチラ</a>のリンクよりログイン後ご利用いただけます。
-    <br>引き続きPrizyをなにとぞよろしくお願いいたします。
+    <br><br>引き続きPrizyをなにとぞよろしくお願いいたします。
   </p>
 </div> <!-- contents -->
 </div> <!-- wrapper -->
+</div>
+
+<div class="login_footer">
+  <%= render "shared/footer"%>
+</div>
+</div>
 
 <script>
 window.setTimeout(function(){

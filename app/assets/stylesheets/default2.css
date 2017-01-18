@@ -2009,6 +2009,12 @@ table.admin_table td textarea{
     padding-right: 20px;
     font-size: 14px;
   }
+
+  /*conpany*/
+  #admin_contents{
+    min-height: 520px;
+  }
+
 }
 
 

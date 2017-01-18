@@ -72,12 +72,14 @@
   <%= yield %>
   <%= render "shared/footer"%>
 <% elsif controller.controller_name == "company"%>
-  <% unless controller.controller_name == "company" && controller.action_name == "create" %>
+  <% if controller.controller_name == "company" && controller.action_name == "create" %>
+    <%= yield %>
+  <% elsif controller.controller_name == "company" && controller.action_name == "create_complete" %>
+    <%= yield %>
+  <% else %>
     <%= render "shared/header"%>
     <%= yield %>
     <%= render "shared/footer"%>
-  <% else %>
-    <%= yield %>
   <% end %>
 <% else %>
   <!-- definition of @judgement -->
