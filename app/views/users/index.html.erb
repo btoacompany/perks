@@ -58,6 +58,19 @@
     </div><br>
     <% end %>
 
+    <div class="title"> 「褒められ」アナリティクス </div>
+    <div class="profilebox">
+      <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+        <% if @ratio > 0 %>
+          <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@ratio, precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも褒められています！</span>
+        <% elsif @ratio == 0 %>
+          <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@ratio, precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
+        <% else %>
+          <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@ratio, precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
+        <% end %>
+      </div>
+    </div><br>
+
     <% unless @popular_rewards.blank? %>
     <div class="title"> 人気のギフト </div>
     <div class="gift_ranking">

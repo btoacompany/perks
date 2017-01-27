@@ -136,7 +136,7 @@ class UsersController < ApplicationController
     all_posts = ((posts + bonus_posts).sort_by &:update_time).reverse
     posts_count = all_posts.count
 
-    limit = 5
+    limit = 10
     page = params[:page] || 1
     @total_items = posts_count
     @total_pages = (@total_items/limit.to_f).ceil
@@ -230,6 +230,17 @@ class UsersController < ApplicationController
         @popular_rewards << Reward.find(key)
       end
     end
+
+    # statistics for user
+    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
+    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+
+    @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id, create_time: last_week).count
+    if @last_week_posts == 0
+      @last_week_posts = 1
+    end
+    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id, create_time: this_week).count
+    @ratio = (@last_week_posts - @this_week_posts) / @last_week_posts * 100
   end
 
   def give_points_slack
