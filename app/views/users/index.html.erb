@@ -424,9 +424,12 @@ $("#myDropdown").click(function(e) {
       $(".taginput").val($(".taginput").val() + "+" + content + " ");
       break;
     case "drpAt":
-      $(".tags span").empty();
-      $(".tags span").append($("<input type='button' class='btn radius5'/>").val(content));
-      $(".tags span").append($("<input type='hidden' class='receiver-selected' name='receiver_id'/>").val(dataId));
+      //$(".tags span").empty();
+      if(!($(".tags span input[data-id='" + dataId + "']").val())) {
+	$(".tags span").append($("<input type='button' class='btn radius5' data-id='" + dataId + "'/>").val(content));
+	$(".tags span").append($("<input type='hidden' class='receiver-selected' name='receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+      }
+
       break;
     case "drpTag":
       $(".taginput").val($(".taginput").val() + "#" + content + " ");
@@ -471,6 +474,12 @@ $(document).mouseup(function(e) {
   if(e.target.id != subject.attr("id")){
     $("#myDropdown").hide();
   }
+
+  $(".tags input").click(function() {
+    $(this).next().remove();
+    $(this).remove();
+  });
+
 });
 
 $(document).ready(function() {

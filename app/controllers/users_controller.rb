@@ -324,49 +324,56 @@ class UsersController < ApplicationController
     params[:points] = points
 
     if (params[:receiver_id].present?)
-      if params[:receiver_id].to_i == @id.to_i
+      if params[:receiver_id].include?(@id)
 	flash[:notice] = "自分にポイントあげることができません。"
 	error = 1
       end
-  
+
       if error == 0
-	if (points <= @user[:out_points])
-	  @user.out_points -= points 
-	  @user.save
+	receiver_ids = params[:receiver_id]
 
-	  hashtags = params[:description].scan(/\#[^\s|　]+/)
-	  receiver = User.find(params[:receiver_id])
+	receiver_ids.each do | receiver_id |
+	  params[:receiver_id] = receiver_id
 
-	  receiver.in_points += params[:points]
-	  receiver.save
+	  if (points <= @user[:out_points])
+	    @user.out_points -= points 
+	    @user.save
 
-	  unless params[:type] == "comment"
-	    post = Post.new
-	    post.save_record(params)
-	    params[:post_id] = post.id
+	    hashtags = params[:description].scan(/\#[^\s|　]+/)
+	    receiver = User.find(receiver_id.to_i)
 
-	    UserMailer.receive_points_email({
-	      receiver: receiver.name, 
-	      email: receiver.email,
-	      giver: @user.name,
-	      points: params[:points],
-	      prizy_url: @prizy_url + "/user"
-	    }).deliver_later
+	    receiver.in_points += params[:points]
+	    receiver.save
 
+	    unless params[:type] == "comment"
+	      post = Post.new
+	      post.save_record(params)
+	      params[:post_id] = post.id
+
+	      UserMailer.receive_points_email({
+		receiver: receiver.name, 
+		email: receiver.email,
+		giver: @user.name,
+		points: params[:points],
+		prizy_url: @prizy_url + "/user"
+	      }).deliver_later
+
+	    end
+
+	    hashtags.each do | tag |
+	      params[:hashtag] = tag 
+	      hashtag = Hashtag.new
+	      hashtag.save_record(params)
+	    end
+
+	    ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
+
+	  else
+	    flash[:notice] = "ポイントが足りません"
 	  end
-
-	  hashtags.each do | tag |
-	    params[:hashtag] = tag 
-	    hashtag = Hashtag.new
-	    hashtag.save_record(params)
-	  end
-
-	  ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
-
-	else
-	  flash[:notice] = "ポイントが足りません"
 	end
       end
+
     end
   end
 
