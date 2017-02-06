@@ -115,8 +115,20 @@ class UsersController < ApplicationController
     @users = User.where(:company_id => @company_id, :delete_flag => 0) 
     @bonuses = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
 
+    # birthday user today
     today = Date.today
     @birthday_users = @users.where('MONTH(birthday)=? AND DAYOFMONTH(birthday)=?', today.month, today.day).where(delete_flag: 0)
+    # upcoming birthday
+    range_time = today.mday..today.end_of_month.mday
+    b_users = @users.where('MONTH(birthday) = ?', today.month).where(delete_flag: 0)
+    @b_users = []
+    b_users.each do |bu|
+      if range_time.cover?(bu.birthday.mday)
+        @b_users << bu
+      end
+    end
+    # definition for pnotify 
+    @default_birthday = "2016-01-01"
     
     posts = Post.where(:company_id => @company_id, :privacy => 0, :delete_flag => 0)
     bonus_posts = Post.where(:company_id => @company_id, :privacy => 1, :delete_flag => 0).where("receiver_id = #{@user.id} OR user_id = #{@user.id}")
@@ -124,7 +136,7 @@ class UsersController < ApplicationController
     all_posts = ((posts + bonus_posts).sort_by &:update_time).reverse
     posts_count = all_posts.count
 
-    limit = 5
+    limit = 10
     page = params[:page] || 1
     @total_items = posts_count
     @total_pages = (@total_items/limit.to_f).ceil
@@ -194,9 +206,41 @@ class UsersController < ApplicationController
 
     @top_hashtags = Hashtag.where(company_id: @company_id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
 
-    @default_birthday = "2016-01-01"
     @num_rewards = Reward.where(company_id: @company_id, delete_flag: 0).count
     @num_bonus = Bonus.where(company_id: @company_id, delete_flag: 0).count
+
+    @popular_rewards = []
+    if @user.company.plan > 0
+      rewards_list = RequestReward.where(company_id: @company_id, delete_flag: 0).group(:rewards_prizy_id).order("count_id desc").count("id")
+      if rewards_list.present?
+        rewards_list.each do |key, value|
+          if key.present?
+          @popular_rewards << RewardsPrizy.find(key)
+          end
+        end
+        if @popular_rewards.blank?
+          @popular_rewards = RewardsPrizy.all
+        end
+      else
+        @popular_rewards = RewardsPrizy.all
+      end
+    else
+      rewards_list = RequestReward.where(company_id: @company_id, delete_flag: 0).group(:reward_id).order("count_id desc").count("id")
+      rewards_list.each do |key, value|
+        @popular_rewards << Reward.find(key)
+      end
+    end
+
+    # statistics for user
+    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
+    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+
+    @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id, create_time: last_week).count
+    if @last_week_posts == 0
+      @last_week_posts = 1
+    end
+    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id, create_time: this_week).count
+    @ratio = (@last_week_posts - @this_week_posts) / @last_week_posts * 100
   end
 
   def give_points_slack
@@ -433,7 +477,7 @@ class UsersController < ApplicationController
       )
     end
   end
-
+  
   def profile
     @user = User.find(@id)
     posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")

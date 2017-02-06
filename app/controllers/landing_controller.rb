@@ -28,6 +28,12 @@ class LandingController < ApplicationController
   end
 
   def slack
+    user_id = session[:id] || cookies[:id]
+    if user_id
+      # set current user object to @current_user object variable
+      @current_user = User.find(user_id)
+      return true 
+    end
   end
 
   def privacy

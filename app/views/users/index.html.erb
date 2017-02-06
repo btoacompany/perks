@@ -16,6 +16,15 @@
     <% end %>
   </div>
   <div class="rightbox col-4">
+    <div class="title youtube_none"> Prizyイントロダクション </div>
+    <div class="youtube youtube_none" style="margin: 5px 0 10px 0;">
+      <iframe width="293px" src="https://www.youtube.com/embed/WFzYfWVXV94" frameborder="0"></iframe>
+    </div>
+    <div class="title youtube_none"> SlackでPrizyを使おう！ </div>
+    <div class="youtube youtube_none" style="margin: 5px 0 10px 0;">
+      <iframe width="293px" src="https://www.youtube.com/embed/V8dj4OdiQTI" frameborder="0" allowfullscreen></iframe>
+    </div>
+
     <div class="title">
       <img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/icon_profile.png"/>
       プロフィール
@@ -30,6 +39,64 @@
       <p data-intro="あなたがもらったポイント数です。もらったポイントは、様々なギフトに交換することができます。" data-step="6"><b><span class="font24"><%= @user.in_points %></span> ポイント</b></p><br>
       <p><a href="/rewards" class="btn_reward">ポイントを交換する</a></p>
     </div><br>
+
+    <% if @b_users.present? %>
+    <div class="title"> もうすぐ誕生日の人 </div>
+    <div class="profilebox">
+      <% @b_users.each do | item | %>
+  <div class="ranking">
+    <div class="left">
+      <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+    </div>
+    <div class="right">
+      <%= item[:lastname] %> <%= item[:firstname] %>
+      <div class="score"><%= item[:birthday].strftime('%m月%d日') %></div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+      <% end %>
+    </div><br>
+    <% end %>
+
+    <div class="title"> 「褒められ」アナリティクス </div>
+    <div class="profilebox">
+      <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+        <% if @ratio > 0 %>
+          <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@ratio, precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも褒められています！</span>
+        <% elsif @ratio == 0 %>
+          <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@ratio, precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
+        <% else %>
+          <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@ratio, precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
+        <% end %>
+      </div>
+    </div><br>
+
+    <% unless @popular_rewards.blank? %>
+    <div class="title"> 人気のギフト </div>
+    <div class="gift_ranking">
+    <% @num = 0 %>
+    <% @popular_rewards.first(4).each do | item | %>
+    <% if item.img_src.present? %>
+    <%= link_to "/rewards" do %>
+    <% if @num.even? %>
+      <div class="each_gift_ranking f_left">
+    <% else %>
+      <div class="each_gift_ranking f_right">
+    <% end %>
+        <div class="gift_ranking_img">
+          <img src="<%= item[:img_src] %>" />
+        </div>
+        <div class="gift_ranking_title center">
+          <p><%= item[:title].truncate(20) %></p>
+        </div>
+      </div>
+    <% @num = @num + 1 %>
+    <% end %>
+    <% end %>
+    <% end %>
+    <div class="landing_clearfix"></div>
+    </div><br>
+    <% end %>
 
     <div class="title"> 褒められMVP </div>
     <div class="profilebox">
@@ -76,6 +143,7 @@
       <% end %>
     </div><br>
   </div><br>
+  
 
   <div class="leftbox col-8">
     <% if @user.admin == 1 %>
@@ -540,6 +608,8 @@ $(document).ready(function() {
     setTimeout(function(){
       pNotifyTexts();
     }, delaytime);
+    $('.youtube').removeClass("youtube_none");
+    $('.title').removeClass("youtube_none");
   }
   /*
   setTimeout(function(){
