@@ -162,27 +162,7 @@ class UsersController < ApplicationController
     data = {}
 
     posts.each do | post |
-      comments = Comment.where(:post_id => post.id, :delete_flag => 0)
-      kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
-
-      data = {
-      	id:		post.id,
-      	user_id:	post.user_id,
-      	user_name:	post.user.name,
-      	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
-      	receiver_id:	post.receiver_id,
-      	receiver_name:	post.receiver.name,
-      	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
-      	user_img:	post.user.img_src,
-      	receiver_img:	post.receiver.img_src,
-      	points:		post.points,
-      	description:	post.description,
-      	hashtags:	post.hashtags,
-      	comments:	comments,
-      	kudos:		kudos,
-      	create_time:	post.create_time.strftime("%Y/%m/%d %H:%M:%S")
-      }
-
+      data = process_post(post)
       @posts << data
     end
 
@@ -215,7 +195,7 @@ class UsersController < ApplicationController
       if rewards_list.present?
         rewards_list.each do |key, value|
           if key.present?
-          @popular_rewards << RewardsPrizy.find(key)
+	    @popular_rewards << RewardsPrizy.find(key)
           end
         end
         if @popular_rewards.blank?
@@ -374,26 +354,37 @@ class UsersController < ApplicationController
       end
 
       if error == 0
-	receiver_ids = params[:receiver_id]
+	receiver_ids	= params[:receiver_id]
+	receiver_count	= receiver_ids.count
+	points		= points * receiver_count
 
-	receiver_ids.each do | receiver_id |
-	  params[:receiver_id] = receiver_id
+	params[:receiver_id] = receiver_ids.join(",")
 
-	  if (points <= @user[:out_points])
-	    @user.out_points -= points 
-	    @user.save
+	if (points <= @user[:out_points])
+	  @user.out_points -= points 
+	  @user.save
 
-	    hashtags = params[:description].scan(/\#[^\s|　]+/)
+	  unless params[:type] == "comment"
+	    post = Post.new
+	    post.save_record(params)
+	    params[:post_id] = post.id
+	  end
+
+	  hashtags = params[:description].scan(/\#[^\s|　]+/)
+
+	  hashtags.each do | tag |
+	    params[:hashtag] = tag 
+	    hashtag = Hashtag.new
+	    hashtag.save_record(params)
+	  end
+
+	  receiver_ids.each do | receiver_id |
 	    receiver = User.find(receiver_id.to_i)
 
 	    receiver.in_points += params[:points]
 	    receiver.save
 
 	    unless params[:type] == "comment"
-	      post = Post.new
-	      post.save_record(params)
-	      params[:post_id] = post.id
-
 	      UserMailer.receive_points_email({
 		receiver: receiver.name, 
 		email: receiver.email,
@@ -401,23 +392,15 @@ class UsersController < ApplicationController
 		points: params[:points],
 		prizy_url: @prizy_url + "/user"
 	      }).deliver_later
-
-	    end
-
-	    hashtags.each do | tag |
-	      params[:hashtag] = tag 
-	      hashtag = Hashtag.new
-	      hashtag.save_record(params)
 	    end
 
 	    ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
-
-	  else
-	    flash[:notice] = "ポイントが足りません"
 	  end
+
+	else
+	  flash[:notice] = "ポイントが足りません"
 	end
       end
-
     end
   end
 
@@ -514,27 +497,7 @@ class UsersController < ApplicationController
     data = {}
 
     posts.each do | post |
-      comments = Comment.where(:post_id => post.id, :delete_flag => 0)
-      kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
-
-      data = {
-      	id:   post.id,
-      	user_id:  post.user_id,
-      	user_name:  post.user.name,
-      	receiver_name:  post.receiver.name,
-      	user_img: post.user.img_src,
-      	receiver_img: post.receiver.img_src,
-      	receiver_id: post.receiver_id,
-      	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
-      	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
-      	points:   post.points,
-      	description:  post.description,
-      	hashtags: post.hashtags,
-      	comments: comments,
-      	kudos:    kudos,
-      	create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
-      }
-
+      data = process_post(post)
       @posts << data
     end
 
@@ -579,27 +542,7 @@ class UsersController < ApplicationController
     data = {}
 
     posts.each do | post |
-      comments = Comment.where(:post_id => post.id, :delete_flag => 0)
-      kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
-
-      data = {
-      	id:   post.id,
-      	user_id:  post.user_id,
-      	user_name:  post.user.name,
-      	receiver_name:  post.receiver.name,
-      	user_img: post.user.img_src,
-      	receiver_img: post.receiver.img_src,
-      	receiver_id: post.receiver_id,
-      	full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
-      	full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
-      	points:   post.points,
-      	description:  post.description,
-      	hashtags: post.hashtags,
-      	comments: comments,
-      	kudos:    kudos,
-      	create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
-      }
-
+      data = process_post(post)
       @posts << data
     end
 
@@ -613,6 +556,39 @@ class UsersController < ApplicationController
     end
 
     @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+  end
+
+  def process_post(post)
+    comments = Comment.where(:post_id => post.id, :delete_flag => 0)
+    kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
+
+    data = {
+      id:		post.id,
+      user_id:	post.user_id,
+      user_name:	post.user.name,
+      full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
+      receiver_id:	[],
+      receiver_name:	[],
+      full_receiver_name: [],
+      user_img:	post.user.img_src,
+      points:		post.points,
+      description:	post.description,
+      hashtags:	post.hashtags,
+      comments:	comments,
+      kudos:		kudos,
+      create_time:	post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+    }
+
+    receiver_ids = post.receiver_id.split(",")
+
+    receiver_ids.each do | r |
+      receiver_info = User.find(r)
+      data[:receiver_id] << r
+      data[:receiver_name] << receiver_info.name
+      data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
+    end
+
+    return data
   end
 
   def rewards
