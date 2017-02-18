@@ -265,13 +265,14 @@
 		<td><img src="<%= post[:user_img] %>" class=""/></td>
 		<td>
 		  <div>
-		    <div class="m_receivers_panel">
-		      <img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/sample_01.png"/>
-		    </div>
-		    <div class="m_receivers" style="z-index:99;position:relative">
-		      <% if post[:full_receiver_name].count == 1 %>
-			<p style="font-weight:bold"><%= truncate(post[:full_receiver_name].first.upcase, :length=>15) %></p>
-		      <% else %>
+		    <% if post[:receiver_id].count == 1 %>
+		      <img src="<%= post[:receiver_img] %>" class=""/>
+		    <% else %>
+		      <div class="m_receivers_panel">
+			<img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/sample_01.png"/>
+		      </div>
+
+		      <div class="m_receivers" style="z-index:99;position:relative">
 			<div style="float:left;padding-left:40px;">
 			  <% post[:full_receiver_name].each_with_index do | name, i |%>
 			    <% if (i+1) % 2 != 0 %>
@@ -279,6 +280,7 @@
 			    <% end %>
 			  <% end %>
 			  </div>
+
 			  <div style="float:right;padding-right:40px;">
 			  <% post[:full_receiver_name].each_with_index do | name, i |%>
 			    <% if (i+1) % 2 == 0 %>
@@ -286,8 +288,8 @@
 			    <% end %>
 			  <% end %>
 			</div>
-		      <% end %>
-		    </div>
+		      </div>
+		    <% end %>
 		  </div>
 		</td>
 	      </tr>

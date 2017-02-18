@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     if session[:id].present? || cookies[:id].present?
       @id = session[:id] || cookies[:id]
       user = User.find(@id)
+
       @company_id = user.company_id
       @admin_flag = Company.exists?(:email => user.email) ? 1 : 0
     end
@@ -21,26 +22,26 @@ class UsersController < ApplicationController
       slack_code = params[:code]
 
       data = {
-	:client_id  => "12258104198.88079493873",
-	:code	    => params[:code],
-	:client_secret	=> "d3cc97422eac0aefbf7c097a3647306c"
+	:client_id	=> "12258104198.88079493873",
+	:client_secret	=> "d3cc97422eac0aefbf7c097a3647306c",
+	:code		=> params[:code]
       }
 
-      uri = URI.parse("https://slack.com/api/oauth.access")
-      http = Net::HTTP.post_form(uri, data)
-      userinfo = JSON.parse(http.body)
-      
-      slack = SlackToken.where(:team_id => userinfo["team_id"]).first
+      uri	= URI.parse("https://slack.com/api/oauth.access")
+      http	= Net::HTTP.post_form(uri, data)
+      userinfo	= JSON.parse(http.body)
+      slack	= SlackToken.where(:team_id => userinfo["team_id"]).first
       
       if slack.blank?
 	slack = SlackToken.new
+
 	slack.token	    = userinfo["access_token"]
 	slack.team_id	    = userinfo["team_id"]
 	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
 	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
 	slack.save
       else
-	slack.token = userinfo["access_token"]
+	slack.token	    = userinfo["access_token"]
 	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
 	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
 	slack.save
@@ -66,13 +67,12 @@ class UsersController < ApplicationController
       	reset_session
       	flash[:notice] = "ユーザー名かパスワードに誤りがあります"
       	render 'login', :status => :unauthorized
-
       else
       	if params[:remember].to_i == 1 
-      	  cookies.permanent[:id] = authorized_user.id
+      	  cookies.permanent[:id]    = authorized_user.id
       	  cookies.permanent[:email] = authorized_user.email
       	else
-      	  session[:id] = authorized_user.id
+      	  session[:id]	  = authorized_user.id
       	  session[:email] = authorized_user.email
       	end
 
@@ -92,74 +92,85 @@ class UsersController < ApplicationController
   end
 
   def logout
-    session[:id] = nil
+    session[:id]    = nil
     session[:email] = nil
+
     cookies.delete :id
     cookies.delete :email
+    
     reset_session
 
     redirect_page("users", "login")
   end
 
   def index
+    today = Date.today
+
     @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
 
     hashtags = Company.find(@company_id).hashtags
+    
     if hashtags.blank?
       @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
     else
       @hashtags = hashtags.split(",")
     end
 
-    @user = User.find(@id)
-    @users = User.where(:company_id => @company_id, :delete_flag => 0) 
-    @bonuses = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
+    @user     = User.find(@id)
+    @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @bonuses  = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
 
     # birthday user today
-    today = Date.today
     @birthday_users = @users.where('MONTH(birthday)=? AND DAYOFMONTH(birthday)=?', today.month, today.day).where(delete_flag: 0)
+
     # upcoming birthday
-    range_time = today.mday..today.end_of_month.mday
-    b_users = @users.where('MONTH(birthday) = ?', today.month).where(delete_flag: 0)
+    range_time	= today.mday..today.end_of_month.mday
+    b_users	= @users.where('MONTH(birthday) = ?', today.month).where(delete_flag: 0)
+    
     @b_users = []
+    
     b_users.each do |bu|
       if range_time.cover?(bu.birthday.mday)
         @b_users << bu
       end
     end
+    
     # definition for pnotify 
     @default_birthday = "2016-01-01"
     
-    posts = Post.where(:company_id => @company_id, :privacy => 0, :delete_flag => 0)
+    posts	= Post.where(:company_id => @company_id, :privacy => 0, :delete_flag => 0)
     bonus_posts = Post.where(:company_id => @company_id, :privacy => 1, :delete_flag => 0).where("receiver_id = #{@user.id} OR user_id = #{@user.id}")
 
-    all_posts = ((posts + bonus_posts).sort_by &:update_time).reverse
+    all_posts	= ((posts + bonus_posts).sort_by &:update_time).reverse
     posts_count = all_posts.count
 
     limit = 10
     page = params[:page] || 1
+    
     @total_items = posts_count
     @total_pages = (@total_items/limit.to_f).ceil
 
     if page.to_i <= 1
-      page = 1
-      offset = 0
+      page    = 1
+      offset  = 0
     else
-      offset = (page.to_i * limit) - limit
+      offset  = (page.to_i * limit) - limit
     end
 
     all_posts = all_posts[offset, limit]
-    posts = Post.where(id: all_posts.map(&:id)).order("update_time desc")
+    posts     = Post.where(id: all_posts.map(&:id)).order("update_time desc")
 
     @page_now = params[:page].to_i
+    
     if @page_now == 0
       @page_now = 1
     end
-    @previous_page = @page_now - 1
-    @next_page = @page_now + 1
+    
+    @previous_page  = @page_now - 1
+    @next_page	    = @page_now + 1
 
-    @posts = []
-    data = {}
+    @posts  = []
+    data    = {}
 
     posts.each do | post |
       data = process_post(post)
@@ -167,45 +178,31 @@ class UsersController < ApplicationController
     end
 
     top_givers = Post.where(company_id: @company_id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
-
-    @top_givers = []
-    top_givers.each do | k, v |
-      user = User.find(k)
-      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
-      @top_givers << data
-    end
+    process_top_givers(top_givers)
 
     top_receivers = Post.where(company_id: @company_id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
+    process_top_receivers(top_receivers)
 
-    @top_receivers = []
-    top_receivers.each do | k, v |
-      user = User.find(k)
-      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
-      @top_receivers << data
-    end
-
-    @top_hashtags = Hashtag.where(company_id: @company_id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
-
-    @num_rewards = Reward.where(company_id: @company_id, delete_flag: 0).count
-    @num_bonus = Bonus.where(company_id: @company_id, delete_flag: 0).count
+    @num_rewards  = Reward.where(company_id: @company_id, delete_flag: 0).count
+    @num_bonus	  = Bonus.where(company_id: @company_id, delete_flag: 0).count
 
     @popular_rewards = []
+    
     if @user.company.plan > 0
       rewards_list = RequestReward.where(company_id: @company_id, delete_flag: 0).group(:rewards_prizy_id).order("count_id desc").count("id")
+      
       if rewards_list.present?
         rewards_list.each do |key, value|
-          if key.present?
-	    @popular_rewards << RewardsPrizy.find(key)
-          end
+	  @popular_rewards << RewardsPrizy.find(key) if key.present?
         end
-        if @popular_rewards.blank?
-          @popular_rewards = RewardsPrizy.all
-        end
+        
+	@popular_rewards = RewardsPrizy.all if @popular_rewards.blank?
       else
         @popular_rewards = RewardsPrizy.all
       end
     else
       rewards_list = RequestReward.where(company_id: @company_id, delete_flag: 0).group(:reward_id).order("count_id desc").count("id")
+      
       rewards_list.each do |key, value|
         @popular_rewards << Reward.find(key)
       end
@@ -216,50 +213,49 @@ class UsersController < ApplicationController
     this_week = Date.today.beginning_of_week..Date.today.end_of_week
 
     @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id, create_time: last_week).count
-    if @last_week_posts == 0
-      @last_week_posts = 1
-    end
+    @last_week_posts = 1 if @last_week_posts == 0
     @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id, create_time: this_week).count
+    
     @ratio = (@last_week_posts - @this_week_posts) / @last_week_posts * 100
   end
 
   def give_points_slack
     slack = SlackToken.where(:team_id => params["team_id"]).first
-    @slack_token = slack[:token]
+    
+    @slack_token    = slack[:token]
     @slack_webhooks = slack[:webhooks_url]
 
     slack_user_info_data = {
-      :user	    => params["user_id"],
-      :token	    => @slack_token,
+      :user    => params["user_id"],
+      :token   => @slack_token,
     }
 
     slack_user_list_data = {
-      :token => @slack_token,
+      :token	=> @slack_token,
       :presence => 1,
     }
 
-    uri = URI.parse("https://slack.com/api/users.info")
-    http = Net::HTTP.post_form(uri, slack_user_info_data)
-    userinfo = JSON.parse(http.body)
+    uri	      = URI.parse("https://slack.com/api/users.info")
+    http      = Net::HTTP.post_form(uri, slack_user_info_data)
+    userinfo  = JSON.parse(http.body)
 
-    uri = URI.parse("https://slack.com/api/users.list")
-    http = Net::HTTP.post_form(uri, slack_user_list_data)
-    userlist = JSON.parse(http.body)
+    uri	      = URI.parse("https://slack.com/api/users.list")
+    http      = Net::HTTP.post_form(uri, slack_user_list_data)
+    userlist  = JSON.parse(http.body)
 
     begin
       email = userinfo["user"]["profile"]["email"]
       error = 0
-      #email = "c_a@btoa-company.com"
 
-      user = User.find_by_email(email)
+      user  = User.find_by_email(email)
 
       unless user.blank?
-      	params[:user_id] = user.id 
-      	params[:company_id] = user.company_id
-      	params[:description] = params["text"]
+      	params[:user_id]      = user.id 
+      	params[:company_id]   = user.company_id
+      	params[:description]  = params["text"]
 
       	receiver_name = params["text"].scan(/\@[^\s|　]+/).first.gsub("@","")
-      	receiver = ""
+      	receiver      = ""
 
       	userlist["members"].each do | member |
       	  if member["name"] == receiver_name
@@ -270,7 +266,6 @@ class UsersController < ApplicationController
       	    else
       	      receiver = User.where(:email => receiver_email, :delete_flag => 0).first
       	    end
-
       	    break
       	  end
       	end
@@ -278,8 +273,9 @@ class UsersController < ApplicationController
       	if error == 0
       	  unless receiver.blank?
       	    points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
-      	    params[:points] = points
-      	    params[:receiver_id] = receiver.id
+
+      	    params[:points]	  = points
+      	    params[:receiver_id]  = receiver.id
 
       	    if (points <= user[:out_points])
       	      user.out_points -= params[:points]
@@ -290,11 +286,11 @@ class UsersController < ApplicationController
       	      receiver.save
 
       	      UserMailer.receive_points_email({
-            		receiver: receiver.name, 
-            		email: receiver.email,
-            		giver: user.name,
-            		points: params[:points],
-            		prizy_url: @prizy_url + "/user"
+		    receiver:   receiver.name, 
+		    email:	    receiver.email,
+		    giver:	    user.name,
+		    points:	    params[:points],
+		    prizy_url:  @prizy_url + "/user"
       	      }).deliver_later
 
       	      post = Post.new
@@ -302,9 +298,9 @@ class UsersController < ApplicationController
       	      params[:post_id] = post.id
 
       	      hashtags.each do | tag |
-            		params[:hashtag] = tag 
-            		hashtag = Hashtag.new
-            		hashtag.save_record(params)
+		    params[:hashtag] = tag 
+		    hashtag = Hashtag.new
+		    hashtag.save_record(params)
       	      end
 
               ios_push_notif(receiver.id, "#{user.firstname}さんから「ホメ」が届きました。")
@@ -321,8 +317,8 @@ class UsersController < ApplicationController
       	  end
       	end	
       else
-      	team_domain = params["team_domain"].upcase
-      	flash[:notice] = "Your email #{email} is not yet registered to #{team_domain} Prizy"
+      	team_domain	= params["team_domain"].upcase
+      	flash[:notice]	= "Your email #{email} is not yet registered to #{team_domain} Prizy"
       end
     rescue Exception => e
       logger.debug e.message
@@ -338,14 +334,15 @@ class UsersController < ApplicationController
   end
 
   def parse_points(params)
-    @users = User.where(:company_id => @company_id, :delete_flag => 0) 
-    @user = User.find(@id)
-    error = 0
+    @users  = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @user   = User.find(@id)
+    error   = 0
 
     points = params[:description].scan(/\+[^\s|　]+/).first.to_i
-    params[:user_id] = @id
+    
+    params[:user_id]	= @id
     params[:company_id] = @company_id
-    params[:points] = points
+    params[:points]	= points
 
     if (params[:receiver_id].present?)
       if params[:receiver_id].include?(@id)
@@ -386,11 +383,11 @@ class UsersController < ApplicationController
 
 	    unless params[:type] == "comment"
 	      UserMailer.receive_points_email({
-		receiver: receiver.name, 
-		email: receiver.email,
-		giver: @user.name,
-		points: params[:points],
-		prizy_url: @prizy_url + "/user"
+		receiver:   receiver.name, 
+		email:	    receiver.email,
+		giver:	    @user.name,
+		points:	    params[:points],
+		prizy_url:  @prizy_url + "/user"
 	      }).deliver_later
 	    end
 
@@ -406,24 +403,23 @@ class UsersController < ApplicationController
 
   def give_comments 
     params[:company_id] = @company_id
-    params[:user_id] = @id
+    params[:user_id]	= @id
 
     res = Comment.new
     res.save_record(params)
 
     user = User.find(@id)
 
-    params[:receiver_id] = Post.find(res.post_id).receiver_id
-    params[:description] = params["comments"]
-    params[:points] = params["comments"].scan(/\+[^\s|　]+/).first
-    params[:type] = "comment"
+    params[:receiver_id]  = Post.find(res.post_id).receiver_id
+    params[:description]  = params["comments"]
+    params[:points]	  = params["comments"].scan(/\+[^\s|　]+/).first
+    params[:type]	  = "comment"
 
     if params[:points].present?
       parse_points(params)
     end
 
     ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。")
-
     redirect_page("users", "index")
   end
 
@@ -470,28 +466,9 @@ class UsersController < ApplicationController
   
   def profile
     @user = User.find(@id)
+
     posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
-
-    limit = 5
-    page = params[:page] || 1
-    @total_items = posts.count
-    @total_pages = (@total_items/limit.to_f).ceil
-
-    if page.to_i <= 1
-      page = 1
-      offset = 0
-    else
-      offset = (page.to_i * limit) - limit
-    end
-
-    posts = posts.offset(offset).limit(limit)
-
-    @page_now = params[:page].to_i
-    if @page_now == 0
-      @page_now = 1
-    end
-    @previous_page = @page_now - 1
-    @next_page = @page_now + 1
+    process_paging(posts)
 
     @posts = []
     data = {}
@@ -502,41 +479,14 @@ class UsersController < ApplicationController
     end
 
     top_givers = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
-
-    @top_givers = []
-    top_givers.each do | k, v |
-      user = User.find(k)
-      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
-      @top_givers << data
-    end
-
-    @top_hashtags = Hashtag.where(receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+    process_top_givers(top_givers)
   end
 
   def given
     @user = User.find(@id)
+
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
-
-    limit = 5
-    page = params[:page] || 1
-    @total_items = posts.count
-    @total_pages = (@total_items/limit.to_f).ceil
-
-    if page.to_i <= 1
-      page = 1
-      offset = 0
-    else
-      offset = (page.to_i * limit) - limit
-    end
-
-    posts = posts.offset(offset).limit(limit)
-
-    @page_now = params[:page].to_i
-    if @page_now == 0
-      @page_now = 1
-    end
-    @previous_page = @page_now - 1
-    @next_page = @page_now + 1
+    process_paging(posts)
 
     @posts = []
     data = {}
@@ -547,8 +497,50 @@ class UsersController < ApplicationController
     end
 
     top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
+    process_top_givers(top_givers)
+  end
 
+  def process_paging(posts)
+    limit = 5
+    page  = params[:page] || 1
+    
+    @total_items = posts.count
+    @total_pages = (@total_items/limit.to_f).ceil
+
+    if page.to_i <= 1
+      page    = 1
+      offset  = 0
+    else
+      offset = (page.to_i * limit) - limit
+    end
+
+    posts = posts.offset(offset).limit(limit)
+
+    @page_now = params[:page].to_i
+    
+    if @page_now == 0
+      @page_now = 1
+    end
+
+    @previous_page  = @page_now - 1
+    @next_page	    = @page_now + 1
+  end
+
+  def process_top_receivers(top_receivers)
+    @top_receivers = []
+    
+    top_receivers.each do | k, v |
+      user = User.find(k)
+      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
+      @top_receivers << data
+    end
+
+    @top_hashtags = Hashtag.where(company_id: @company_id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+  end
+
+  def process_top_givers(top_givers)
     @top_givers = []
+    
     top_givers.each do | k, v |
       user = User.find(k)
       data = { name: user.name, img_src: user.img_src, count: v }
@@ -559,32 +551,33 @@ class UsersController < ApplicationController
   end
 
   def process_post(post)
-    comments = Comment.where(:post_id => post.id, :delete_flag => 0)
-    kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
+    comments  = Comment.where(:post_id => post.id, :delete_flag => 0)
+    kudos     = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
     data = {
-      id:		post.id,
-      user_id:	post.user_id,
-      user_name:	post.user.name,
-      full_user_name:	"#{post.user.lastname} #{post.user.firstname}",
-      receiver_id:	[],
-      receiver_name:	[],
+      id:		  post.id,
+      user_id:		  post.user_id,
+      user_name:	  post.user.name,
+      full_user_name:	  "#{post.user.lastname} #{post.user.firstname}",
+      receiver_id:	  [],
+      receiver_name:	  [],
       full_receiver_name: [],
-      user_img:	post.user.img_src,
-      points:		post.points,
-      description:	post.description,
-      hashtags:	post.hashtags,
-      comments:	comments,
-      kudos:		kudos,
-      create_time:	post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+      receiver_img:	  post.receiver.img_src,
+      user_img:		  post.user.img_src,
+      points:		  post.points,
+      description:	  post.description,
+      hashtags:		  post.hashtags,
+      comments:		  comments,
+      kudos:		  kudos,
+      create_time:	  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
     }
 
     receiver_ids = post.receiver_id.split(",")
 
     receiver_ids.each do | r |
       receiver_info = User.find(r)
-      data[:receiver_id] << r
-      data[:receiver_name] << receiver_info.name
+      data[:receiver_id]	<< r
+      data[:receiver_name]	<< receiver_info.name
       data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
     end
 
@@ -592,9 +585,9 @@ class UsersController < ApplicationController
   end
 
   def rewards
-    @user = User.find(@id)
-    @rewards = Reward.where(:company_id => @user.company_id, :delete_flag => 0).order("points").order("title")
-    @rewards_prizy = RewardsPrizy.where(:delete_flag => 0)
+    @user	    = User.find(@id)
+    @rewards	    = Reward.where(:company_id => @user.company_id, :delete_flag => 0).order("points").order("title")
+    @rewards_prizy  = RewardsPrizy.where(:delete_flag => 0)
   end
 
   def rewards_request
@@ -637,10 +630,10 @@ class UsersController < ApplicationController
     user.in_points -= points 
     user.save
 
-    data[:username] = user.name
-    data[:owner] = user.company.owner
-    data[:email] = user.company.email
-    data[:prizy_url] = @prizy_url + "/company/rewards/request#pending"
+    data[:username]   = user.name
+    data[:owner]      = user.company.owner
+    data[:email]      = user.company.email
+    data[:prizy_url]  = @prizy_url + "/company/rewards/request#pending"
 
     CompanyMailer.request_reward_email(data).deliver_later
 
@@ -698,9 +691,10 @@ class UsersController < ApplicationController
 
       unless invite_link.empty?
       	update_details
-      	company = Company.find(invite_link[0][:company_id])
+
+      	company	      = Company.find(invite_link[0][:company_id])
       	@company_name = company.name
-      	@company_id = company.id
+      	@company_id   = company.id
       else
         redirect_to "/login"
       end
@@ -730,9 +724,9 @@ class UsersController < ApplicationController
 
   def fb_auth_details
     fb_user = User.koala(request.env['omniauth.auth']['credentials'])
-    url = "https://graph.facebook.com/#{fb_user['id']}/picture?width=300&height=300"
-    res = Net::HTTP.get_response(URI(url))
-    fb_pic = res['location']
+    url	    = "https://graph.facebook.com/#{fb_user['id']}/picture?width=300&height=300"
+    res	    = Net::HTTP.get_response(URI(url))
+    fb_pic  = res['location']
 
     fb_data = {
       :fb_data	  => 1,
@@ -782,21 +776,24 @@ class UsersController < ApplicationController
 
     unless url.include?("invite")
       username_exist = User.where(name: params[:name], company_id: @company_id)
-      res = User.find(@id)
-      verified = res.verified
+      
+      res	= User.find(@id)
+      verified	= res.verified
 
       unless res.name == params[:name]
       	if username_exist.present?
-      	  flash[:notice] = name_exist 
-      	  session[:redirect] = 1
+      	  flash[:notice]      = name_exist 
+      	  session[:redirect]  = 1
+
       	  redirect_to "/update" and return
       	end
       end
     else
       username_exist = User.where(name: params[:name], company_id: params[:company_id])
       if username_exist.present?
-      	flash[:notice] = name_exist 
-      	session[:redirect] = 1
+      	flash[:notice]	    = name_exist 
+      	session[:redirect]  = 1
+
       	redirect_to "/invite" and return
       end
 
@@ -804,19 +801,21 @@ class UsersController < ApplicationController
       res.save_record(params)
     end
 
-    b_year = params[:b_year]
+    b_year  = params[:b_year]
     b_month = params[:b_month]
-    b_day = params[:b_day]
+    b_day   = params[:b_day]
+    
     params[:birthday] = DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d") 
 
     if params[:img_src].present?
       unless params[:fb_data].to_i == 1
-      	src = params[:img_src]
-      	src_ext = File.extname(src.original_filename)
+      	src	  = params[:img_src]
+      	src_ext	  = File.extname(src.original_filename)
 
-      	s3 = Aws::S3::Resource.new
+      	s3  = Aws::S3::Resource.new
       	obj = s3 .bucket(@s3_bucket).object("profile/user_#{res.id}_pic#{src_ext}")
-      	obj.upload_file src.tempfile, {acl: 'public-read'}
+      	
+	obj.upload_file src.tempfile, {acl: 'public-read'}
 
       	params[:img_src] = obj.public_url
       end
@@ -830,9 +829,9 @@ class UsersController < ApplicationController
     params[:verified] = 1 
       
     if url.include?("invite")
-      res.img_src = params[:img_src]
-      res.out_points = params[:out_points]
-      res.verified = params[:verified]
+      res.img_src     = params[:img_src]
+      res.out_points  = params[:out_points]
+      res.verified    = params[:verified]
       res.deliver_invite_mail = 3
       res.save
     else
@@ -851,8 +850,8 @@ class UsersController < ApplicationController
       user.save_record({:password => temp_password})
 
       data = {
-      	:email	  => params[:email],
-      	:password => temp_password,
+      	:email	    => params[:email],
+      	:password   => temp_password,
       	:prizy_url  => @prizy_url
       }
 
@@ -920,7 +919,7 @@ class UsersController < ApplicationController
       	  hashtag.save_record(data)
       	end
       else
-	     flash[:notice] = "ポイントが足りません"
+	 flash[:notice] = "ポイントが足りません"
       end
     end
 
@@ -940,13 +939,12 @@ class UsersController < ApplicationController
   end
 
   def delete_post
-    #TODO: delete design
     post_id = params[:post_id]
 
-    post = Post.where(id: post_id).update_all(delete_flag: 1)
-    comments = Comment.where(post_id: post_id).update_all(delete_flag: 1)
-    kudos = Kudos.where(post_id: post_id).update_all(delete_flag: 1)
-    hashtags = Hashtag.where(post_id: post_id).update_all(delete_flag: 1)
+    post      = Post.where(id: post_id).update_all(delete_flag: 1)
+    comments  = Comment.where(post_id: post_id).update_all(delete_flag: 1)
+    kudos     = Kudos.where(post_id: post_id).update_all(delete_flag: 1)
+    hashtags  = Hashtag.where(post_id: post_id).update_all(delete_flag: 1)
 
     redirect_to "/user" 
   end
