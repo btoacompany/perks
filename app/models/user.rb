@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
     self.out_points   = params[:out_points]   if params[:out_points].present?
     self.verified     = params[:verified]     if params[:verified].present?
     self.admin	      = params[:admin]	      if params[:admin].present?
+    self.manager_flag = params[:manager_flag] if params[:manager_flag].present?
+    self.member_flag  = params[:member_flag]  if params[:member_flag].present?
     self.deliver_invite_mail = params[:deliver_invite_mail]  if params[:deliver_invite_mail].present?
     self.save
   end
