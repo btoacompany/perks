@@ -273,25 +273,21 @@
 		      </div>
 
 		      <div class="m_receivers" style="z-index:99;position:relative">
-			<% if post[:full_receiver_name].count == 1 %>
-			  <p style="font-weight:bold"><%= truncate(post[:full_receiver_name].first.upcase, :length=>15) %></p>
-			<% else %>
-			  <div style="float:left;padding-left:40px;">
-			    <% post[:full_receiver_name].each_with_index do | name, i |%>
-			      <% if (i+1) % 2 != 0 %>
-				<p style="font-weight:bold"><%= truncate(name.upcase, :length=>10) %></p>
-			      <% end %>
+			<div style="float:left;padding-left:40px;">
+			  <% post[:full_receiver_name].each_with_index do | name, i |%>
+			    <% if (i+1) % 2 != 0 %>
+			      <p style="font-weight:bold"><%= truncate(name.upcase, :length=>10) %></p>
 			    <% end %>
-			    </div>
-
-			    <div style="float:right;padding-right:40px;">
-			    <% post[:full_receiver_name].each_with_index do | name, i |%>
-			      <% if (i+1) % 2 == 0 %>
-				<p style="font-weight:bold"><%= truncate(name.upcase, :length=>10) %></p>
-			      <% end %>
-			    <% end %>
+			  <% end %>
 			  </div>
-			<% end %>
+
+			  <div style="float:right;padding-right:40px;">
+			  <% post[:full_receiver_name].each_with_index do | name, i |%>
+			    <% if (i+1) % 2 == 0 %>
+			      <p style="font-weight:bold"><%= truncate(name.upcase, :length=>10) %></p>
+			    <% end %>
+			  <% end %>
+			</div>
 		      </div>
 		    <% end %>
 		  </div>
