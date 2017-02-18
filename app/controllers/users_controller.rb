@@ -572,7 +572,11 @@ class UsersController < ApplicationController
       create_time:	  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
     }
 
-    receiver_ids = post.receiver_id.split(",")
+    receiver_ids = []
+
+    if post.receiver_id.present?
+      receiver_ids = post.receiver_id.split(",")
+    end
 
     receiver_ids.each do | r |
       receiver_info = User.find(r)
