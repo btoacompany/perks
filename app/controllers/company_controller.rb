@@ -262,6 +262,22 @@ class CompanyController < ApplicationController
     redirect_to '/company/bonus'
   end
 
+  def make_manager
+    result =  User.find(params[:id])
+    result.manager_flag = 1
+    result.save
+
+    redirect_to '/company/employees'
+  end
+
+  def make_non_manager
+    result =  User.find(params[:id])
+    result.manager_flag = 0
+    result.save
+
+    redirect_to '/company/employees'
+  end
+
   def make_admin
     result =  User.find(params[:id])
     result.admin = 1

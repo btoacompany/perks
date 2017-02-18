@@ -29,6 +29,7 @@
 	  <th>取得ポイント</th>
 	  <th>残りポイント</th>
 	  <th>管理者</th>
+	  <th>マネージャー</th>
 	  <th>アカウント削除</th>
 	</tr>
 	<% @users.each do | item | %>
@@ -44,6 +45,9 @@
 	    <td><%= item[:out_points] %></td>
 	    <td align="center">
 	      <input type="checkbox" class="chk_admin" data-id="<%= item[:id] %>" value="1" <% if item[:admin] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>
+	    </td>
+	    <td align="center">
+	      <input type="checkbox" class="chk_manager" data-id="<%= item[:id] %>" value="1" <% if item[:manager_flag] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>
 	    </td>
 	    <td align="center">
 	      <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
@@ -74,6 +78,26 @@ $('.chk_admin').change(function() {
   } else {
     if (confirm("本当に管理者から外しますか？")) {
       $.post("/company/employees/make_user", { 'id': _id }); //send post request
+    } else {
+      $(this).prop("checked", true);
+      return false; //do nothing
+    }
+  }
+});
+
+$('.chk_manager').change(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if ($(this).is(":checked")) {
+    if (confirm("マネージャーにしますか？")) {
+      $.post("/company/employees/make_manager", { 'id': _id }); //send post request
+    } else {
+      $(this).prop("checked", false);
+      return false; //do nothing
+    }
+  } else {
+    if (confirm("本当にマネージャーから外しますか？")) {
+      $.post("/company/employees/make_non_manager", { 'id': _id }); //send post request
     } else {
       $(this).prop("checked", true);
       return false; //do nothing
