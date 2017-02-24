@@ -118,6 +118,29 @@ class UsersController < ApplicationController
 
     @user     = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
+    # team_users for getName
+    team_users = []
+    same_teams = []
+    Team.where(company_id: @company_id, manager_id: @id, delete_flag: 0).each do |team|
+      same_teams << team
+    end
+    Team.where(company_id: @company_id, delete_flag: 0).each do |team|
+      team.member_ids.split(",")
+      if team.member_ids.include?(@id.to_s)
+        same_teams << team
+      end
+    end
+    same_teams.each do |team|
+      team_users.push(team.member_ids.split(","))
+      team_users.push(team.manager_id.to_s)
+      team_users.flatten!
+    end
+    team_users.uniq!
+    @team_users = []
+    team_users.each do |user|
+      @team_users << User.find(user.to_i)
+    end
+    # end of team_users for getName
     @bonuses  = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
 
     # birthday user today
