@@ -1,0 +1,65 @@
+<div id="admin_wrapper">
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <li><%= link_to "会社情報", "/company/details" %></li>
+    <li class="admin_li_checked"><%= link_to "社員情報","/company/employees" %></li>
+    <li><%= link_to "ギフト","/company/rewards" %></li>
+    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+    <li><%= link_to "Slack連携", "/integration/slack"%></li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
+
+
+<div id="admin_contents" style="padding-left: 40px">
+<h3>カスタマイズを行う</h3><br>
+  <%= form_tag( "/company/customize/update", method: "post") do %>
+  <dl class="customize_box">
+    <p>ポイントに関して</p>
+    <div class="fixed_point_setting clearfix">
+      <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。</dt>
+      <dd class="customize_right">
+        <input type="radio" name="fixed_point_setting" id="fixed_point_setting0" value="0" <% if @company.point_fixed_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+        <label for="fixed_point_setting0" class="switch-off">しない</label>
+        <input type="radio" id="fixed_point_setting1" name="fixed_point_setting" value="1" <% if @company.point_fixed_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
+        <label for="fixed_point_setting1" class="switch-on">する</label>
+        <input type="text" id="fixed_point" name="fixed_point" class="fixed_point" value="<%= @company.fixed_point %>" <% if @company.point_fixed_flag == 0 %> style="display: none;"<% end %> placeholder="ポイント数">
+      </dd>
+    </div>
+
+    <div class="fixed_point_setting clearfix">
+      <dt class="customize_left">管理画面へのアクセスをIPアドレスで制限しますか。</dt>
+      <dd class="customize_right">
+        <input type="radio" name="ip_address_setting" id="ip_address_setting0" value="0" <% if @company.ip_limit_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+        <label for="ip_address_setting0" class="switch-off">しない</label>
+        <input type="radio" id="ip_address_setting1" name="ip_address_setting" value="1" <% if @company.ip_limit_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
+        <label for="ip_address_setting1" class="switch-on">する</label>
+        <div class="clearfix"></div>
+        <textarea id="allowed_ips" name="allowed_ips" <% if @company.ip_limit_flag == 0 %> style="display: none;"<% end %> placeholder="IPアドレス" cols="40" rows="5" ><%= @company.allowed_ips %></textarea> 
+        <div class="clearfix"></div>
+      </dd>
+      <div class="clearfix"></div>
+    </div>
+  </dl>
+  <input type="submit" class="btn btn_submit" value="送信" style="width:80px;height:30px"/>
+  <% end %>
+
+
+
+
+
+</div><!-- admin_contents -->
+</div><!-- admin_wrapper -->
+
+
+<script>
+  $('input[name="fixed_point_setting"]').change(function() {
+    $("#fixed_point").toggle();
+  });
+
+  $('input[name="ip_address_setting"]').change(function() {
+    $("#allowed_ips").toggle();
+  });
+
+</script>

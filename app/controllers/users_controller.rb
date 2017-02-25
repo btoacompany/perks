@@ -295,7 +295,12 @@ class UsersController < ApplicationController
       	
       	if error == 0
       	  unless receiver.blank?
-      	    points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
+            @company = Company.find(user.company_id)
+      	    if @company.point_fixed_flag == 0
+              points = params["text"].scan(/\+[^\s|　]+/).first.gsub("+","").to_i
+            else
+              points = @company.fixed_point
+            end
 
       	    params[:points]	  = points
       	    params[:receiver_id]  = receiver.id
@@ -357,11 +362,16 @@ class UsersController < ApplicationController
   end
 
   def parse_points(params)
+    @company = Company.find(@company_id)
     @users  = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user   = User.find(@id)
     error   = 0
 
-    points = params[:description].scan(/\+[^\s|　]+/).first.to_i
+    if @company.point_fixed_flag == 0
+      points = params[:description].scan(/\+[^\s|　]+/).first.to_i
+    else
+      points = @company.fixed_point
+    end
     
     params[:user_id]	= @id
     params[:company_id] = @company_id

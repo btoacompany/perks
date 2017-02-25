@@ -118,6 +118,20 @@ class CompanyController < ApplicationController
     end
   end
 
+  def customize
+    @company = Company.find(@id)
+  end
+
+  def customize_update
+    @company = Company.find(@id)
+    @company.point_fixed_flag = params[:fixed_point_setting]
+    @company.fixed_point = params[:fixed_point]
+    @company.ip_limit_flag = params[:ip_address_setting]
+    @company.allowed_ips = params[:allowed_ips]
+    @company.save
+    redirect_to '/company/customize'
+  end
+
   def employees
     @company = Company.find(@id)
     teams = Team.where(company_id: @id, delete_flag: 0)

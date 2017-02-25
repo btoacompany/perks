@@ -1847,6 +1847,7 @@ table.admin_table td textarea{
     width: 90%;
     border-radius: 3px;
   }
+
 }
 
 @media only screen and (min-width: 650px) {
@@ -2015,6 +2016,63 @@ table.admin_table td textarea{
   #admin_contents{
     min-height: 520px;
   }
+
+  /*company/customize*/
+  .customize_box{
+    display: block;
+  }
+  
+  .customize_box dt, .customize_box dd{
+    float: left;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .customize_left{
+    padding: 10px 0;
+  }
+
+  .fixed_point {
+    width: 80px;
+    height: 34px;
+  }
+
+  .fixed_point, #allowed_ips{
+    font-size: 14px;
+  }
+
+  .fixed_point_setting{
+    width: 1000px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f1f5;
+  }
+
+  .fixed_point_setting label{
+    display: inline-block;
+    float: left;
+    cursor: pointer;
+    width: 100px;
+    margin: 0;
+    padding: 10px;
+    background: #bdc3c7;
+    color: #869198;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1;
+    transition: .2s;
+  }
+
+  input[name="fixed_point_setting"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
+    background-color: #ff8d07;
+    color: #fff;
+  }
+
+  input[name="fixed_point_setting"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
+    background-color: #C30;
+    color: #fff;
+  }
+
+  
 
 }
 
