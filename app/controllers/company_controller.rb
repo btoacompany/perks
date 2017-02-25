@@ -10,8 +10,8 @@ class CompanyController < ApplicationController
       email = session[:email] || cookies[:email]
       user = User.find_by_email(email)
       if user.admin == 1
-	@id = user.company_id
-	@user_id = user.id
+  @id = user.company_id
+  @user_id = user.id
       end
     else
       logout
@@ -55,14 +55,14 @@ class CompanyController < ApplicationController
 
       user = User.new
       user.save_record({
-	:email	    => params[:email],
-	:password   => params[:password],
-	:img_src    => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
-	:name	    => params[:email].split("@")[0],
-	:company_id => company.id,
-	:out_points => 150,
-	:admin	    => 1,
-	:deliver_invite_mail => 3,
+  :email      => params[:email],
+  :password   => params[:password],
+  :img_src    => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+  :name      => params[:email].split("@")[0],
+  :company_id => company.id,
+  :out_points => 150,
+  :admin      => 1,
+  :deliver_invite_mail => 3,
       })
 
       c_code = (Time.now.to_i).to_s + "_" + (company.id).to_s
@@ -70,13 +70,13 @@ class CompanyController < ApplicationController
       company.save
 
       if company.save
-	CompanyMailer.welcome_email(params).deliver_later
+  CompanyMailer.welcome_email(params).deliver_later
 
-	invite_link = InviteLink.new
-	invite_link.save_record({
-	  :company_id   => company.id,
-	  :c_code	=> c_code
-	})
+  invite_link = InviteLink.new
+  invite_link.save_record({
+    :company_id   => company.id,
+    :c_code  => c_code
+  })
       end
       session[:id] = nil
       cookies.delete :id
@@ -171,10 +171,54 @@ class CompanyController < ApplicationController
     @team_exist = 1
     end
     @users = User.where(:company_id => @id, :delete_flag => 0)
+    @user = User.new
+    @department = Department.new
   end
 
   def add_employees
     #do nothing
+  end
+
+  def import_users_by_csv
+    file = params[:user][:upload_file]
+    if file && file.content_type === "text/csv"
+      User.transaction do
+        User.import_users_by_csv(file , current_user)
+      end
+      redirect_to '/company/employees'
+    else
+      logger.debug("NOOOOOOOO!!!")
+      redirect_to '/company/employees'
+    end
+    # エラー時の処理
+    rescue => e
+    redirect_to '/company/employees'
+  end
+
+  def create_department_and_team_by_csv
+    file = params[:department][:upload_file]
+    if file && file.content_type === "text/csv"
+      Department.transaction do
+        Department.create_department_and_team_by_csv(file , current_user)
+      end
+      redirect_to '/company/employees'
+    else
+      logger.debug("NOOOOOOOO!!!")
+      redirect_to '/company/employees'
+    end
+    rescue => e
+    redirect_to '/company/employees'    
+  end
+
+  require 'csv'
+  def export_csv_format_create_user
+    headers = %w(No lastname firstname email password department team birthday gender manager)
+    data = CSV.generate("", headers: headers ) do |csv|
+      csv << headers
+    end
+    datetime = Time.now
+    format_datetime = datetime.strftime('%Y%m%d%H%M%S')
+    send_data(data , filename: "#{format_datetime}" + '.csv',type: 'text/csv')
   end
 
   def add_employees_complete
@@ -186,23 +230,23 @@ class CompanyController < ApplicationController
 
     emails.each do | email |
       if existing_emails.include?(email)
-	@duplicate_emails << email
+  @duplicate_emails << email
       else
-	temp_password = SecureRandom.hex(4)
-	name = email.split("@")[0]
+  temp_password = SecureRandom.hex(4)
+  name = email.split("@")[0]
 
-	@data = {
-	  :company_id	=> @id,
-	  :company_name	=> company.name,
-	  :company_owner=> company.owner,
-	  :email	=> email,
-	  :password	=> temp_password,
-	  :name		=> name,
-	  :img_src	=> "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
-	  :prizy_url	=> @prizy_url + "/login"
-	}
-	@user = User.new
-	@user.save_record(@data)
+  @data = {
+    :company_id  => @id,
+    :company_name  => company.name,
+    :company_owner=> company.owner,
+    :email  => email,
+    :password  => temp_password,
+    :name    => name,
+    :img_src  => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+    :prizy_url  => @prizy_url + "/login"
+  }
+  @user = User.new
+  @user.save_record(@data)
       end
     end
 
@@ -266,12 +310,12 @@ class CompanyController < ApplicationController
 
     if res.delete_flag == 0
       if params[:status].to_i == 1 
-	res.status = 1 #accept
-	UserMailer.reward_approved_email(params).deliver_later
+  res.status = 1 #accept
+  UserMailer.reward_approved_email(params).deliver_later
       elsif params[:status].to_i == 9 
-	res.status = 9 #reject
+  res.status = 9 #reject
       else
-	res.status = 0 #pending
+  res.status = 0 #pending
       end
       res.save
     end

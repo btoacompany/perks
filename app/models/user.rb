@@ -1,5 +1,6 @@
 #coding:utf-8
 require 'bcrypt'
+require 'csv'
 
 class User < ActiveRecord::Base
   include BCrypt
@@ -82,6 +83,41 @@ class User < ActiveRecord::Base
 
   def match_password(login_password="")
     password == BCrypt::Engine.hash_secret(login_password, salt)
+  end
+
+  # 社員をCSVファイルで読み込み保存する
+  def self.import_users_by_csv(file , current_user)
+    CSV.foreach(file.path , headers: true) do |row_data|
+      check_registered_user = User.find_by(email: row_data["email"])
+      unless  check_registered_user
+        user = User.new
+        user.firstname = row_data["firstname"]
+        user.lastname = row_data["lastname"]
+        user.name = row_data["firstname"].to_s + row_data["lastname"].to_s
+        user.email = row_data["email"]
+        if row_data["password"]
+          user.verified = 1
+          user.password = row_data["password"]
+        else
+          user.verified = 0
+          user.password = SecureRandom.hex(4)
+        end
+        user.company_id = current_user.company_id
+        user.birthday = row_data["birthday"]
+        row_data["gender"] === "男" ? user.gender = 1 : user.gender = 0
+        user.save!
+        # add user to team
+        check_department = Department.find_by(dep_name: row_data["department"])
+        check_team = Team.find_by(team_name: row_data["team"])
+        if check_department && check_team
+          check_team.manager_id = user.id if row_data["manager"] === "1"
+          check_team.member_ids = check_team.member_ids + "," + user.id.to_s
+          check_team.save!
+        else
+          logger.debug("user.name")
+        end
+      end
+    end
   end
 
 private
