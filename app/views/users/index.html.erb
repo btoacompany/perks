@@ -482,14 +482,22 @@ function getTag () {
 
 function getName () {
   items = {};
-  <% if @users.present? %>
-    <% @users.each do | user | %>
+  <% if @team_users.present? %>
+    <% @team_users.each do | user | %>
       <% unless user.id == @user.id %> 
 	items["<%= user.id %>"] = "<%= user.lastname %> <%= user.firstname %>";
       <% end %>
     <% end %>
-  <% end %>
   return items;
+
+  <% else %>
+    <% @users.each do | user | %>
+      <% unless user.id == @user.id %> 
+  items["<%= user.id %>"] = "<%= user.lastname %> <%= user.firstname %>";
+      <% end %>
+    <% end %>
+  return items;
+  <% end %>
 }
 
 function getPoints () {

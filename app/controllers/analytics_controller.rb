@@ -431,6 +431,51 @@ class AnalyticsController < ApplicationController
     @company = Company.find(@id)
     @users = User.where(company_id: @id, delete_flag: 0)
     @users_custom = User.where(company_id: @id, delete_flag: 0)
+    @team_lists = []
+    @teams = Team.where(company_id: @id, delete_flag: 0)
+    @teams.each do |team|
+      hash = {}
+      each_team = []
+      each_team << team.manager_id
+      team.member_ids.split(",").each do |mem|
+        each_team << mem.to_i
+      end
+      hash[:id] = team.id
+      hash[:team_name] = team.team_name
+      hash[:members] = each_team
+      @team_lists << hash
+    end
+    # 所属無しメンバー
+    # 全社員のid取得
+    user_ids = []
+    User.where(company_id: @id, delete_flag: 0).each do |user|
+      user_ids << user.id
+    end
+    # 何かしらのチームに属してるid取得
+    in_team_user_ids = []
+    @teams.each do |team|
+      in_team_user_ids.push(team.member_ids.split(","))
+      in_team_user_ids.push(team.manager_id)
+      in_team_user_ids.flatten!
+      in_team_user_ids.uniq
+    end
+    # 何もチームに属していないid取得
+    in_team_user_ids.each do |id|
+      user_ids.delete(id.to_i)
+    end
+    # 何もチームに属していないユーザーの配列
+    @non_team_user_ids = []
+    user_ids.each do |id|
+      @non_team_user_ids << id
+    end
+    # ハッシュ作成
+    non_team = {
+      :id => 0,
+      :team_name => "所属なし",
+      :members => @non_team_user_ids
+    }
+    @team_lists << non_team
+
   end
 
 
