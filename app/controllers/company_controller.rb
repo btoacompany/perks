@@ -142,7 +142,9 @@ class CompanyController < ApplicationController
       team_members = []
       team_members << User.find(team.manager_id)
       team.member_ids.split(",").each do |id|
-        team_members << User.find(id)
+        unless id.to_i == 0
+        team_members << id.to_i
+        end
       end
       each_team = {
         :team_id => team.id,
@@ -151,6 +153,7 @@ class CompanyController < ApplicationController
       }
       @teams << each_team
     end
+
     # 全社員のid取得
     user_ids = []
     User.where(company_id: @id, delete_flag: 0).each do |user|
@@ -171,7 +174,7 @@ class CompanyController < ApplicationController
     # 何もチームに属していないユーザーの配列
     @non_team_user_ids = []
     user_ids.each do |id|
-      @non_team_user_ids << User.find(id)
+      @non_team_user_ids << id.to_i
     end
     # ハッシュ作成
     non_team = {

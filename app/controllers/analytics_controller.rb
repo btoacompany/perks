@@ -438,7 +438,9 @@ class AnalyticsController < ApplicationController
       each_team = []
       each_team << team.manager_id
       team.member_ids.split(",").each do |mem|
+        unless mem.to_i == 0
         each_team << mem.to_i
+        end
       end
       hash[:id] = team.id
       hash[:team_name] = team.team_name
@@ -466,7 +468,9 @@ class AnalyticsController < ApplicationController
     # 何もチームに属していないユーザーの配列
     @non_team_user_ids = []
     user_ids.each do |id|
+      unless id == 0
       @non_team_user_ids << id
+      end
     end
     # ハッシュ作成
     non_team = {

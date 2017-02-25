@@ -105,11 +105,7 @@ class UsersController < ApplicationController
 
   def index
     today = Date.today
-
-    @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
-
     hashtags = Company.find(@company_id).hashtags
-    
     if hashtags.blank?
       @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
     else
@@ -118,6 +114,12 @@ class UsersController < ApplicationController
 
     @user     = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @company = Company.find(@company_id)
+    if @company.point_fixed_flag == 0
+      @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
+    else
+      @placeholder = "会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
+    end
     # team_users for getName
     team_users = []
     same_teams = []
@@ -138,7 +140,9 @@ class UsersController < ApplicationController
     team_users.uniq!
     @team_users = []
     team_users.each do |user|
+      unless user.to_i == 0
       @team_users << User.find(user.to_i)
+      end
     end
     # end of team_users for getName
     @bonuses  = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
@@ -149,9 +153,7 @@ class UsersController < ApplicationController
     # upcoming birthday
     range_time	= today.mday..today.end_of_month.mday
     b_users	= @users.where('MONTH(birthday) = ?', today.month).where(delete_flag: 0)
-    
     @b_users = []
-    
     b_users.each do |bu|
       if range_time.cover?(bu.birthday.mday)
         @b_users << bu
@@ -160,7 +162,6 @@ class UsersController < ApplicationController
     
     # definition for pnotify 
     @default_birthday = "2016-01-01"
-    
     posts	= Post.where(:company_id => @company_id, :privacy => 0, :delete_flag => 0)
     bonus_posts = Post.where(:company_id => @company_id, :privacy => 1, :delete_flag => 0).where("receiver_id = #{@user.id} OR user_id = #{@user.id}")
 
@@ -350,7 +351,11 @@ class UsersController < ApplicationController
       end
     rescue Exception => e
       logger.debug e.message
+      if @company.point_fixed_flag == 0
       flash[:notice] = "投稿できませんでした。入力に不備があります。\n （入力例)\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
+      else
+        flash[:notice] = "投稿できませんでした。入力に不備があります。\n （入力例)\n「/prizy @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
+      end
     end
 
     render :layout => false
@@ -445,7 +450,11 @@ class UsersController < ApplicationController
 
     params[:receiver_id]  = Post.find(res.post_id).receiver_id
     params[:description]  = params["comments"]
-    params[:points]	  = params["comments"].scan(/\+[^\s|　]+/).first
+    if @company.point_fixed_flag == 0
+      params[:points]	  = params["comments"].scan(/\+[^\s|　]+/).first
+    else
+      params[:points] = @company.fixed_point
+    end
     params[:type]	  = "comment"
 
     if params[:points].present?
