@@ -1,4 +1,5 @@
 #coding:utf-8
+require 'csv'
 
 class Department < ActiveRecord::Base
   self.table_name = "departments"
@@ -29,5 +30,28 @@ class Department < ActiveRecord::Base
 
   def set_time
     return Time.now.strftime("%Y-%m-%d %H:%M:%S")
+  end
+
+  def self.create_department_and_team_by_csv(file , current_user)
+    CSV.foreach(file.path , headers: true) do |row_data|
+      # create department unless department is not presence
+      department = Department.find_by(dep_name: row_data["department"])
+      unless department
+        department = Department.new
+        department.dep_name = row_data["department"]
+        department.save!
+      end
+      # create team unless team is not presence
+      team = Team.find_by(team_name: row_data["team"])
+      unless team
+        team = Team.new
+        team.department_id = department.id
+        team.company_id = current_user.company_id
+        team.manager_id = 0
+        team.member_ids = 0
+        team.team_name = row_data["team"]
+        team.save!
+      end
+    end
   end
 end
