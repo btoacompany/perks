@@ -12,9 +12,64 @@
 </div>
 
 <div id="admin_contents" class="c_align">
+  <h3>部署登録・編集</h3><br>
+  <%= form_for @department , url: company_employees_create_department_and_team_by_csv_path(@department) , method: :post do |f| %>
+    <%= f.file_field :upload_file %>
+    <%= f.hidden_field :id %>
+    <%= f.submit "送信する" %>
+  <% end %><br/>
+
   <h3>社員登録・編集</h3><br>
-  <a href="/company/employees/add" class="a_btncmn radius5">+ 社員を追加</a>
+  <a href="/company/employees/add" class="a_btncmn radius5">+ 社員を追加</a><br/><br/>
+  <h4>CSVで追加する</h4>
+  <%= form_for @user , url: company_employees_import_users_by_csv_path(@user) , method: :post do |f| %>
+    <%= f.file_field :upload_file %>
+    <%= f.hidden_field :id %>
+    <%= f.submit "送信する" %>
+  <% end %><br/>
+  <p>社員登録用のフォーマットをダウンロードする</p><br/>
+  <%= button_to 'ダウンロード', company_employees_export_csv_format_create_user_path(format: 'csv') %>
+
   <br><br>
+<%if @team_exist == 0 %>
+  <!-- team -->
+  <div id="tab-container" class="tab-container">
+  <p class="c_align">招待リンク: <a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
+  <ul id="tab-menu" class="etabs">
+    <% @teams.each do |team| %>
+    <li class="tab">
+      <a href="#<%= team[:team_id] %>" ><%= team[:team_name] %></a>
+    </li>
+    <% end %>
+  </ul>
+  <!-- team -->
+  <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+  <div class="toolbox">
+    <% if @users.count == 0 %>
+      <p><i>社員を追加してください</i></p><br>
+    <% else %>
+      <!-- team -->
+      <% @teams.each do |team| %>
+      <div id="<%= team[:team_id] %>">
+      <table class="tbl_tools" border="1">
+      	<%= render 'employees_th' %>
+        <% team[:members].each do |item| %>
+          <%= render 'employees_tr', item: item %>
+        <% end %>
+        </table>
+      </div>
+      <% end %>
+    <!-- team -->
+    <% end %>
+    <p align="center">
+      <input type="button" class="btn btn_back" style="width:80px;height:30px" value="戻る" />
+    </p>
+  <br>
+</div> <!-- toolbox -->
+</div> <!-- tabcontainer -->
+
+
+<% else %>
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
   <div class="toolbox">
     <p class="c_align">招待リンク: <a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
@@ -22,38 +77,10 @@
       <p><i>社員を追加してください</i></p><br>
     <% else %>
       <table class="tbl_tools" border="1">
-	<tr>
-	  <th>名前</th>
-	  <th>メールアドレス</th>
-	  <th>ステータス</th>
-	  <th>取得ポイント</th>
-	  <th>残りポイント</th>
-	  <th>管理者</th>
-	  <th>マネージャー</th>
-	  <th>アカウント削除</th>
-	</tr>
-	<% @users.each do | item | %>
-	  <tr class="item_<%= item[:id] %>">
-	    <td><%= "#{item[:lastname]} #{item[:firstname]}" %></td>
-	    <td><%= item[:email] %></td>
-	    <td align="center">
-	      <% if item[:verified] == 0 %>保留 
-	      <% else %>登録済 
-	      <% end %>
-	    </td>
-	    <td><%= item[:in_points] %></td>
-	    <td><%= item[:out_points] %></td>
-	    <td align="center">
-	      <input type="checkbox" class="chk_admin" data-id="<%= item[:id] %>" value="1" <% if item[:admin] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>
-	    </td>
-	    <td align="center">
-	      <input type="checkbox" class="chk_manager" data-id="<%= item[:id] %>" value="1" <% if item[:manager_flag] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>
-	    </td>
-	    <td align="center">
-	      <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
-	    </td>
-	  </tr>
-	<% end %>
+        <%= render 'employees_th' %>
+  <% @users.each do | item | %>
+    <%= render 'employees_tr', item: item %>
+  <% end %>
       </table><br>
     <% end %>
     <p align="center">
@@ -61,8 +88,11 @@
     </p>
   </div><br>
 </div>
+<% end %>
+
 </div> <!-- contents -->
 </div> <!-- wrapper -->
+
 
 <script type="text/javascript">
 $('.chk_admin').change(function() {
@@ -104,6 +134,7 @@ $('.chk_manager').change(function() {
     }
   }
 });
+
 $('.delete_item').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
 
@@ -118,4 +149,9 @@ $(".btn_back").click(function() {
   window.location = "/company/details";
 });
 $('.setting_color').css('color','gray');
+
+$(document).ready(function () {
+  $("#tab-container").easytabs();
+});
+
 </script>

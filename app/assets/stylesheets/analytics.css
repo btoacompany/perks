@@ -269,3 +269,9 @@
 .main_menu_analytics li.active a { 
   background: #E6E6E6; 
 }
+
+.team_list{
+  display: none !important;
+}
+
+

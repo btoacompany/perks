@@ -120,6 +120,56 @@ class CompanyController < ApplicationController
 
   def employees
     @company = Company.find(@id)
+    teams = Team.where(company_id: @id, delete_flag: 0)
+    unless teams.empty?
+    @team_exist = 0
+    @teams = []
+    teams.each do |team|
+      team_members = []
+      team_members << User.find(team.manager_id)
+      team.member_ids.split(",").each do |id|
+        team_members << User.find(id)
+      end
+      each_team = {
+        :team_id => team.id,
+        :team_name => team.team_name,
+        :members => team_members
+      }
+      @teams << each_team
+    end
+    # 全社員のid取得
+    user_ids = []
+    User.where(company_id: @id, delete_flag: 0).each do |user|
+      user_ids << user.id
+    end
+    # 何かしらのチームに属してるid取得
+    in_team_user_ids = []
+    teams.each do |team|
+      in_team_user_ids.push(team.member_ids.split(","))
+      in_team_user_ids.push(team.manager_id)
+      in_team_user_ids.flatten!
+      in_team_user_ids.uniq
+    end
+    # 何もチームに属していないid取得
+    in_team_user_ids.each do |id|
+      user_ids.delete(id.to_i)
+    end
+    # 何もチームに属していないユーザーの配列
+    @non_team_user_ids = []
+    user_ids.each do |id|
+      @non_team_user_ids << User.find(id)
+    end
+    # ハッシュ作成
+    non_team = {
+      :team_id => 0,
+      :team_name => "所属なしユーザー",
+      :members => @non_team_user_ids
+    }
+    @teams << non_team
+
+    else
+    @team_exist = 1
+    end
     @users = User.where(:company_id => @id, :delete_flag => 0)
     @user = User.new
     @department = Department.new
