@@ -4,6 +4,7 @@ require 'securerandom'
 class CompanyController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
   before_filter :init_url, :validate_user
+  before_action :ip_address_limit
 
   def init
     if session[:email].present? || cookies[:email].present?
@@ -153,7 +154,6 @@ class CompanyController < ApplicationController
       }
       @teams << each_team
     end
-
     # 全社員のid取得
     user_ids = []
     User.where(company_id: @id, delete_flag: 0).each do |user|
@@ -407,5 +407,16 @@ class CompanyController < ApplicationController
 
   def redirect_to_index
     redirect_to "/company/details" 
+  end
+
+  def ip_address_limit
+    @company = Company.find(@id)
+    ip = request.remote_ip
+    allowed_ips = @company.allowed_ips.split(",")
+    if @company.ip_limit_flag == 1
+    unless allowed_ips.include?(ip.to_s)
+      redirect_to "/"
+    end
+    end
   end
 end
