@@ -4,6 +4,7 @@ require 'securerandom'
 class CompanyController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
   before_filter :init_url, :validate_user
+  before_action :ip_address_limit
 
   def init
     if session[:email].present? || cookies[:email].present?
@@ -118,6 +119,20 @@ class CompanyController < ApplicationController
     end
   end
 
+  def customize
+    @company = Company.find(@id)
+  end
+
+  def customize_update
+    @company = Company.find(@id)
+    @company.point_fixed_flag = params[:fixed_point_setting]
+    @company.fixed_point = params[:fixed_point]
+    @company.ip_limit_flag = params[:ip_address_setting]
+    @company.allowed_ips = params[:allowed_ips]
+    @company.save
+    redirect_to '/company/customize'
+  end
+
   def employees
     @company = Company.find(@id)
     teams = Team.where(company_id: @id, delete_flag: 0)
@@ -128,7 +143,9 @@ class CompanyController < ApplicationController
       team_members = []
       team_members << User.find(team.manager_id)
       team.member_ids.split(",").each do |id|
-        team_members << User.find(id)
+        unless id.to_i == 0
+        team_members << id.to_i
+        end
       end
       each_team = {
         :team_id => team.id,
@@ -157,7 +174,7 @@ class CompanyController < ApplicationController
     # 何もチームに属していないユーザーの配列
     @non_team_user_ids = []
     user_ids.each do |id|
-      @non_team_user_ids << User.find(id)
+      @non_team_user_ids << id.to_i
     end
     # ハッシュ作成
     non_team = {
@@ -390,5 +407,16 @@ class CompanyController < ApplicationController
 
   def redirect_to_index
     redirect_to "/company/details" 
+  end
+
+  def ip_address_limit
+    @company = Company.find(@id)
+    ip = request.remote_ip
+    allowed_ips = @company.allowed_ips.split(",")
+    if @company.ip_limit_flag == 1
+    unless allowed_ips.include?(ip.to_s)
+      redirect_to "/"
+    end
+    end
   end
 end

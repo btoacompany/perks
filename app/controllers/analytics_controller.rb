@@ -1,6 +1,7 @@
 class AnalyticsController < ApplicationController
 
   before_filter :init, :authenticate_user
+  before_action :ip_address_limit
   before_filter :init_url, :validate_user
   before_action :time_definition, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
   before_action :basic_info, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
@@ -438,7 +439,9 @@ class AnalyticsController < ApplicationController
       each_team = []
       each_team << team.manager_id
       team.member_ids.split(",").each do |mem|
+        unless mem.to_i == 0
         each_team << mem.to_i
+        end
       end
       hash[:id] = team.id
       hash[:team_name] = team.team_name
@@ -466,7 +469,9 @@ class AnalyticsController < ApplicationController
     # 何もチームに属していないユーザーの配列
     @non_team_user_ids = []
     user_ids.each do |id|
+      unless id == 0
       @non_team_user_ids << id
+      end
     end
     # ハッシュ作成
     non_team = {
@@ -475,8 +480,16 @@ class AnalyticsController < ApplicationController
       :members => @non_team_user_ids
     }
     @team_lists << non_team
-
   end
 
-
+  def ip_address_limit
+    @company = Company.find(@id)
+    ip = request.remote_ip
+    allowed_ips = @company.allowed_ips.split(",")
+    if @company.ip_limit_flag == 1
+      unless allowed_ips.include?(ip.to_s)
+        redirect_to "/"
+      end
+    end
+  end
 end
