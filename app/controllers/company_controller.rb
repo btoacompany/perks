@@ -414,7 +414,7 @@ class CompanyController < ApplicationController
   def ip_address_limit
     @company = Company.find(@id)
     ip = request.remote_ip
-    allowed_ips = @company.allowed_ips.split(",")
+    allowed_ips = @company.allowed_ips.split(",") if @company.allowed_ips.present?
     if @company.ip_limit_flag == 1
     unless allowed_ips.include?(ip.to_s)
       redirect_to "/"
@@ -430,5 +430,21 @@ class CompanyController < ApplicationController
       users.update_all(in_points: 0)
       users.update_all(out_points: 0)
     end
+  end
+
+  def edit_email
+    @user = User.find(params[:id])
+    render :json => {:id => @user.id , :name => @user.name , :email => @user.email}
+  end
+
+  def update_email
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+      if @user
+        @user.email = params[:user][:email]
+        @user.save
+      end
+    end
+    redirect_to '/company/employees'
   end
 end
