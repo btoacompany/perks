@@ -129,6 +129,7 @@ class CompanyController < ApplicationController
     @company.fixed_point = params[:fixed_point]
     @company.ip_limit_flag = params[:ip_address_setting]
     @company.allowed_ips = params[:allowed_ips]
+    @company.reset_point_date = params[:reset_point_date]
     @company.save
     redirect_to '/company/customize'
   end
@@ -227,6 +228,7 @@ class CompanyController < ApplicationController
     redirect_to '/company/employees'    
   end
 
+  # TODO Refactoring
   require 'csv'
   def export_csv_format_create_user
     headers = %w(No lastname firstname email password department team birthday gender manager)
@@ -417,6 +419,16 @@ class CompanyController < ApplicationController
     unless allowed_ips.include?(ip.to_s)
       redirect_to "/"
     end
+    end
+  end
+
+  def self.reset_point
+    reset_date = Date.yesterday
+    company_ids = Company.where(reset_point_date: reset_date).pluck(:id)
+    company_ids.each do |id|
+      users = User.where(company_id: id)
+      users.update_all(in_points: 0)
+      users.update_all(out_points: 0)
     end
   end
 end
