@@ -129,6 +129,7 @@ class CompanyController < ApplicationController
     @company.fixed_point = params[:fixed_point]
     @company.ip_limit_flag = params[:ip_address_setting]
     @company.allowed_ips = params[:allowed_ips]
+    @company.reset_point_date = params[:reset_point_date]
     @company.save
     redirect_to '/company/customize'
   end
@@ -227,6 +228,7 @@ class CompanyController < ApplicationController
     redirect_to '/company/employees'    
   end
 
+  # TODO Refactoring
   require 'csv'
   def export_csv_format_create_user
     headers = %w(No lastname firstname email password department team birthday gender manager)
