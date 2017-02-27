@@ -172,9 +172,9 @@ $(document).on('click','.modal-btn', function() {
     id: $(this).attr('data-id')
   },
   success: function(data) {
-    $('#modal-label').html(data['name']);
-    $('#modal-body').html(data['email']);
-    //ダイアログを表示する
+    $('#modal-label').append(data['name'] + "さんのメールアドレスを変更しますか。");
+    $('#modal-body').val(data['email']);
+    $('#modal-hidden').val(data['id']);
     $('#my-modal').dialog();
   },
   error: function(data) {
