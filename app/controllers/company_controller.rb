@@ -438,4 +438,20 @@ class CompanyController < ApplicationController
       users.update_all(out_points: 0)
     end
   end
+
+  def edit_email
+    @user = User.find(params[:id])
+    render :json => {:id => @user.id , :name => @user.name , :email => @user.email}
+  end
+
+  def update_email
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+      if @user
+        @user.email = params[:user][:email]
+        @user.save
+      end
+    end
+    redirect_to '/company/employees'
+  end
 end
