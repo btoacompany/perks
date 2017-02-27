@@ -25,12 +25,10 @@
     <div id="my-modal" title="メールアドレス変更" style="display:none;">
       <%= form_tag ({controller: :company , action: :update_email}) do %>
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-label" />
+          <h5 class="modal-title" id="modal-label" />
         </div>
-        <div class="modal-body" id="modal-body">
-        </div>
-        <%= hidden_field :user , :id %>
         <%= text_field :user , :email ,size: 25 , id: "modal-body" %>
+        <%= hidden_field_tag :user_id , "" , id: "modal-hidden" %>
         <%= submit_tag "更新" %>
       <% end %>
     </div>

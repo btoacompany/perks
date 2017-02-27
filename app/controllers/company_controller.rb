@@ -438,14 +438,13 @@ class CompanyController < ApplicationController
   end
 
   def update_email
-    # if params[:id]
-      # @user = User.find(params[:id])
-      @user = User.find(122)
-      # if @user
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+      if @user
         @user.email = params[:user][:email]
         @user.save
-    #   end
-    # end
+      end
+    end
     redirect_to '/company/employees'
   end
 end
