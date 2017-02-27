@@ -28,8 +28,8 @@ every 1.day, at: '00:00 am' do
   runner "CompanyController.reset_point"
 end
 
-every 1.minute do
-  runner "User.reset_point"
-end
+# every 1.minute do
+#   runner "CompanyController.reset_point"
+# end
 
 # Learn more: http://github.com/javan/whenever

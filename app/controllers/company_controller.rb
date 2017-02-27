@@ -421,4 +421,14 @@ class CompanyController < ApplicationController
     end
     end
   end
+
+  def self.reset_point
+    reset_date = Date.yesterday
+    company_ids = Company.where(reset_point_date: reset_date).pluck(:id)
+    company_ids.each do |id|
+      users = User.where(company_id: id)
+      users.update_all(in_points: 0)
+      users.update_all(out_points: 0)
+    end
+  end
 end
