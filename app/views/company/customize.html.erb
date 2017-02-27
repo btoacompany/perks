@@ -30,6 +30,16 @@
     </div>
 
     <p>ポイントに関して</p>
+
+    <div class="fixed_point_setting clearfix">
+      <dt class="customize_left">ポイントをリセットする日時を設定しますか。</dt>
+      <dd class="customize_right">
+        <div class="time_select" >
+          期間： <input type="text" id="datepicker_set_time" name="reset_point_date" size="15" value=<%= @start_time %>>
+        </div>
+      </dd>
+    </div>
+
     <div class="fixed_point_setting clearfix">
       <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。</dt>
       <dd class="customize_right">
@@ -53,13 +63,10 @@
         <textarea id="allowed_ips" name="allowed_ips" <% if @company.ip_limit_flag == 0 %> style="display: none;"<% end %> placeholder="IPアドレス" cols="40" rows="5" ><%= @company.allowed_ips %></textarea> 
       </dd>
     </div>
+
   </dl>
   <input type="submit" class="btn btn_submit" value="送信" style="width:80px;height:30px"/>
   <% end %>
-
-
-
-
 
 </div><!-- admin_contents -->
 </div><!-- admin_wrapper -->
@@ -72,6 +79,9 @@
 
   $('input[name="ip_address_setting"]').change(function() {
     $("#allowed_ips").toggle();
+  });
+  $(function() {
+    $("#datepicker_set_time").datepicker();
   });
 
 </script>

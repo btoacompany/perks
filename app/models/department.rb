@@ -33,23 +33,31 @@ class Department < ActiveRecord::Base
   end
 
   def self.create_department_and_team_by_csv(file , current_user)
+    logger.debug("OK")
     CSV.foreach(file.path , headers: true) do |row_data|
+      logger.debug("OK")
       # create department unless department is not presence
       department = Department.find_by(dep_name: row_data["department"])
       unless department
+        logger.debug("OK")
         department = Department.new
         department.dep_name = row_data["department"]
+        logger.debug("=====")
+        # logger.debug("#{department.dep_name}")
+        logger.debug("---------")
         department.save!
       end
       # create team unless team is not presence
       team = Team.find_by(team_name: row_data["team"])
       unless team
         team = Team.new
+                logger.debug("OK")
         team.department_id = department.id
         team.company_id = current_user.company_id
         team.manager_id = 0
         team.member_ids = 0
         team.team_name = row_data["team"]
+        logger.debug("#{team.errors.messages}")
         team.save!
       end
     end
