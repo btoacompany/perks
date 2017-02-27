@@ -4,7 +4,7 @@ require 'securerandom'
 class CompanyController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
   before_filter :init_url, :validate_user
-  before_action :ip_address_limit
+  before_action :ip_address_limit, :except => [:login, :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
 
   def init
     if session[:email].present? || cookies[:email].present?
@@ -125,10 +125,17 @@ class CompanyController < ApplicationController
 
   def customize_update
     @company = Company.find(@id)
+    @company.invite_email_flag = params[:invite_email_setting]
     @company.point_fixed_flag = params[:fixed_point_setting]
     @company.fixed_point = params[:fixed_point]
     @company.ip_limit_flag = params[:ip_address_setting]
-    @company.allowed_ips = params[:allowed_ips]
+    if params[:ip_address_setting].to_i == 1
+      if params[:allowed_ips].empty?
+        @company.allowed_ips = @ip
+      else
+        @company.allowed_ips = params[:allowed_ips]
+      end
+    end
     @company.save
     redirect_to '/company/customize'
   end
@@ -411,10 +418,10 @@ class CompanyController < ApplicationController
 
   def ip_address_limit
     @company = Company.find(@id)
-    ip = request.remote_ip
+    @ip = request.remote_ip
     allowed_ips = @company.allowed_ips.split(",")
     if @company.ip_limit_flag == 1
-    unless allowed_ips.include?(ip.to_s)
+    unless allowed_ips.include?(@ip.to_s)
       redirect_to "/"
     end
     end

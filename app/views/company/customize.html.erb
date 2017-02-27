@@ -17,6 +17,18 @@
 <h3>カスタマイズを行う</h3><br>
   <%= form_tag( "/company/customize/update", method: "post") do %>
   <dl class="customize_box">
+
+    <p>社員登録に関して</p>
+    <div class="fixed_point_setting clearfix">
+      <dt class="customize_left">社員登録をした際に、Prizyに招待されたことを自動メールで送信しますか？</dt>
+      <dd class="customize_right">
+        <input type="radio" name="invite_email_setting" id="invite_email_setting0" value="0" <% if @company.invite_email_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+        <label for="invite_email_setting0" class="switch-off">しない</label>
+        <input type="radio" id="invite_email_setting1" name="invite_email_setting" value="1" <% if @company.invite_email_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
+        <label for="invite_email_setting1" class="switch-on">する</label>
+      </dd>
+    </div>
+
     <p>ポイントに関して</p>
     <div class="fixed_point_setting clearfix">
       <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。</dt>
@@ -29,6 +41,7 @@
       </dd>
     </div>
 
+    <p>セキュリティに関して</p>
     <div class="fixed_point_setting clearfix">
       <dt class="customize_left">管理画面へのアクセスをIPアドレスで制限しますか。</dt>
       <dd class="customize_right">
@@ -38,9 +51,7 @@
         <label for="ip_address_setting1" class="switch-on">する</label>
         <div class="clearfix"></div>
         <textarea id="allowed_ips" name="allowed_ips" <% if @company.ip_limit_flag == 0 %> style="display: none;"<% end %> placeholder="IPアドレス" cols="40" rows="5" ><%= @company.allowed_ips %></textarea> 
-        <div class="clearfix"></div>
       </dd>
-      <div class="clearfix"></div>
     </div>
   </dl>
   <input type="submit" class="btn btn_submit" value="送信" style="width:80px;height:30px"/>

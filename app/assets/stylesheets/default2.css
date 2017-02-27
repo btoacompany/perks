@@ -2062,12 +2062,12 @@ table.admin_table td textarea{
     transition: .2s;
   }
 
-  input[name="fixed_point_setting"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
+  input[name="invite_email_setting"]:checked + .switch-on,input[name="fixed_point_setting"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
     background-color: #ff8d07;
     color: #fff;
   }
 
-  input[name="fixed_point_setting"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
+  input[name="invite_email_setting"]:checked + .switch-off ,input[name="fixed_point_setting"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
     background-color: #C30;
     color: #fff;
   }
