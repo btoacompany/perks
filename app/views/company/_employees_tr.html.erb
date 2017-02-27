@@ -17,4 +17,23 @@
   <td align="center">
     <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
   </td>
+  <td align="center">
+    <!-- button -->
+    <button data-id="<%= item[:id] %>" class="btn btn-sm modal-btn btn-primary" type="button">編集</button>
+
+<!-- Modal -->
+    <div id="my-modal" title="メールアドレス変更" style="display:none;">
+      <%= form_tag ({controller: :company , action: :update_email}) do %>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-label" />
+        </div>
+        <div class="modal-body" id="modal-body">
+        </div>
+        <%= hidden_field :user , :id %>
+        <%= text_field :user , :email ,size: 25 , id: "modal-body" %>
+        <%= submit_tag "更新" %>
+      <% end %>
+    </div>
+  </td>
 </tr>
+

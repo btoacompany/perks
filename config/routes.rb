@@ -65,6 +65,8 @@ Rails.application.routes.draw do
   post	'/company/employees/make_user'	    => 'company#make_user'
   post	'/company/employees/make_manager'   => 'company#make_manager'
   post	'/company/employees/make_non_manager' => 'company#make_non_manager'
+  get '/company/employees/edit_email' => 'company#edit_email'
+  post '/company/employees/update' => 'company#update_email'
 
   # users
   get	'/user'			    => 'users#index'

@@ -156,4 +156,29 @@ $(document).ready(function () {
   $("#tab-container").easytabs();
 });
 
+$(".edit_email").click(function() {
+  window.location = "/company/employees/edit_email";
+});
+
+$("#open-sample-dialog").on("click", function(){
+  $("#sample-dialog").dialog();
+});
+
+// update email
+$(document).on('click','.modal-btn', function() {
+  $.ajax({ type: 'GET',
+    url: '/company/employees/edit_email',
+    data: {
+    id: $(this).attr('data-id')
+  },
+  success: function(data) {
+    $('#modal-label').html(data['name']);
+    $('#modal-body').html(data['email']);
+    //ダイアログを表示する
+    $('#my-modal').dialog();
+  },
+  error: function(data) {
+    alert('error');
+    }});
+  });
 </script>
