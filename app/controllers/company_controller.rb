@@ -421,7 +421,7 @@ class CompanyController < ApplicationController
   def ip_address_limit
     @company = Company.find(@id)
     @ip = request.remote_ip
-    allowed_ips = @company.allowed_ips.split(",")
+    allowed_ips = @company.allowed_ips.split(",") if @company.allowed_ips.present?
     if @company.ip_limit_flag == 1
     unless allowed_ips.include?(@ip.to_s)
       redirect_to "/"
