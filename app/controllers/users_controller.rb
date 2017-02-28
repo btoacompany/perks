@@ -480,7 +480,7 @@ class UsersController < ApplicationController
 
     redirect_page("users", "index")
   end
-=begin
+
   def ios_push_notif(id, message)
     devices = IosToken.where(:user_id => id)
 
@@ -505,7 +505,7 @@ class UsersController < ApplicationController
       )
     end
   end
-=end
+
   def profile
     @user = User.find(@id)
 
