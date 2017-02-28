@@ -102,6 +102,8 @@ class User < ActiveRecord::Base
           user.verified = 0
           user.password = SecureRandom.hex(4)
         end
+        user.salt = BCrypt::Engine.generate_salt
+        user.password = BCrypt::Engine.hash_secret(user.password, user.salt)
         user.company_id = current_user.company_id
         user.birthday = row_data["birthday"]
         row_data["gender"] === "1" ? user.gender = 1 : user.gender = 0
