@@ -197,12 +197,15 @@ class CompanyController < ApplicationController
     @team_exist = 1
     end
     @users = User.where(:company_id => @id, :delete_flag => 0)
-    @user = User.new
-    @department = Department.new
   end
 
-  def add_employees
-    #do nothing
+  def register_employees
+    @user = User.new
+    @department = Department.new
+    @years = Util.years
+    @b_year   = 0
+    @b_month  = 0
+    @b_day    = 0
   end
 
   def import_users_by_csv
@@ -257,6 +260,53 @@ class CompanyController < ApplicationController
     send_data(data , filename: "team" + "#{format_datetime}" + '.csv',type: 'csv')
   end
 
+  def register_employees_complete
+    company = Company.find(@id)
+    existing_emails = User.uniq.pluck(:email)
+    @duplicate_emails = []
+    if existing_emails.include?(params[:email])
+      @duplicate_emails << params[:email]
+    else
+      if params[:password].present?
+        temp_password = params[:password]
+      else
+        temp_password = SecureRandom.hex(4)
+      end
+      name = params[:email].split("@")[0]
+      b_year  = params[:b_year]
+      b_month = params[:b_month]
+      b_day   = params[:b_day]
+      @data = {
+        :company_id  => @id,
+        :company_name  => company.name,
+        :company_owner=> company.owner,
+        :name    => name,
+        :lastname => params[:lastname],
+        :firstname => params[:firstname],
+        :email  => params[:email],
+        :password  => temp_password,
+        :job_title => params[:job_title],
+        :gender => params[:gender].to_i,
+        :birthday => DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d"),
+        :img_src  => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+        :prizy_url  => @prizy_url + "/login"
+      }
+      @user = User.new
+      @user.save_record(@data)
+    end
+
+    if @duplicate_emails.present?
+      flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。"
+    end
+    
+    redirect_to "/company/employees"
+  end
+
+  def add_employees
+    @company = Company.find(@id)
+    redirect_to "/company/employees" if @company.invite_email_flag == 1
+  end
+
   def add_employees_complete
     emails = params[:emails].split("\r\n")
     emails.map{ |s| s.strip }
@@ -287,7 +337,7 @@ class CompanyController < ApplicationController
     end
 
     if @duplicate_emails.present?
-      flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。<br>下記のリストに表示されていない場合、メールアドレが変更・削除された恐れがあります。<br>再度追加する場合はPrizy運営事務局にご連絡ください。"
+      flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。"
     end
     redirect_to "/company/employees"
   end
