@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
         end
         user.company_id = current_user.company_id
         user.birthday = row_data["birthday"]
-        row_data["gender"] === "男" ? user.gender = 1 : user.gender = 0
+        row_data["gender"] === "1" ? user.gender = 1 : user.gender = 0
         user.save!
         # add user to team
         check_department = Department.find_by(dep_name: row_data["department"])
