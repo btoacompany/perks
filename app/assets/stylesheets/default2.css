@@ -2021,7 +2021,15 @@ table.admin_table td textarea{
   .customize_box{
     display: block;
   }
-  
+
+  .customize_box p{
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px;
+    background-color: #ff8d07;
+    color: white;
+  }
+
   .customize_box dt, .customize_box dd{
     float: left;
     font-size: 14px;
