@@ -1,5 +1,6 @@
 #coding:utf-8
 require 'securerandom'
+require 'csv'
 
 class CompanyController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
@@ -236,7 +237,6 @@ class CompanyController < ApplicationController
   end
 
   # TODO Refactoring
-  require 'csv'
   def export_csv_format_create_user
     headers = %w(No lastname firstname email password department team birthday gender manager)
     data = CSV.generate("", headers: headers ) do |csv|
@@ -244,7 +244,17 @@ class CompanyController < ApplicationController
     end
     datetime = Time.now
     format_datetime = datetime.strftime('%Y%m%d%H%M%S')
-    send_data(data , filename: "#{format_datetime}" + '.csv',type: 'text/csv')
+    send_data(data , filename: "user" + "#{format_datetime}" + '.csv',type: 'csv')
+  end
+
+  def export_csv_format_create_department_and_team
+    headers = %w(No department team)
+    data = CSV.generate("", headers: headers ) do |csv|
+      csv << headers
+    end
+    datetime = Time.now
+    format_datetime = datetime.strftime('%Y%m%d%H%M%S')
+    send_data(data , filename: "team" + "#{format_datetime}" + '.csv',type: 'csv')
   end
 
   def add_employees_complete

@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   post '/company/employees/import_users_by_csv'      => 'company#import_users_by_csv'
   post '/company/employees/create_department_and_team_by_csv' => 'company#create_department_and_team_by_csv'
   post '/company/employees/export_csv_format_create_user' => 'company#export_csv_format_create_user'
+  post '/company/employees/export_csv_format_create_department_and_team' => 'company#export_csv_format_create_department_and_team'
   get	'/company/rewards'		    => 'company#rewards'
   get	'/company/rewards/add'		    => 'company#add_rewards'
   post	'/company/rewards/add/complete'	    => 'company#add_rewards_complete'
