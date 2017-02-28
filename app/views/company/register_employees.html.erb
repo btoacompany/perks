@@ -1,0 +1,142 @@
+<div id="admin_wrapper">
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <li><%= link_to "会社情報", "/company/details" %></li>
+    <li class="admin_li"><%= link_to "カスタマイズ","/company/customize" %></li>
+    <li class="admin_li_checked"><%= link_to "社員情報","/company/employees" %></li>
+    <li><%= link_to "ギフト","/company/rewards" %></li>
+    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+    <li><%= link_to "Slack連携", "/integration/slack"%></li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
+
+<div id="admin_contents" class="c_align">
+<h3>部署登録・編集</h3><br>
+  <%= form_for @department , url: company_employees_create_department_and_team_by_csv_path(@department) , method: :post do |f| %>
+    <%= f.file_field :upload_file %>
+    <%= f.hidden_field :id %>
+    <%= f.submit "送信する" %>
+  <% end %><br/>
+  <p>部署登録用のフォーマットをダウンロードする</p><br/>
+  <%= button_to 'ダウンロード', company_employees_export_csv_format_create_department_and_team_path(format: 'csv') %>
+
+  <h3>CSVで社員を登録する</h3>
+  <%= form_for @user , url: company_employees_import_users_by_csv_path(@user) , method: :post do |f| %>
+    <%= f.file_field :upload_file %>
+    <%= f.hidden_field :id %>
+    <%= f.submit "送信する" %>
+  <% end %><br/>
+  <p>社員登録用のフォーマットをダウンロードする</p><br/>
+  <%= button_to 'ダウンロード', company_employees_export_csv_format_create_user_path(format: 'csv') %>
+
+
+<h3 class="c_align">社員を登録する</h3><br>
+<%= form_tag( "/company/employees/register/complete", method: "post", id: "login_form" ) do %>
+  <div class="toolbox center">
+    <table class="admin_table">
+      <tr>
+         <th scope="row">姓</th>
+         <td><input type="text" name="lastname" required /></td>
+      </tr>
+      <tr>
+         <th scope="row">名</th>
+         <td><input type="text" name="firstname" required /></td>
+      </tr>
+      <tr>
+        <th scope="row">メールアドレス</th>
+        <td><input type="text" name="email" required /></td>
+      </tr>
+      <tr>
+        <th scope="row">パスワード</th> 
+        <td><input type="button" value="パスワードを設定する" class="change_password_btn"/></td>
+      </tr>
+      <% if @company.invite_email_flag == 0 %>
+      <tr class="password">
+        <th scope="row">パスワード</th>
+        <td><input type="password" name="password" value="" id="passwd1" class="user_update_input" <% if @company.invite_email_flag == 1 %> required <% end %>/></td>
+      </tr>
+      <% end %>
+      <tr class="password">
+        <th scope="row">パスワード確認</th>
+        <td><input type="password" name="password" value="" id="passwd2" class="user_update_input" <% if @company.invite_email_flag == 1 %> required <% end %>/><br>
+        <span class="notice"></span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">役職</th> 
+        <td><input type="text" name="job_title" /></td>
+      </tr>
+      <tr>
+        <th scope="row">性別</th> 
+        <td><select name="gender">
+          <option value="0">男性</option>
+          <option value="1">女性</option>
+        </select></td>
+      </tr>
+      <tr>
+        <th scope="row">生年月日</th> 
+        <td>
+          <select name="b_year">
+            <% @years.reverse_each do | val | %>
+              <option value="<%= val %>" <% if @b_year==val %> selected <% end %>><%= val %></option>
+            <% end %>
+          </select> 年 
+          <select name="b_month">
+            <% (1..12).each do | val | %>
+              <option value="<%= val %>" <% if @b_month==val %> selected <% end %>><%= val %></option>
+            <% end %>
+          </select> 月 
+          <select name="b_day">
+            <% (1..31).each do | val | %>
+              <option value="<%= val %>" <% if @b_day==val %> selected <% end %>><%= val %></option>
+            <% end %>
+          </select> 日
+        </td>
+      </tr>
+    </table><br>
+    <p align="center">
+      <input type="button" value="戻る" class="btn btn_back" />
+      <input type="submit" value="送信" class="btn" />
+    </p>
+  </div><br><br>
+<% end %>
+
+
+
+</div> <!-- admin_contents -->
+</div> <!-- wrapper -->
+
+<script type="text/javascript">
+$(".btn_back").click(function() {
+  window.location = "/company/employees";
+});
+$('.setting_color').css('color','gray');
+</script>
+
+<script type="text/javascript">
+var passwd1 = document.getElementById("passwd1");
+var passwd2 = document.getElementById("passwd2");
+
+function validatePassword(){
+  if(passwd1.value != passwd2.value) {
+    $(".notice").text("パスワードに誤りがあります");
+  } else {
+    $(".notice").text("");
+  }
+}
+passwd1.onchange = validatePassword;
+passwd2.onkeyup = validatePassword;
+
+$(document).ready(function() {
+  $(".password").hide();
+});
+
+$(".change_password_btn").click(function() {
+  $(".password input").val("");
+  $(".notice").text("");
+  $(".password").toggle();
+});
+
+</script>

@@ -505,7 +505,7 @@ class UsersController < ApplicationController
       )
     end
   end
-  
+
   def profile
     @user = User.find(@id)
 
