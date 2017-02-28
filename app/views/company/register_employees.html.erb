@@ -52,13 +52,15 @@
         <th scope="row">パスワード</th> 
         <td><input type="button" value="パスワードを設定する" class="change_password_btn"/></td>
       </tr>
+      <% if @company.invite_email_flag == 0 %>
       <tr class="password">
         <th scope="row">パスワード</th>
-        <td><input type="password" name="password" value="" id="passwd1" class="user_update_input"/></td>
+        <td><input type="password" name="password" value="" id="passwd1" class="user_update_input" <% if @company.invite_email_flag == 1 %> required <% end %>/></td>
       </tr>
+      <% end %>
       <tr class="password">
         <th scope="row">パスワード確認</th>
-        <td><input type="password" name="password" value="" id="passwd2" class="user_update_input"/><br>
+        <td><input type="password" name="password" value="" id="passwd2" class="user_update_input" <% if @company.invite_email_flag == 1 %> required <% end %>/><br>
         <span class="notice"></span>
         </td>
       </tr>

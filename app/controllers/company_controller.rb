@@ -298,7 +298,7 @@ class CompanyController < ApplicationController
     if @duplicate_emails.present?
       flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。"
     end
-    
+
     redirect_to "/company/employees"
   end
 
