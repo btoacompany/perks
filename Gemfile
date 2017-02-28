@@ -66,8 +66,8 @@ gem 'time_diff'
 gem 'will_paginate', '~> 3.1.0'
 gem 'omniauth-facebook', '~> 1.4.1'
 gem "koala", "~> 1.10.0rc"
-#gem 'slack-api'
-#gem 'slack-ruby-client'
+gem 'slack-api'
+gem 'slack-ruby-client'
 gem 'slack-notifier'
 gem 'omniauth-slack'
 gem 'whenever', :require => false

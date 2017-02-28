@@ -18,7 +18,3 @@
 
 # Ignore application configuration
 /config/application.yml
-/Gemfile
-/Gemfile.lock
-/app/controller/user_controller.rb
-/backup/*
