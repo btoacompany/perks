@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   get '/company/customize' => 'company#customize'
   post '/company/customize/update' => 'company#customize_update'
   get	'/company/employees'		    => 'company#employees'
+  post '/company/employees' => 'company#employees'
   post  '/company/employees/edit/complete'  => 'company#edit_employees_complete'
   post  '/company/employees/delete'     => 'company#delete_employees'
   get '/company/employees/register' => 'company#register_employees'
