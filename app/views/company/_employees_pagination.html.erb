@@ -1,0 +1,17 @@
+<div class="pagination clearfix">
+  <% if @total_pages > 8 %>
+    <% unless @page_now == 1 %>
+      <a href="<%= "#{@prizy_url}/company/employees?page=1" %>">最初</a>
+      <a href="<%= "#{@prizy_url}/company/employees?page=#{@previous_page}" %>">前へ</a>
+    <% end %>
+    <a href="<%= "#{@prizy_url}/company/employees?page=#{@page_now}" %>"><%= @page_now %></a>
+    <% unless @page_now == @total_pages %>
+      <a href="<%= "#{@prizy_url}/company/employees?page=#{@next_page}" %>">次へ</a>
+      <a href="<%= "#{@prizy_url}/company/employees?page=#{@total_pages}" %>">最後</a>
+    <% end %>
+    <% else %>
+    <% (1..@total_pages).each do | i | %>
+      <a href="<%= "#{@prizy_url}/company/employees?page=#{i}" %>"><%= i %></a>
+    <% end %>
+  <% end %>
+</div><br>
