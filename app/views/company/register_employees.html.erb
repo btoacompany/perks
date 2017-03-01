@@ -22,6 +22,10 @@
   <p>部署登録用のフォーマットをダウンロードする</p><br/>
   <%= button_to 'ダウンロード', company_employees_export_csv_format_create_department_and_team_path(format: 'csv') %>
 
+  <h3 class="c_align">招待状をリンクで送る</h3><br>
+  <p>下記、招待リンクをシェアしてください。</p>
+  <p class="c_align"><a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
+
   <h3>CSVで社員を登録する</h3>
   <%= form_for @user , url: company_employees_import_users_by_csv_path(@user) , method: :post do |f| %>
     <%= f.file_field :upload_file %>

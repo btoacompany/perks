@@ -44,7 +44,9 @@
       	<%= render 'employees_th' %>
         <% team[:members].each do |item| %>
           <% @render_user = User.find(item) %>
+          <%if @render_user.delete_flag == 0 %>
           <%= render 'employees_tr', item: @render_user %>
+          <% end %>
         <% end %>
         </table>
       </div>
