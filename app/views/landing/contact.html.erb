@@ -7,7 +7,8 @@
 <div class="contact_top">
 <div class="terms_wrapper" style="text-align:center;">
 <h2>お問い合わせ</h2>
-
+<p class="c_align notice">
+<% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
 <%= form_tag("/contact/complete") do %>
   <dl>
     <div class="contact_wrapper">
@@ -34,7 +35,7 @@
       <dt class="contact_float_left">メールアドレス</dt>
       <dt class="contact_required">必須</dt>
       <dt class="contact_float_right">
-        <input type="text" value="" name="email" required class="contact_input"/>
+        <input type="text" id="mail_address" value="" name="email" required class="contact_input"/>
       </dt>
       <div class="clearfix"></div>
     </div>
@@ -44,7 +45,7 @@
       <dt class="contact_float_left">お問い合わせ内容</dt>
       <dt class="contact_required">必須</dt>
       <dt class="contact_float_right">
-        <textarea name="text" class="contact_textarea"/></textarea>
+        <textarea name="text" class="contact_textarea" required="required"/></textarea>
       </dt>
       <div class="landing_clearfix"></div>
     </div>
@@ -69,5 +70,17 @@
   });
 
   $("#landing_underline").css("border-bottom", "2px solid white");
+
+var mail_address = document.getElementById("mail_address");
+
+$('.user_update_submit').click(function(){
+  input = $("#mail_address").val();
+  if (input.match(/@/)) {
+  } else {
+    $(".notice").text("メールアドレスに「@」がありません。");
+    return false;
+  }
+})
+
 
 </script>

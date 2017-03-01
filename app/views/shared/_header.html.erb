@@ -10,16 +10,10 @@
     <% if session[:id] || cookies[:id] %>
   <div class="menu">
     <p align="center">
-    <% if @current_user.present? %>
-      <% if @current_user.admin == 1 %>
-        <a href="/company/details">管理画面</a>
-      <% end %>
-    <% end %>
-    <a href="/user">タイムライン</a>
-    <a href="/profile">マイページ</a>
-    <a href="/rewards">ギフト</a> 
-    <a href="/bonus">ボーナス</a> 
-    <a href="/logout">ログアウト</a>
+      <a href="/">タイムライン</a>
+      <a href="/company/details" class="setting_color">基本設定</a>
+      <a href="/analytics">アナリティクス</a>
+      <a href="/logout">ログアウト</a>
     </p>
   </div>
 <% end %>
@@ -40,10 +34,10 @@
     <p align="center">
     <% if @current_user.present? %>
       <% if @current_user.admin == 1 %>
-        <a href="/">Timeline</a>
-        <a href="/company/details" class="setting_color">Settings</a>
-        <a href="/analytics">Analytics</a>
-        <a href="/logout">Logout</a>
+        <a href="/">タイムライン</a>
+        <a href="/company/details" class="setting_color">基本設定</a>
+        <a href="/analytics">アナリティクス</a>
+        <a href="/logout">ログアウト</a>
       <% end %>
     <% end %>
     </p>

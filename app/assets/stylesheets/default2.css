@@ -203,9 +203,16 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 #header .menu a, #admin_header .menu a {
   text-decoration: none;
   color: #fff;
-  width: 80px;
   font-weight: bold;
   display: inline-block;
+}
+
+#header .menu a{
+  width: 80px;
+}
+
+#admin_header .menu a{
+  width: 100px;
 }
 
 #header .menu a:hover, #admin_header .menu a:hover{
@@ -474,6 +481,7 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 
 .details p {
   line-height: 1.5em;
+  word-wrap: break-word;
 }
 
 /* --- TOP PAGE --- */
@@ -1527,7 +1535,6 @@ hr.style-two {
 }
 
 #item_list .item .name {
-  text-transform: uppercase;
   color: #ff8d07;
 }
 
