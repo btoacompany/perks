@@ -14,6 +14,7 @@
 
 <div id="admin_contents" class="c_align">
   <h3>社員登録・編集</h3><br>
+  <p class="c_align">招待リンク: <a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
   <a href="/company/employees/register" class="a_btncmn radius5">+ 社員を登録する</a>
   <% if @company.invite_email_flag == 0 %> 
     <a href="/company/employees/add" class="a_btncmn radius5">+ 社員に登録してもらう</a>
@@ -24,34 +25,49 @@
 <%if @team_exist == 0 %>
   <!-- team -->
   <div id="tab-container" class="tab-container">
-  <ul id="tab-menu" class="etabs">
-    <% @teams.each do |team| %>
-    <li class="tab">
-      <a href="#<%= team[:team_id] %>" ><%= team[:team_name] %></a>
-    </li>
-    <% end %>
-  </ul>
-  <!-- team -->
+  <%= form_tag({:controller => 'company', :action => 'employees'}) do %>
+  <select name="team_selected_id">
+  <% @teams.each do |team| %>
+    <option value=<%= team[:team_id] %>>
+      <%= team[:team_name] %>
+    </option>
+  <% end %>
+  </select>
+  <input type="submit" value="送信">
+  <% end %>
+
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
   <div class="toolbox">
     <% if @users.count == 0 %>
       <p><i>社員を追加してください</i></p><br>
     <% else %>
       <!-- team -->
+      <% if @tsi.present? %>
       <% @teams.each do |team| %>
-      <div id="<%= team[:team_id] %>">
-      <table class="tbl_tools" border="1">
-      	<%= render 'employees_th' %>
-        <% team[:members].each do |item| %>
-          <% @render_user = User.find(item) %>
-          <%if @render_user.delete_flag == 0 %>
-          <%= render 'employees_tr', item: @render_user %>
+      <% if team[:team_id] == @tsi %>
+        <div id="<%= team[:team_id] %>" class="team_hidden">
+        <table class="tbl_tools" border="1">
+        	<%= render 'employees_th' %>
+          <% team[:members].each do |item| %>
+            <% @render_user = User.find(item) %>
+            <%if @render_user.delete_flag == 0 %>
+            <%= render 'employees_tr', item: @render_user %>
+            <% end %>
           <% end %>
-        <% end %>
-        </table>
-      </div>
+          </table>
+        </div>
       <% end %>
-    <!-- team -->
+      <% end %>
+      <% else %>
+        <table class="tbl_tools" border="1">
+          <%= render 'employees_th' %>
+          <% @users.each do | item | %>
+            <%= render 'employees_tr', item: item %>
+          <% end %>
+          </table><br>
+          <%= render 'employees_pagination' %>
+      <% end %>
+      <!-- team -->
     <% end %>
     <p align="center">
       <input type="button" class="btn btn_back" style="width:80px;height:30px" value="戻る" />
@@ -60,11 +76,9 @@
 </div> <!-- toolbox -->
 </div> <!-- tabcontainer -->
 
-
 <% else %>
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
   <div class="toolbox">
-    <p class="c_align">招待リンク: <a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
     <% if @users.count == 0 %>
       <p><i>社員を追加してください</i></p><br>
     <% else %>
@@ -74,6 +88,7 @@
     <%= render 'employees_tr', item: item %>
   <% end %>
       </table><br>
+      <%= render 'employees_pagination' %>
     <% end %>
     <p align="center">
       <input type="button" class="btn btn_back" style="width:80px;height:30px" value="戻る" />

@@ -2043,6 +2043,7 @@ table.admin_table td textarea{
   .fixed_point {
     width: 80px;
     height: 34px;
+    margin: 10px;
   }
 
   .fixed_point, #allowed_ips{
@@ -2079,8 +2080,6 @@ table.admin_table td textarea{
     background-color: #C30;
     color: #fff;
   }
-
-  
 
 }
 
