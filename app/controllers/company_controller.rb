@@ -194,7 +194,7 @@ class CompanyController < ApplicationController
       }
       @teams << non_team
       if params[:team_selected_id].present?
-        @tsi = params[:team_selected_id].to_i
+        @team_selected_id = params[:team_selected_id].to_i
       end
     else
       @team_exist = 1

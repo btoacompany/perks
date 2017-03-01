@@ -42,9 +42,9 @@
       <p><i>社員を追加してください</i></p><br>
     <% else %>
       <!-- team -->
-      <% if @tsi.present? %>
+      <% if @team_selected_id.present? %>
       <% @teams.each do |team| %>
-      <% if team[:team_id] == @tsi %>
+      <% if team[:team_id] == @team_selected_id %>
         <div id="<%= team[:team_id] %>" class="team_hidden">
         <table class="tbl_tools" border="1">
         	<%= render 'employees_th' %>
