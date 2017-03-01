@@ -515,7 +515,11 @@ $(".btn_give").click(function() {
   isTag = input.match(/\#[^\s|　]+/);
   
   if(dataReceive == null || !isPoint ) {
+    <% if @company.point_fixed_flag == 0 %>
     $("span.notice").text("投稿に不備があります。(誰に贈るのか、ポイント数が必須です。)");
+    <% else %>
+    $("span.notice").text("投稿に不備があります。(誰に贈るのか入力してください。)");
+    <% end %>
     return false;
   } 
 });

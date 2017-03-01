@@ -36,7 +36,7 @@
 	  </tr>
 	  <% @rewards.each do | item | %>
 	  <tr class="item_<%= item.id %>">
-	    <td><%= item.create_time.strftime("%Y-%m-%d %H:%M:%S") %></td>
+	    <td><%= item.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
 	    <% if item.reward_id? && item.reward_id != 0 %>
 	      <td><%= item.reward.title %></td>
 	      <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
@@ -70,7 +70,7 @@
 	  </tr>
 	  <% @rewards_accepted.each do | item | %>
 	  <tr class="item_<%= item.id %>">
-	    <td><%= item.update_time.strftime("%Y-%m-%d %H:%M:%S") %></td>
+	    <td><%= item.update_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
 	    <% if item.reward_id? && item.reward_id != 0 %>
 	      <td><%= item.reward.title %></td>
 	      <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
@@ -100,7 +100,7 @@
 	  </tr>
 	  <% @rewards_rejected.each do | item | %>
 	  <tr class="item_<%= item.id %>">
-	    <td><%= item.update_time.strftime("%Y-%m-%d %H:%M:%S") %></td>
+	    <td><%= item.update_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
 	    <% if item.reward_id? && item.reward_id != 0 %>
 	      <td><%= item.reward.title %></td>
 	      <td><%= number_with_delimiter(item.reward.points, :delimiter => ',') %></td>
