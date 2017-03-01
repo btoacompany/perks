@@ -27,7 +27,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="modal-label" />
         </div>
-        <%= text_field :user , :email ,size: 25 , id: "modal-body" %>
+        <%= text_field :user , :email ,size: 25 , id: "modal-body" , :required => true %>
         <%= hidden_field_tag :user_id , "" , id: "modal-hidden" %>
         <%= submit_tag "更新" %>
       <% end %>
