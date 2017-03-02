@@ -6,7 +6,7 @@
     <li class="admin_li_checked"><%= link_to "社員情報","/company/employees" %></li>
     <li><%= link_to "ギフト","/company/rewards" %></li>
     <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
-    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+<!--     <li><%= link_to "特別ボーナス","/company/bonus" %></li> -->
     <li><%= link_to "Slack連携", "/integration/slack"%></li>
     <div class="clearfix"></div>
   </ul>
@@ -37,7 +37,7 @@
 
 
 <h3 class="c_align">社員を登録する</h3><br>
-<%= form_tag( "/company/employees/register/complete", method: "post", id: "login_form" ) do %>
+<%= form_tag("/company/employees/register/complete", method: "post", id: "login_form") do %>
   <div class="toolbox center">
     <table class="admin_table">
       <tr>
@@ -50,21 +50,21 @@
       </tr>
       <tr>
         <th scope="row">メールアドレス</th>
-        <td><input type="text" name="email" required /></td>
+        <td><input type="text" name="email" autocomplete="new-email" required /></td>
       </tr>
+      <% unless @company.invite_email_flag == 1 %>
       <tr>
-        <th scope="row">パスワード</th> 
+      <th scope="row"><span class="password_label">パスワード</span></th> 
         <td><input type="button" value="パスワードを設定する" class="change_password_btn"/></td>
-      </tr>
-      <% if @company.invite_email_flag == 0 %>
-      <tr class="password">
-        <th scope="row">パスワード</th>
-        <td><input type="password" name="password" value="" id="passwd1" class="user_update_input" <% if @company.invite_email_flag == 1 %> required <% end %>/></td>
       </tr>
       <% end %>
       <tr class="password">
+        <th scope="row">パスワード入力</th>
+        <td><input type="password" name="password" value="" id="passwd1" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/></td>
+      </tr>
+      <tr class="password">
         <th scope="row">パスワード確認</th>
-        <td><input type="password" name="password" value="" id="passwd2" class="user_update_input" <% if @company.invite_email_flag == 1 %> required <% end %>/><br>
+        <td><input type="password" name="password" value="" id="passwd2" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/><br>
         <span class="notice"></span>
         </td>
       </tr>
@@ -74,10 +74,10 @@
       </tr>
       <tr>
         <th scope="row">性別</th> 
-        <td><select name="gender">
-          <option value="0">男性</option>
-          <option value="1">女性</option>
-        </select></td>
+        <td>
+          <input type="radio" name="gender" value="0" style="width: 20px; height: 13px;" checked>男性
+          <input type="radio" name="gender" value="1" style="width: 20px; height: 13px;">女性</option>
+        </td>
       </tr>
       <tr>
         <th scope="row">生年月日</th> 
@@ -130,16 +130,19 @@ function validatePassword(){
     $(".notice").text("");
   }
 }
-passwd1.onchange = validatePassword;
-passwd2.onkeyup = validatePassword;
 
 $(document).ready(function() {
+  <% unless @company.invite_email_flag == 1 %>
   $(".password").hide();
+  <% end %>
+  passwd1.onchange = validatePassword;
+  passwd2.onkeyup = validatePassword;
 });
 
 $(".change_password_btn").click(function() {
   $(".password input").val("");
   $(".notice").text("");
+  $(".password_label").toggle();
   $(".password").toggle();
 });
 

@@ -6,7 +6,7 @@
     <li><%= link_to "社員情報","/company/employees" %></li>
     <li><%= link_to "ギフト","/company/rewards" %></li>
     <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
-    <li class="admin_li_checked"><%= link_to "特別ボーナス","/company/bonus" %></li>
+<!--     <li class="admin_li_checked"><%= link_to "特別ボーナス","/company/bonus" %></li> -->
     <li><%= link_to "Slack連携", "/integration/slack"%></li>
     <div class="clearfix"></div>
   </ul>
@@ -38,9 +38,6 @@
     </table><br>
     </div>
   <% end %>
-  <p align="center">
-    <input type="button" value="戻る" class="btn_back btn btn_bottom" style="width:80px;height:30px" />
-  </p>
 </div> <!-- admin_contents -->
 </div> <!-- container -->
 </div> <!-- wrapper -->
@@ -62,8 +59,5 @@ $('.edit_item').click(function() {
   window.location.href = "/company/bonus/edit/"+item_id; //redirect to assigned url
 });
 
-$(".btn_back").click(function() {
-  window.location = "/company/details";
-});
 $('.setting_color').css('color','gray');
 </script>

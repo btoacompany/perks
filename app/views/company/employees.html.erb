@@ -6,7 +6,7 @@
     <li class="admin_li_checked"><%= link_to "社員情報","/company/employees" %></li>
     <li><%= link_to "ギフト","/company/rewards" %></li>
     <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
-    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+<!--     <li><%= link_to "特別ボーナス","/company/bonus" %></li> -->
     <li><%= link_to "Slack連携", "/integration/slack"%></li>
     <div class="clearfix"></div>
   </ul>
@@ -26,14 +26,17 @@
   <!-- team -->
   <div id="tab-container" class="tab-container">
   <%= form_tag({:controller => 'company', :action => 'employees'}) do %>
-  <select name="team_selected_id">
+  <select id="team_selected_id" name="team_selected_id">
+  <% unless @team_selected_id.present? %>
+    <option value="00">チームを選択してください</option>
+  <% end %> 
   <% @teams.each do |team| %>
-    <option value=<%= team[:team_id] %>>
+    <option value=<%= team[:team_id] %> <% if team[:team_id] == @team_selected_id %> selected <% end %>>
       <%= team[:team_name] %>
     </option>
   <% end %>
   </select>
-  <input type="submit" value="送信">
+  <input type="submit" value="表示" class="team_select_submit">
   <% end %>
 
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
@@ -42,9 +45,9 @@
       <p><i>社員を追加してください</i></p><br>
     <% else %>
       <!-- team -->
-      <% if @tsi.present? %>
+      <% if @team_selected_id.present? %>
       <% @teams.each do |team| %>
-      <% if team[:team_id] == @tsi %>
+      <% if team[:team_id] == @team_selected_id %>
         <div id="<%= team[:team_id] %>" class="team_hidden">
         <table class="tbl_tools" border="1">
         	<%= render 'employees_th' %>
@@ -69,9 +72,6 @@
       <% end %>
       <!-- team -->
     <% end %>
-    <p align="center">
-      <input type="button" class="btn btn_back" style="width:80px;height:30px" value="戻る" />
-    </p>
   <br>
 </div> <!-- toolbox -->
 </div> <!-- tabcontainer -->
@@ -90,10 +90,6 @@
       </table><br>
       <%= render 'employees_pagination' %>
     <% end %>
-    <p align="center">
-      <input type="button" class="btn btn_back" style="width:80px;height:30px" value="戻る" />
-    </p>
-  </div><br>
 </div>
 <% end %>
 
@@ -152,9 +148,6 @@ $('.delete_item').click(function() {
   return false; //do nothing
 });
 
-$(".btn_back").click(function() {
-  window.location = "/company/details";
-});
 $('.setting_color').css('color','gray');
 
 $(document).ready(function () {
@@ -186,4 +179,13 @@ $(document).on('click','.modal-btn', function() {
     alert('error');
     }});
   });
+
+$('.team_select_submit').click(function(){
+  input = $("#team_selected_id").val();
+  if (input.match(/00/)) {
+    alert("チームを選択してください。");
+    return false;
+  }
+});
+
 </script>

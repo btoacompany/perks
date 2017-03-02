@@ -194,7 +194,7 @@ class CompanyController < ApplicationController
       }
       @teams << non_team
       if params[:team_selected_id].present?
-        @tsi = params[:team_selected_id].to_i
+        @team_selected_id = params[:team_selected_id].to_i
       end
     else
       @team_exist = 1
@@ -382,10 +382,12 @@ class CompanyController < ApplicationController
   def add_rewards_complete
     params[:company_id] = @id
     params[:img_src] = @s3_url + "/common/img_01.png"
-
     @user = Reward.new
-    @user.save_record(params)
-    redirect_to '/company/rewards'
+    if @user.save_record(params)
+      redirect_to '/company/rewards'
+    else
+      redirect_to '/company/rewards/add', notice: "ポイント数に不備があります。"
+    end
   end
 
   def edit_rewards

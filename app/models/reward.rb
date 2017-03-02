@@ -1,11 +1,11 @@
 #coding:utf-8
-
 class Reward < ActiveRecord::Base
   self.table_name = "rewards"
   belongs_to :company
-
   before_create :set_create_time
   before_update :set_update_time
+
+  validates :points , presence: true , numericality: { only_integer: true } , length: {minimum: 1 , maximum: 6}
 
   def save_record(params)
     if params[:img_src].present?

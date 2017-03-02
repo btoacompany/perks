@@ -52,7 +52,7 @@ class LandingController < ApplicationController
     @text = params[:text]
     ContactMailer.contact_mail(@company, @name, @email, @text).deliver
     ContactMailer.btoa_mail(@company, @name, @email, @text).deliver
-    redirect_to '/contact', notice: "お問い合わせいただきありがとうございます。内容を確認し、2営業日以内にご連絡いたします。"
+    redirect_to '/contact', notice: "お問い合わせいただきありがとうございます。内容を確認し、3営業日以内にご連絡いたします。"
   end
 
 end

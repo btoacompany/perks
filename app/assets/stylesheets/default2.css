@@ -2053,6 +2053,11 @@ table.admin_table td textarea{
     margin: 10px;
   }
 
+  .time_select{
+    width: 80px;
+    height: 34px;
+  }
+
   .fixed_point, #allowed_ips{
     font-size: 14px;
   }
@@ -2078,14 +2083,18 @@ table.admin_table td textarea{
     transition: .2s;
   }
 
-  input[name="invite_email_setting"]:checked + .switch-on,input[name="fixed_point_setting"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
+  input[name="invite_email_setting"]:checked + .switch-on,input[name="fixed_point_setting"]:checked + .switch-on,input[name="time_select"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
     background-color: #ff8d07;
     color: #fff;
   }
 
-  input[name="invite_email_setting"]:checked + .switch-off ,input[name="fixed_point_setting"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
+  input[name="invite_email_setting"]:checked + .switch-off, input[name="fixed_point_setting"]:checked + .switch-off, input[name="time_select"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
     background-color: #C30;
     color: #fff;
+  }
+
+  select[name="team_selected_id"]{
+    width: 200px;
   }
 
 }
