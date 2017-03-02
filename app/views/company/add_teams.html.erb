@@ -13,7 +13,7 @@
 </div>
 
 <div id="admin_contents" class="c_align">
-  <h3 align="center">ギフト追加</h3><br>
+  <h3 align="center">Teams追加</h3><br>
   <%= form_tag( "/company/teams/add/complete", method: "post", id: "new_form" ) do %>
   <div class="toolbox center">
   <table class="admin_table">
@@ -22,12 +22,26 @@
       <td><input type="text" name="team_name" value="" size="32" maxlength="25" required/></td>
     </tr>
     <tr>
-      <th>詳細</th>
-      <td><textarea name="description" rows="5" cols="25" maxlength="100" placeholder="100文字以内"></textarea></td>
+      <th>Manager</th>
+      <td align="left">
+	<select id="manager_id">
+	  <option value=""></option>
+	  <% @managers.each do | manager | %>
+	    <option value="<%= manager[:id] %>"><%= manager[:name] %></option>
+	  <% end %>
+	</select>
+      </td>
     </tr>
     <tr>
-      <th>ポイント</th>
-      <td><input type="number" name="points" value="" min="0" required/></td>
+      <th>Department</th>
+      <td align="left">
+	<select id="department_id">
+	  <option value=""></option>
+	  <% @departments.each do | dept | %>
+	    <option value="<%= dept[:id] %>"><%= dept[:dep_name] %></option>
+	  <% end %>
+	</select>
+      </td>
     </tr>
     </table>
   </div><br><br>

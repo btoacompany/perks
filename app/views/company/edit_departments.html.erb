@@ -13,14 +13,14 @@
 </div>
 
 <div id="admin_contents" class="c_align">
-  <h3 align="center">ギフト編集</h3><br>
+  <h3 align="center">Department編集</h3><br>
   <%= form_tag( "/company/departments/edit/complete", method: "post", id: "new_form" ) do %>
   <input type="hidden" name="department_id" value="<%= params[:department_id] %>"/>
   <div class="toolbox">
     <table class="admin_table">
       <tr>
 	<th>Dep Name</th>
-	<td><input type="text" name="dep_name" value="<%= @reward.title %>" size="32"  maxlength="25 "required /></td>
+	<td><input type="text" name="dep_name" value="<%= @department.dep_name %>" size="32"  maxlength="25 "required /></td>
       </tr>
     </table><br>
     <p>

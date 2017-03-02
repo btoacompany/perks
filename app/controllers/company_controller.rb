@@ -607,7 +607,7 @@ class CompanyController < ApplicationController
   def add_departments_complete
     params[:company_id] = @id
 
-    @res = Reward.new
+    @res = Department.new
     @res.save_record(params)
     redirect_to '/company/departments'
   end
@@ -625,7 +625,7 @@ class CompanyController < ApplicationController
   end
 
   def delete_departments
-    result =  Department.find(params[:id])
+    result =  Department.find(params[:department_id])
     result.delete_record
     redirect_to '/company/departments'
   end

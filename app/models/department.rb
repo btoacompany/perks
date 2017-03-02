@@ -9,6 +9,7 @@ class Department < ActiveRecord::Base
 
   def save_record(params)
     self.dep_name	= params[:dep_name]
+    self.company_id	= params[:company_id]
     self.save
   end
   

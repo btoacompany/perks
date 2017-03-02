@@ -13,10 +13,10 @@
 </div>
 
 <div id="admin_contents" class="c_align">
-  <h3>ギフトの登録・編集</h3><br>
+  <h3>Departmentの登録・編集</h3><br>
   <a href="/company/departments/add" class="a_btncmn radius5 add_bottom" style="font-size:12pt">+ 新規追加</a>
 
-  <% if @rewards.count == 0 %>
+  <% if @departments.count == 0 %>
     <p align="center"><i>Departmentが追加されていません</i></p><br>
   <% else %>
   <div class="toolbox center">
@@ -25,7 +25,7 @@
     <th>Department Name</th>
     <th class="c_align">編集・削除</th>
   </tr>
-      <% @rewards.each do | item | %>
+      <% @departments.each do | item | %>
       <tr class="item_<%= item[:id] %>">
 	<td style="width:250px;"><%= item[:dep_name] %></td>
 	<td class="c_align">
