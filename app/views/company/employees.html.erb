@@ -69,9 +69,6 @@
       <% end %>
       <!-- team -->
     <% end %>
-    <p align="center">
-      <input type="button" class="btn btn_back" style="width:80px;height:30px" value="戻る" />
-    </p>
   <br>
 </div> <!-- toolbox -->
 </div> <!-- tabcontainer -->
@@ -90,10 +87,6 @@
       </table><br>
       <%= render 'employees_pagination' %>
     <% end %>
-    <p align="center">
-      <input type="button" class="btn btn_back" style="width:80px;height:30px" value="戻る" />
-    </p>
-  </div><br>
 </div>
 <% end %>
 
@@ -152,9 +145,6 @@ $('.delete_item').click(function() {
   return false; //do nothing
 });
 
-$(".btn_back").click(function() {
-  window.location = "/company/details";
-});
 $('.setting_color').css('color','gray');
 
 $(document).ready(function () {
