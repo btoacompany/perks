@@ -6,7 +6,7 @@
     <li class="admin_li_checked"><%= link_to "社員情報","/company/employees" %></li>
     <li><%= link_to "ギフト","/company/rewards" %></li>
     <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
-    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+<!--     <li><%= link_to "特別ボーナス","/company/bonus" %></li> -->
     <li><%= link_to "Slack連携", "/integration/slack"%></li>
     <div class="clearfix"></div>
   </ul>
@@ -28,7 +28,7 @@
   <%= form_tag({:controller => 'company', :action => 'employees'}) do %>
   <select id="team_selected_id" name="team_selected_id">
   <% unless @team_selected_id.present? %>
-    <option values="0">チームを選択してください</option>
+    <option value="00">チームを選択してください</option>
   <% end %> 
   <% @teams.each do |team| %>
     <option value=<%= team[:team_id] %> <% if team[:team_id] == @team_selected_id %> selected <% end %>>
@@ -182,9 +182,8 @@ $(document).on('click','.modal-btn', function() {
 
 $('.team_select_submit').click(function(){
   input = $("#team_selected_id").val();
-  if (input.match(/0/)) {
-  } else {
-    alert("チームを選択してください。")
+  if (input.match(/00/)) {
+    alert("チームを選択してください。");
     return false;
   }
 });
