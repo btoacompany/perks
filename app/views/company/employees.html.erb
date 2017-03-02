@@ -26,14 +26,17 @@
   <!-- team -->
   <div id="tab-container" class="tab-container">
   <%= form_tag({:controller => 'company', :action => 'employees'}) do %>
-  <select name="team_selected_id">
+  <select id="team_selected_id" name="team_selected_id">
+  <% unless @team_selected_id.present? %>
+    <option values="0">チームを選択してください</option>
+  <% end %> 
   <% @teams.each do |team| %>
-    <option value=<%= team[:team_id] %>>
+    <option value=<%= team[:team_id] %> <% if team[:team_id] == @team_selected_id %> selected <% end %>>
       <%= team[:team_name] %>
     </option>
   <% end %>
   </select>
-  <input type="submit" value="表示">
+  <input type="submit" value="表示" class="team_select_submit">
   <% end %>
 
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
@@ -176,4 +179,14 @@ $(document).on('click','.modal-btn', function() {
     alert('error');
     }});
   });
+
+$('.team_select_submit').click(function(){
+  input = $("#team_selected_id").val();
+  if (input.match(/0/)) {
+  } else {
+    alert("チームを選択してください。")
+    return false;
+  }
+});
+
 </script>

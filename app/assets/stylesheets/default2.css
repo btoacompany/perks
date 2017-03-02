@@ -2093,6 +2093,10 @@ table.admin_table td textarea{
     color: #fff;
   }
 
+  select[name="team_selected_id"]{
+    width: 200px;
+  }
+
 }
 
 

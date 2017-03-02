@@ -14,6 +14,9 @@
 
 <div id="admin_contents" class="c_align">
   <h3 align="center">ギフト追加</h3><br>
+  <p class="c_align notice">
+    <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
+  </p><br>
   <%= form_tag( "/company/rewards/add/complete", method: "post", id: "new_form" ) do %>
   <div class="toolbox center">
   <table class="admin_table">
@@ -27,7 +30,7 @@
     </tr>
     <tr>
       <th>ポイント</th>
-      <td><input type="number" name="points" value="" min="0" required/></td>
+      <td><input type="number" name="points" value="" min="1" max="999999" required/></td>
     </tr>
     </table>
   </div><br><br>
