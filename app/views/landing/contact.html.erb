@@ -77,7 +77,7 @@ $('.user_update_submit').click(function(){
   input = $("#mail_address").val();
   if (input.match(/@/)) {
   } else {
-    $(".notice").text("メールアドレスに「@」がありません。");
+    $(".notice").text("不正なメールアドレスです。");
     return false;
   }
 })
