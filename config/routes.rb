@@ -76,11 +76,13 @@ Rails.application.routes.draw do
   post	'/company/teams/add/complete'	    => 'company#add_teams_complete'
   get	'/company/teams/edit/:team_id'	    => 'company#edit_teams'
   post	'/company/teams/edit/complete'	    => 'company#edit_teams_complete'
+  post	'/company/teams/delete'		    => 'company#delete_teams'
   get	'/company/departments'		    => 'company#departments'
   get	'/company/departments/add'		    => 'company#add_departments'
   post	'/company/departments/add/complete'	    => 'company#add_departments_complete'
   get	'/company/departments/edit/:department_id' => 'company#edit_departments'
   post	'/company/departments/edit/complete'	    => 'company#edit_departments_complete'
+  post	'/company/departments/delete'	    => 'company#delete_departments'
  
 
   # users
