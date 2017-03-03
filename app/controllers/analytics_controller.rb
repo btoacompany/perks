@@ -14,7 +14,10 @@ class AnalyticsController < ApplicationController
       if user.admin == 1
 	@id = user.company_id
 	@user_id = user.id
+      else
+        redirect_to "/user"
       end
+
     else
       logout
     end
