@@ -139,7 +139,7 @@ class CompanyController < ApplicationController
       end
     end
     @company.reset_point_date = params[:reset_point_date]
-    
+
     if @company.save
       redirect_to '/company/customize', notice: "変更を保存しました。"
     else
@@ -147,13 +147,13 @@ class CompanyController < ApplicationController
       else
         @fixed_point = "5以上50以下のポイント数を設定してください。"
       end
-      # if @company.reset_point_date !~ /A\d{4}[\\]\d{2}[\\]\d{2}z/
-      #     @reset_point_date = "xxxx/xx/xxの形式で入力してください。"
-      # end
+      unless /\A\d{4}[\-]\d{2}[\-]\d{2}\z/ =~ @company.reset_point_date.to_s
+        @reset_point_date = "xxxx/xx/xxの形式で入力してください。"
+      end
       # IP アドレスの正規表現
-      # if @company.allowed_ips !~ /^[:/,]*[0-9][:/,]*$/
-      #   @allowed_ips = "IPアドレスに誤りがあります。"
-      # end
+      if @company.allowed_ips !~ /\A[\.\:\,\d]+\z/
+        @allowed_ips = "IPアドレスに誤りがあります。"
+      end
       redirect_to '/company/customize', :flash => {:fixed_point => @fixed_point, :reset_point_date => @reset_point_date, allowed_ips: @allowed_ips}
     end
   end
