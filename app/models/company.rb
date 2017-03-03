@@ -11,9 +11,8 @@ class Company < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
   
-  validates :fixed_point, numericality: { only_integer: true, greater_than: 5 , less_than: 50}
+  validates :fixed_point, numericality: { only_integer: true, greater_than_or_equal_to: 5 , less_than_or_equal_to: 50}
   validates :reset_point_date , format: { with: /\A\d{4}[\-]\d{2}[\-]\d{2}\z/ }
-  # IPアドレスによるvalidation
   validate :check_received_ips
 
 
