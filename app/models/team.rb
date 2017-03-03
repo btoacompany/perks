@@ -7,11 +7,11 @@ class Team < ActiveRecord::Base
   before_update :set_update_time
 
   def save_record(params)
-    self.department_id	= params[:department_id]
-    self.team_name	= params[:team_name]
-    self.company_id	= params[:company_id]
-    self.manager_id	= params[:manager_id]
-    self.member_ids	= params[:member_ids]
+    self.department_id	= params[:department_id].to_i if params[:department_id].present?
+    self.team_name	= params[:team_name] if params[:team_name].present?
+    self.company_id	= params[:company_id] if params[:company_id].present?
+    self.manager_id	= params[:manager_id].to_i if params[:manager_id].present?
+    self.member_ids	= params[:member_ids] if params[:member_ids].present?
     self.save
   end
   

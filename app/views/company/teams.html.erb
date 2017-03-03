@@ -3,8 +3,9 @@
   <ul class="admin_list">
     <li><%= link_to "会社情報", "/company/details" %></li>
     <li class="admin_li"><%= link_to "カスタマイズ","/company/customize" %></li>
+    <li class="admin_li_checked"><%= link_to "部署・チーム情報","/company/teams" %></li>
     <li><%= link_to "社員情報","/company/employees" %></li>
-    <li class="admin_li_checked"><%= link_to "ギフト","/company/rewards" %></li>
+    <li><%= link_to "ギフト","/company/rewards" %></li>
     <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
     <li><%= link_to "特別ボーナス","/company/bonus" %></li>
     <li><%= link_to "Slack連携", "/integration/slack"%></li>
@@ -13,27 +14,117 @@
 </div>
 
 <div id="admin_contents" class="c_align">
-  <h3>チームの登録・編集</h3><br>
-  <a href="/company/teams/add" class="a_btncmn radius5 add_bottom" style="font-size:12pt">+ 新規追加</a>
+<div class="clearfix">
+  <div class="add_department">
+  <h3 align="center">部署の追加</h3><br>
+  <%= form_tag( "/company/departments/add/complete", method: "post") do %>
+  <div class="toolbox center">
+  <table class="admin_table">
+    <tr>
+      <th>部署を追加する</th>
+      <td>
+        <input type="text" name="dep_name" value="" size="32" maxlength="25" style="width: 150px;" required/>
+        <input type="submit" value="送信" class="btn" style="width:50px;height:27px; padding: 0 5px"/>
+      </td>
+    </tr>
+    <tr>
+      <th>登録すみの部署</th>
+      <td>
+        <% if @departments.count == 0 %>
+          <p align="center"><i>Departmentが追加されていません</i></p><br>
+        <% else %>
+        <ul class="department_list">
+          <% @departments.each do |dep| %>
+            <li data-id="<%= dep.id %>" class="modal-btn deparment_list_each"><%= dep.dep_name %>
+            </li>
+          <% end %>
+        </ul>
+        <% end %>
+      </td>
+    </tr>
+    </table>
+  </div><br><br>
+  <% end %>
+  </div>
 
+  <div id="my-modal" title="部署の編集・削除" style="display:none;">
+    <%= form_tag "/company/departments/edit/complete" , :method => "post" do %>
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-label" />
+      </div>
+      <input type="text" name="dep_name" id="modal-body" required >
+      <input type="hidden" name="dep_id" id="modal-hidden" required>
+      <input type="submit" class="btn" value="送信">
+      <input type="button" class="btn delete_department" data-id="" value="削除" />
+    <% end %>
+</div>
+
+  <div class="add_team">
+  <h3 align="center">チームの追加</h3><br>
+  <%= form_tag( "/company/teams/add/complete", method: "post") do %>
+  <div class="toolbox center">
+  <table class="admin_table">
+    <tr>
+      <th>チーム名</th>
+      <td><input type="text" name="team_name" value="" size="32" maxlength="25" required/></td>
+    </tr>
+    <tr>
+      <th>部署名</th>
+      <td align="left">
+  <select id="department_id" name="department_id" required style="width:200px;">
+    <option value=""></option>
+    <% @departments.each do | dept | %>
+      <option value=<%= dept[:id] %>><%= dept[:dep_name] %></option>
+    <% end %>
+  </select>
+      </td>
+    </tr>
+    <tr>
+      <th>マネージャー名</th>
+      <td align="left">
+  <select id="manager_id" name="manager_id" required style="width:200px;">
+    <option value=""></option>
+    <% @managers.each do | manager | %>
+      <option value=<%= manager.id %>><%= manager.name %></option>
+    <% end %>
+  </select>
+      </td>
+    </tr>
+    </table>
+  </div>
+  <p align="center">
+    <input type="submit" value="送信" class="btn" style="width:50px;height:27px; margin-top: 5px; padding: 0 5px"/>
+  </p>
+  <% end %>
+  </div>
+</div>
+
+  <h3>チームの登録・編集</h3><br>
   <% if @teams.count == 0 %>
     <p align="center"><i>チームが追加されていません</i></p><br>
   <% else %>
   <div class="toolbox center">
   <table class="admin_table">
 	<tr>
-	  <th>Team Name</th>
-	  <th>Manager</th>
-	  <th>Members</th>
-	  <th>Department</th>
+    <th>部署</th>
+	  <th>チーム</th>
+	  <th>マネージャー</th>
+	  <th>社員</th>
 	  <th class="c_align">編集・削除</th>
 	</tr>
 	<% @teams.each do | item | %>
 	<tr class="item_<%= item[:id] %>">
+    <td style="width:250px;"><%= item[:department] %></td>
 	  <td style="width:250px;"><%= item[:team_name] %></td>
-	  <td style="width:300px;"><%= @managers.find(item[:manager_id]).name %></td>
-	  <td style="width:300px;"><%= %></td>
-	  <td style="width:300px;"><%= @dept %></td>
+	  <td style="width:300px;"><%= item[:manager].name %></td>
+    <td style="width:300px;">
+    <ul class="team_member_list" >
+      <input type="button" value="メンバーを表示する" class="change_password_btn"/>
+      <% item[:members].each do |member| %>
+        <li class="team_member_list_each"><%= member.lastname %> <%= member.firstname %> (<%= member.email %>)</li>
+      <% end %>
+    </ul>
+    </td>
 	  <td class="c_align">
 	    <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="編集" /> 
 	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
@@ -43,7 +134,6 @@
     </table><br>
     </div>
   <% end %>
-  <p align="center"><input type="button" class="btn btn_back btn_bottom" style="width:80px;height:30px" value="戻る" /></p>
 </div>
 </div> <!-- container -->
 </div> <!-- wrapper -->
@@ -54,7 +144,7 @@ $('.delete_item').click(function() {
   var item_id = ($(this).attr('data-id')); //get attributes of clicked item
 
   if (confirm("本当に削除しましか？")) {
-    $.post("/company/rewards/delete", { 'id': item_id }); //send post request
+    $.post("/company/teams/delete", { 'id': item_id }); //send post request
     $(".item_" + item_id).remove(); //remove item upon deletion
   }
   return false; //do nothing
@@ -62,11 +152,50 @@ $('.delete_item').click(function() {
 
 $('.edit_item').click(function() {
   var item_id = ($(this).attr('data-id'));
-  window.location.href = "/company/rewards/edit/"+item_id; //redirect to assigned url
+  window.location.href = "/company/teams/edit/"+item_id; //redirect to assigned url
 });
 
 $(".btn_back").click(function() {
   window.location = "/company/details";
 });
 $('.setting_color').css('color','gray');
+
+$(".change_password_btn").click(function() {
+  $(this).parent().find(".team_member_list_each").toggle();
+  if ( $(this).val() == "メンバーを表示する" ) {
+    $(this).val("閉じる");
+  } else {
+    $(this).val("メンバーを表示する");
+  };
+});
+
+$(document).on('click','.modal-btn', function() {
+  $.ajax({ type: 'GET',
+    url: '/company/departments/edit',
+    data: {
+    id: $(this).attr('data-id')
+  },
+  success: function(data) {
+    $('#modal-label').append(data['name'] + "の名称を変更しますか？");
+    $('#modal-body').val(data['name']);
+    $('#modal-hidden').val(data['dep_id']);
+    $('.delete_department').attr('data-id',data['dep_id'] );
+    $('#my-modal').dialog();
+  },
+  error: function(data) {
+    alert('error');
+    }});
+  });
+
+$('.delete_department').click(function() {
+  var item_id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if (confirm("本当に削除しますか？")) {
+    $.post("/company/departments/delete", { 'id': item_id }); //send post request
+    $(".item_" + item_id).remove(); //remove item upon deletion
+    window.location = "/company/teams";
+  }
+  return false; //do nothing
+});
+
 </script>
