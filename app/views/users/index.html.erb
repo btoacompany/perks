@@ -486,9 +486,11 @@ function getName () {
   items = {};
   <% if @team_users.present? %>
     <% @team_users.each do | user | %>
+    <% unless user.delete_flag == 1 %>
       <% unless user.id == @user.id %> 
 	items["<%= user.id %>"] = "<%= user.lastname %> <%= user.firstname %>";
       <% end %>
+    <% end %>
     <% end %>
   return items;
 
