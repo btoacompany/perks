@@ -2097,6 +2097,43 @@ table.admin_table td textarea{
     width: 200px;
   }
 
+  /*team*/
+  .add_department, .add_team{
+    float: left;
+    margin: 0 50px;
+  }
+
+  .department_list{
+    list-style: none;
+    text-align: left;
+    margin: 0 0;
+    padding: 0 0;
+  }
+
+  .deparment_list_each{
+    text-decoration: underline;
+  }
+
+  .deparment_list_each:hover{
+    color: blue;
+  }
+
+  .team_member_list{
+    list-style: none;
+    text-align: left;
+    margin: 0 0;
+    padding: 0 0;
+  }
+
+  .team_member_list li{
+    display: none;
+    padding: 1px 0;
+  }
+
+  .team_member_list input{
+    margin-bottom: 5px;
+  }
+
 }
 
 
