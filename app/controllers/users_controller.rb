@@ -440,6 +440,7 @@ class UsersController < ApplicationController
   end
 
   def give_comments 
+    @company = Company.find(@company_id)
     params[:company_id] = @company_id
     params[:user_id]	= @id
 

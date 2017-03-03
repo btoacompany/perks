@@ -13,7 +13,7 @@
 </div>
 
 <div id="admin_contents">
-  <h3 class="c_align">企業情報編集</h3><br>
+  <h3 class="c_align">会社情報編集</h3><br>
   <%= form_tag( "/company/edit/complete", method: "post", id: "login_form" ) do %>
   <div class="toolbox center">
     <table class="admin_table">
@@ -34,17 +34,17 @@
 	     <td><input type="email" name="email" value="<%= @company[:email] %>" required /></td>
       </tr>
       <tr>
-        <th scope="row">電話番号</th>
-        <td><input type="text" name="phone" value="<%= @company[:phone] %>" /></td>
-      </tr>
-      <tr>
         <th scope="row">会社住所</th>
         <td><input type="text" name="address" value="<%= @company[:address] %>" required /></td>
       </tr>
       <tr>
+        <th scope="row">電話番号</th>
+        <td><input type="text" name="phone" value="<%= @company[:phone] %>" required /></td>
+      </tr>
+      <tr>
         <th scope="row">コアバリュー</th> 
         <td>
-          <textarea name="hashtags" value="" placeholder="leadership, hardwork, creativity..."><%= @company.hashtags %></textarea><br><span class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
+          <textarea name="hashtags" value="" placeholder="leadership, hardwork, creativity..." required ><%= @company.hashtags %></textarea><br><span class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
         </td>
       </tr>
     </table><br>

@@ -556,4 +556,86 @@ class CompanyController < ApplicationController
     redirect_to '/company/employees'
   end
 
+  def teams 
+    teams = Team.where(:company_id => @id, :delete_flag => 0)
+    @teams = []
+    data = {}
+
+    @managers = User.where(:company_id => @id, :delete_flag => 0)
+    teams.each do | team |
+      members = []
+      member_ids = team[:member_ids].split(",") if team[:member_ids].present?
+      member_ids.each do | mem_id |
+	members << User.find(mem_id).name
+      end
+
+      data = {
+	:department   => Department.find(team[:department_id]).dep_name,
+	:team_name    => team[:team_name],
+	:manager      => User.find(team[:manager_id]).name,
+	:members      => members.join(", ")
+      }
+
+      @teams << data
+    end
+  end
+
+  def add_teams
+    @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
+    @departments = Department.where(:company_id => @id, :delete_flag => 0)
+    @users = User.where(:company_id => @id, :delete_flag => 0)
+  end
+
+  def add_teams_complete
+    params[:company_id] = @id
+
+    @user = Team.new
+    @user.save_record(params)
+    redirect_to '/company/teams'
+  end
+
+  def edit_teams
+  end
+
+  def edit_teams_complete
+  end
+
+  def delete_teams
+    result =  Team.find(params[:id])
+    result.delete_record
+    redirect_to '/company/teams'
+  end
+
+  def departments 
+    @departments = Department.where(:company_id => @id, :delete_flag => 0)
+  end
+
+  def add_departments
+  end
+
+  def add_departments_complete
+    params[:company_id] = @id
+
+    @res = Department.new
+    @res.save_record(params)
+    redirect_to '/company/departments'
+  end
+
+  def edit_departments
+    @department = Department.find(params[:department_id])
+  end
+
+  def edit_departments_complete
+    params[:company_id] = @id
+
+    result = Department.find(params[:department_id])
+    result.save_record(params)
+    redirect_to '/company/departments'
+  end
+
+  def delete_departments
+    result =  Department.find(params[:department_id])
+    result.delete_record
+    redirect_to '/company/departments'
+  end
 end

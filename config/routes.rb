@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   post	'/invite/complete'	      => 'users#invite_complete'
 
   # company
-  get	'/company'			    => 'company#index'
+  # get	'/company'			    => 'company#index'
   get	'/company/details'		    => 'company#details'
   get	'/company/edit'			    => 'company#edit'
   post	'/company/edit/complete'	    => 'company#edit_complete'
@@ -71,6 +71,19 @@ Rails.application.routes.draw do
   post	'/company/employees/make_non_manager' => 'company#make_non_manager'
   get '/company/employees/edit_email' => 'company#edit_email'
   post '/company/employees/update' => 'company#update_email'
+  get	'/company/teams'		    => 'company#teams'
+  get	'/company/teams/add'		    => 'company#add_teams'
+  post	'/company/teams/add/complete'	    => 'company#add_teams_complete'
+  get	'/company/teams/edit/:team_id'	    => 'company#edit_teams'
+  post	'/company/teams/edit/complete'	    => 'company#edit_teams_complete'
+  post	'/company/teams/delete'		    => 'company#delete_teams'
+  get	'/company/departments'		    => 'company#departments'
+  get	'/company/departments/add'		    => 'company#add_departments'
+  post	'/company/departments/add/complete'	    => 'company#add_departments_complete'
+  get	'/company/departments/edit/:department_id' => 'company#edit_departments'
+  post	'/company/departments/edit/complete'	    => 'company#edit_departments_complete'
+  post	'/company/departments/delete'	    => 'company#delete_departments'
+ 
 
   # users
   get	'/user'			    => 'users#index'
