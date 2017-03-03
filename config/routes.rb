@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   post	'/invite/complete'	      => 'users#invite_complete'
 
   # company
-  get	'/company'			    => 'company#index'
+  # get	'/company'			    => 'company#index'
   get	'/company/details'		    => 'company#details'
   get	'/company/edit'			    => 'company#edit'
   post	'/company/edit/complete'	    => 'company#edit_complete'
