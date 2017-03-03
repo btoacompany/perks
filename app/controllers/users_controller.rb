@@ -511,12 +511,12 @@ class UsersController < ApplicationController
     @user = User.find(@id)
 
     posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
-    process_paging(posts)
+    process_posts = process_paging(posts)
 
     @posts = []
     data = {}
 
-    posts.each do | post |
+    process_posts.each do | post |
       data = process_post(post)
       @posts << data
     end
@@ -527,14 +527,13 @@ class UsersController < ApplicationController
 
   def given
     @user = User.find(@id)
-
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
-    process_paging(posts)
+    process_posts = process_paging(posts)
 
     @posts = []
     data = {}
 
-    posts.each do | post |
+    process_posts.each do | post |
       data = process_post(post)
       @posts << data
     end
@@ -544,7 +543,7 @@ class UsersController < ApplicationController
   end
 
   def process_paging(posts)
-    limit = 5
+    limit = 10
     page  = params[:page] || 1
     
     @total_items = posts.count
@@ -567,6 +566,7 @@ class UsersController < ApplicationController
 
     @previous_page  = @page_now - 1
     @next_page	    = @page_now + 1
+    return posts
   end
 
   def process_top_receivers(top_receivers)
@@ -627,7 +627,6 @@ class UsersController < ApplicationController
       data[:receiver_name]	<< receiver_info.name
       data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
     end
-
     return data
   end
 
