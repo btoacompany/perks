@@ -129,7 +129,7 @@ class CompanyController < ApplicationController
     @company = Company.find(@id)
     @company.invite_email_flag = params[:invite_email_setting]
     @company.point_fixed_flag = params[:fixed_point_setting]
-    @company.fixed_point = params[:fixed_point]
+    @company.fixed_point = params[:fixed_point].to_i
     @company.ip_limit_flag = params[:ip_address_setting]
     if params[:ip_address_setting].to_i == 1
       if params[:allowed_ips].empty?
@@ -139,8 +139,23 @@ class CompanyController < ApplicationController
       end
     end
     @company.reset_point_date = params[:reset_point_date]
-    @company.save
-    redirect_to '/company/customize'
+    
+    if @company.save
+      redirect_to '/company/customize', notice: "変更を保存しました。"
+    else
+      if @company.fixed_point.integer? && @company.fixed_point.between?(5, 50)
+      else
+        @fixed_point = "5以上50以下のポイント数を設定してください。"
+      end
+      # if @company.reset_point_date !~ /A\d{4}[\\]\d{2}[\\]\d{2}z/
+      #     @reset_point_date = "xxxx/xx/xxの形式で入力してください。"
+      # end
+      # IP アドレスの正規表現
+      # if @company.allowed_ips !~ /^[:/,]*[0-9][:/,]*$/
+      #   @allowed_ips = "IPアドレスに誤りがあります。"
+      # end
+      redirect_to '/company/customize', :flash => {:fixed_point => @fixed_point, :reset_point_date => @reset_point_date, allowed_ips: @allowed_ips}
+    end
   end
 
   def employees

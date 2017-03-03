@@ -15,7 +15,11 @@
 
 <div id="admin_contents" style="padding-left: 40px">
 <h3>カスタマイズを行う</h3><br>
-  <%= form_tag( "/company/customize/update", method: "post") do %>
+<% if flash[:notice] %>
+  <p class="notice"><b><i><%= flash[:notice] %></i></b></p>
+<% end %>
+
+<%= form_tag( "/company/customize/update", method: "post") do %>
   <dl class="customize_box">
   <div><p>社員登録に関して</p></div>
     <div class="fixed_point_setting clearfix">
@@ -37,13 +41,15 @@
         <label for="fixed_point_setting0" class="switch-off">しない</label>
         <input type="radio" id="fixed_point_setting1" name="fixed_point_setting" value="1" <% if @company.point_fixed_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
         <label for="fixed_point_setting1" class="switch-on">する</label>
-        <select id="fixed_point" name="fixed_point" class="fixed_point" <% if @company.point_fixed_flag == 0 %> style="display: none;"<% else %> required <% end %> >
+        <select id="fixed_point" name="fixed_point" class="fixed_point" min="5" max="50" <% if @company.point_fixed_flag == 0 %> style="display: none;"<% else %> required <% end %> >
         <% @nums.each do |num| %>
           <option value=<%= num %> <% if num == @company.fixed_point %>selected = "true" <% end %> >
             <%= num %>
           </option>
         <% end %>
         </select>
+        <% if flash[:fixed_point] %>  <b><i><%= flash[:fixed_point] %></i></b>
+        <% end %>
       </dd>
     </div>
     <div class="fixed_point_setting clearfix">
@@ -53,7 +59,9 @@
         <label for="time_select0" class="switch-off">しない</label>
         <input name="time_select" type="radio" id="time_select1" style="opacity: 0;" <% if @company.reset_point_date.present? %>checked="checked" <% end %>/>
         <label for="time_select1" class="switch-on">する</label>
-        <input type="text" id="datepicker_set_time" class="time_select" name="reset_point_date" <% if @company.reset_point_date.nil? %> style="display:none;" <% end %> value=<%= @company.reset_point_date %> >
+        <input type="text" id="datepicker_set_time" class="time_select" name="reset_point_date" <% if @company.reset_point_date.nil? %> style="display:none;" <% end %> value=<%= @company.reset_point_date.strftime("%Y/%m/%d") %> >
+        <% if flash[:reset_point_date] %><b><i><%= flash[:reset_point_date] %></i></b>
+        <% end %>
       </dd>
     </div>
 
@@ -67,12 +75,12 @@
         <label for="ip_address_setting1" class="switch-on">する</label>
         <div class="clearfix"></div>
         <textarea id="allowed_ips" name="allowed_ips" <% if @company.ip_limit_flag == 0 %> style="display: none;"<% end %> placeholder="IPアドレス" cols="40" rows="5" ><%= @company.allowed_ips %></textarea> 
+        <% if flash[:allowed_ips] %><b><i><%= flash[:allowed_ips] %></i></b><% end %>
       </dd>
     </div>
-
   </dl>
   <input type="submit" class="btn btn_submit" value="送信" style="width:80px;height:30px"/>
-  <% end %>
+<% end %>
 
 </div><!-- admin_contents -->
 </div><!-- admin_wrapper -->

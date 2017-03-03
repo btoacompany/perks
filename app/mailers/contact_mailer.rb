@@ -1,5 +1,5 @@
 class ContactMailer < ApplicationMailer
-  default from: "info@btoa-company.com"
+  default from: "prizy@btoa-company.com"
 
   def contact_mail(company, name, email, text)
     @company = company
