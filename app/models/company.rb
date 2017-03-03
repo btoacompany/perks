@@ -11,6 +11,11 @@ class Company < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
   
+  validates :fixed_point, numericality: { only_integer: true, greater_than: 5 , less_than: 50}
+# validates :reset_point_date , format: { with: /A\d{4}[\\]\d{2}[\\]\d{2}z/}
+  # IPアドレスによるvalidation
+  # validate :check_received_ips
+
   def save_record(params)
     self.name	      = params[:name]	      if params[:name].present?
     self.owner	      = params[:owner]	      if params[:owner].present?
@@ -42,4 +47,11 @@ class Company < ActiveRecord::Base
   def set_time
     return Time.now.strftime("%Y-%m-%d %H:%M:%S")
   end
+
+# IPアドレスの正規表現
+  # def check_received_ips
+  #   unless /^[:/,]*[0-9][:/,]*$/ =~ params[:allowed_ips]
+  #     errors.add(:allowed_ips , :invalid)
+  #   end
+  # end
 end
