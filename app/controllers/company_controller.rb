@@ -580,15 +580,9 @@ class CompanyController < ApplicationController
   end
 
   def edit_teams
-    @team = Team.find(params[:team_id])
   end
 
   def edit_teams_complete
-    params[:company_id] = @id
-
-    result = Team.find(params[:team_id])
-    result.save_record(params)
-    redirect_to '/company/teams'
   end
 
   def delete_teams
