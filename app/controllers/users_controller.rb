@@ -133,7 +133,7 @@ class UsersController < ApplicationController
       end
     end
     same_teams.each do |team|
-      team_users.push(team.member_ids.split(","))
+      team_users.push(team.member_ids.split(",").delete("0"))
       team_users.push(team.manager_id.to_s)
       team_users.flatten!
     end
