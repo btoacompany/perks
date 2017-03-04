@@ -52,7 +52,7 @@
   <div id="my-modal" title="部署の編集・削除" style="display:none;">
     <%= form_tag "/company/departments/edit/complete" , :method => "post" do %>
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-label" />
+        <h5 class="modal-title" id="modal-label" /></h5>
       </div>
       <input type="text" name="dep_name" id="modal-body" required >
       <input type="hidden" name="dep_id" id="modal-hidden" required>
@@ -154,7 +154,7 @@
 $('.delete_item').click(function() {
   var item_id = ($(this).attr('data-id')); //get attributes of clicked item
 
-  if (confirm("本当に削除しましか？")) {
+  if (confirm("本当に削除しますか？")) {
     $.post("/company/teams/delete", { 'id': item_id }); //send post request
     $(".item_" + item_id).remove(); //remove item upon deletion
   }
@@ -187,6 +187,7 @@ $(document).on('click','.modal-btn', function() {
     id: $(this).attr('data-id')
   },
   success: function(data) {
+    $('#modal-label').empty();
     $('#modal-label').append(data['name'] + "の名称を変更しますか？");
     $('#modal-body').val(data['name']);
     $('#modal-hidden').val(data['dep_id']);

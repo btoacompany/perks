@@ -1,5 +1,5 @@
 class CompanyMailer < ApplicationMailer
-  default from: "prizy@btoa-company.com"
+  default from: "support.prizy@btoa-company.com"
 
   def welcome_email(data)
     @company = data 
