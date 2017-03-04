@@ -568,7 +568,9 @@ class CompanyController < ApplicationController
       members = []
       member_ids = team[:member_ids].split(",") if team[:member_ids].present?
       member_ids.each do | mem_id |
-        members << User.find(mem_id)
+        unless mem_id.to_i == 0
+          members << User.find(mem_id)
+        end
       end
 
       data = {
