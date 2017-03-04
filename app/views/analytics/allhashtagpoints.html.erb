@@ -7,9 +7,7 @@
       <li><%= link_to "ポイント贈与状況", "/analytics/giver" %></li>
       <li><%= link_to "ハッシュタグ (コアバリュー)", "/analytics/hashtag" %></li>
       <li><%= link_to "ハッシュタグ (トレンド)", "/analytics/hashtag/all" %></li>
-      <% @users_custom.each do |user| %>
-      <li><%= link_to "#{user.name}", "/analytics/user/#{user.id}" %></li>
-      <% end %>
+     <%= render 'team_showing' %>
     </ul>
   </div>
 
