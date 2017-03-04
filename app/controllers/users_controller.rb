@@ -493,12 +493,12 @@ class UsersController < ApplicationController
     else
     devices.each do | device |
       sns_message = {
-        'default' => message,
-        'message' => {
-          'APNS_SANDBOX'=> {
-            'aps'=> {
-              'alert'=> 'inner message',
-              'sound'=> 'mySound.caf'
+        'default': message,
+        'message': {
+          'APNS_SANDBOX': {
+            'aps': {
+              'alert': 'inner message',
+              'sound': 'mySound.caf'
             }
           }
         }
