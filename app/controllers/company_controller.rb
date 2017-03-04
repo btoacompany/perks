@@ -591,8 +591,18 @@ class CompanyController < ApplicationController
 
   def add_teams_complete
     params[:company_id] = @id
-    params[:member_ids] = @user_id
-
+    @member_ids = []
+    members = params[:members].delete_if{|n| n.empty? }
+    members.each do |mem|
+      user = User.find_by(email: mem, delete_flag: 0)
+      if user.present?
+        @member_ids << user.id.to_s
+      else
+        redirect_to "/company/teams", notice: "メールアドレスが一致しません。"
+        return
+      end
+    end
+    params[:member_ids] = @member_ids.join(",")
     @user = Team.new
     @user.save_record(params)
     redirect_to '/company/teams'
