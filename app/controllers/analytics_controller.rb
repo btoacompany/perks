@@ -6,6 +6,7 @@ class AnalyticsController < ApplicationController
   before_action :time_definition, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
   before_action :basic_info, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
   before_filter :analytics_init, only:[:userreceived, :usergiven]
+  before_action :restrict_access_by_smartphone
 
   def init
     if session[:email].present? || cookies[:email].present?
