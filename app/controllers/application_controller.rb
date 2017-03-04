@@ -49,6 +49,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def restrict_access_by_smartphone
+    user_agent = request.env["HTTP_USER_AGENT"]
+    if(user_agent.include?('Mobile') || user_agent.include?('Android'))
+      redirect_to  :controller => "users" , :action  => :index
+    end
+  end
+
   def redirect_page(controller, action)
     redirect_to :protocol => @protocol, :controller => controller, :action => action
   end

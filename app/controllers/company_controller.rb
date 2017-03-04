@@ -6,6 +6,7 @@ class CompanyController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
   before_filter :init_url, :validate_user
   before_action :ip_address_limit, :except => [:login, :logout, :create, :create_complete, :forgot_password, :forgot_password_submit]
+  before_action :restrict_access_by_smartphone
 
   def init
     if session[:email].present? || cookies[:email].present?
