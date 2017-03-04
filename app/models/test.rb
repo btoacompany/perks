@@ -8,7 +8,6 @@ class Test < ActiveRecord::Base
   def save_record(params)
     self.name	      = params[:name]
     self.email	      = params[:email]
-    self.img_src      = params[:img_src]
     self.save
   end
   

@@ -60,7 +60,7 @@
         <label for="time_select0" class="switch-off">しない</label>
         <input name="time_select" type="radio" id="time_select1" style="opacity: 0;" <% if @company.reset_point_date.present? %>checked="checked" <% end %>/>
         <label for="time_select1" class="switch-on">する</label>
-        <input type="text" id="datepicker_set_time" class="time_select" name="reset_point_date" <% if @company.reset_point_date.nil? %> style="display:none;" <% end %> value=<%= @company.reset_point_date.strftime("%Y/%m/%d") %> >
+        <input type="text" id="datepicker_set_time" class="time_select" name="reset_point_date" <% if @company.reset_point_date.nil? %> style="display:none;" <% end %> value=<%= @company.reset_point_date.try(:strftime, ("%Y/%m/%d")) %> >
         <% if flash[:reset_point_date] %><b><i><%= flash[:reset_point_date] %></i></b>
         <% end %>
       </dd>
