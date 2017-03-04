@@ -628,7 +628,9 @@ class CompanyController < ApplicationController
       @departments = Department.where(:company_id => @id, :delete_flag => 0)
       @members = []
       @team.member_ids.split(",").each do |mem|
-        @members << User.find(mem.to_i)
+        unless mem.to_i == 0
+          @members << User.find(mem.to_i)
+        end
       end
     else
       redirect_to '/company/teams'

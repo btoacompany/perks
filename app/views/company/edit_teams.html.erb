@@ -14,7 +14,7 @@
 </div>
 
 <div id="admin_contents" class="c_align">
-  <h3 align="center">Teams追加</h3><br>
+  <h3 align="center">チーム編集</h3><br>
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
   <%= form_tag( "/company/teams/edit/#{@team.id}/complete", method: "post", id: "new_form", autocomplete: "off" ) do %>
   <div class="toolbox center">

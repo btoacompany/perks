@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: "prizy@btoa-company.com"
+  default from: "support.prizy@btoa-company.com"
 
   def verify_account(data)
     @user = data 
