@@ -485,10 +485,12 @@ class UsersController < ApplicationController
 
     redirect_page("users", "index")
   end
-=begin
+
   def ios_push_notif(id, message)
     devices = IosToken.where(:user_id => id)
-
+    unless devices.present?
+      return
+    else
     devices.each do | device |
       sns_message = {
         'default': message,
@@ -509,8 +511,9 @@ class UsersController < ApplicationController
         message_structure: "json"
       )
     end
+    end
   end
-=end
+
   def profile
     @user = User.find(@id)
 
