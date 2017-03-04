@@ -571,6 +571,8 @@ class CompanyController < ApplicationController
     data = {}
 
     teams.each do | team |
+      @department = Department.find(team.department_id)
+      if @department.delete_flag == 0
       members = []
       member_ids = team[:member_ids].split(",") if team[:member_ids].present?
       member_ids.each do | mem_id |
@@ -587,6 +589,7 @@ class CompanyController < ApplicationController
         :members      => members
       }
       @teams << data
+      end
     end
   end
 
