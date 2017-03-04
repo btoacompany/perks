@@ -14,6 +14,8 @@
 </div>
 
 <div id="admin_contents" class="c_align">
+  <br>
+  <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
 <div class="clearfix">
   <div class="add_department">
   <h3 align="center">部署の追加</h3><br>
@@ -61,13 +63,12 @@
 
   <div class="add_team">
   <h3 align="center">チームの追加</h3><br>
-  <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
   <%= form_tag( "/company/teams/add/complete", method: "post", :multipart => true) do %>
   <div class="toolbox center">
   <table class="admin_table">
-    <tr>
+    <tr style="text-align: left;">
       <th>チーム名</th>
-      <td><input type="text" name="team_name" value="" size="32" maxlength="25" required/></td>
+      <td><input type="text" name="team_name" value="" size="32" maxlength="25" style="width: 200px;" required/></td>
     </tr>
     <tr>
       <th>部署名</th>
@@ -94,13 +95,12 @@
     <tr>
       <th>所属社員</th>
       <td>
-        <input type="text" name="members[]" value="" size="32" required/><br>
-        <input type="text" name="members[]" value="" size="32" /><br>
-        <input type="text" name="members[]" value="" size="32" /><br>
-        <input type="text" name="members[]" value="" size="32" /><br>
+        <input type="text" id="suggested_name" name="adding_name" value="" size="32" style="width: 200px;"/>    <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+        <div id="suggest" style="display:none;"></div>
+        <br><br>
+        <div id="adding_member"></div>
       </td>
     </tr>
-
     </table>
   </div>
   <p align="center">
@@ -208,5 +208,29 @@ $('.delete_department').click(function() {
   }
   return false; //do nothing
 });
+
+$(".btn_change_password").click(function() {
+  var addedname = $(':text[name="adding_name"]').val();
+  var element = document.createElement('input');
+  element.setAttribute("name", "members[]"); 
+  element.setAttribute("value", addedname);
+  element.setAttribute("type", "text");
+  element.setAttribute("size", "32"); 
+  element.setAttribute("style", "display:block; width: 200px;"); 
+  $("#adding_member").append(element);
+  $(':text[name="adding_name"]').val("");
+});
+
+function startSuggest() {
+  new Suggest.LocalMulti(
+    "suggested_name",    // 入力のエレメントID
+    "suggest", // 補完候補を表示するエリアのID
+    <%= raw @emails %>,
+    {dispMax: 10, interval: 1000, prefix: true}); // オプション
+}
+
+window.addEventListener ?
+window.addEventListener('load', startSuggest, false) :
+window.attachEvent('onload', startSuggest);
 
 </script>
