@@ -460,7 +460,7 @@ class AnalyticsController < ApplicationController
     # 何かしらのチームに属してるid取得
     in_team_user_ids = []
     @teams.each do |team|
-      in_team_user_ids.push(team.member_ids.split(","))
+      in_team_user_ids.push(team.member_ids.split(",").delete("0"))
       in_team_user_ids.push(team.manager_id)
       in_team_user_ids.flatten!
       in_team_user_ids.uniq
