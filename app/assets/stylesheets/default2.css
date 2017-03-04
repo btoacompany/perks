@@ -2134,6 +2134,29 @@ table.admin_table td textarea{
     margin-bottom: 5px;
   }
 
+  /*suggest*/
+  #suggest {
+    position: absolute;
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCFF;
+    font-size: 90%;
+    width: 200px;
+    text-align: left;
+  }
+   #suggest div {
+    display: block;
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  #suggest div.select{ /* キー上下で選択した場合のスタイル */
+    color: #FFFFFF;
+    background-color: #3366FF;
+  }
+  #suggest div.over{ /* マウスオーバ時のスタイル */
+    background-color: #99CCFF;
+  }
+
 }
 
 

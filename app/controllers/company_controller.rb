@@ -561,6 +561,11 @@ class CompanyController < ApplicationController
     @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
     @departments = Department.where(:company_id => @id, :delete_flag => 0)
     teams = Team.where(:company_id => @id, :delete_flag => 0)
+    @users = User.where(company_id: @id, delete_flag: 0)
+    @emails = []
+    @users.each do |user|
+      @emails << user.email
+    end
 
     @teams = []
     data = {}
@@ -569,7 +574,9 @@ class CompanyController < ApplicationController
       members = []
       member_ids = team[:member_ids].split(",") if team[:member_ids].present?
       member_ids.each do | mem_id |
-        members << User.find(mem_id)
+        unless mem_id.to_i == 0
+          members << User.find(mem_id)
+        end
       end
 
       data = {
@@ -591,19 +598,38 @@ class CompanyController < ApplicationController
 
   def add_teams_complete
     params[:company_id] = @id
-    params[:member_ids] = @user_id
-
+    @member_ids = []
+    members = params[:members].delete_if{|n| n.empty? }
+    members.each do |mem|
+      user = User.find_by(email: mem, delete_flag: 0)
+      if user.present?
+        @member_ids << user.id.to_s
+      else
+        redirect_to "/company/teams", notice: "登録できませんでした。メールアドレスが一致しません。"
+        return
+      end
+    end
+    @member_ids.uniq!
+    params[:member_ids] = @member_ids.join(",")
     @user = Team.new
     @user.save_record(params)
-    redirect_to '/company/teams'
+    redirect_to '/company/teams', notice: "登録が完了しました。"
   end
 
   def edit_teams
+    @users = User.where(company_id: @id, delete_flag: 0)
+    @emails = []
+    @users.each do |user|
+      @emails << user.email
+    end
     @team = Team.find(params[:team_id])
     if @team.company_id == @id
       @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
       @departments = Department.where(:company_id => @id, :delete_flag => 0)
-      @users = User.where(:company_id => @id, :delete_flag => 0)
+      @members = []
+      @team.member_ids.split(",").each do |mem|
+        @members << User.find(mem.to_i)
+      end
     else
       redirect_to '/company/teams'
     end
@@ -612,6 +638,23 @@ class CompanyController < ApplicationController
   def edit_teams_complete
     @team = Team.find(params[:team_id])
     if @team.company_id == @id
+      @member_ids = []
+      unless params[:members]
+        redirect_to "/company/teams/edit/#{@team.id}", notice: "少なくとも一人以上の社員を登録してください。"
+        return
+      end
+      members = params[:members].delete_if{|n| n.empty? }
+      members.each do |mem|
+        user = User.find_by(email: mem, delete_flag: 0)
+        if user.present?
+          @member_ids << user.id.to_s
+        else
+          redirect_to "/company/teams/edit/#{@team.id}", notice: "登録できませんでした。メールアドレスが一致しません。"
+          return
+        end
+      end
+      @member_ids.uniq!
+      params[:member_ids] = @member_ids.join(",")
       @team.save_record(params)
       redirect_to '/company/teams'
     else

@@ -15,11 +15,12 @@
 
 <div id="admin_contents" class="c_align">
   <h3 align="center">Teams追加</h3><br>
-  <%= form_tag( "/company/teams/edit/#{@team.id}/complete", method: "post", id: "new_form" ) do %>
+  <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
+  <%= form_tag( "/company/teams/edit/#{@team.id}/complete", method: "post", id: "new_form", autocomplete: "off" ) do %>
   <div class="toolbox center">
   <table class="admin_table">
       <th>チーム名</th>
-      <td><input type="text" name="team_name" size="32" maxlength="25" required value="<%= @team.team_name %>" /></td>
+      <td><input type="text" name="team_name" size="32" maxlength="25" required autocomplete="new-email" value="<%= @team.team_name %>" /></td>
     </tr>
     <tr>
       <th>部署名</th>
@@ -46,6 +47,19 @@
   </select>
       </td>
     </tr>
+    <tr>
+      <th>所属社員</th>
+      <td style="text-align: left;">
+        <input type="text" id="suggested_name" name="adding_name" value="" size="32" style="width: 200px;"/>    <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+        <div id="suggest" style="display:none;"></div>
+        <br><br>
+        <div id="adding_member">
+          <% @members.each do |mem| %>
+          <input type="text" name="members[]" value="<%= mem.email %>" size="32" style="width: 200px;"/><br>
+          <% end %>
+        </div>
+      </td>
+    </tr>
     </table>
   </div><br><br>
   
@@ -63,4 +77,29 @@ $(".btn_back").click(function() {
   window.location = "/company/teams";
 });
 $('.setting_color').css('color','gray');
+
+$(".btn_change_password").click(function() {
+  var addedname = $(':text[name="adding_name"]').val();
+  var element = document.createElement('input');
+  element.setAttribute("name", "members[]"); 
+  element.setAttribute("value", addedname);
+  element.setAttribute("type", "text");
+  element.setAttribute("size", "32"); 
+  element.setAttribute("style", "display:block; width: 200px;"); 
+  $("#adding_member").append(element);
+  $(':text[name="adding_name"]').val("");
+});
+
+
+function startSuggest() {
+  new Suggest.LocalMulti(
+    "suggested_name",    // 入力のエレメントID
+    "suggest", // 補完候補を表示するエリアのID
+    <%= raw @emails %>,
+    {dispMax: 10, interval: 1000, prefix: true}); // オプション
+}
+
+window.addEventListener ?
+window.addEventListener('load', startSuggest, false) :
+window.attachEvent('onload', startSuggest);
 </script>
