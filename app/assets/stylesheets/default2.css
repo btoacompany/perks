@@ -25,6 +25,9 @@
 .col-10 {width: 83.33%;}
 .col-11 {width: 91.66%;}
 .col-12 {width: 100%;}
+table {
+  border-spacing: 0;
+}
 
 @media only screen and (max-width: 650px) {
   /* For mobile phones: */
@@ -107,9 +110,7 @@
     float: left;
     margin-left: 0px;
   }
-  #postsbox .comments .user_comments {
-    padding-left: 15px;
-  }
+
   body {
     font-size: 10pt;
     line-height: 1.5em;
@@ -312,8 +313,8 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   display:inline-block;
   float:left;
   padding:5px 10px;
-  margin: 0px 1px;
-  border:1px solid #a7a7a7;
+  margin: 0px 3px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
 }
 
 .pagination span{
@@ -400,15 +401,15 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   }
 
   #postsbox .posts {
-    padding: 10px 20px;
+    padding: 10px 10px;
   }
 
   #postsbox .kudos {
-    padding: 10px 20px;
+    padding: 10px 10px;
   }
 
   #postsbox .comments {
-    padding: 10px 15px;
+    padding: 10px 10px;
   }
 }
 
@@ -454,6 +455,7 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   z-index: -1;
   width: 960px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .item .btn_coupon{
@@ -807,9 +809,10 @@ hr.style-two {
 .show {display:block;}
 
 #postsbox {
+  margin-top: 5px;
   width: 100%;
-  border: 1px solid #e6e6e6;
   line-height: 1.8em;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 #postsbox .posts .time {
@@ -828,8 +831,8 @@ hr.style-two {
 }
 
 #postsbox .images td {
-  border: 1px solid #a4a4a4;
   border-collapse: collapse;
+  padding: 0 0;
   position:relative;
   overflow: hidden;
   text-align: center;
@@ -864,7 +867,7 @@ hr.style-two {
 
 #postsbox .comments .user_comment_img {
   float: left;
-  width: 8.33%; 
+  margin-right: 5px;
 }
 #postsbox .comments .comment_entry {
   display: block;
@@ -874,13 +877,12 @@ hr.style-two {
 
 #postsbox .comments .user_comment_img img {
   float: left;
-  margin-left: 10px;
 }
 
 #postsbox .comments .user_comments {
   margin-top: 2px;
   float: left;
-  width: 91%;
+  width: 89%;
 }
 
 #postsbox .comments .give_comments {
@@ -992,12 +994,12 @@ hr.style-two {
 
 .mypage .pointsbox {
   padding: 10px;
-  border: 1px solid #d7d7d7;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .mypage .profilebox {
   padding: 10px;
-  border: 1px solid #d7d7d7;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .mypage .profilebox p {
@@ -1158,8 +1160,7 @@ hr.style-two {
 .receiving_box, .giving_box, .present_box{
   display: block;
   width: 33%;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
+  box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
   font-size:13px;
   font-weight:bold;
   text-decoration:none;
@@ -1169,11 +1170,6 @@ hr.style-two {
   margin-bottom: 10px;
   background-color: #f0f0f0;
 }
-
-.present_box{
-  border-right: 1px solid black;
-}
-
 
 /* --- for modal --*/
 #lean_overlay {
