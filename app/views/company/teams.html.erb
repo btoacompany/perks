@@ -19,6 +19,7 @@
 <div class="clearfix">
   <div class="add_department">
   <h3 align="center">部署の追加</h3><br>
+  <%= render "shared/errors" , obj: @department %>
   <%= form_tag( "/company/departments/add/complete", method: "post") do %>
   <div class="toolbox center">
   <table class="admin_table">
@@ -30,7 +31,7 @@
       </td>
     </tr>
     <tr>
-      <th>登録すみの部署</th>
+      <th>登録済みの部署</th>
       <td>
         <% if @departments.count == 0 %>
           <p align="center"><i>Departmentが追加されていません</i></p><br>
