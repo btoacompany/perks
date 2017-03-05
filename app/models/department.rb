@@ -37,7 +37,7 @@ class Department < ActiveRecord::Base
   end
 
   def self.create_department_and_team_by_csv(file , current_user)
-    CSV.foreach(file.path , headers: true) do |row_data|
+    CSV.foreach(file.path , encoding: "Shift_JIS:UTF-8" , headers: true) do |row_data|
       # create department unless department is not presence
       department = Department.find_by(dep_name: row_data["department"])
       unless department
