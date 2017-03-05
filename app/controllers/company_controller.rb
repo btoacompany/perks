@@ -251,11 +251,18 @@ class CompanyController < ApplicationController
   def create_users_by_csv
     file = params[:user][:upload_file]
     if file && file.content_type === "text/csv"
+      company = Company.find(current_user.company_id)
+      count_created_user_by_csv = 0
       User.transaction do
-        User.create_users_by_csv(file , current_user)
+        count_created_user_by_csv = User.create_users_by_csv(file , current_user , company.invite_email_flag , count_created_user_by_csv)
       end
-      flash[:notice_about_create_user] = "社員を追加しました"
-      redirect_to '/company/employees'
+      if count_created_user_by_csv == 0
+        flash[:notice_about_create_user] = "追加済みです"
+        redirect_to '/company/employees/register'
+      else
+        flash[:notice_about_create_user] = "社員#{count_created_user_by_csv}名を追加しました"
+        redirect_to '/company/employees'
+      end
     else
       flash[:notice_about_create_user] = "CSVファイルを選択してください"
       redirect_to '/company/employees/register'

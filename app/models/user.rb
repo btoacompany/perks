@@ -86,11 +86,8 @@ class User < ActiveRecord::Base
   end
 
   # 社員をCSVファイルで読み込み保存する
-  def self.create_users_by_csv(file , current_user)
-    logger.debug("````")
-    logger.debug("#{file.path}")
+  def self.create_users_by_csv(file , current_user , invite_email_flag , count_created_user_by_csv)
     CSV.foreach(file.path , headers: true) do |row_data|
-      logger.debug("=------")
       check_registered_user = User.find_by(email: row_data["email"])
       unless  check_registered_user
         user = User.new
@@ -99,19 +96,19 @@ class User < ActiveRecord::Base
         user.name = row_data["firstname"].to_s + row_data["lastname"].to_s
         user.email = row_data["email"]
         if row_data["password"]
-          user.verified = 1
           user.password = row_data["password"]
-        else
-          user.verified = 0
+        elsif invite_email_flag == 1
+          user.verified = 1
           user.password = SecureRandom.hex(4)
         end
         user.salt = BCrypt::Engine.generate_salt
         user.password = BCrypt::Engine.hash_secret(user.password, user.salt)
         user.company_id = current_user.company_id
         user.birthday = row_data["birthday"]
+        user.img_src = "//btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
         row_data["gender"] === "1" ? user.gender = 1 : user.gender = 0
         user.save!
-        logger.debug("#{user.errors}")
+        count_created_user_by_csv += 1 if user.save
         # add user to team
         check_department = Department.find_by(dep_name: row_data["department"])
         check_team = Team.find_by(team_name: row_data["team"] , department_id: check_department.id)
@@ -119,11 +116,10 @@ class User < ActiveRecord::Base
           check_team.manager_id = user.id if row_data["manager"] === "1"
           check_team.member_ids = check_team.member_ids + "," + user.id.to_s
           check_team.save!
-        else
-          logger.debug("user.name")
         end
       end
     end
+    return count_created_user_by_csv
   end
 
 private
