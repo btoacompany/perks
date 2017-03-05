@@ -453,13 +453,10 @@ class UsersController < ApplicationController
 
     user = User.find(@id)
 
-    params[:receiver_id]  = Post.find(res.post_id).receiver_id
+    receiver_id = Post.find(res.post_id).receiver_id
+    params[:receiver_id]  = receiver_id.split(",")
     params[:description]  = params["comments"]
-    if @company.point_fixed_flag == 0
-      params[:points]	  = params["comments"].scan(/\+[^\s|　]+/).first
-    else
-      params[:points] = @company.fixed_point
-    end
+    params[:points]	  = params["comments"].scan(/\+[^\s|　]+/).first
     params[:type]	  = "comment"
 
     if params[:points].present?
