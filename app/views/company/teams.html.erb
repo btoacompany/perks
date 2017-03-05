@@ -19,7 +19,6 @@
 <div class="clearfix">
   <div class="add_department">
   <h3 align="center">部署の追加</h3><br>
-  <%= render "shared/errors" , obj: @department %>
   <%= form_tag( "/company/departments/add/complete", method: "post") do %>
   <div class="toolbox center">
   <table class="admin_table">
