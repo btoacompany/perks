@@ -324,7 +324,7 @@
 	    </span>
 	    <span class="points radius5"><%= post[:points] %> pts</span><br>
 	    
-	    <span class="description"><%= simple_format(raw post[:description].gsub(/\@[^\s|　]+/,"").gsub(/\+[^\s|　]+/,"").gsub(/\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>")) %></span>
+	    <span class="description"><%= simple_format(raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>")) %></span>
 	  </div>
 	  <hr>
 	  <div class="kudos">
@@ -362,7 +362,7 @@
 		  </div>
 		  <div class="user_comments">
 		    <span class="user" style="font-weight:normal;">@<%= "#{comment.user.lastname} #{comment.user.firstname}" %></span>
-		    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|　]+|\#[^\s|　]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
+		    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|  ]+|\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
 		    <% if comment.user_id == @user.id || post[:receiver_id].include?(@user.id) %>
 		      <div class="r_float">
 			<div class="editnav dropdown">
@@ -514,9 +514,9 @@ $(".btn_give").click(function() {
   dataReceive = $(".receiver-selected").val();
   input = $(".taginput").val();
   <% if @company.point_fixed_flag == 0 %>
-  isPoint = input.match(/\+[^\s|　]+/);
+  isPoint = input.match(/\+[^\s|  ]+/);
   <% end %>
-  isTag = input.match(/\#[^\s|　]+/);
+  isTag = input.match(/\#[^\s|  ]+/);
   
   if(dataReceive == null || !isPoint ) {
     <% if @company.point_fixed_flag == 0 %>

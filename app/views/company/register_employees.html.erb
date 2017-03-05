@@ -15,6 +15,9 @@
 
 <div id="admin_contents" class="c_align">
 <h3>CSVで部署を登録する</h3><br>
+<% if flash[:notice] %>
+  <p class="notice"><b><i><%= flash[:notice] %></i></b></p>
+<% end %>
   <%= form_for @department , url: company_employees_create_department_and_team_by_csv_path(@department) , method: :post do |f| %>
     <%= f.file_field :upload_file %>
     <%= f.hidden_field :id %>

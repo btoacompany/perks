@@ -257,11 +257,12 @@ class CompanyController < ApplicationController
       redirect_to '/company/employees'
     else
       logger.debug("NOOOOOOOO!!!")
-      redirect_to '/company/employees'
+      flash[:notice] = "NOOOOOOOO!!"
+      redirect_to '/company/employees/register'
     end
     # エラー時の処理
     rescue => e
-    redirect_to '/company/employees'
+    redirect_to '/company/teams'
   end
 
   def create_department_and_team_by_csv
@@ -272,8 +273,8 @@ class CompanyController < ApplicationController
       end
       redirect_to '/company/employees'
     else
-      logger.debug("NOOOOOOOO!!!")
-      redirect_to '/company/employees'
+      flash[:notice] = "CSVファイルを選択してください"
+      redirect_to '/company/employees/register'
     end
     rescue => e
     redirect_to '/company/employees'    
