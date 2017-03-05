@@ -86,8 +86,11 @@ class User < ActiveRecord::Base
   end
 
   # 社員をCSVファイルで読み込み保存する
-  def self.import_users_by_csv(file , current_user)
+  def self.create_users_by_csv(file , current_user)
+    logger.debug("````")
+    logger.debug("#{file.path}")
     CSV.foreach(file.path , headers: true) do |row_data|
+      logger.debug("=------")
       check_registered_user = User.find_by(email: row_data["email"])
       unless  check_registered_user
         user = User.new
@@ -108,9 +111,10 @@ class User < ActiveRecord::Base
         user.birthday = row_data["birthday"]
         row_data["gender"] === "1" ? user.gender = 1 : user.gender = 0
         user.save!
+        logger.debug("#{user.errors}")
         # add user to team
         check_department = Department.find_by(dep_name: row_data["department"])
-        check_team = Team.find_by(team_name: row_data["team"])
+        check_team = Team.find_by(team_name: row_data["team"] , department_id: check_department.id)
         if check_department && check_team
           check_team.manager_id = user.id if row_data["manager"] === "1"
           check_team.member_ids = check_team.member_ids + "," + user.id.to_s

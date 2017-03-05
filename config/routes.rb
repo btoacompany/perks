@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   post  '/company/employees/edit/complete'  => 'company#edit_employees_complete'
   post  '/company/employees/delete'     => 'company#delete_employees'
   get '/company/employees/register' => 'company#register_employees'
-  post '/company/employees/import_users_by_csv'      => 'company#import_users_by_csv'
+  post '/company/employees/create_users_by_csv'      => 'company#create_users_by_csv'
   post '/company/employees/create_department_and_team_by_csv' => 'company#create_department_and_team_by_csv'
   post '/company/employees/export_csv_format_create_user' => 'company#export_csv_format_create_user'
   post '/company/employees/export_csv_format_create_department_and_team' => 'company#export_csv_format_create_department_and_team'

@@ -7,6 +7,9 @@ class Department < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
 
+  validates :dep_name , presence: true , length: {maximum: 30}
+
+
   def save_record(params)
     self.dep_name	= params[:dep_name]
     self.company_id	= params[:company_id]
