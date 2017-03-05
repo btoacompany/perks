@@ -47,7 +47,6 @@ class Company < ActiveRecord::Base
     return Time.now.strftime("%Y-%m-%d %H:%M:%S")
   end
 
-# IPアドレスの正規表現
   def check_received_ips
     unless /\A[\.\:\,\d]+\z/ =~ allowed_ips
       errors.add(:allowed_ips , :invalid)

@@ -248,21 +248,29 @@ class CompanyController < ApplicationController
     @b_day    = 0
   end
 
-  def import_users_by_csv
+  def create_users_by_csv
     file = params[:user][:upload_file]
     if file && file.content_type === "text/csv"
+      company = Company.find(current_user.company_id)
+      count_created_user_by_csv = 0
       User.transaction do
-        User.import_users_by_csv(file , current_user)
+        count_created_user_by_csv = User.create_users_by_csv(file , current_user , company.invite_email_flag , count_created_user_by_csv)
       end
-      redirect_to '/company/employees'
+      if count_created_user_by_csv == 0
+        flash[:notice_about_create_user] = "追加済みです"
+        redirect_to '/company/employees/register'
+      else
+        flash[:notice_about_create_user] = "社員#{count_created_user_by_csv}名を追加しました"
+        redirect_to '/company/employees'
+      end
     else
-      logger.debug("NOOOOOOOO!!!")
-      flash[:notice] = "NOOOOOOOO!!"
+      flash[:notice_about_create_user] = "CSVファイルを選択してください"
       redirect_to '/company/employees/register'
     end
     # エラー時の処理
     rescue => e
-    redirect_to '/company/teams'
+    flash[:notice_about_create_user] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
+    redirect_to '/company/employees/register'
   end
 
   def create_department_and_team_by_csv
@@ -271,13 +279,15 @@ class CompanyController < ApplicationController
       Department.transaction do
         Department.create_department_and_team_by_csv(file , current_user)
       end
-      redirect_to '/company/employees'
+      flash[:notice] = "部署・チームを追加しました"
+      redirect_to '/company/employees/register'
     else
       flash[:notice] = "CSVファイルを選択してください"
       redirect_to '/company/employees/register'
     end
     rescue => e
-    redirect_to '/company/employees'    
+    flash[:notice] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
+    redirect_to '/company/employees/register'    
   end
 
   # TODO Refactoring
