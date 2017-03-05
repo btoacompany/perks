@@ -453,14 +453,15 @@ class UsersController < ApplicationController
 
     user = User.find(@id)
 
-    params[:receiver_id]  = Post.find(res.post_id).receiver_id
+    receiver_id = Post.find(res.post_id).receiver_id
+    params[:receiver_id]  = receiver_id.split(",")
     params[:description]  = params["comments"]
+
 
     params[:points]    = params["comments"].scan(/\+[^\s|　]+/).first
     params[:type]	  = "comment"
     
     if params[:points].present?
-      params
       parse_points(params)
     end
     ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。")
