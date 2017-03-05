@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
 
   # 社員をCSVファイルで読み込み保存する
   def self.create_users_by_csv(file , current_user , invite_email_flag , count_created_user_by_csv)
-    CSV.foreach(file.path , headers: true) do |row_data|
+    CSV.foreach(file.path , encoding: "Shift_JIS:UTF-8" , headers: true ) do |row_data|
       check_registered_user = User.find_by(email: row_data["email"])
       unless  check_registered_user
         user = User.new
