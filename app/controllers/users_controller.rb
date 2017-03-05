@@ -381,7 +381,7 @@ class UsersController < ApplicationController
     else
       points = @company.fixed_point
     end
-    
+
     params[:user_id]	= @id
     params[:company_id] = @company_id
     params[:points]	= points
@@ -393,9 +393,9 @@ class UsersController < ApplicationController
       end
 
       if error == 0
-	receiver_ids	= params[:receiver_id]
-	receiver_count	= receiver_ids.count
-	points		= points * receiver_count
+    receiver_ids  = params[:receiver_id]
+    receiver_count  = receiver_ids.count
+   	points		= points * receiver_count
 
 	params[:receiver_id] = receiver_ids.join(",")
 
@@ -455,18 +455,16 @@ class UsersController < ApplicationController
 
     params[:receiver_id]  = Post.find(res.post_id).receiver_id
     params[:description]  = params["comments"]
-    if @company.point_fixed_flag == 0
-      params[:points]	  = params["comments"].scan(/\+[^\s|　]+/).first
-    else
-      params[:points] = @company.fixed_point
-    end
-    params[:type]	  = "comment"
 
+    params[:points]    = params["comments"].scan(/\+[^\s|　]+/).first
+    params[:type]	  = "comment"
+    
     if params[:points].present?
+      params
       parse_points(params)
     end
-
     ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。")
+
     redirect_page("users", "index")
   end
 

@@ -16,7 +16,7 @@
 <div id="admin_contents" class="c_align">
   <h3>社員登録・編集</h3><br>
   <p class="c_align">招待リンク: <a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
-  <a href="/company/employees/register" class="a_btncmn radius5">+ 社員を登録する</a>
+  <a href="/company/employees/register" class="a_btncmn radius5">+ 部署 / 社員を登録する</a>
   <% if @company.invite_email_flag == 0 %> 
     <a href="/company/employees/add" class="a_btncmn radius5">+ 社員に登録してもらう</a>
   <% end %>
