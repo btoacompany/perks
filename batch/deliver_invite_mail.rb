@@ -9,7 +9,7 @@ sum = 0
 
 users.each do | user |
   begin
-	if user.email.match(/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/)
+	if user.email.match(/^.+@.+$/)
 		temp_password = SecureRandom.hex(4)
 		data = {
 			:company_name   => user.company.name,
@@ -31,7 +31,6 @@ users.each do | user |
 	else
 		next
 	end
-	
   rescue Exception => e
     puts "#---- ERROR ----#"
     puts e.message
@@ -41,4 +40,3 @@ users.each do | user |
     user_update.save
   end
 end
-puts "--- END OF BATCH, changed #{sum} entries ---"
