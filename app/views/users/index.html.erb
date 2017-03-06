@@ -1,3 +1,4 @@
+<div class="time_line_wrapper">
 <div id="wrapper">
 <div id="contents" class="timeline">
 <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
@@ -276,19 +277,19 @@
 			<img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/sample_01.png"/>
 		      </div>
 
-		      <div class="m_receivers" style="z-index:99;position:relative">
-			<div style="float:left;padding-left:40px;">
+		      <div class="m_receivers">
+			<div class="m_receivers_left">
 			  <% post[:full_receiver_name].each_with_index do | name, i |%>
 			    <% if (i+1) % 2 != 0 %>
-			      <p style="font-weight:bold"><%= truncate(name.upcase, :length=>10) %></p>
+			      <p><%= truncate(name.upcase, :length=>12) %></p>
 			    <% end %>
 			  <% end %>
 			  </div>
 
-			  <div style="float:right;padding-right:40px;">
+			  <div class="m_receivers_right">
 			  <% post[:full_receiver_name].each_with_index do | name, i |%>
 			    <% if (i+1) % 2 == 0 %>
-			      <p style="font-weight:bold"><%= truncate(name.upcase, :length=>10) %></p>
+			      <p><%= truncate(name.upcase, :length=>12) %></p>
 			    <% end %>
 			  <% end %>
 			</div>
@@ -406,6 +407,7 @@
 </div><!-- row -->
 </div> <!-- contents -->
 </div> <!-- wrapper -->
+</div><!-- time_line_wrapper -->
 
 <script type="text/javascript">
 // for modal dialog box
