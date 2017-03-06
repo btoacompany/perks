@@ -13,6 +13,8 @@ class Post < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
 
+  validates :description , length: {maximum: 180}
+
   def save_record(params)
     self.company_id	= params[:company_id]
     self.user_id	= params[:user_id]

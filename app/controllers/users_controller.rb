@@ -366,8 +366,14 @@ class UsersController < ApplicationController
   end
 
   def give_points
-    parse_points(params)
-    redirect_page("users", "index")
+    description = params[:description]
+    if description.length >= 180
+      flash[:notice] = '投稿は180文字以内にしてください'
+      redirect_page("users", "index")
+    else
+      parse_points(params)
+      redirect_page("users", "index")
+    end
   end
 
   def parse_points(params)

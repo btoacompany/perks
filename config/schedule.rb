@@ -23,13 +23,8 @@
 # end
 set :output, 'log/whenever.log'
 
-# [例] 毎週日曜18:00
 every 1.day, at: '00:00 am' do
   runner "CompanyController.reset_point"
 end
-
-# every 1.minute do
-#   runner "CompanyController.reset_point"
-# end
 
 # Learn more: http://github.com/javan/whenever
