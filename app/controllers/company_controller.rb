@@ -278,14 +278,14 @@ class CompanyController < ApplicationController
         Department.create_department_and_team_by_csv(file , current_user)
       end
       flash[:notice] = "部署・チームを追加しました"
-      redirect_to '/company/employees/register'
+      redirect_to '/company/teams'
     else
       flash[:notice] = "CSVファイルを選択してください"
-      redirect_to '/company/employees/register'
+      redirect_to '/company/teams'
     end
     rescue => e
     flash[:notice] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
-    redirect_to '/company/employees/register'    
+    redirect_to '/company/teams'    
   end
 
   # TODO Refactoring
@@ -568,6 +568,7 @@ class CompanyController < ApplicationController
 
   def teams 
     @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
+    @department = Department.new
     @departments = Department.where(:company_id => @id, :delete_flag => 0)
     teams = Team.where(:company_id => @id, :delete_flag => 0)
     @users = User.where(company_id: @id, delete_flag: 0)
