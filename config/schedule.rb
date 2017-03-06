@@ -3,11 +3,6 @@
 # It's helpful, but not entirely necessary to understand cron before proceeding.
 # http://en.wikipedia.org/wiki/Cron
 
-# command:bashコマンドの実行
-# rake:rakeタスクの実行
-# runner:Rails内のメソッドの実行
-# script:scriptの実行
-
 # Example:
 #
 # set :output, "/path/to/my/cron_log.log"
