@@ -1,47 +1,45 @@
-      <% @posts.each do | post | %>
-        <div id="postsbox" class="post_<%= post[:id] %>">
-          <div class="images">
-            <table>
-              <tr>
-                <td><img src="<%= post[:user_img] %>" class=""/></td>
-		<td>
-		  <div>
+<% @posts.each do | post | %>
+  <div id="postsbox" class="post_<%= post[:id] %>">
+  <div class="images">
+    <table>
+    <tr>
+      <td><img src="<%= post[:user_img] %>" class=""/></td>
+		  <td>
+		    <div>
 		    <% if post[:receiver_id].count == 1 %>
 		      <img src="<%= post[:receiver_img] %>" class=""/>
 		    <% else %>
 		      <div class="m_receivers_panel">
-			<img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/sample_01.png"/>
+			      <img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/sample_01.png"/>
 		      </div>
-
-		      <div class="m_receivers" style="z-index:99;position:relative">
-			<div style="float:left;padding-left:40px;">
-			  <% post[:full_receiver_name].each_with_index do | name, i |%>
-			    <% if (i+1) % 2 != 0 %>
-			      <p style="font-weight:bold"><%= truncate(name.upcase, :length=>10) %></p>
-			    <% end %>
-			  <% end %>
-			  </div>
-
-			  <div style="float:right;padding-right:40px;">
-			  <% post[:full_receiver_name].each_with_index do | name, i |%>
-			    <% if (i+1) % 2 == 0 %>
-			      <p style="font-weight:bold"><%= truncate(name.upcase, :length=>10) %></p>
-			    <% end %>
-			  <% end %>
-			</div>
+		      <div class="m_receivers">
+			      <div class="m_receivers_left">
+			        <% post[:full_receiver_name].each_with_index do | name, i |%>
+			          <% if (i+1) % 2 != 0 %>
+			            <p><%= truncate(name.upcase, :length=>12) %></p>
+			          <% end %>
+			        <% end %>
+			      </div>
+			      <div class="m_receivers_right">
+			        <% post[:full_receiver_name].each_with_index do | name, i |%>
+			          <% if (i+1) % 2 == 0 %>
+			            <p><%= truncate(name.upcase, :length=>12) %></p>
+			          <% end %>
+			        <% end %>
+			     </div>
 		      </div>
 		    <% end %>
-		  </div>
-		</td>
-              </tr>
-            </table>
-          </div>
-          <div class="posts">
-	    <div class="r_float">
-	      <div class="time" data-id="<% post[:id] %>">
-		<p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
-	      </div>
-	      <% if post[:receiver_id].include?(@user.id) || post[:user_id].to_i == @user.id %> 
+		    </div>
+		  </td>
+    </tr>
+    </table>
+  </div>
+  <div class="posts">
+	<div class="r_float">
+	  <div class="time" data-id="<% post[:id] %>">
+		  <p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
+	  </div>
+	  <% if post[:receiver_id].include?(@user.id) || post[:user_id].to_i == @user.id %>
 		<div class="editnav dropdown r_float">
 		  <div><input type="button" class="dropbtn" value="▽"></div>
 		  <div class="dropdown-content">
@@ -51,8 +49,8 @@
 		    -->
 		  </div>
 		</div><br>
-	      <% end %>
-	    </div>
+	  <% end %>
+	 </div>
 	    From <span class="user giver"><b>@<%= post[:full_user_name] %></b></span><br> 
 	    To 
 	    <span class="user receiver">
