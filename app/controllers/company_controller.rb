@@ -579,6 +579,7 @@ class CompanyController < ApplicationController
     @teams = []
     data = {}
 
+    @department = Department.new
     teams.each do | team |
       @department = Department.find(team.department_id)
       if @department.delete_flag == 0
