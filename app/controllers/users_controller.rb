@@ -127,15 +127,13 @@ class UsersController < ApplicationController
       same_teams << team
     end
     Team.where(company_id: @company_id, delete_flag: 0).each do |team|
-      team.member_ids.split(",")
-      if team.member_ids.include?(@id.to_s)
+      if team.member_ids.split(",").include?(@id)
         same_teams << team
       end
     end
     same_teams.each do |team|
-      team_users.push(team.member_ids.split(",").delete("0"))
-      team_users.push(team.manager_id.to_s)
-      team_users.flatten!
+      team_users.push(team.member_ids.split(",")).flatten!
+      team_users.push(team.manager_id.to_s).flatten!
     end
     team_users.uniq!
     @team_users = []
