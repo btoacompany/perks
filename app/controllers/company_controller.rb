@@ -546,7 +546,7 @@ class CompanyController < ApplicationController
 
   def self.reset_point
     reset_date = Date.yesterday
-    company_ids = Company.where(reset_point_date: reset_date).pluck(:id)
+    company_ids = Company.where(reset_point_flag: 1).where(reset_point_date: reset_date).pluck(:id)
     company_ids.each do |id|
       users = User.where(company_id: id)
       users.update_all(in_points: 0)
@@ -606,12 +606,6 @@ class CompanyController < ApplicationController
       end
     end
   end
-
-  # def add_teams
-  #   @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
-  #   @departments = Department.where(:company_id => @id, :delete_flag => 0)
-  #   @users = User.where(:company_id => @id, :delete_flag => 0)
-  # end
 
   def add_teams_complete
     params[:company_id] = @id
