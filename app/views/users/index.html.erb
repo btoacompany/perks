@@ -226,7 +226,8 @@
 <!-- 	  <% if @user.admin == 1 %>
 	    <a id="bonus_trigger_id" rel="leanModal" name="modal" href="#modal"><img class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png" title="特別ボーナスを贈ります。" data-intro="<管理者様限定><br>ここでは、会社から従業員に特別ボーナスを贈ることができます。<br>①設定したボーナスチャレンジからポイントを贈る<br>②設定していないものの、特別に表彰したい時<br>などにご利用いただけます。" <%if @user.admin == 1 %>data-step="7"<% end %> /></a>
 	  <% end %>   -->
-	  <div id="myDropdown" class="dropdown-content"> </div>
+	  
+    <div id="myDropdown" class="dropdown-content"> </div>
 	</div><br><hr>
 
 	<div class="description">
@@ -234,7 +235,9 @@
 	</div><br>
 
 	<div class="tags" style="float:left">
-	  To: <span></span> 
+	  To: <span></span><br>
+    <input type="text" id="suggested_name"/><input type="button" value="追加" class="email_added"/>
+    <div id="suggest" style="display:none;"></div>
 	</div>
 	<span class="pointsInput"></span>
 	<p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
@@ -547,8 +550,8 @@ $("#myDropdown").click(function(e) {
     case "drpAt":
       //$(".tags span").empty();
       if(!($(".tags span input[data-id='" + dataId + "']").val())) {
-	$(".tags span").append($("<input type='button' class='btn radius5' data-id='" + dataId + "'/>").val(content));
-	$(".tags span").append($("<input type='hidden' class='receiver-selected' name='receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+	$(".tags span").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
+	$(".tags span").append($("<input type='hidden' class='receiver-selected given_user' name='receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
       }
 
       break;
@@ -582,11 +585,16 @@ $(".pointsbox .dropbtn").click(function() {
   $.each(values, function( index, value ) {
     $("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
   });
+  $("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
 
   $("#myDropdown").show();
   
   $(".item").click(function() {
     $(".taginput").focus();
+  });
+
+  $("#type_email").click(function(){
+    $("#drpAt_input").show();
   });
 });
 
@@ -596,7 +604,7 @@ $(document).mouseup(function(e) {
     $("#myDropdown").hide();
   }
 
-  $(".tags input").click(function() {
+  $(".tags .given_user").click(function() {
     $(this).next().remove();
     $(this).remove();
   });
@@ -615,6 +623,35 @@ $(document).ready(function() {
   $(".time p").each(function() {
     $(this).html(timeSince($(this).html()));
   });
+});
+
+//email_suggest 
+function startSuggest() {
+  new Suggest.LocalMulti(
+    "suggested_name",    // 入力のエレメントID
+    "suggest", // 補完候補を表示するエリアのID
+    <%= raw @emails %>,
+    {dispMax: 10, interval: 1000, prefix: true}); // オプション
+};
+window.addEventListener ?
+window.addEventListener('load', startSuggest, false) :
+window.attachEvent('onload', startSuggest);
+
+
+// email_click
+$(document).on('click', '.email_added',function(){
+  $.ajax({ type: 'Get',
+    url: '/user/getname',
+    data:{
+      email: $('#suggested_name').val()
+    },
+    success: function(data){
+      $(".tags span").append(&("<input type='button' class='btn radius  5 given_user' data-id='"data[:id]"' value='"data[:id]"' />"));
+      $(".tags span").append("<input type='hidden' class='receiver-selected given_user' name='receiver_id[]' data-id='"data[:id]"'/>");
+    },
+    error: function(data){
+      alert('街灯のメールアドレスがありません');
+    }});
 });
 
 function timeSince(time) {
@@ -762,6 +799,7 @@ $(window).click(function() {
 $("#wrapper").click(function(event) {
   event.stopPropagation();
 });
+
 </script>
 
 <script>
