@@ -137,7 +137,12 @@ class CompanyController < ApplicationController
         @company.allowed_ips = params[:allowed_ips]
       end
     end
-    @company.reset_point_date = params[:reset_point_date]
+    @company.reset_point_flag = params[:time_select]
+    if params[:time_select].to_i == 1
+      @company.reset_point_date = params[:reset_point_date]
+    else
+      @company.reset_point_date = ""
+    end
 
     if @company.save
       redirect_to '/company/customize', notice: "変更を保存しました。"
@@ -149,7 +154,6 @@ class CompanyController < ApplicationController
       unless /\A\d{4}[\-]\d{2}[\-]\d{2}\z/ =~ @company.reset_point_date.to_s
         @reset_point_date = "xxxx/xx/xxの形式で入力してください。"
       end
-      # IP アドレスの正規表現
       if @company.allowed_ips !~ /\A[\.\:\,\d]+\z/
         @allowed_ips = "IPアドレスに誤りがあります。"
       end
@@ -542,7 +546,7 @@ class CompanyController < ApplicationController
 
   def self.reset_point
     reset_date = Date.yesterday
-    company_ids = Company.where(reset_point_date: reset_date).pluck(:id)
+    company_ids = Company.where(reset_point_flag: 1).where(reset_point_date: reset_date).pluck(:id)
     company_ids.each do |id|
       users = User.where(company_id: id)
       users.update_all(in_points: 0)
@@ -602,12 +606,6 @@ class CompanyController < ApplicationController
       end
     end
   end
-
-  # def add_teams
-  #   @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
-  #   @departments = Department.where(:company_id => @id, :delete_flag => 0)
-  #   @users = User.where(:company_id => @id, :delete_flag => 0)
-  # end
 
   def add_teams_complete
     params[:company_id] = @id
