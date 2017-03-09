@@ -250,7 +250,7 @@ class UsersController < ApplicationController
   end
 
   def give_recog_by_email
-    @addeduser = User.find_by(delete_flag: 0, email: email)
+    @addeduser = User.find_by(company_id: @company_id,delete_flag: 0, email: params[:email])
     render :json => {:id => @addeduser.id , :name => @addeduser.name }
   end
 

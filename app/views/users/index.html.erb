@@ -231,13 +231,14 @@
 	</div><br><hr>
 
 	<div class="description">
+      <span id="suggested_name_span" style="display: none;">To: </span>
+      <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
+    <div id="suggest" style="display:none;"></div>
 	  <textarea name="description" class="taginput" align="center" rows="5" cols="80" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %>></textarea><br>
 	</div><br>
 
 	<div class="tags" style="float:left">
 	  To: <span></span><br>
-    <input type="text" id="suggested_name"/><input type="button" value="追加" class="email_added"/>
-    <div id="suggest" style="display:none;"></div>
 	</div>
 	<span class="pointsInput"></span>
 	<p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
@@ -589,12 +590,14 @@ $(".pointsbox .dropbtn").click(function() {
 
   $("#myDropdown").show();
   
-  $(".item").click(function() {
-    $(".taginput").focus();
+  $("#type_email").click(function(){
+    $("#suggested_name_span").show();
+    $("#suggested_name").show();
+    $("#send_suggested_name").show();
   });
 
-  $("#type_email").click(function(){
-    $("#drpAt_input").show();
+  $(".item").click(function() {
+    $(".taginput").focus();
   });
 });
 
@@ -639,19 +642,32 @@ window.attachEvent('onload', startSuggest);
 
 
 // email_click
-$(document).on('click', '.email_added',function(){
-  $.ajax({ type: 'Get',
+$(".email_added").click(function(){
+  $.ajax({ type: 'GET',
     url: '/user/getname',
     data:{
       email: $('#suggested_name').val()
     },
     success: function(data){
-      $(".tags span").append(&("<input type='button' class='btn radius  5 given_user' data-id='"data[:id]"' value='"data[:id]"' />"));
-      $(".tags span").append("<input type='hidden' class='receiver-selected given_user' name='receiver_id[]' data-id='"data[:id]"'/>");
+      var element = document.createElement('input');
+      var elem = document.createElement('input');
+      element.setAttribute("type", "button");
+      element.setAttribute("class", "btn radius5 given_user");
+      element.setAttribute("value", data['name']);
+      element.setAttribute("data-id", data['id']);
+      elem.setAttribute("type", "hidden");
+      elem.setAttribute("class", "receiver-selected given_user");
+      elem.setAttribute("name", "receiver_id[]");
+      elem.setAttribute("data-id", data['id']);
+      elem.setAttribute("value", data['id']);
+      $(".tags span").append(element);
+      $(".tags span").append(elem);
+      $("#suggested_name").val("");
     },
     error: function(data){
-      alert('街灯のメールアドレスがありません');
-    }});
+      alert('該当のメールアドレスがありません');
+    }
+  });
 });
 
 function timeSince(time) {
