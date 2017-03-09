@@ -104,7 +104,7 @@ class CompanyController < ApplicationController
     company = Company.find(@id)
     user = User.find_by_email(company.email).update(:email => params[:email])
     company.save_record(params)
-    redirect "/company/details"
+    redirect_to "/company/details"
   end
 
   def hashtags_fix(hashtags)
