@@ -10,10 +10,12 @@ class Company < ActiveRecord::Base
 
   before_create :set_create_time
   before_update :set_update_time
-  validates :fixed_point, numericality: { only_integer: true, greater_than_or_equal_to: 5 , less_than_or_equal_to: 50} , on: :update
-  validates :reset_point_date , format: { with: /\A\d{4}[\-]\d{2}[\-]\d{2}\z/ } , on: :update
-  validate :check_received_ips , on: :update
-
+  validates :address , length: {maximum: 190}
+  validates :url , length: {maximum: 190}
+  validates :phone , length: {maximum: 190}
+  validates :fixed_point, numericality: { only_integer: true, greater_than_or_equal_to: 5 , less_than_or_equal_to: 50} , if: :check_point_fixed_flag
+  validates :reset_point_date , format: { with: /\A\d{4}[\-]\d{2}[\-]\d{2}\z/ } , if: :check_reset_point_flag
+  validate :check_received_ips , on: :update , if: :check_ip_limit_flag
 
   def save_record(params)
     self.name	      = params[:name]	      if params[:name].present?
@@ -45,6 +47,22 @@ class Company < ActiveRecord::Base
 
   def set_time
     return Time.now.strftime("%Y-%m-%d %H:%M:%S")
+  end
+
+  def check_reset_point_flag
+    check_flag(reset_point_flag)
+  end
+
+  def check_ip_limit_flag
+    check_flag(ip_limit_flag)
+  end
+
+  def check_point_fixed_flag
+    check_flag(point_fixed_flag)
+  end
+
+  def check_flag(flag)
+    true if flag == 1
   end
 
   def check_received_ips
