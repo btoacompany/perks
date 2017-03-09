@@ -152,7 +152,7 @@ class CompanyController < ApplicationController
         @fixed_point = "5以上50以下のポイント数を設定してください。"
       end
       unless /\A\d{4}[\-]\d{2}[\-]\d{2}\z/ =~ @company.reset_point_date.to_s
-          @reset_point_date = "xxxx/xx/xxの形式で入力してください。"
+        @reset_point_date = "xxxx/xx/xxの形式で入力してください。"
       end
       if @company.allowed_ips !~ /\A[\.\:\,\d]+\z/
         @allowed_ips = "IPアドレスに誤りがあります。"
