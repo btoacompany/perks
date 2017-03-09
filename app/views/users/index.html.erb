@@ -226,15 +226,19 @@
 <!-- 	  <% if @user.admin == 1 %>
 	    <a id="bonus_trigger_id" rel="leanModal" name="modal" href="#modal"><img class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png" title="特別ボーナスを贈ります。" data-intro="<管理者様限定><br>ここでは、会社から従業員に特別ボーナスを贈ることができます。<br>①設定したボーナスチャレンジからポイントを贈る<br>②設定していないものの、特別に表彰したい時<br>などにご利用いただけます。" <%if @user.admin == 1 %>data-step="7"<% end %> /></a>
 	  <% end %>   -->
-	  <div id="myDropdown" class="dropdown-content"> </div>
+	  
+    <div id="myDropdown" class="dropdown-content"> </div>
 	</div><br><hr>
 
 	<div class="description">
+      <span id="suggested_name_span" style="display: none;">To: </span>
+      <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
+    <div id="suggest" style="display:none;"></div>
 	  <textarea name="description" class="taginput" align="center" rows="5" cols="80" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %>></textarea><br>
 	</div><br>
 
 	<div class="tags" style="float:left">
-	  To: <span></span> 
+	  To: <span></span><br>
 	</div>
 	<span class="pointsInput"></span>
 	<p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
@@ -547,8 +551,8 @@ $("#myDropdown").click(function(e) {
     case "drpAt":
       //$(".tags span").empty();
       if(!($(".tags span input[data-id='" + dataId + "']").val())) {
-	$(".tags span").append($("<input type='button' class='btn radius5' data-id='" + dataId + "'/>").val(content));
-	$(".tags span").append($("<input type='hidden' class='receiver-selected' name='receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+	$(".tags span").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
+	$(".tags span").append($("<input type='hidden' class='receiver-selected given_user' name='receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
       }
 
       break;
@@ -582,9 +586,16 @@ $(".pointsbox .dropbtn").click(function() {
   $.each(values, function( index, value ) {
     $("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
   });
+  $("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
 
   $("#myDropdown").show();
   
+  $("#type_email").click(function(){
+    $("#suggested_name_span").show();
+    $("#suggested_name").show();
+    $("#send_suggested_name").show();
+  });
+
   $(".item").click(function() {
     $(".taginput").focus();
   });
@@ -596,7 +607,7 @@ $(document).mouseup(function(e) {
     $("#myDropdown").hide();
   }
 
-  $(".tags input").click(function() {
+  $(".tags .given_user").click(function() {
     $(this).next().remove();
     $(this).remove();
   });
@@ -614,6 +625,48 @@ $(document).ready(function() {
   }
   $(".time p").each(function() {
     $(this).html(timeSince($(this).html()));
+  });
+});
+
+//email_suggest 
+function startSuggest() {
+  new Suggest.LocalMulti(
+    "suggested_name",    // 入力のエレメントID
+    "suggest", // 補完候補を表示するエリアのID
+    <%= raw @emails %>,
+    {dispMax: 10, interval: 1000, prefix: true}); // オプション
+};
+window.addEventListener ?
+window.addEventListener('load', startSuggest, false) :
+window.attachEvent('onload', startSuggest);
+
+
+// email_click
+$(".email_added").click(function(){
+  $.ajax({ type: 'GET',
+    url: '/user/getname',
+    data:{
+      email: $('#suggested_name').val()
+    },
+    success: function(data){
+      var element = document.createElement('input');
+      var elem = document.createElement('input');
+      element.setAttribute("type", "button");
+      element.setAttribute("class", "btn radius5 given_user");
+      element.setAttribute("value", data['name']);
+      element.setAttribute("data-id", data['id']);
+      elem.setAttribute("type", "hidden");
+      elem.setAttribute("class", "receiver-selected given_user");
+      elem.setAttribute("name", "receiver_id[]");
+      elem.setAttribute("data-id", data['id']);
+      elem.setAttribute("value", data['id']);
+      $(".tags span").append(element);
+      $(".tags span").append(elem);
+      $("#suggested_name").val("");
+    },
+    error: function(data){
+      alert('該当のメールアドレスがありません');
+    }
   });
 });
 
@@ -762,6 +815,7 @@ $(window).click(function() {
 $("#wrapper").click(function(event) {
   event.stopPropagation();
 });
+
 </script>
 
 <script>

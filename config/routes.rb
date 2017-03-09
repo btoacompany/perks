@@ -84,6 +84,7 @@ Rails.application.routes.draw do
 
   # users
   get	'/user'			    => 'users#index'
+  get '/user/getname' => 'users#give_recog_by_email'
   post	'/user/give_points'	    => 'users#give_points'
   post	'/user/give_points_slack'   => 'users#give_points_slack'
   post	'/user/give_comments'	    => 'users#give_comments'

@@ -115,6 +115,10 @@ class UsersController < ApplicationController
     @user     = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @company = Company.find(@company_id)
+    @emails = []
+    @users.each do |user|
+      @emails << user.email
+    end
     if @company.point_fixed_flag == 0
       @placeholder = "+5 会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
     else
@@ -243,6 +247,11 @@ class UsersController < ApplicationController
     
       @ratio = (@last_week_posts - @this_week_posts) / @last_week_posts * 100
     end
+  end
+
+  def give_recog_by_email
+    @addeduser = User.find_by(company_id: @company_id,delete_flag: 0, email: params[:email])
+    render :json => {:id => @addeduser.id , :name => @addeduser.name }
   end
 
   def give_points_slack
@@ -468,6 +477,7 @@ class UsersController < ApplicationController
     if params[:points].present?
       parse_points(params)
     end
+    
     ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。")
 
     redirect_page("users", "index")
@@ -825,6 +835,7 @@ class UsersController < ApplicationController
 
   def update_complete_details
     name_exist = "そのユーザー名はすでに使われております。他のユーザー名をご指定ください。"
+    email_exist = "そのメールアドレスはすでに使われております。"
     session[:redirect] = nil
 
     url = request.original_url
@@ -852,6 +863,14 @@ class UsersController < ApplicationController
 
       	redirect_to "/invite" and return
       end
+
+      useremail_exist = User.where(email: params[:email], company_id: params[:company_id])
+      if useremail_exist.present?
+        flash[:notice]      = email_exist 
+        session[:redirect]  = 1
+        redirect_to "/invite" and return
+      end
+
 
       res = User.new
       res.save_record(params)
