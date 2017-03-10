@@ -609,8 +609,13 @@ class CompanyController < ApplicationController
 
   def add_teams_complete
     params[:company_id] = @id
+    team_names = Team.where(company_id: @id, department_id: params[:department_id].to_i ,delete_flag: 0).pluck(:team_name)
+    if team_names.include?(params[:team_name])
+      redirect_to "/company/teams", notice: "そのチーム名はすでに登録されています。"
+      return
+    end
     @member_ids = []
-    unless params[:members].present?
+    if params[:members].reject(&:blank?).blank?
       redirect_to "/company/teams", notice: "少なくとも一人以上の社員を登録してください"
       return
     end
@@ -656,7 +661,7 @@ class CompanyController < ApplicationController
     @team = Team.find(params[:team_id])
     if @team.company_id == @id
       @member_ids = []
-      unless params[:members]
+      if params[:members].reject(&:blank?).blank?
         redirect_to "/company/teams/edit/#{@team.id}", notice: "少なくとも一人以上の社員を登録してください。"
         return
       end
