@@ -425,7 +425,6 @@ class AnalyticsController < ApplicationController
       @start_time = Date.today.prev_month
     else
       @start_time = params[:start_time]
-      @start_time
       @start_time_valid = @start_time.split("/")
       unless Date.valid_date?(@start_time_valid[0].to_i, @start_time_valid[1].to_i, @start_time_valid[2].to_i)
         @start_time = Date.today.prev_month
@@ -435,7 +434,7 @@ class AnalyticsController < ApplicationController
       @end_time = Date.today
     else
       @end_time = params[:end_time]
-      @end_time_valid = @end_time.split(",")
+      @end_time_valid = @end_time.split("/")
       unless Date.valid_date?(@end_time_valid[0].to_i, @end_time_valid[1].to_i, @end_time_valid[2].to_i)
         @end_time = Date.today
       end
