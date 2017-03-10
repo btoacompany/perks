@@ -1,3 +1,5 @@
+<% if @start_time.to_date <= @end_time.to_date %>
+
 <% @array.each do |hashtag, ranking| %>
   var chart = new CanvasJS.Chart("<%= hashtag %>", {
     backgroundColor: "#3a3a3c",
@@ -32,4 +34,9 @@
     ]
   });
   chart.render();
+<% end %>
+
+<% else %>
+alert('日付に誤りがあります。');
+
 <% end %>

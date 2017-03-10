@@ -1,3 +1,5 @@
+<% if @start_time.to_date <= @end_time.to_date %>
+
 var chart = new CanvasJS.Chart("top_receiver", {
     backgroundColor: "#3a3a3c",
     animationEnabled: true, 
@@ -75,4 +77,8 @@ var chart = new CanvasJS.Chart("top_receiver", {
     ]
   });
   chart.render();
+<% else %>
+alert('日付に誤りがあります。');
+
+<% end %>
 
