@@ -15,14 +15,13 @@
 
 <div id="admin_contents" class="c_align">
   <br>
-  <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
+<% if flash[:notice] %>
+  <p class="notice" style="color: red"><b><i><%= flash[:notice] %></i></b></p>
+<% end %>
 <div class="clearfix">
   <div class="add_department">
   <h3 align="center">部署の追加</h3><br>
   <h5>CSVで部署を登録する</h5><br>
-<% if flash[:notice] %>
-  <p class="notice" style="color: red"><b><i><%= flash[:notice] %></i></b></p>
-<% end %>
   <%= form_for @department , url: company_employees_create_department_and_team_by_csv_path(@department) , method: :post do |f| %>
     <%= f.file_field :upload_file %>
     <%= f.hidden_field :id %>
@@ -101,7 +100,7 @@
   <select id="manager_id" name="manager_id" required style="width:200px;">
     <option value=""></option>
     <% @managers.each do | manager | %>
-      <option value=<%= manager.id %>><%= manager.name %></option>
+      <option value=<%= manager.id %>><%= manager.lastname %> <%= manager.firstname %></option>
     <% end %>
   </select>
       </td>
@@ -141,7 +140,7 @@
 	<tr class="item_<%= item[:id] %>">
     <td style="width:250px;"><%= item[:department] %></td>
 	  <td style="width:250px;"><%= item[:team_name] %></td>
-	  <td style="width:300px;"><%= item[:manager].name %></td>
+	  <td style="width:300px;"><%= item[:manager].lastname %> <%= item[:manager].firstname %></td>
     <td style="width:300px;">
     <ul class="team_member_list" >
       <input type="button" value="メンバーを表示する" class="change_password_btn"/>
