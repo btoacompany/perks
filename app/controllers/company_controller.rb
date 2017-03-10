@@ -610,6 +610,10 @@ class CompanyController < ApplicationController
   def add_teams_complete
     params[:company_id] = @id
     @member_ids = []
+    unless params[:members].present?
+      redirect_to "/company/teams", notice: "少なくとも一人以上の社員を登録してください"
+      return
+    end
     members = params[:members].delete_if{|n| n.empty? }
     members.each do |mem|
       user = User.find_by(email: mem, delete_flag: 0)
