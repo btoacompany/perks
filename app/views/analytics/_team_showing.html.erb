@@ -3,7 +3,7 @@
     <div class="team_list_div">
       <li><%= team[:team_name] %></li>
       <% team[:members].each do |member| %>
-        <% @list_user = User.find(member) %>
+        <% @list_user = User.find(member.to_i) %>
         <li class="team_list team_member"><%= link_to "#{@list_user.lastname} #{@list_user.firstname}", "/analytics/user/#{@list_user.id}" %></li>
       <% end %>
     </div>
@@ -13,3 +13,15 @@
     <li><%= link_to "#{user.name}", "/analytics/user/#{user.id}" %></li>
   <% end %>
 <% end %>
+
+<script>
+  $('.team_list_div').click(function(){
+    if ($(this).children(".team_member").hasClass("team_list")){
+        $(this).children(".team_member").removeClass('team_list');
+        $(this).children("li").css('background-color', '#3a3a3c');
+    } else {
+        $(this).children(".team_member").addClass('team_list');
+        $(this).children("li").css('background-color', '#6c6c70');
+      }
+    });
+</script>

@@ -8,18 +8,3 @@
       <%= render 'team_showing' %>
     </ul>
   </div>
-
-<script>
-  $('.team_list_div').click(function(){
-    if ($(this).children(".team_member").hasClass("team_list")){
-        $(this).children(".team_member").removeClass('team_list');
-        $(this).children("li").css('background-color', '#3a3a3c');
-    } else {
-        $(this).children(".team_member").addClass('team_list');
-        $(this).children("li").css('background-color', '#6c6c70');
-      }
-    });
-</script>
-
-
-

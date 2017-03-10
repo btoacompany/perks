@@ -49,17 +49,19 @@ class AnalyticsController < ApplicationController
   def index
     @hash = {}
     @points = {}
-    @post_recieved = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('receiver_id').count
-    @points_recieved = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('receiver_id').sum(:points)
+    @posts = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0)
     @users_custom.each do |user|
-      if @post_recieved[user.id].blank?
-        @hash[user.id] = 0
-        @points[user.id] = 0
-      else
-        @hash[user.id] = @post_recieved[user.id]
-        @points[user.id] = @points_recieved[user.id]
+      count = 0
+      points = 0
+      @posts.each do |post|
+        if post.receiver_id.include?(user.id.to_s)
+          count = count + 1
+          points = points + post.points
+        end
       end
-    end 
+      @hash[user.id] = count
+      @points[user.id] = points
+    end
     @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
     @points_custom = Hash[ @points.sort_by{ |_, v| -v } ]
   end
@@ -423,13 +425,22 @@ class AnalyticsController < ApplicationController
       @start_time = Date.today.prev_month
     else
       @start_time = params[:start_time]
+      @start_time
+      @start_time_valid = @start_time.split("/")
+      unless Date.valid_date?(@start_time_valid[0].to_i, @start_time_valid[1].to_i, @start_time_valid[2].to_i)
+        @start_time = Date.today.prev_month
+      end
     end
     if params[:end_time].blank?
       @end_time = Date.today
     else
       @end_time = params[:end_time]
+      @end_time_valid = @end_time.split(",")
+      unless Date.valid_date?(@end_time_valid[0].to_i, @end_time_valid[1].to_i, @end_time_valid[2].to_i)
+        @end_time = Date.today
+      end
     end
-    @time_custom = @start_time.to_date..@end_time.to_date.tomorrow
+    @time_custom = @start_time.to_date..@end_time.to_date
   end 
 
   def basic_info

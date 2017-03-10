@@ -583,10 +583,12 @@ $(".pointsbox .dropbtn").click(function() {
   }
 
   $("#myDropdown > a").remove();
+  if (className == 'drpAt'){
+    $("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
+  };
   $.each(values, function( index, value ) {
     $("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
   });
-  $("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
 
   $("#myDropdown").show();
   
