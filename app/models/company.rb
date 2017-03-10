@@ -10,6 +10,7 @@ class Company < ActiveRecord::Base
 
   before_create :set_create_time
   before_update :set_update_time
+  validates :name , length: {maximum: 190}
   validates :address , length: {maximum: 190}
   validates :url , length: {maximum: 190}
   validates :phone , length: {maximum: 190}

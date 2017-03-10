@@ -282,14 +282,14 @@ class CompanyController < ApplicationController
         Department.create_department_and_team_by_csv(file , current_user)
       end
       flash[:notice] = "部署・チームを追加しました"
-      redirect_to '/company/employees/register'
+      redirect_to '/company/teams'
     else
       flash[:notice] = "CSVファイルを選択してください"
-      redirect_to '/company/employees/register'
+      redirect_to '/company/teams'
     end
     rescue => e
     flash[:notice] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
-    redirect_to '/company/employees/register'    
+    redirect_to '/company/teams'    
   end
 
   # TODO Refactoring
