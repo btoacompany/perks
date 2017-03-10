@@ -42,7 +42,7 @@
   <select id="manager_id" name="manager_id" style="width: 200px;">
     <option value=""></option>
     <% @managers.each do | manager | %>
-      <option value=<%= manager[:id] %> <% if @team.manager_id == manager.id %> selected <% end %> ><%= manager[:name] %></option>
+      <option value=<%= manager[:id] %> <% if @team.manager_id == manager[:id] %> selected <% end %> ><%= manager[:name] %></option>
     <% end %>
   </select>
       </td>
@@ -50,7 +50,7 @@
     <tr>
       <th>所属社員</th>
       <td style="text-align: left;">
-        <input type="text" id="suggested_name" name="adding_name" value="" size="32" style="width: 200px;"/>    <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+        <input type="text" id="suggested_name" name="members[]" value="" size="32" style="width: 200px;"/>    <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
         <div id="suggest" style="display:none;"></div>
         <br><br>
         <div id="adding_member">
@@ -79,7 +79,7 @@ $(".btn_back").click(function() {
 $('.setting_color').css('color','gray');
 
 $(".btn_change_password").click(function() {
-  var addedname = $(':text[name="adding_name"]').val();
+  var addedname = $(':text[id="suggested_name"]').val();
   var element = document.createElement('input');
   element.setAttribute("name", "members[]"); 
   element.setAttribute("value", addedname);
@@ -87,7 +87,7 @@ $(".btn_change_password").click(function() {
   element.setAttribute("size", "32"); 
   element.setAttribute("style", "display:block; width: 200px;"); 
   $("#adding_member").append(element);
-  $(':text[name="adding_name"]').val("");
+  $(':text[id="suggested_name"]').val("");
 });
 
 
