@@ -369,28 +369,29 @@ class CompanyController < ApplicationController
 
     emails.each do | email |
       if existing_emails.include?(email)
-  @duplicate_emails << email
+        @duplicate_emails << email
       else
-  temp_password = SecureRandom.hex(4)
-  name = email.split("@")[0]
+        temp_password = SecureRandom.hex(4)
+        name = email.split("@")[0]
 
-  @data = {
-    :company_id  => @id,
-    :company_name  => company.name,
-    :company_owner=> company.owner,
-    :email  => email,
-    :password  => temp_password,
-    :name    => name,
-    :img_src  => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
-    :prizy_url  => @prizy_url + "/login"
-  }
-  @user = User.new
-  @user.save_record(@data)
+        @data = {
+          :company_id  => @id,
+          :company_name  => company.name,
+          :company_owner=> company.owner,
+          :email  => email,
+          :password  => temp_password,
+          :name    => name,
+          :img_src  => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+          :prizy_url  => @prizy_url + "/login"
+        }
+        @user = User.new
+        @user.save_record(@data)
       end
     end
 
     if @duplicate_emails.present?
-      flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。"
+      redirect_to '/company/employees/add', notice: "#{@duplicate_emails.join(", ")} はすでに登録されています。"
+      return
     end
     redirect_to "/company/employees"
   end
@@ -563,8 +564,14 @@ class CompanyController < ApplicationController
     if params[:user_id]
       @user = User.find(params[:user_id])
       if @user
-        @user.email = params[:user][:email]
-        @user.save
+        emails = User.where(company_id: @id, delete_flag: 0).pluck(:email)
+        if emails.include?(params[:user][:email])
+          redirect_to '/company/employees', notice: "すでに登録されているメールアドレスです。"
+          return
+        else
+          @user.email = params[:user][:email]
+          @user.save
+        end
       end
     end
     redirect_to '/company/employees'
