@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
 
+  validate :check_maneger
+
   def self.koala(auth)
     access_token = auth['token']
     facebook = Koala::Facebook::API.new(access_token)
@@ -120,6 +122,15 @@ class User < ActiveRecord::Base
       end
     end
     return count_created_user_by_csv
+  end
+
+  def check_maneger
+    if manager_flag == 0
+      team = Team.find_by(manager_id: id)
+      if team
+        errors.add(manager_flag, :invalid)
+      end
+    end
   end
 
 private
