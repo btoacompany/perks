@@ -12,9 +12,13 @@ class CompanyController < ApplicationController
     if session[:email].present? || cookies[:email].present?
       email = session[:email] || cookies[:email]
       user = User.find_by_email(email)
-      if user.admin == 1
-  @id = user.company_id
-  @user_id = user.id
+      unless user.nil?
+        if user.admin == 1
+          @id = user.company_id
+          @user_id = user.id
+        end
+      else
+        redirect_to "/logout"
       end
     else
       logout
@@ -561,6 +565,8 @@ class CompanyController < ApplicationController
   end
 
   def update_email
+    @company = Company.find(@id)
+    owner_email = @company.email
     if params[:user_id]
       @user = User.find(params[:user_id])
       if @user
@@ -569,6 +575,10 @@ class CompanyController < ApplicationController
           redirect_to '/company/employees', notice: "すでに登録されているメールアドレスです。"
           return
         else
+          if owner_email == @user.email
+            @company.email = params[:user][:email]
+            @company.save
+          end
           @user.email = params[:user][:email]
           @user.save
         end
