@@ -19,11 +19,11 @@
   <p class="c_align"><a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
   
   <%= form_tag( "/company/employees/add/complete", method: "post", id: "login_form" ) do %>
-    <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
     <div class="toolbox center">
       <h3 class="c_align">招待状をメールで送る</h3><br>
       <p>招待状を送る社員のメールアドレスを記入してください。</p>
-      <p class="instructions">(1行ごとにメールアドレスを入力してください。)</p><br>
+      <p class="instructions">(1行ごとにメールアドレスを入力してください。)</p>
+      <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %><br>
       <textarea name="emails" rows="10" cols="40"></textarea>
       <br><br>
       <p>
