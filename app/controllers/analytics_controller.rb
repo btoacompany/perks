@@ -439,7 +439,7 @@ class AnalyticsController < ApplicationController
         @end_time = Date.today
       end
     end
-    @time_custom = @start_time.to_date..@end_time.to_date
+    @time_custom = @start_time.to_date..@end_time.to_date.tomorrow
   end 
 
   def basic_info
