@@ -256,7 +256,7 @@ class CompanyController < ApplicationController
 
   def create_users_by_csv
     file = params[:user][:upload_file]
-    if file && file.content_type === "text/csv"
+    if file
       company = Company.find(current_user.company_id)
       count_created_user_by_csv = 0
       User.transaction do
@@ -281,7 +281,7 @@ class CompanyController < ApplicationController
 
   def create_department_and_team_by_csv
     file = params[:department][:upload_file]
-    if file && file.content_type === "text/csv"
+    if file
       Department.transaction do
         Department.create_department_and_team_by_csv(file , current_user)
       end
