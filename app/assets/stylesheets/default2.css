@@ -1358,6 +1358,8 @@ hr.style-two {
 .login_wrapper{
   height: 100vh;
   background: -webkit-linear-gradient(left, #ff6c00, #ffcc00);
+  background: -moz-linear-gradient(left, #ff6c00, #ffcc00);
+  background: -ms-linear-gradient(left, #ff6c00, #ffcc00);
   position: relative;
 }
 
@@ -1651,6 +1653,8 @@ table.admin_table td textarea{
 /*company_create*/
 .company_create_wrapper{
   background: -webkit-linear-gradient(left, #ff6c00, #ffcc00);
+  background: -moz-linear-gradient(left, #ff6c00, #ffcc00);
+  background: -ms-linear-gradient(left, #ff6c00, #ffcc00);
   position: relative;
 }
 

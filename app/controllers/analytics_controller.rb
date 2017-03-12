@@ -444,8 +444,8 @@ class AnalyticsController < ApplicationController
 
   def basic_info
     @company = Company.find(@id)
-    @users = User.where(company_id: @id, delete_flag: 0)
-    @users_custom = User.where(company_id: @id, delete_flag: 0)
+    @users = User.where(company_id: @id, verified: 1, delete_flag: 0)
+    @users_custom = User.where(company_id: @id, verified: 1, delete_flag: 0)
     @team_lists = []
     @teams = Team.where(company_id: @id, delete_flag: 0)
     @teams.each do |team|
@@ -465,7 +465,7 @@ class AnalyticsController < ApplicationController
     # 所属無しメンバー
     # 全社員のid取得
     user_ids = []
-    User.where(company_id: @id, delete_flag: 0).each do |user|
+    @users.each do |user|
       user_ids << user.id
     end
     # 何かしらのチームに属してるid取得
