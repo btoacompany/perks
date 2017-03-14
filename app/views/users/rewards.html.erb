@@ -6,8 +6,7 @@
     <% if @rewards_prizy.count == 0 && @rewards.count == 0 %>
       <p class="font12" style="padding-top: 20px;">ギフトはまだ設定されていません。人事の方にお願いしてみてください！</p>
     <% else %>
-      <p class="font12">ポイント：<b class="font14"><%= @user.in_points %></b><br>ギフトと交換できます。(
-      登録のメールアドレスに引換券が贈られます。)<br><a href="/rewards/status" class="a_btncmn radius5">ステータスを確認する</a></p>
+      <p class="font12">ポイント：<b class="font14"><%= @user.in_points %></b><br>ギフトと交換できます。<br><a href="/rewards/status" class="a_btncmn radius5">ステータスを確認する</a></p>
     <% end %>
     </div>
     
