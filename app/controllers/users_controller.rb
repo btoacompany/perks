@@ -401,57 +401,71 @@ class UsersController < ApplicationController
 
     if (params[:receiver_id].present?)
       if params[:receiver_id].include?(@id)
-	flash[:notice] = "自分にポイントあげることができません。"
-	error = 1
+	      flash[:notice] = "自分にポイントあげることができません。"
+	      error = 1
       end
 
       if error == 0
-    receiver_ids  = params[:receiver_id]
-    receiver_count  = receiver_ids.count
-   	points		= points * receiver_count
+        receiver_ids  = params[:receiver_id]
+        receiver_count  = receiver_ids.count
+   	    points		= points * receiver_count
 
-	params[:receiver_id] = receiver_ids.join(",")
+	      params[:receiver_id] = receiver_ids.join(",")
 
-	if (points <= @user[:out_points])
-	  @user.out_points -= points 
-	  @user.save
+	      if (points <= @user[:out_points])
+	        @user.out_points -= points 
+	        @user.save
 
-	  unless params[:type] == "comment"
-	    post = Post.new
-	    post.save_record(params)
-	    params[:post_id] = post.id
-	  end
+	        unless params[:type] == "comment"
+	          post = Post.new
+	          post.save_record(params)
+	          params[:post_id] = post.id
+	        end
 
-	  hashtags = params[:description].scan(/\#[^\s|　]+/)
+    	    hashtags = params[:description].scan(/\#[^\s|　]+/)
 
-	  hashtags.each do | tag |
-	    params[:hashtag] = tag 
-	    hashtag = Hashtag.new
-	    hashtag.save_record(params)
-	  end
+	        hashtags.each do | tag |
+	          params[:hashtag] = tag
+     	      hashtag = Hashtag.new
+	          hashtag.save_record(params)
+	        end
 
-	  receiver_ids.each do | receiver_id |
-	    receiver = User.find(receiver_id.to_i)
+    	    receiver_ids.each do | receiver_id |
+	          receiver = User.find(receiver_id.to_i)
 
-	    receiver.in_points += params[:points]
-	    receiver.save
+	          receiver.in_points += params[:points]
+	          receiver.save
 
-	    unless params[:type] == "comment"
-	      UserMailer.receive_points_email({
-		receiver:   receiver.name, 
-		email:	    receiver.email,
-		giver:	    @user.name,
-		points:	    params[:points],
-		prizy_url:  @prizy_url + "/user"
-	      }).deliver_later
-	    end
+    	      unless params[:type] == "comment"
+	            UserMailer.receive_points_email({
+          	    receiver:   receiver.name, 
+            	  email:	    receiver.email,
+        	      giver:	    @user.name,
+        	      points:	    params[:points],
+          	    prizy_url:  @prizy_url + "/user"
+              }).deliver_later
+	          end
 
-	    ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
-	  end
+  	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
+	        end
 
-	else
-	  flash[:notice] = "ポイントが足りません"
-	end
+          if @company.point_fixed_flag == 2
+            sum_point = @company.send_point + @company.receive_point * receiver_count
+            if @company.bonus_points >= sum_point
+              @user.in_points += @company.send_point
+              receiver_ids.each do | receiver_id |
+                receiver = User.find(receiver_id.to_i)
+                receiver.in_points += @company.receive_point
+                receiver.save
+              end
+              @company.bonus_points -= sum_point
+              @company.save
+              @user.save
+            end
+          end
+      	else
+	        flash[:notice] = "ポイントが足りません"
+  	    end
       end
     end
   end
