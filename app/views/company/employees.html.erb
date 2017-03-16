@@ -140,13 +140,19 @@ $('.chk_manager').change(function() {
 });
 
 $('.delete_item').click(function() {
-  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+  var _id = ($(this).attr('data-id'));
+  var mgr_check = ($(this).attr('mgr-id'));
+  //get attributes of clicked item
 
+  if (mgr_check == "mgr") {
+    alert("チームのマネージャーのため、削除できませんでした。マネージャーを変更後に削除してください。");
+  } else {
   if (confirm("本当に削除しますか？")) {
     $.post("/company/employees/delete", { 'id': _id }); //send post request
     $(".item_" + _id).remove(); //remove item upon deletion
   }
   return false; //do nothing
+  }
 });
 
 $('.setting_color').css('color','gray');

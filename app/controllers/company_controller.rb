@@ -168,6 +168,7 @@ class CompanyController < ApplicationController
   def employees
     @company = Company.find(@id)
     teams = Team.where(company_id: @id, delete_flag: 0)
+    @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
     unless teams.empty?
       @team_exist = 0
       @teams = []
@@ -402,8 +403,11 @@ class CompanyController < ApplicationController
 
   def delete_employees 
     result = User.find(params[:id])
-    result.delete_record
-    redirect_to_index 
+    manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
+    unless manager_ids.include?(result.id)
+      result.delete_record
+      redirect_to "/company/employees"
+    end
   end
 
   def rewards

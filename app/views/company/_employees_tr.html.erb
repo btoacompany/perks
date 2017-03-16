@@ -16,7 +16,7 @@
     <input type="checkbox" class="chk_manager" data-id="<%= item[:id] %>" value="1" <% if item[:manager_flag] == 1 && check_team %> disabled checked <% elsif item[:manager_flag] == 1 %> checked <% end %> />
   </td>
   <td align="center">
-    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
+    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" <% if @manager_ids.include?(item[:id]) %> mgr-id="mgr" <% else %> mgr-id="non_mgr" <% end %> value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
   </td>
   <td align="center">
     <!-- button -->
