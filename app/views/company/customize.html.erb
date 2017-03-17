@@ -120,15 +120,12 @@
   $('input[name="fixed_point_setting"]').change(function() {
     if ($('input[name="fixed_point_setting"]:checked').val() === '0'){
       $("#fixed_point").hide();
-      // $("#weighting_send_and_receive_point").hide();
       $("#weighting_point_setting").hide();
     }else if($('input[name="fixed_point_setting"]:checked').val() === '1'){
       $("#fixed_point").show();
-      // $("#weighting_send_and_receive_point").hide();
       $("#weighting_point_setting").hide();
     }else if($('input[name="fixed_point_setting"]:checked').val() === '2'){
       $("#fixed_point").hide();
-      // $("#weighting_send_and_receive_point").show();
       $("#weighting_point_setting").show();
     }
   });
