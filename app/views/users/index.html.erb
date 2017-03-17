@@ -269,6 +269,11 @@
       <% @posts.each do | post | %>
 	<div id="postsbox" class="post_<%= post[:id] %>">
 	  <div class="images">
+    <% if @company.change_timeline_image_size == 1 %>
+    <div class="non_image" style="text-align: left; padding: 5px 10px; ">
+      <p><img src="<%= post[:user_img] %>" width="25px" height="25px" class="radius20" style="vertical-align: middle; margin-right: 5px;"/><%= @random_messages.sample %></p>
+    </div>
+    <% else %>
 	    <table>
 	      <tr>
 		<td><img src="<%= post[:user_img] %>" class=""/></td>
@@ -303,6 +308,7 @@
 		</td>
 	      </tr>
 	    </table>
+      <% end %>
 	  </div>
 
 	  <div class="posts">
