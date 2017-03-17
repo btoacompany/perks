@@ -2157,6 +2157,13 @@ table.admin_table td textarea{
     color: #fff;
   }
 
+  input[name="fixed_point_setting"]:checked + .weighthing {
+    background-color: red;
+    color: #fff;
+  }
+
+
+
   select[name="team_selected_id"]{
     width: 200px;
   }

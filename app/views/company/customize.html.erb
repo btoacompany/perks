@@ -49,6 +49,10 @@
           </option>
         <% end %>
         </select>
+        <input type="radio" id="fixed_point_setting2" name="fixed_point_setting" value="2" <% if @company.point_fixed_flag == 2 %> checked="checked" <% end %> style="opacity: 0;" />
+        <label for="fixed_point_setting2" class="weighthing">送受信</label>
+        <input type="text" id="weighting_send_and_receive_point" name="weighting_send_and_receive_point" <% if @company.point_fixed_flag == 2 %> style="display: none;"<% end %> value=<%= @company.bonus_points %>
+
         <% if flash[:fixed_point] %>  <b><i><%= flash[:fixed_point] %></i></b>
         <% end %>
       </dd>
@@ -83,13 +87,22 @@
   <input type="submit" class="btn btn_submit" value="送信" style="width:80px;height:30px"/>
 <% end %>
 
-</div><!-- admin_contents -->
-</div><!-- admin_wrapper -->
+</div>
+</div>
 
 
 <script>
   $('input[name="fixed_point_setting"]').change(function() {
-    $("#fixed_point").toggle();
+    if ($('input[name="fixed_point_setting"]:checked').val() === '0'){
+      $("#fixed_point").hide();
+      $("#weighting_send_and_receive_point").hide();
+    }else if($('input[name="fixed_point_setting"]:checked').val() === '1'){
+      $("#fixed_point").show();
+      $("#weighting_send_and_receive_point").hide();
+    }else if($('input[name="fixed_point_setting"]:checked').val() === '2'){
+      $("#fixed_point").hide();
+      $("#weighting_send_and_receive_point").show();
+    }
   });
 
   $('input[name="ip_address_setting"]').change(function() {
