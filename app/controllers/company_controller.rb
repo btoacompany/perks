@@ -130,6 +130,7 @@ class CompanyController < ApplicationController
 
   def customize_update
     @company = Company.find(@id)
+    @company.change_timeline_image_size = params[:change_timeline_image_size]
     @company.invite_email_flag = params[:invite_email_setting]
     @company.point_fixed_flag = params[:fixed_point_setting]
     @company.fixed_point = params[:fixed_point].to_i

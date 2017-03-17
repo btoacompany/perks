@@ -66,9 +66,11 @@
 	    <span class="instructions">好きなユーザーネームに変更できます</span>
 	  </td>
 	</tr>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= @user.lastname %>" required />  名 <input type="text" name="firstname" value="<%= @user.firstname %>" required /></td>
 	</tr>
+  <% end %>
 	<tr>
 	  <td class="user_update_table_td">性 <label><input type="radio" name="gender" value="0" <% if @user.gender==0 %> checked <% end %>/>男</label>
       <label><input type="radio" name="gender" value="1" <% if @user.gender==1 %> checked <% end %>/>女</label></td>

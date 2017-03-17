@@ -8,6 +8,7 @@ require 'json'
 class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout, :invite, :invite_complete, :give_points_slack, :give_points_slack_response, :forgot_password, :forgot_password_submit, :fb_auth]
   before_filter :init_url
+  before_action :timeline_message, :only => [:index, :profile, :given]
 
   def init
     if session[:id].present? || cookies[:id].present?
@@ -104,6 +105,11 @@ class UsersController < ApplicationController
   end
 
   def index
+    # $showoff_timeline
+    if $showoff_timeline.include?(@company_id)
+      redirect_to "/profile"
+    end
+
     today = Date.today
     hashtags = Company.find(@company_id).hashtags
     if hashtags.blank?
@@ -518,6 +524,7 @@ class UsersController < ApplicationController
 
   def profile
     @user = User.find(@id)
+    @company = Company.find(@user.company_id)
     # weekly_ranking
     receiver_ranking(@user)
     giver_ranking(@user)
@@ -540,6 +547,7 @@ class UsersController < ApplicationController
 
   def given
     @user = User.find(@id)
+    @company = Company.find(@user.company_id)
     receiver_ranking(@user)
     giver_ranking(@user)
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
@@ -1057,5 +1065,10 @@ class UsersController < ApplicationController
 
   def redirect_to_index
     redirect_to "/user" 
+  end
+
+  def timeline_message
+    @random_messages = ["素敵なありがとうが贈られました。", "日頃の感謝を伝えてみましょう", "
+ありがとうは「すべての人を幸せにする魔法の言葉」", "感謝の心が人を育て、感謝の心が自分を磨く", "感謝のキャッチボールが幸せのホームランとなる", "感謝の数だけ強くなれる！？", "「ありがとう」の一言が、誰かの幸せの種になる", "ありがとうの一言が周りを明るくする"]
   end
 end
