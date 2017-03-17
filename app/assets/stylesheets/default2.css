@@ -168,6 +168,11 @@ h1,h2,h3,h4,h5,h6,p,img,a {
   line-height: 0;
   height: 0;
 }
+
+#give_point_to_sender_and_receiver0 , #give_point_to_sender_and_receiver1 {
+  color: black;
+  background-color: white;
+}
  
 .clearfix {
   display: inline-block;
@@ -2120,8 +2125,8 @@ table.admin_table td textarea{
     padding: 10px 0;
   }
 
-  .fixed_point {
-    width: 80px;
+  .fixed_point , .give_point_to_receiver , .give_point_to_sender {
+    width: 50px;
     height: 34px;
     margin: 10px;
   }
@@ -2131,22 +2136,17 @@ table.admin_table td textarea{
     height: 34px;
   }
 
-  .weighting_send_and_receive_point , .weighting_send_point , .weighting_receive_point{
-    width: 40px;
-    height: 34px;
-  }
-
-  .fixed_point, #allowed_ips{
+  .fixed_point, #allowed_ips , .give_point_to_receiver, .give_point_to_sender{
     font-size: 14px;
   }
 
-  .fixed_point_setting{
+  .fixed_point_setting , .give_point_to_sender_and_receiver_setting{
     width: 1050px;
     padding: 10px 0;
     border-bottom: 1px solid #f0f1f5;
   }
 
-  .fixed_point_setting label{
+  .fixed_point_setting label , .give_point_to_sender_and_receiver_setting label {
     display: inline-block;
     float: left;
     cursor: pointer;
@@ -2161,22 +2161,15 @@ table.admin_table td textarea{
     transition: .2s;
   }
 
-  input[name="change_timeline_image_size"]:checked + .switch-on, input[name="invite_email_setting"]:checked + .switch-on,input[name="fixed_point_setting"]:checked + .switch-on,input[name="time_select"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
+  input[name="give_point_to_sender_and_receiver_setting"]:checked + .switch-on , input[name="change_timeline_image_size"]:checked + .switch-on, input[name="invite_email_setting"]:checked + .switch-on,input[name="fixed_point_setting"]:checked + .switch-on,input[name="time_select"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
     background-color: #ff8d07;
     color: #fff;
   }
 
-  input[name="change_timeline_image_size"]:checked + .switch-off, input[name="invite_email_setting"]:checked + .switch-off, input[name="fixed_point_setting"]:checked + .switch-off, input[name="time_select"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
+  input[name="give_point_to_sender_and_receiver_setting"]:checked + .switch-off, input[name="invite_email_setting"]:checked + .switch-off, input[name="fixed_point_setting"]:checked + .switch-off, input[name="time_select"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
     background-color: #C30;
     color: #fff;
   }
-
-  input[name="fixed_point_setting"]:checked + .weighting {
-    background-color: #FCB500;
-    color: #fff;
-  }
-
-
 
   select[name="team_selected_id"]{
     width: 200px;
