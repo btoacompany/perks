@@ -49,12 +49,12 @@
 
   <div><p>ポイントに関して</p></div>
     <div class="fixed_point_setting clearfix">
-      <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。</dt>
+      <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。<br/>また投稿した社員にポイントを付与しますか。</dt>
       <dd class="customize_right">
         <input type="radio" name="fixed_point_setting" id="fixed_point_setting0" value="0" <% if @company.point_fixed_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
         <label for="fixed_point_setting0" class="switch-off">しない</label>
         <input type="radio" id="fixed_point_setting1" name="fixed_point_setting" value="1" <% if @company.point_fixed_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="fixed_point_setting1" class="switch-on">する</label>
+        <label for="fixed_point_setting1" class="switch-on">固定する</label>
         <select id="fixed_point" name="fixed_point" class="fixed_point" min="5" max="50" <% unless @company.point_fixed_flag == 1 %> style="display: none;"<% else %> required <% end %> >
         <% @nums.each do |num| %>
           <option value=<%= num %> <% if num == @company.fixed_point %>selected = "true" <% end %> >
@@ -63,7 +63,7 @@
         <% end %>
         </select>
         <input type="radio" id="fixed_point_setting2" name="fixed_point_setting" value="2" <% if @company.point_fixed_flag == 2 %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="fixed_point_setting2" class="weighting">送受信</label>
+        <label for="fixed_point_setting2" class="weighting">付与する</label>
 
 
         <div id="weighting_point_setting" class="weighting_point_setting clearfix" <% unless @company.point_fixed_flag == 2 %> style="display: none;"<% else %> required <% end %> >
