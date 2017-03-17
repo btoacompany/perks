@@ -8,9 +8,15 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
 # セプテーニのcompany_idをいれる。今は暫定
-  $showoff_timeline = [3] 
-  $ban_edit_name = [3]
-
+  $showoff_timeline = [] 
+  $ban_edit_name = []
+  $allow_nickname = [3]
+  $nicknames = {
+    1 => "酔っ払いおじさん",
+    2 => "適当おじさん",
+    3 => "酔っ払いおばさん",
+    4 => "しらふお姉さん"
+  }
 
   def init_url
     #@slack_webhooks = "https://hooks.slack.com/services/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"
