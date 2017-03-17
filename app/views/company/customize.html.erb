@@ -23,16 +23,18 @@
 <%= form_tag( "/company/customize/update", method: "post") do %>
   <dl class="customize_box">
   <div><p>投稿の表示に関して</p></div>
-     <div class="fixed_point_setting clearfix">
-       <dt class="customize_left">タイムラインのデザインを選択してください。</dt>
-       <dd class="customize_right">
-         <input type="radio" name="change_timeline_image_size" id="change_timeline_image_size0" value="0" <% if @company.change_timeline_image_size == 0 %>checked="checked" <% end %> style="opacity: 0;" />
-         <label for="change_timeline_image_size0" class="switch-off">ユーザー<br>画像あり</label>
-         <input type="radio" id="change_timeline_image_size1" name="change_timeline_image_size" value="1" <% if @company.change_timeline_image_size == 1 %> checked="checked" <% end %> style="opacity: 0;" />
-         <label for="change_timeline_image_size1" class="switch-on">ユーザー<br>画像なし</label>
-       </dd>
-       <div class="clearfix"></div>
-     </div>
+
+    <div class="fixed_point_setting clearfix">
+      <dt class="customize_left">タイムラインのデザインを選択してください。</dt>
+      <dd class="customize_right">
+        <input type="radio" name="change_timeline_image_size" id="change_timeline_image_size0" value="0" <% if @company.change_timeline_image_size == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+        <label for="change_timeline_image_size0" class="switch-off">ユーザー<br>画像あり</label>
+        <input type="radio" id="change_timeline_image_size1" name="change_timeline_image_size" value="1" <% if @company.change_timeline_image_size == 1 %> checked="checked" <% end %> style="opacity: 0;" />
+        <label for="change_timeline_image_size1" class="switch-on">ユーザー<br>画像なし</label>
+      </dd>
+      <div class="clearfix"></div>
+    </div>
+
   <div><p>社員登録に関して</p></div>
     <div class="fixed_point_setting clearfix">
       <dt class="customize_left">社員登録をした際に、Prizyに招待されたことを自動メールで送信しますか？</dt>
@@ -114,6 +116,7 @@
   $('input[name="change_timeline_image_size"]').change(function() {
      $("#change_timeline_image_size").toggle();
   });
+
   $('input[name="fixed_point_setting"]').change(function() {
     if ($('input[name="fixed_point_setting"]:checked').val() === '0'){
       $("#fixed_point").hide();

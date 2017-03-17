@@ -83,7 +83,9 @@
         <a href="/company/details">管理画面</a>
       <% end %>
     <% end %>
+    <% unless $showoff_timeline.include?(@company_id) %>
     <a href="/user">タイムライン</a>
+    <% end %>
     <a href="/profile">マイページ</a>
     <a href="/rewards">ギフト</a> 
 <!--     <a href="/bonus">ボーナス</a>  -->

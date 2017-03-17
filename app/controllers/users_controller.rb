@@ -8,6 +8,7 @@ require 'json'
 class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout, :invite, :invite_complete, :give_points_slack, :give_points_slack_response, :forgot_password, :forgot_password_submit, :fb_auth]
   before_filter :init_url
+  before_action :timeline_message, :only => [:index, :profile, :given]
 
   def init
     if session[:id].present? || cookies[:id].present?
@@ -104,6 +105,11 @@ class UsersController < ApplicationController
   end
 
   def index
+    # $showoff_timeline
+    if $showoff_timeline.include?(@company_id)
+      redirect_to "/profile"
+    end
+
     today = Date.today
     hashtags = Company.find(@company_id).hashtags
     if hashtags.blank?
@@ -234,19 +240,8 @@ class UsersController < ApplicationController
       end
     end
 
-    # statistics for user
-    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
-    this_week = Date.today.beginning_of_week..Date.today.end_of_week
-
-    if this_week.cover?(@user.create_time)
-      @ratio = "-"
-    else
-      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id, create_time: last_week).count
-      @last_week_posts = 1 if @last_week_posts == 0
-      @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id, create_time: this_week).count
-    
-      @ratio = (@last_week_posts - @this_week_posts) / @last_week_posts * 100
-    end
+    receiver_ranking(@user)
+    giver_ranking(@user)
   end
 
   def give_recog_by_email
@@ -543,6 +538,11 @@ class UsersController < ApplicationController
 
   def profile
     @user = User.find(@id)
+    @company = Company.find(@user.company_id)
+    # weekly_ranking
+    receiver_ranking(@user)
+    giver_ranking(@user)
+
 
     posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
     process_posts = process_paging(posts)
@@ -561,6 +561,9 @@ class UsersController < ApplicationController
 
   def given
     @user = User.find(@id)
+    @company = Company.find(@user.company_id)
+    receiver_ranking(@user)
+    giver_ranking(@user)
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
     process_posts = process_paging(posts)
 
@@ -574,6 +577,42 @@ class UsersController < ApplicationController
 
     top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
     process_top_givers(top_givers)
+  end
+
+  def receiver_ranking(user)
+    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
+    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+    
+    @receiver_ratio = []
+    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: this_week).count
+    @receiver_ratio << @this_week_posts
+
+    if this_week.cover?(user.create_time)
+      @receiver_ratio << "-"
+    else
+      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
+      @last_week_posts = 1 if @last_week_posts == 0
+      @receiver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      return @receiver_ratio
+    end
+  end
+
+  def giver_ranking(user)
+    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
+    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+
+    @giver_ratio =[]
+    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: this_week).count
+    @giver_ratio << @this_week_posts
+
+    if this_week.cover?(user.create_time)
+      @giver_ratio << "-"
+    else
+      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: last_week).count
+      @last_week_posts = 1 if @last_week_posts == 0
+      @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      return @giver_ratio
+    end
   end
 
   def process_paging(posts)
@@ -1040,5 +1079,10 @@ class UsersController < ApplicationController
 
   def redirect_to_index
     redirect_to "/user" 
+  end
+
+  def timeline_message
+    @random_messages = ["素敵なありがとうが贈られました。", "日頃の感謝を伝えてみましょう", "
+ありがとうは「すべての人を幸せにする魔法の言葉」", "感謝の心が人を育て、感謝の心が自分を磨く", "感謝のキャッチボールが幸せのホームランとなる", "感謝の数だけ強くなれる！？", "「ありがとう」の一言が、誰かの幸せの種になる", "ありがとうの一言が周りを明るくする"]
   end
 end

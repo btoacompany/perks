@@ -7,6 +7,11 @@ class ApplicationController < ActionController::Base
     if: Proc.new { |c| c.request.format =~ %r{application/json} }
   helper_method :current_user
 
+# セプテーニのcompany_idをいれる。今は暫定
+  $showoff_timeline = [3] 
+  $ban_edit_name = [3]
+
+
   def init_url
     #@slack_webhooks = "https://hooks.slack.com/services/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"
     @protocol = "http://"
