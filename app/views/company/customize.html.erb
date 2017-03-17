@@ -23,6 +23,7 @@
 <%= form_tag( "/company/customize/update", method: "post") do %>
   <dl class="customize_box">
   <div><p>投稿の表示に関して</p></div>
+
     <div class="fixed_point_setting clearfix">
       <dt class="customize_left">タイムラインのデザインを選択してください。</dt>
       <dd class="customize_right">
@@ -48,19 +49,31 @@
 
   <div><p>ポイントに関して</p></div>
     <div class="fixed_point_setting clearfix">
-      <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。</dt>
+      <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。<br/>また投稿した社員にポイントを付与しますか。</dt>
       <dd class="customize_right">
         <input type="radio" name="fixed_point_setting" id="fixed_point_setting0" value="0" <% if @company.point_fixed_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
         <label for="fixed_point_setting0" class="switch-off">しない</label>
         <input type="radio" id="fixed_point_setting1" name="fixed_point_setting" value="1" <% if @company.point_fixed_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="fixed_point_setting1" class="switch-on">する</label>
-        <select id="fixed_point" name="fixed_point" class="fixed_point" min="5" max="50" <% if @company.point_fixed_flag == 0 %> style="display: none;"<% else %> required <% end %> >
+        <label for="fixed_point_setting1" class="switch-on">固定する</label>
+        <select id="fixed_point" name="fixed_point" class="fixed_point" min="5" max="50" <% unless @company.point_fixed_flag == 1 %> style="display: none;"<% else %> required <% end %> >
         <% @nums.each do |num| %>
           <option value=<%= num %> <% if num == @company.fixed_point %>selected = "true" <% end %> >
             <%= num %>
           </option>
         <% end %>
         </select>
+        <input type="radio" id="fixed_point_setting2" name="fixed_point_setting" value="2" <% if @company.point_fixed_flag == 2 %> checked="checked" <% end %> style="opacity: 0;" />
+        <label for="fixed_point_setting2" class="weighting">付与する</label>
+
+
+        <div id="weighting_point_setting" class="weighting_point_setting clearfix" <% unless @company.point_fixed_flag == 2 %> style="display: none;"<% else %> required <% end %> >
+          固定ポイント
+          <input type="text" id="weighting_send_and_receive_point" class="weighting_send_and_receive_point" name="fixed_point" value=<%= @company.fixed_point %>> 送信時
+           <input type="text" id="weighting_send_point" class="weighting_send_and_receive_point" name="weighting_send_point"  value=<%= @company.send_point %>> 受信時
+          <input type="text" id="weighting_receive_point" class="weighting_send_and_receive_point" name="weighting_receive_point" value=<%= @company.receive_point %>>
+          </ul>
+        </div>
+
         <% if flash[:fixed_point] %>  <b><i><%= flash[:fixed_point] %></i></b>
         <% end %>
       </dd>
@@ -95,17 +108,26 @@
   <input type="submit" class="btn btn_submit" value="送信" style="width:80px;height:30px; margin-bottom: 10px;"/>
 <% end %>
 
-</div><!-- admin_contents -->
-</div><!-- admin_wrapper -->
+</div>
+</div>
 
 
 <script>
   $('input[name="change_timeline_image_size"]').change(function() {
-    $("#change_timeline_image_size").toggle();
+     $("#change_timeline_image_size").toggle();
   });
 
   $('input[name="fixed_point_setting"]').change(function() {
-    $("#fixed_point").toggle();
+    if ($('input[name="fixed_point_setting"]:checked').val() === '0'){
+      $("#fixed_point").hide();
+      $("#weighting_point_setting").hide();
+    }else if($('input[name="fixed_point_setting"]:checked').val() === '1'){
+      $("#fixed_point").show();
+      $("#weighting_point_setting").hide();
+    }else if($('input[name="fixed_point_setting"]:checked').val() === '2'){
+      $("#fixed_point").hide();
+      $("#weighting_point_setting").show();
+    }
   });
 
   $('input[name="ip_address_setting"]').change(function() {
