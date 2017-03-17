@@ -134,6 +134,8 @@ class CompanyController < ApplicationController
     @company.invite_email_flag = params[:invite_email_setting]
     @company.point_fixed_flag = params[:fixed_point_setting]
     @company.fixed_point = params[:fixed_point].to_i
+    @company.send_point = params[:weighting_send_point].to_i
+    @company.receive_point = params[:weighting_receive_point].to_i
     @company.ip_limit_flag = params[:ip_address_setting]
     if params[:ip_address_setting].to_i == 1
       if params[:allowed_ips].empty?
