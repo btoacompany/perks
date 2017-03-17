@@ -57,7 +57,7 @@
 		</div><br>
 	  <% end %>
 	 </div>
-	    From <span class="user giver"><b>@<%= post[:full_user_name] %></b></span><br> 
+	    From <span class="user giver"><b>@<% if $allow_nickname.include?(@user.company_id) %><%= post[:nickname] %><% else %><%= post[:full_user_name] %><% end %></b></span><br> 
 	    To 
 	    <span class="user receiver">
 	      <b>@<%= post[:full_receiver_name].join(", ") %>: </b>

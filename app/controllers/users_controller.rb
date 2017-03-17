@@ -659,6 +659,7 @@ class UsersController < ApplicationController
     data = {
       id:		  post.id,
       user_id:		  post.user_id,
+      nickname: $nicknames[post.nickname_id],
       user_name:	  post.user.name,
       full_user_name:	  "#{post.user.lastname} #{post.user.firstname}",
       receiver_id:	  [],

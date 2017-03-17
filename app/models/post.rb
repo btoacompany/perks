@@ -23,6 +23,7 @@ class Post < ActiveRecord::Base
     self.description	= params[:description]
     self.post_type	= params[:post_type] || 0 
     self.privacy	= params[:privacy] || 0 
+    self.nickname_id  = params[:nickname_id] || 0
     # 0 - normal post, 1 - bonus post
     self.save
   end

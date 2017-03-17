@@ -222,6 +222,10 @@
 	  <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" title="贈るポイント数を選んでください。" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
     <% end %>
 	  <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="コアバリューを選択できます。" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
+    
+    <% if $allow_nickname.include?(@user.company_id) %>
+    <input type="image" id="nicknamebtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="ニックネームを選択できます。" data-intro="ニックネームを選択してください。相手は、誰から褒められたのかはわかりませんが、ニックネームが表示されます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
+    <% end %>
 	  
 <!-- 	  <% if @user.admin == 1 %>
 	    <a id="bonus_trigger_id" rel="leanModal" name="modal" href="#modal"><img class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png" title="特別ボーナスを贈ります。" data-intro="<管理者様限定><br>ここでは、会社から従業員に特別ボーナスを贈ることができます。<br>①設定したボーナスチャレンジからポイントを贈る<br>②設定していないものの、特別に表彰したい時<br>などにご利用いただけます。" <%if @user.admin == 1 %>data-step="7"<% end %> /></a>
@@ -236,12 +240,14 @@
     <div id="suggest" style="display:none;"></div>
 	  <textarea name="description" class="taginput" required align="center" rows="5" cols="80" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %>></textarea><br>
 	</div><br>
-
+  <div class="clearfix" style="width: 100%;">
 	<div class="tags" style="float:left">
-	  To: <span></span><br>
+    From: <span class="given_from"></span><br>
+	  To: <span class="given_to"></span><br>
 	</div>
 	<span class="pointsInput"></span>
 	<p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
+  </div>
     </div> <!-- pointsbox -->  
     <% end %>
     <br>
@@ -328,7 +334,7 @@
 		</div><br>
 	      <% end %>
 	    </div>
-	    From <span class="user giver"><b>@<%= post[:full_user_name] %></b></span><br> 
+	    From <span class="user giver"><b>@<% if $allow_nickname.include?(@company.id) %><%= post[:nickname] %><% else %><%= post[:full_user_name] %><% end %></b></span><br> 
 	    To 
 	    <span class="user receiver">
 	      <b>@<%= post[:full_receiver_name].join(", ") %>: </b>
@@ -522,15 +528,38 @@ function getPoints () {
   return ["10","20","30","40","50"];
 }
 
+<% if $allow_nickname.include?(@user.company_id) %>
+function getNickname () {
+  items = {};
+  <% $nicknames.each do |key, value| %>
+    items["<%= key %>"] = "<%= value %>";
+  <% end %>
+  return items;
+}
+<% end %>
+
 $(".btn_give").click(function() {
   dataReceive = $(".receiver-selected").val();
+  <% if $allow_nickname.include?(@user.company_id) %>
+  dataNickname = $(".nickname-selected").val();
+  <% end %>
   input = $(".taginput").val();
   <% if @company.point_fixed_flag == 0 %>
   isPoint = input.match(/\+[^\s|  ]+/);
   <% end %>
   isTag = input.match(/\#[^\s|  ]+/);
   
-  if(dataReceive == null || !isPoint ) {
+  <% if $allow_nickname.include?(@user.company_id) %>
+    if(dataReceive == null || !isPoint || dataNickname == null) {
+      <% if @company.point_fixed_flag == 0 %>
+    $("span.notice").text("投稿に不備があります。(誰に贈るのか、ニックネーム、ポイント数が必須です。)");
+    <% else %>
+    $("span.notice").text("投稿に不備があります。(誰に贈るのか、ニックネーム、を入力してください。)");
+    <% end %>
+    return false;
+    } 
+  <% else %>
+    if(dataReceive == null || !isPoint ) {
     <% if @company.point_fixed_flag == 0 %>
     $("span.notice").text("投稿に不備があります。(誰に贈るのか、ポイント数が必須です。)");
     <% else %>
@@ -538,6 +567,7 @@ $(".btn_give").click(function() {
     <% end %>
     return false;
   } 
+  <% end %>
 });
 
 $(".selDropdown option").click(function() {
@@ -554,17 +584,26 @@ $("#myDropdown").click(function(e) {
     case "drpPoints":
       $(".taginput").val($(".taginput").val() + "+" + content + " ");
       break;
+
     case "drpAt":
       //$(".tags span").empty();
-      if(!($(".tags span input[data-id='" + dataId + "']").val())) {
-	$(".tags span").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
-	$(".tags span").append($("<input type='hidden' class='receiver-selected given_user' name='receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+      if(!($(".tags .given_to input[data-id='" + dataId + "']").val())) {
+	$(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
+	$(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
       }
-
       break;
+
     case "drpTag":
       $(".taginput").val($(".taginput").val() + "#" + content + " ");
       break;
+
+    <% if $allow_nickname.include?(@user.company_id) %>
+    case "drpNickname":
+      $(".tags .given_from").empty();
+      $(".tags .given_from").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
+      $(".tags .given_from").append($("<input type='hidden' class='nickname-selected given_user' name='nickname_id' data-id='" + dataId + "'/>").val(dataId));
+      break;
+    <% end %>
   }
 });
 
@@ -586,6 +625,12 @@ $(".pointsbox .dropbtn").click(function() {
       values = getTag();
       className = "drpTag";
       break;
+    <% if $allow_nickname.include?(@user.company_id) %>
+    case "nicknamebtn":
+      values = getNickname();
+      className = "drpNickname";
+      break;
+    <% end %>
   }
 
   $("#myDropdown > a").remove();
