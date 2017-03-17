@@ -79,7 +79,15 @@
               <a class="a_btn user_kudos">
               <% if post[:kudos].present? %>
                 <% post[:kudos].each_with_index do | kudo, i | %>
-		  <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
+                  <% if $allow_nickname.include?(@user.company_id) %>
+          <% if kudo.user.id == post[:user_id] %>
+            <%= post[:nickname] %>
+          <% else %>
+            <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
+          <% end %>
+        <% else %>
+          <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
+        <% end %>
                   <% unless i == post[:kudos].count-1 %>,<% end %>
                   <% if i > 3 %><% break %> <% end %>
                 <% end %>...
@@ -87,7 +95,15 @@
               </a>
               <span class="tooltiptext">
               <% post[:kudos].each do | kudo | %>
-		<%= "#{kudo.user.lastname} #{kudo.user.firstname}" %><br>
+                <% if $allow_nickname.include?(@user.company_id) %>
+          <% if kudo.user.id == post[:user_id] %>
+            <%= post[:nickname] %>
+          <% else %>
+            <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
+          <% end %>
+        <% else %>
+          <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
+        <% end %><br>
               <% end %>
               </span>
             </div>
@@ -101,7 +117,17 @@
                     <img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
                   </div>
 		  <div class="user_comments">
-		    <span class="user" style="font-weight:normal;">@<%= "#{comment.user.lastname} #{comment.user.firstname}" %></span>
+		    <span class="user" style="font-weight:normal;">@
+          <% if $allow_nickname.include?(@user.company_id) %>
+            <% if comment.user.id == post[:user_id] %>
+              <%= post[:nickname] %>
+            <% else %>
+              <%= "#{comment.user.lastname} #{comment.user.firstname}" %>
+            <% end %>
+          <% else %>
+            <%= "#{comment.user.lastname} #{comment.user.firstname}" %>
+          <% end %>
+        </span>
 		    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
 		    <% if comment.user_id == @user.id || post[:receiver_id].include?(@user.id) %>
 		      <div class="r_float">
