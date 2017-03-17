@@ -2122,7 +2122,7 @@ table.admin_table td textarea{
     height: 34px;
   }
 
-  .weighting_send_and_receive_point{
+  .weighting_send_and_receive_point , .weighting_send_point , .weighting_receive_point{
     width: 40px;
     height: 34px;
   }
@@ -2162,7 +2162,7 @@ table.admin_table td textarea{
     color: #fff;
   }
 
-  input[name="fixed_point_setting"]:checked + .weighthing {
+  input[name="fixed_point_setting"]:checked + .weighting {
     background-color: #FCB500;
     color: #fff;
   }

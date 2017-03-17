@@ -50,15 +50,17 @@
         <% end %>
         </select>
         <input type="radio" id="fixed_point_setting2" name="fixed_point_setting" value="2" <% if @company.point_fixed_flag == 2 %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="fixed_point_setting2" class="weighthing">送受信</label>
+        <label for="fixed_point_setting2" class="weighting">送受信</label>
 
-        <div class="weighthing_point_setting clearfix">
+
+        <div id="weighting_point_setting" class="weighting_point_setting clearfix" <% unless @company.point_fixed_flag == 2 %> style="display: none;"<% else %> required <% end %> >
           固定ポイント
-          <input type="text" id="weighting_send_and_receive_point" class="weighting_send_and_receive_point" name="weighting_send_and_receive_point" <% unless @company.point_fixed_flag == 2 %> style="display: none;"<% end %> value=<%= @company.bonus_points %>>送信時
-           <input type="text" id="weighting_send_and_receive_point" class="weighting_send_and_receive_point" name="weighting_send_and_receive_point" <% unless @company.point_fixed_flag == 2 %> style="display: none;"<% end %> value=<%= @company.send_point %>>受信時
-          <input type="text" id="weighting_send_and_receive_point" class="weighting_send_and_receive_point" name="weighting_send_and_receive_point" <% unless @company.point_fixed_flag == 2 %> style="display: none;"<% end %> value=<%= @company.receive_point %>>
+          <input type="text" id="weighting_send_and_receive_point" class="weighting_send_and_receive_point" name="fixed_point" value=<%= @company.fixed_point %>> 送信時
+           <input type="text" id="weighting_send_point" class="weighting_send_and_receive_point" name="weighting_send_point"  value=<%= @company.send_point %>> 受信時
+          <input type="text" id="weighting_receive_point" class="weighting_send_and_receive_point" name="weighting_receive_point" value=<%= @company.receive_point %>>
           </ul>
         </div>
+
         <% if flash[:fixed_point] %>  <b><i><%= flash[:fixed_point] %></i></b>
         <% end %>
       </dd>
@@ -102,15 +104,15 @@
     if ($('input[name="fixed_point_setting"]:checked').val() === '0'){
       $("#fixed_point").hide();
       // $("#weighting_send_and_receive_point").hide();
-      $(".weighthing_point_setting").hide();
+      $("#weighting_point_setting").hide();
     }else if($('input[name="fixed_point_setting"]:checked').val() === '1'){
       $("#fixed_point").show();
       // $("#weighting_send_and_receive_point").hide();
-      $(".weighthing_point_setting").hide();
+      $("#weighting_point_setting").hide();
     }else if($('input[name="fixed_point_setting"]:checked').val() === '2'){
       $("#fixed_point").hide();
       // $("#weighting_send_and_receive_point").show();
-      $(".weighthing_point_setting").show();
+      $("#weighting_point_setting").show();
     }
   });
 
