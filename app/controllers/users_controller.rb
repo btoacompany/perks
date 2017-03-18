@@ -444,7 +444,7 @@ class UsersController < ApplicationController
   	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
 	        end
 
-          if @company.point_fixed_flag == 2
+          if @company.give_point_to_sender_and_receiver_flag == 1
             sum_point = @company.send_point + @company.receive_point * receiver_count
             if @company.bonus_points >= sum_point
               @user.in_points += @company.send_point
