@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 # セプテーニのcompany_idをいれる。今は暫定
   $showoff_timeline = [] 
   $ban_edit_name = []
-  $allow_nickname = [3]
+  $allow_nickname = []
   $nicknames = {
     1 => "酔っ払いおじさん",
     2 => "適当おじさん",

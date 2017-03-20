@@ -212,45 +212,77 @@
     <% end %>  
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
 
-    <div class="pointsbox">
+
+
+    <div class="pointsbox" id="pointsbox">
+      <div id="new_posts">
+      <div id="new_post" class="new_post display_hidden" name="new_post">
+
       <p align="center">
-	<div class="dropdown">
-	  <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" title="褒める相手を選んでください。" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
-    <% if @company.point_fixed_flag == 0 %>
-	  <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" title="贈るポイント数を選んでください。" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
-    <% end %>
-	  <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="コアバリューを選択できます。" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
+	    <div class="dropdown">
+  	    <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" title="褒める相手を選んでください。" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
+        <% if @company.point_fixed_flag == 0 %>
+	        <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" title="贈るポイント数を選んでください。" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
+        <% end %>
+	      <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="コアバリューを選択できます。" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
     
-    <% if $allow_nickname.include?(@user.company_id) %>
-    <input type="image" id="nicknamebtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="ニックネームを選択できます。" data-intro="ニックネームを選択してください。相手は、誰から褒められたのかはわかりませんが、ニックネームが表示されます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
-    <% end %>
+        <% if $allow_nickname.include?(@user.company_id) %>
+          <input type="image" id="nicknamebtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="ニックネームを選択できます。" data-intro="ニックネームを選択してください。相手は、誰から褒められたのかはわかりませんが、ニックネームが表示されます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
+        <% end %>
 	  
-<!-- 	  <% if @user.admin == 1 %>
-	    <a id="bonus_trigger_id" rel="leanModal" name="modal" href="#modal"><img class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png" title="特別ボーナスを贈ります。" data-intro="<管理者様限定><br>ここでは、会社から従業員に特別ボーナスを贈ることができます。<br>①設定したボーナスチャレンジからポイントを贈る<br>②設定していないものの、特別に表彰したい時<br>などにご利用いただけます。" <%if @user.admin == 1 %>data-step="7"<% end %> /></a>
-	  <% end %>   -->
-	  
-    <div id="myDropdown" class="dropdown-content"> </div>
-	</div><br><hr>
+        <div id="myDropdown" class="dropdown-content"> </div>
+	    </div><br><hr>
 
 	<div class="description">
       <span id="suggested_name_span" style="display: none;">To: </span>
       <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
     <div id="suggest" style="display:none;"></div>
-	  <textarea name="description" class="taginput" required align="center" rows="5" cols="80" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %>></textarea><br>
+	  <textarea name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="80" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
 	</div><br>
   <div class="clearfix" style="width: 100%;">
 	<div class="tags" style="float:left">
     From: <span class="given_from"></span><br>
 	  To: <span class="given_to"></span><br>
 	</div>
+  </div>
+  </div>
+  </div>
+
+
 	<span class="pointsInput"></span>
 	<p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
-  </div>
+	<button type="button" id="addItem">もう一件投稿する</button>
+
+
     </div> <!-- pointsbox -->  
     <% end %>
     <br>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div class="timeline">
       <div class="pagination" style="float:right">
@@ -565,35 +597,64 @@ function getNickname () {
 <% end %>
 
 $(".btn_give").click(function() {
-  dataReceive = $(".receiver-selected").val();
-  <% if $allow_nickname.include?(@user.company_id) %>
-  dataNickname = $(".nickname-selected").val();
-  <% end %>
-  input = $(".taginput").val();
-  <% if @company.point_fixed_flag == 0 %>
-  isPoint = input.match(/\+[^\s|  ]+/);
-  <% end %>
-  isTag = input.match(/\#[^\s|  ]+/);
-  
-  <% if $allow_nickname.include?(@user.company_id) %>
-    if(dataReceive == null || !isPoint || dataNickname == null) {
-      <% if @company.point_fixed_flag == 0 %>
-    $("span.notice").text("投稿に不備があります。(誰に贈るのか、ニックネーム、ポイント数が必須です。)");
-    <% else %>
-    $("span.notice").text("投稿に不備があります。(誰に贈るのか、ニックネーム、を入力してください。)");
-    <% end %>
-    return false;
-    } 
-  <% else %>
-    if(dataReceive == null || !isPoint ) {
-    <% if @company.point_fixed_flag == 0 %>
-    $("span.notice").text("投稿に不備があります。(誰に贈るのか、ポイント数が必須です。)");
-    <% else %>
-    $("span.notice").text("投稿に不備があります。(誰に贈るのか入力してください。)");
-    <% end %>
-    return false;
-  } 
-  <% end %>
+  var isValid = true; // validationエラーの場合はfalseを返す
+
+  $(".new_post").not(".display_hidden").each(function(){
+  	var $this = $(this);
+	  var input = $this.find(".taginput").val();
+	  var dataReceive = $this.find(".receiver-selected").val();
+	  <% if $allow_nickname.include?(@user.company_id) %>
+	  	var dataNickname = $this.find(".nickname-selected").val();
+	  <% end %>
+
+	  // validationエラー表示の初期化
+	  $(this).find(".dropbtn").removeClass("form_invalid");
+
+	  <% if @company.point_fixed_flag == 0 %>
+	  isPoint = input.match(/\+[^\s|  ]+/);
+	  <% end %>
+	  isTag = input.match(/\#[^\s|  ]+/);
+	  
+	  <% if $allow_nickname.include?(@user.company_id) %>
+	    if(dataReceive == null || !isPoint || dataNickname == null) {
+
+	    		    	// エラー箇所のスタイルを変更
+	    	if(dataReceive == null) {
+	    		$this.find("#atbtn").addClass("form_invalid");
+	    	}
+	    	if(!isPoint) {
+	    		$this.find("#ptsbtn").addClass("form_invalid");
+	    	}
+	    	if(dataNickname == null) {
+	    		$this.find("#nicknamebtn").addClass("form_invalid");
+	    	}
+
+	      <% if @company.point_fixed_flag == 0 %>
+	   		 $("span.notice").text("投稿に不備があります。(誰に贈るのか、ニックネーム、ポイント数が必須です。)");
+	 		   <% else %>
+	  		  $("span.notice").text("投稿に不備があります。(誰に贈るのか、ニックネーム、を入力してください。)");
+	 		   <% end %>
+	    isValid = false;
+	    } 
+	  <% else %>
+	    if(dataReceive == null || !isPoint ) {
+	    	// エラー箇所のスタイルを変更
+	    	if(dataReceive == null) {
+	    		$this.find("#atbtn").addClass("form_invalid");
+	    	}
+	    	if(!isPoint) {
+	    		$this.find("#ptsbtn").addClass("form_invalid");
+	    	}
+	  	  <% if @company.point_fixed_flag == 0 %>
+	    		$("span.notice").text("投稿に不備があります。(誰に贈るのか、ポイント数が必須です。)");
+	    	<% else %>
+	    		$("span.notice").text("投稿に不備があります。(誰に贈るのか入力してください。)");
+	    	<% end %>
+	    isValid = false;
+	  } 
+	  <% end %>
+  	});
+		return isValid;
 });
 
 $(".selDropdown option").click(function() {
@@ -601,43 +662,44 @@ $(".selDropdown option").click(function() {
   $(".tags span").append($("<input type='button' class='btn radius5'/>").val($(this).text()));
 });
 
-$("#myDropdown").click(function(e) {
-  content = e.target.text;
-  className = e.target.classList[1];
-  dataId = e.target.dataset.id;
+$("#new_posts").on("click", "#myDropdown", function(e) {
+  var content = e.target.text;
+  var className = e.target.classList[1];
+  var dataId = e.target.dataset.id;
+  var $selected = $(this).closest(".new_post");
 
   switch (className) {
     case "drpPoints":
-      $(".taginput").val($(".taginput").val() + "+" + content + " ");
+      $selected.find(".taginput").val($selected.find(".taginput").val() + "+" + content + " ");
       break;
 
     case "drpAt":
       //$(".tags span").empty();
-      if(!($(".tags .given_to input[data-id='" + dataId + "']").val())) {
-	$(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
-	$(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+      if(!($selected.find(".tags .given_to input[data-id='" + dataId + "']").val())) {
+	$selected.find(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
+	$selected.find(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
       }
       break;
 
     case "drpTag":
-      $(".taginput").val($(".taginput").val() + "#" + content + " ");
+      $selected.find(".taginput").val($selected.find(".taginput").val() + "#" + content + " ");
       break;
 
     <% if $allow_nickname.include?(@user.company_id) %>
     case "drpNickname":
-      $(".tags .given_from").empty();
-      $(".tags .given_from").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
-      $(".tags .given_from").append($("<input type='hidden' class='nickname-selected given_user' name='nickname_id' data-id='" + dataId + "'/>").val(dataId));
+      $selected.find(".tags .given_from").empty();
+      $selected.find(".tags .given_from").append($("<input type='button' class='btn radius5 given_user' data-id='" + dataId + "'/>").val(content));
+      $selected.find(".tags .given_from").append($("<input type='hidden' class='nickname-selected given_user' name='new_post[][nickname_id]' data-id='" + dataId + "'/>").val(dataId));
       break;
     <% end %>
   }
 });
 
-$(".pointsbox .dropbtn").click(function() {
+$("#new_posts").on("click", ".dropbtn", function() {
   var symId = $(this).attr("id");
   var className = "";
   var dataId = "";
-
+  var $selected = $(this);
   switch (symId) {
     case "ptsbtn":
       values = getPoints();
@@ -661,18 +723,29 @@ $(".pointsbox .dropbtn").click(function() {
 
   $("#myDropdown > a").remove();
   if (className == 'drpAt'){
-    $("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
+    $selected.siblings("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
   };
   $.each(values, function( index, value ) {
-    $("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
+    $selected.siblings("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
   });
 
-  $("#myDropdown").show();
+  $selected.siblings("#myDropdown").show();
   
-  $("#type_email").click(function(){
-    $("#suggested_name_span").show();
-    $("#suggested_name").show();
-    $("#send_suggested_name").show();
+  $selected.closest(".new_post").find("#type_email").click(function(){
+  	var $post = $(this).closest(".new_post");
+
+  	// init suggest
+		new Suggest.LocalMulti(
+	 	  $post.find("#suggested_name")[0],    // 入力のエレメント
+  	  $post.find("#suggest")[0], // 補完候補を表示するエリア
+  	  <%= raw @emails %>,
+  	  {dispMax: 10, interval: 1000, prefix: true} // オプション
+	  );
+
+  	var $post = $(this).closest(".new_post");
+    $post.find("#suggested_name_span").show();
+    $post.find("#suggested_name").show();
+    $post.find("#send_suggested_name").show();
   });
 
   $(".item").click(function() {
@@ -708,6 +781,7 @@ $(document).ready(function() {
 });
 
 //email_suggest 
+/*
 function startSuggest() {
   new Suggest.LocalMulti(
     "suggested_name",    // 入力のエレメントID
@@ -718,14 +792,16 @@ function startSuggest() {
 window.addEventListener ?
 window.addEventListener('load', startSuggest, false) :
 window.attachEvent('onload', startSuggest);
+*/
 
 
 // email_click
-$(".email_added").click(function(){
+$("#new_posts").on("click", ".email_added", function(){
+	var $selected = $(this).closest(".new_post");
   $.ajax({ type: 'GET',
     url: '/user/getname',
     data:{
-      email: $('#suggested_name').val()
+      email: $selected.find('#suggested_name').val()
     },
     success: function(data){
       var element = document.createElement('input');
@@ -736,18 +812,19 @@ $(".email_added").click(function(){
       element.setAttribute("data-id", data['id']);
       elem.setAttribute("type", "hidden");
       elem.setAttribute("class", "receiver-selected given_user");
-      elem.setAttribute("name", "receiver_id[]");
+      elem.setAttribute("name", "new_post[][receiver_id][]");
       elem.setAttribute("data-id", data['id']);
       elem.setAttribute("value", data['id']);
-      $(".tags span").append(element);
-      $(".tags span").append(elem);
-      $("#suggested_name").val("");
+      $selected.find(".given_to").append(element);
+      $selected.find(".given_to").append(elem);
+      $selected.find("#suggested_name").val("");
     },
     error: function(data){
       alert('該当のメールアドレスがありません');
     }
   });
 });
+
 
 function timeSince(time) {
   var currentTime = new Date();
