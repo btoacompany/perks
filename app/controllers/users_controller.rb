@@ -214,6 +214,7 @@ class UsersController < ApplicationController
 
     top_receivers = Post.where(company_id: @company_id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
     process_top_receivers(top_receivers)
+    @top_hashtags = Hashtag.where(company_id: @company_id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
 
     @num_rewards  = Reward.where(company_id: @company_id, delete_flag: 0).count
     @num_bonus	  = Bonus.where(company_id: @company_id, delete_flag: 0).count
@@ -555,8 +556,9 @@ class UsersController < ApplicationController
       @posts << data
     end
 
-    top_givers = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
-    process_top_givers(top_givers)
+    top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
+    process_top_receivers(top_receiver)
+    @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def given
@@ -577,6 +579,7 @@ class UsersController < ApplicationController
 
     top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
     process_top_givers(top_givers)
+    @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def receiver_ranking(user)
@@ -650,8 +653,6 @@ class UsersController < ApplicationController
       data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
       @top_receivers << data
     end
-
-    @top_hashtags = Hashtag.where(company_id: @company_id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def process_top_givers(top_givers)
@@ -662,8 +663,6 @@ class UsersController < ApplicationController
       data = { name: user.name, img_src: user.img_src, count: v }
       @top_givers << data
     end
-
-    @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def process_post(post)
