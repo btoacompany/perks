@@ -824,6 +824,10 @@ hr.style-two {
 
 .show {display:block;}
 
+.form_invalid {
+  background-color: #cc0000;
+}
+
 #postsbox {
   background-color: white;
   z-index: -1;
@@ -1554,6 +1558,10 @@ hr.style-two {
 
 /*index*/
 .youtube_none{
+  display: none;
+}
+
+.display_hidden {
   display: none;
 }
 
