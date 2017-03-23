@@ -131,27 +131,28 @@ class UsersController < ApplicationController
       @placeholder = "会議の資料作成ありがとう！急なお願いだったのに迅速な対応におどろき！#speed #資料良かった #いつのまにかパワポスキルあがってる"
     end
     # team_users for getName
-    team_users = []
-    same_teams = []
-    Team.where(company_id: @company_id, manager_id: @id, delete_flag: 0).each do |team|
-      same_teams << team
-    end
-    Team.where(company_id: @company_id, delete_flag: 0).each do |team|
-      if team.member_ids.split(",").include?(@id)
-        same_teams << team
-      end
-    end
-    same_teams.each do |team|
-      team_users.push(team.member_ids.split(",")).flatten!
-      team_users.push(team.manager_id.to_s).flatten!
-    end
-    team_users.uniq!
-    @team_users = []
-    team_users.each do |user|
-      unless user.to_i == 0
-      @team_users << User.find(user.to_i)
-      end
-    end
+    get_team_users
+    # team_users = []
+    # same_teams = []
+    # Team.where(company_id: @company_id, manager_id: @id, delete_flag: 0).each do |team|
+    #   same_teams << team
+    # end
+    # Team.where(company_id: @company_id, delete_flag: 0).each do |team|
+    #   if team.member_ids.split(",").include?(@id)
+    #     same_teams << team
+    #   end
+    # end
+    # same_teams.each do |team|
+    #   team_users.push(team.member_ids.split(",")).flatten!
+    #   team_users.push(team.manager_id.to_s).flatten!
+    # end
+    # team_users.uniq!
+    # @team_users = []
+    # team_users.each do |user|
+    #   unless user.to_i == 0
+    #   @team_users << User.find(user.to_i)
+    #   end
+    # end
     # end of team_users for getName
     @bonuses  = Bonus.where(:company_id => @company_id, :delete_flag => 0) 
 
@@ -550,7 +551,15 @@ class UsersController < ApplicationController
 
   def profile
     @user = User.find(@id)
+    @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @company = Company.find(@user.company_id)
+    if $showoff_timeline.include?(@company_id)
+      get_team_users
+      @emails = []
+      @users.each do |user|
+        @emails << user.email
+      end
+    end
     # weekly_ranking
     receiver_ranking(@user)
     giver_ranking(@user)
@@ -574,7 +583,15 @@ class UsersController < ApplicationController
 
   def given
     @user = User.find(@id)
+    @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @company = Company.find(@user.company_id)
+    if $showoff_timeline.include?(@company_id)
+      get_team_users
+      @emails = []
+      @users.each do |user|
+        @emails << user.email
+      end
+    end
     receiver_ranking(@user)
     giver_ranking(@user)
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
@@ -591,6 +608,30 @@ class UsersController < ApplicationController
     top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
     process_top_givers(top_givers)
     @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+  end
+
+  def get_team_users
+    team_users = []
+    same_teams = []
+    Team.where(company_id: @company_id, manager_id: @id, delete_flag: 0).each do |team|
+      same_teams << team
+    end
+    Team.where(company_id: @company_id, delete_flag: 0).each do |team|
+      if team.member_ids.split(",").include?(@id)
+        same_teams << team
+      end
+    end
+    same_teams.each do |team|
+      team_users.push(team.member_ids.split(",")).flatten!
+      team_users.push(team.manager_id.to_s).flatten!
+    end
+    team_users.uniq!
+    @team_users = []
+    team_users.each do |user|
+      unless user.to_i == 0
+      @team_users << User.find(user.to_i)
+      end
+    end
   end
 
   def receiver_ranking(user)
