@@ -1,6 +1,5 @@
 var i = 0;
 $(function(){
-
 	var addPost = function(){
 	  $(".new_post:first"). 
 	    clone(). 
@@ -12,7 +11,7 @@ $(function(){
 	            appendTo("#new_posts");
 	}
   $("#addItem").on("click", addPost);
-
-  addPost();
+  	addPost();
+  	$(".remove_div").first().remove();
 });
 
