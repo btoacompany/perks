@@ -729,7 +729,7 @@ $("#new_posts").on("click", ".dropbtn", function() {
 $(document).mouseup(function(e) {
   var subject = $(".pointsbox .dropbtn");
   if(e.target.id != subject.attr("id")){
-    $("#myDropdown").hide();
+    $(".dropdown-content").hide();
   }
 
   $(".tags .given_user").click(function() {
