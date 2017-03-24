@@ -980,7 +980,7 @@ hr.style-two {
 
 .timeline .btn_give {
   background-color: #ff8d07;
-  padding: 10px 20px;
+  padding: 7px 15px;
   color: #fff;
   font-size: 10pt;
   font-weight: bold;
@@ -1099,6 +1099,17 @@ hr.style-two {
 }
 
 
+@media only screen and (max-width: 650px) {
+  .tags_left{
+    width: 200px;
+  }
+}
+
+@media only screen and (min-width: 650px) {
+  .tags_left{
+    width: 450px;
+  }
+}
 
 /* ---- COMPANY PAGE ---- */
 .company .menu p {

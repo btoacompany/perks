@@ -8,9 +8,9 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
 # セプテーニのcompany_idをいれる。今は暫定
-  $showoff_timeline = [0]
+  $showoff_timeline = [3]
   $ban_edit_name = []
-  $allow_nickname = []
+  $allow_nickname = [3]
   $nicknames = {
     1 => "同僚さん",
     2 => "白パンさん",
