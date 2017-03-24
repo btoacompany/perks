@@ -233,7 +233,7 @@ $("#new_posts").on("click", "#myDropdown", function(e) {
   }
 });
 
-$("#new_posts").on("click", ".dropbtn", function() {
+$("#new_posts").on("mouseover", ".dropbtn", function() {
   var symId = $(this).attr("id");
   var className = "";
   var dataId = "";
@@ -294,14 +294,13 @@ $("#new_posts").on("click", ".dropbtn", function() {
 $(document).mouseup(function(e) {
   var subject = $(".pointsbox .dropbtn");
   if(e.target.id != subject.attr("id")){
-    $("#myDropdown").hide();
+    $(".dropdown-content").hide();
   }
 
   $(".tags .given_user").click(function() {
     $(this).next().remove();
     $(this).remove();
   });
-
 });
 
 
