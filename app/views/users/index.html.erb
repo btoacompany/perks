@@ -239,7 +239,9 @@
 	</div><br>
   <div class="clearfix" style="width: 100%;">
 	<div class="tags" style="float:left">
+    <% if $allow_nickname.include?(@user.company_id) %>
     From: <span class="given_from"></span><br>
+    <% end %>
 	  To: <span class="given_to"></span><br>
 	</div>
   </div>
@@ -670,6 +672,7 @@ $("#new_posts").on("click", ".dropbtn", function() {
   var className = "";
   var dataId = "";
   var $selected = $(this);
+
   switch (symId) {
     case "ptsbtn":
       values = getPoints();
