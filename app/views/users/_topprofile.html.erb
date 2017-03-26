@@ -334,4 +334,64 @@ $("#new_posts").on("click", ".email_added", function(){
     }
   });
 });
+
+
+$("#new_posts").on("click", ".dropbtn", function() {
+  var symId = $(this).attr("id");
+  var className = "";
+  var dataId = "";
+  var $selected = $(this);
+
+  switch (symId) {
+    case "ptsbtn":
+      values = getPoints();
+      className = "drpPoints";
+      break;
+    case "atbtn":
+      values = getName();
+      className = "drpAt";
+      break;
+    case "tagbtn":
+      values = getTag();
+      className = "drpTag";
+      break;
+    <% if $allow_nickname.include?(@user.company_id) %>
+    case "nicknamebtn":
+      values = getNickname();
+      className = "drpNickname";
+      break;
+    <% end %>
+  }
+
+  $("#myDropdown > a").remove();
+  if (className == 'drpAt'){
+    $selected.siblings("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
+  };
+  $.each(values, function( index, value ) {
+    $selected.siblings("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
+  });
+
+  $selected.siblings("#myDropdown").show();
+  
+  $selected.closest(".new_post").find("#type_email").click(function(){
+    var $post = $(this).closest(".new_post");
+
+    // init suggest
+    new Suggest.LocalMulti(
+       $post.find("#suggested_name")[0],    // 入力のエレメント
+      $post.find("#suggest")[0], // 補完候補を表示するエリア
+      <%= raw @emails %>,
+      {dispMax: 10, interval: 1000, prefix: true} // オプション
+    );
+
+    var $post = $(this).closest(".new_post");
+    $post.find("#suggested_name_span").show();
+    $post.find("#suggested_name").show();
+    $post.find("#send_suggested_name").show();
+  });
+
+  $(".item").click(function() {
+    $(".taginput").focus();
+  });
+});
 </script>

@@ -559,6 +559,13 @@ class UsersController < ApplicationController
       @users.each do |user|
         @emails << user.email
       end
+      hashtags = @company.hashtags
+      if hashtags.blank?
+        @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
+      else
+        @hashtags = hashtags.split(",")
+      end
+
     end
     # weekly_ranking
     receiver_ranking(@user)
