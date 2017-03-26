@@ -1,7 +1,7 @@
 <div class="profile">
   <!-- タイムラインを表示するときの処理 -->
   <%if $showoff_timeline.include?(@company_id) %>
-  <div class="leftbox col-8 timeline">
+  <div class="leftbox col-8 timeline" style="padding-left: 0px; ">
     <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
     <div class="pointsbox" id="pointsbox">
       <div id="new_posts">
