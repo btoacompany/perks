@@ -30,6 +30,7 @@
         <% end %>
       </div><br>
 
+      <% unless $showoff_ranking.include?(@user.company_id) %>
       <div class="title"> あなたが褒めているポイント </div>
       <div class="profilebox">
         <% @top_hashtags.each do | k, v | %>
@@ -42,6 +43,7 @@
         </div>
         <% end %>
       </div><br>
+      <% end %>
     </div>
 
     <div class="leftbox col-8" style="padding-left:0;">

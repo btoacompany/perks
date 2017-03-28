@@ -13,7 +13,9 @@
         <% if @company.point_fixed_flag == 0 %>
           <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" title="贈るポイント数を選んでください。" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
         <% end %>
+        <% unless $showoff_hashtag.include?(@user.company_id) %>
         <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="コアバリューを選択できます。" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
+        <% end %>
     
         <% if $allow_nickname.include?(@user.company_id) %>
           <input type="image" id="nicknamebtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" title="ニックネームを選択できます。" data-intro="ニックネームを選択してください。相手は、誰から褒められたのかはわかりませんが、ニックネームが表示されます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
