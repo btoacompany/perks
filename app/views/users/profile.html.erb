@@ -14,6 +14,7 @@
     
     <div class="mypage row">
     <div class="rightbox col-4">
+      <% unless $showoff_ranking.include?(@user.company_id) %>
       <div class="title"> 最も褒めてくれる人 </div>
       <div class="profilebox">
         <% @top_receivers.each do | item | %>
@@ -42,6 +43,7 @@
         </div>
         <% end %>
       </div><br>
+      <% end %>
     </div>
 
     <div class="leftbox col-8" style="padding-left:0;">
