@@ -28,7 +28,7 @@
       <span id="suggested_name_span" style="display: none;">To: </span>
       <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
     <div id="suggest" style="display:none;"></div>
-    <textarea name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="80" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
+    <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="80" style="font-size: 16px; padding: 8px;" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
   </div><br>
   <div class="clearfix" style="width: 100%;">
     <div class="tags" style="float:left">
@@ -75,7 +75,7 @@
         <% elsif @receiver_ratio[1] == 0 %>
           <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
         <% else %>
-          <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています></span>
+          <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
         <% end %>
       </div>
     </div><br>
@@ -89,7 +89,7 @@
         <% elsif @giver_ratio[1] == 0 %>
           <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
         <% else %>
-          <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています></span>
+          <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
         <% end %>
       </div>
     </div><br>

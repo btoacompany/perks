@@ -43,6 +43,51 @@
         </div>
         <% end %>
       </div><br>
+      <% else %>
+
+      <div class="title"> 受信者トップ３ </div>
+      <div class="profilebox">
+        <% if @top_receivers.present? %>
+          <% @top_receivers.each do | item | %>
+            <div class="ranking">
+              <div class="left">
+                <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+              </div>
+              <div class="right">
+                <%= item[:name] %>
+                <div class="score"><%= item[:count] %></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="ranking" style="text-align:center;">
+            <span style="font-size: 12px; color: #808080;">翌月から結果を表示します！</span>
+          </div>
+        <% end %>
+      </div><br>
+
+      <div class="title"> 送信者トップ３ </div>
+      <div class="profilebox">
+        <% if @top_givers.present? %>
+          <% @top_givers.each do | item | %>
+            <div class="ranking">
+              <div class="left">
+                <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+              </div>
+              <div class="right">
+                <%= item[:name] %>
+                <div class="score"><%= item[:count] %></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          <% end %>
+          </div><br>
+        <% else %>
+          <div class="ranking" style="text-align:center;">
+            <span style="font-size: 12px; color: #808080;">翌月から結果を表示します！</span>
+          </div>
+        <% end %>
       <% end %>
     </div>
 
