@@ -589,7 +589,7 @@ class UsersController < ApplicationController
       process_top_receivers(top_receiver)
       @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
     else 
-      @last_month = Date.today.prev_month...Date.yesterday
+      @last_month = Date.today.prev_month.beginning_of_month..Date.today.prev_month.end_of_month
       top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
       process_top_givers(top_givers)
 
