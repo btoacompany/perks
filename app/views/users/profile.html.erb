@@ -43,6 +43,39 @@
         </div>
         <% end %>
       </div><br>
+      <% else %>
+
+      <div class="title"> 受信者トップ３ </div>
+      <div class="profilebox">
+        <% @top_receivers.each do | item | %>
+          <div class="ranking">
+            <div class="left">
+              <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+            </div>
+            <div class="right">
+              <%= item[:name] %>
+              <div class="score"><%= item[:count] %></div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        <% end %>
+      </div><br>
+
+      <div class="title"> 送信者トップ３ </div>
+        <div class="profilebox">
+          <% @top_givers.each do | item | %>
+            <div class="ranking">
+              <div class="left">
+                <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
+              </div>
+              <div class="right">
+                <%= item[:name] %>
+              <div class="score"><%= item[:count] %></div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        <% end %>
+      </div><br>
       <% end %>
     </div>
 
