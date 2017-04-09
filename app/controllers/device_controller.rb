@@ -6,7 +6,11 @@ class DeviceController < ApplicationController
     email     = session[:email]
     #email = "s.karakama@btoa-company.com"
 
-    user_id = User.find_by_email(email).id.to_s
+    user = User.find_by_email(email)
+    user_id = user.id.to_s
+    user.badge = 0
+    user.save
+
     device = IosToken.where(:token => token).first
 
     if device.nil?
