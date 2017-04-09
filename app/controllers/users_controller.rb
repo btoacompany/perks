@@ -340,7 +340,11 @@ class UsersController < ApplicationController
 		    hashtag.save_record(params)
       	      end
 
-              ios_push_notif(receiver.id, "#{user.firstname}さんから「ホメ」が届きました。")
+		user.badge += 1 if (user.badge).present?
+		user.save
+
+              ios_push_notif(receiver.id,
+	      "#{user.firstname}さんから「ホメ」が届きました。", user.badge)
 
       	      slack_notif = Slack::Notifier.new(@slack_webhooks) 
       	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんに感謝を伝えました。\n #{receiver_name}さんの頑張りは<a href='https://www.prizy.me'>コチラ</a> から。")
@@ -454,7 +458,13 @@ class UsersController < ApplicationController
               }).deliver_later
 	          end
 
-  	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。")
+		p @user
+		if @user[:badge].present?
+		  @user.badge += 1
+		  @user.save
+		end
+
+  	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
 
           if @company.give_point_to_sender_and_receiver_flag == 1
@@ -488,6 +498,11 @@ class UsersController < ApplicationController
 
     user = User.find(@id)
 
+    if user.badge.present?
+      user.badge += 1
+      user.save
+    end
+
     receiver_id = Post.find(res.post_id).receiver_id
     params[:receiver_id]  = receiver_id.split(",")
     params[:description]  = params["comments"]
@@ -500,7 +515,7 @@ class UsersController < ApplicationController
       parse_points(params)
     end
     
-    ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。")
+    ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
 
     redirect_page("users", "index")
   end
@@ -521,31 +536,33 @@ class UsersController < ApplicationController
     redirect_page("users", "index")
   end
 
-  def ios_push_notif(id, message)
+  def ios_push_notif(id, message, badge)
     devices = IosToken.where(:user_id => id)
     unless devices.present?
       return
     else
-    devices.each do | device |
-      sns_message = {
-        'default'=> message,
-        'message'=> {
-          'APNS_SANDBOX'=> {
-            'aps'=> {
-              'alert'=> 'inner message',
-              'sound'=> 'mySound.caf'
-            }
-          }
-        }
-      }
+      devices.each do | device |
+	sns_message = {
+	  'default'=> message,
+	  'message'=> {
+	    'APNS_SANDBOX'=> {
+	      'aps'=> {
+		'alert'=> 'inner message',
+		'sound'=> 'mySound.caf',
+		'badge'=> badge,
+		'category' => "GENERAL"
+	      }
+	    }
+	  }
+	}
 
-      sns = Aws::SNS::Client.new
-      sns.publish(
-        target_arn: device.arn, 
-        message: sns_message.to_json, 
-        message_structure: "json"
-      )
-    end
+	sns = Aws::SNS::Client.new
+	sns.publish(
+	  target_arn: device.arn, 
+	  message: sns_message.to_json, 
+	  message_structure: "json"
+	)
+      end
     end
   end
 
