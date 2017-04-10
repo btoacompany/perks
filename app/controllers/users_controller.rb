@@ -556,7 +556,6 @@ class UsersController < ApplicationController
 	  }
 	}
 =end
-
 	sns_message = {
 	  'default'=> message,
 	  'APNS'=> {
@@ -565,14 +564,16 @@ class UsersController < ApplicationController
 	      'badge'=> badge.to_i,
 	      'category' => "GENERAL"
 	    }
-	  }
+	  }.to_json
 	}
+
 	sns = Aws::SNS::Client.new
 	sns.publish(
 	  target_arn: device.arn, 
 	  message: sns_message.to_json, 
 	  message_structure: "json"
 	)
+
       end
     end
   end
