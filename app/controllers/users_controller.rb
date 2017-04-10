@@ -558,6 +558,7 @@ class UsersController < ApplicationController
 =end
 
 	sns_message = {
+	  'default'=> message,
 	  'APNS'=> {
 	    'aps'=> {
 	      'alert'=> message,
