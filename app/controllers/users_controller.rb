@@ -542,6 +542,7 @@ class UsersController < ApplicationController
       return
     else
       devices.each do | device |
+=begin      
 	sns_message = {
 	  'default'=> message,
 	  'message'=> {
@@ -552,6 +553,15 @@ class UsersController < ApplicationController
 		'category' => "GENERAL"
 	      }
 	    }
+	  }
+	}
+=end
+
+	sns_message = {
+	  'aps'=> {
+	    'alert'=> message,
+	    'badge'=> badge,
+	    'category' => "GENERAL"
 	  }
 	}
 	sns = Aws::SNS::Client.new
