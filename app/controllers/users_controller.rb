@@ -548,7 +548,6 @@ class UsersController < ApplicationController
 	    'APNS_SANDBOX'=> {
 	      'aps'=> {
 		'alert'=> 'inner message',
-		'sound'=> 'mySound.caf',
 		'badge'=> badge,
 		'category' => "GENERAL"
 	      }
