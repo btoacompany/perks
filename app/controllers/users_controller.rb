@@ -542,7 +542,6 @@ class UsersController < ApplicationController
       return
     else
       devices.each do | device |
-=begin      
 	sns_message = {
 	  'default'=> message,
 	  'message'=> {
@@ -553,18 +552,6 @@ class UsersController < ApplicationController
 		'badge'=> badge,
 		'category' => "GENERAL"
 	      }
-	    }
-	  }
-	}
-=end
-
-	sns_message = {
-	  'APNS_SANDBOX'=> {
-	    'aps'=> {
-	      'alert'=> message,
-	      'sound'=> 'mySound.caf',
-	      'badge'=> badge,
-	      'category' => "GENERAL"
 	    }
 	  }
 	}
