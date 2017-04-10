@@ -538,24 +538,6 @@ class UsersController < ApplicationController
 
   def ios_push_notif(id, message, badge)
     devices = IosToken.where(:user_id => id)
-=begin
-	apns_body = {
-	  'aps': {
-	    'alert': message,
-	    'badge': badge.to_i,
-	    'category': "GENERAL"
-	  },
-	}
-
-	bodystr = JSON.dump(apns_body)
-	sns_message = {
-	  'default': message,
-	  'APNS': bodystr 
-	}
-
-	logger.debug "--------"
-	logger.debug sns_message
-=end
     unless devices.present?
       return
     else
@@ -575,23 +557,22 @@ class UsersController < ApplicationController
 	}
 =end
 	apns_body = {
-	  'aps': {
-	    'alert': message,
-	    'badge': badge.to_i,
-	    'category': "GENERAL"
-	  },
-	}
+	  'aps' => {
+	    'alert' =>  message,
+	    'badge' =>  badge.to_i,
+	    'category' => "GENERAL"
+	  }
+	}.to_json
 
-	bodystr = JSON.dump(apns_body)
 	sns_message = {
-	  'default': message,
-	  'APNS': bodystr 
+	  'default' => message,
+	  'APNS' => apns_body 
 	}
 
 	sns = Aws::SNS::Client.new
 	sns.publish(
 	  target_arn: device.arn, 
-	  message: sns_message, 
+	  message: sns_message.to_json, 
 	  message_structure: "json"
 	)
 
