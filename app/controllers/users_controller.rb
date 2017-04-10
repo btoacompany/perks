@@ -558,10 +558,12 @@ class UsersController < ApplicationController
 =end
 
 	sns_message = {
-	  'aps'=> {
-	    'alert'=> message,
-	    'badge'=> badge,
-	    'category' => "GENERAL"
+	  'APNS'=> {
+	    'aps'=> {
+	      'alert'=> message,
+	      'badge'=> badge,
+	      'category' => "GENERAL"
+	    }
 	  }
 	}
 	sns = Aws::SNS::Client.new
