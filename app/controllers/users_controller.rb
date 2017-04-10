@@ -562,7 +562,7 @@ class UsersController < ApplicationController
 	  'APNS'=> {
 	    'aps'=> {
 	      'alert'=> message,
-	      'badge'=> badge,
+	      'badge'=> badge.to_i,
 	      'category' => "GENERAL"
 	    }
 	  }
