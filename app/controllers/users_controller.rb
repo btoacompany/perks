@@ -108,6 +108,7 @@ class UsersController < ApplicationController
     # $showoff_timeline
     if $showoff_timeline.include?(@company_id)
       redirect_to "/profile"
+      return
     end
 
     today = Date.today
