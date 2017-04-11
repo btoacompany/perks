@@ -84,11 +84,14 @@
       <% end %>
     <% end %>
     <% unless $showoff_timeline.include?(@company_id) %>
-    <a href="/user">タイムライン</a>
+      <a href="/user">タイムライン</a>
     <% end %>
     <a href="/profile">マイページ</a>
     <a href="/rewards">ギフト</a> 
 <!--     <a href="/bonus">ボーナス</a>  -->
+    <% if $showoff_timeline.include?(@company_id) %>
+      <a href="/update">設定</a>
+    <% end %>
     <a href="/logout">ログアウト</a>
     </p>
   </div>
@@ -96,9 +99,14 @@
     <div class="sp_dropdown dropdown">
       <input type="image" class="sp_dropbtn dropbtn" src="<%= "#{@s3_url}/common/gnav.png" %>"/>
       <div class="sp_dropdown_content dropdown-content" style="display: none;">
-        <a href="/user">タイムライン</a>
+        <% unless $showoff_timeline.include?(@company_id) %>
+          <a href="/user">タイムライン</a>
+        <% end %>
         <a href="/profile">マイページ</a>
         <a href="/rewards">ギフト</a>
+        <% if $showoff_timeline.include?(@company_id) %>
+          <a href="/update">設定</a>
+        <% end %>
 <!-- 	<a href="/bonus">ボーナス</a>  -->
         <a href="/logout">ログアウト</a>
       </div>
