@@ -581,9 +581,46 @@ class UsersController < ApplicationController
     end
   end
 
+  def select_target_department
+    @teams = Team.where(company_id: @company_id, delete_flag: 0, department_id: params[:id])
+    @targets = []
+    @teams.each do |team|
+      @targets << [team.id, team.team_name]
+    end
+    render :json => @targets
+  end
+
+  def select_target_team
+    @team = Team.find(params[:id])
+    @targets = []
+    @manager = User.find(@team.manager_id)
+    unless @manger.nil? 
+      if @manager.lastname.nil? || @manager.firstname.nil?
+        @manager_name = @manager.name
+      else
+        @manager_name = @manager.lastname + @manager.firstname
+      end
+      @targets << [@manager.id, @manager_name]
+    end
+
+    @team.member_ids.split(",").each do |id|
+      @user = User.find(id.to_i)
+      unless @user.nil?
+        if @user.lastname.nil? || @user.firstname.nil?
+          @user_name = @user.name
+        else
+          @user_name = @user.lastname + @user.firstname
+        end
+        @targets << [@user.id, @user_name]
+      end
+    end
+    render :json => @targets
+  end
+
   def profile
     @user = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @departments = Department.where(company_id: @company_id, delete_flag: 0)
 
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
@@ -633,6 +670,7 @@ class UsersController < ApplicationController
   def given
     @user = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
       get_team_users
