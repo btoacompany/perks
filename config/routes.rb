@@ -99,6 +99,8 @@ Rails.application.routes.draw do
   get	'/rewards/status'	    => 'users#rewards_status'
   post	'/rewards/cancel'	    => 'users#rewards_cancel'
   # get	'/bonus'		    => 'users#bonus'
+  post '/select_target_department' => 'users#select_target_department'
+  post '/select_target_team' => 'users#select_target_team'
 
   #analytics
   get	'analytics'		=> 'analytics#overall'

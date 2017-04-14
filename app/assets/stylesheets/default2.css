@@ -1098,6 +1098,10 @@ hr.style-two {
   font-weight:bold
 }
 
+.new_post_select{
+  width: 200px;
+  margin-bottom: 5px;
+}
 
 @media only screen and (max-width: 650px) {
   .tags_left{
@@ -1227,6 +1231,7 @@ hr.style-two {
   display: block;
   border-top: 1px solid black;
   border-left: 1px solid black;
+  border-bottom: 1px solid black;
   width: 33%;
   font-size:13px;
   font-weight:bold;
@@ -1236,6 +1241,20 @@ hr.style-two {
   float: left;
   margin-bottom: 10px;
   background-color: #f0f0f0;
+  -moz-box-shadow: 1px 1px 1px rgba(000,000,000,0.3);
+  -webkit-box-shadow: 1px 1px 1px rgba(000,000,000,0.3);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.receiving_box:hover, .giving_box:hover, .present_box:hover{
+  color: #fff;
+  background-color: #ff8d07;
+}
+
+.bkgc_white{
+  background-color: white;
 }
 
 .present_box{

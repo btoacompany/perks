@@ -5,22 +5,55 @@
     <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
     <div class="pointsbox" id="pointsbox">
       <div id="new_posts">
-      <div id="new_post" class="new_post display_hidden" name="new_post">
+      <div id="new_post" class="new_post display_hidden" name="new_post" style="margin-bottom:20px;">
 
       <p align="center">
+      <% if $use_select.include?(@user.company_id) %>
+        <div class="target_select">
+          <p>会社　　：
+            <select class="target_select_department new_post_select">
+              <option>選択してください</option>
+              <% @departments.each do |dep| %>
+                <option value="<%= dep.id %>"><%= dep.dep_name %></option>
+              <% end %>
+            </select>
+          </p>
+          <p>部署　　：
+            <select class="target_select_team new_post_select">
+              <option>選択してください</option>
+            </select>
+          </p>
+          <p>贈り先　：
+            <select class="target_select_user new_post_select">
+              <option>選択してください</option>
+            </select>
+          </p>
+          <p>贈り主　：
+            <select class="select_giver_user new_post_select">
+              <option>選択してください</option>
+              <% $nicknames.each do |key, value| %>
+                <option value="<%= key %>"><%= value %></option>
+              <% end %>
+            </select>
+          </p>
+        </div>
+      <% end %>
       <div class="dropdown">
+        <br>
+        <% unless $use_select.include?(@user.company_id) %>
         <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png" onClick="return false;" title="褒める相手を選んでください。" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
+        <% end %>
         <% if @company.point_fixed_flag == 0 %>
           <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" title="贈るポイント数を選んでください。" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
         <% end %>
         <% unless $showoff_hashtag.include?(@user.company_id) %>
         <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="コアバリューを選択できます。" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
         <% end %>
-    
+        <% unless $use_select.include?(@user.company_id) %>
         <% if $allow_nickname.include?(@user.company_id) %>
           <input type="image" id="nicknamebtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" title="ニックネームを選択できます。" data-intro="ニックネームを選択してください。相手は、誰から褒められたのかはわかりませんが、ニックネームが表示されます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
         <% end %>
-    
+        <% end %>
         <div id="myDropdown" class="dropdown-content"> </div>
       </div><br><hr>
 
@@ -28,7 +61,7 @@
       <span id="suggested_name_span" style="display: none;">To: </span>
       <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
     <div id="suggest" style="display:none;"></div>
-    <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="80" style="font-size: 16px; padding: 8px;" placeholder="<%= @placeholder %>" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
+    <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="80" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
   </div><br>
   <div class="clearfix" style="width: 100%;">
     <div class="tags" style="float:left">
@@ -99,6 +132,76 @@
 
 
 <script type="text/javascript">
+
+<% if $use_select.include?(@user.company_id) %>
+$(function() {
+  $(".pointsbox").on("change",".target_select_department", function(){
+    $(this).addClass("this_select");
+    $.ajax({
+      url: "/select_target_department",
+      type: "POST",
+      data: {id : $(this).val()
+    },
+    success: function(data) {
+      $.each(data, function(key, value){
+        $(".this_select").parent().parent().find(".target_select_team").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
+      });
+      $(".this_select").removeClass("this_select");
+    },
+    error: function(data) {
+      alert("errror");
+      $(".this_select").removeClass("this_select");
+    }
+    });
+  });
+});
+
+$(function() {
+  $(".pointsbox").on("change",".target_select_team", function(){
+    $(this).addClass("this_select");
+    $.ajax({
+      url: "/select_target_team",
+      type: "POST",
+      data: {id : $(this).val()
+    },
+    success: function(data) {
+      $.each(data, function(key, value){
+        $(".this_select").parent().parent().find(".target_select_user").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
+      });
+      $(".this_select").removeClass("this_select");
+    },
+    error: function(data) {
+      alert("errror");
+      $(".this_select").removeClass("this_select");
+    }
+    });
+  });
+});
+
+$(function() {
+  $(".pointsbox").on("change",".target_select_user", function(){
+    var dataId = $(this).find("option:selected").val();
+    var content = $(this).find("option:selected").text()
+    var $selected = $(this).closest(".new_post");
+    $selected.find(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + dataId + "'/>").val(content));
+    $selected.find(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+  });
+});
+
+  <% if $allow_nickname.include?(@user.company_id) %>
+  $(function() {
+    $(".pointsbox").on("change",".select_giver_user", function(){
+      var dataId = $(this).find("option:selected").val();
+      var content = $(this).find("option:selected").text()
+      var $selected = $(this).closest(".new_post");
+      $selected.find(".tags .given_from").empty();
+      $selected.find(".tags .given_from").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + dataId + "'/>").val(content));
+      $selected.find(".tags .given_from").append($("<input type='hidden' class='nickname-selected given_user' name='new_post[][nickname_id]' data-id='" + dataId + "'/>").val(dataId));
+    });
+  });
+  <% end %>
+<% else %>
+
 function getName () {
   items = {};
   <% if @team_users.present? %>
@@ -120,6 +223,7 @@ function getName () {
   return items;
   <% end %>
 }
+<% end %>
 
 function getPoints () {
   return ["10","20","30","40","50"];
