@@ -80,6 +80,7 @@ Rails.application.routes.draw do
   get	'/company/departments/edit' => 'company#edit_departments'
   post	'/company/departments/edit/complete'	=> 'company#edit_departments_complete'
   post	'/company/departments/delete'	    => 'company#delete_departments'
+  post '/company/confirm_invite_email_setting' => 'company#confirm_invite_email_setting'
  
 
   # users
