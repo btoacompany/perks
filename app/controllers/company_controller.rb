@@ -177,6 +177,27 @@ class CompanyController < ApplicationController
     end
   end
 
+  def confirm_invite_email_setting
+    new_invite_email_setting = params[:invite_email_setting].to_i
+    company= Company.find(current_user.company_id)
+    if session[:error_not_match_invite_email_setting]
+      company.invite_email_flag = params[:invite_email_setting].to_i
+      company.save
+      session.delete(:error_not_match_invite_email_setting)
+      session.delete(:current_invite_email_setting)
+      flash[:company_update] = "自動招待メール設定を変更しました"
+      redirect_to :company_employees
+    else
+      if company.invite_email_flag == new_invite_email_setting
+        session.delete(:current_invite_email_setting)
+        redirect_to :company_employees
+      else
+        session[:error_not_match_invite_email_setting] = "自動招待メール設定が異なっています"
+        redirect_to :company_employees_register
+      end
+    end
+  end
+
   def employees
     @company = Company.find(@id)
     teams = Team.where(company_id: @id, delete_flag: 0)
@@ -280,7 +301,8 @@ class CompanyController < ApplicationController
         redirect_to '/company/employees/register'
       else
         flash[:notice_about_create_user] = "社員#{count_created_user_by_csv}名を追加しました"
-        redirect_to '/company/employees'
+        session[:current_invite_email_setting] = company.invite_email_flag
+        redirect_to '/company/employees/register'
       end
     else
       flash[:notice_about_create_user] = "CSVファイルを選択してください"
@@ -288,7 +310,11 @@ class CompanyController < ApplicationController
     end
     # エラー時の処理
     rescue => e
-    flash[:notice_about_create_user] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
+    if e && /.+Shift_JIS+./ =~ e.to_s
+      flash[:notice_about_create_user] = "文字化けしているデータがあります。"
+    else
+      flash[:notice_about_create_user] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
+    end
     redirect_to '/company/employees/register'
   end
 
@@ -363,13 +389,14 @@ class CompanyController < ApplicationController
       }
       @user = User.new
       @user.save_record(@data)
+      flash[:notice_about_create_user] = "社員を追加しました"
+      session[:current_invite_email_setting] = company.invite_email_flag
     end
 
     if @duplicate_emails.present?
       flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。"
     end
-
-    redirect_to "/company/employees"
+    redirect_to "/company/employees/register"
   end
 
   def add_employees

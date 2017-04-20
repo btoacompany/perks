@@ -29,6 +29,37 @@
   <% end %>
   <%= button_to 'CSVフォーマットはこちらからダウンロードできます。', company_employees_export_csv_format_create_user_path(format: 'csv'),class: "csv_download_button" %><br><br>
 
+  <% if session[:current_invite_email_setting] %>
+    <div id="modal-overlay"></div>
+    <div id="my-modal" title="招待メールを送信しますか？">
+    <b><p style="color: red"><%= session[:error_not_match_invite_email_setting] %></p></b>  
+      <%= form_tag "/company/confirm_invite_email_setting" , :method => "post" do %>
+        <%= flash[:notice_about_create_user] %>
+        <% if session[:error_not_match_invite_email_setting] %>
+          <p>自動招待メールの設定を変更しますか？</p>
+        <% else %>
+          <p>登録した社員に招待メールを送信しますか?</p>
+        <% end %>
+        <% if session[:current_invite_email_setting] == 0 %>
+          <p style="color: red">※現在、招待メールを送信する設定です。</p>
+        <% else %>
+          <p style="color: red">※現在、招待メールを送信しない設定です。</p>
+        <% end %>
+        <% if session[:error_not_match_invite_email_setting] %>
+          <input type="radio" id="invite_email_setting_true" name="invite_email_setting" class="display-none" value= 0 required/>
+          <label for="invite_email_setting_true" name="invite_email_setting" >招待メールを送信する</label><br/>
+          <input type="radio" id="invite_email_setting_false" name="invite_email_setting" class="display-none" value= 1 required/>
+          <label for="invite_email_setting_false" name="invite_email_setting">招待メールを送信しない</label>
+        <% else %>
+          <input type="radio" id="invite_email_setting_true" name="invite_email_setting" class="display-none" value= 0 required/>
+          <label for="invite_email_setting_true" name="invite_email_setting" >はい</label>
+          <input type="radio" id="invite_email_setting_false" name="invite_email_setting" class="display-none" value= 1 required/>
+          <label for="invite_email_setting_false" name="invite_email_setting">いいえ</label>
+        <% end %>
+        <input type="submit" class="btn" value="送信">
+      <% end %>
+    </div>
+  <% end %>
 
 <h3 class="c_align">社員を登録する</h3><br>
 <%= form_tag("/company/employees/register/complete", method: "post", id: "login_form") do %>
@@ -139,5 +170,11 @@ $(".change_password_btn").click(function() {
   $(".password_label").toggle();
   $(".password").toggle();
 });
+
+
+
+$(document).ready($(function() {
+    $( "#my-modal" ).dialog();
+  }));
 
 </script>

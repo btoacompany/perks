@@ -15,6 +15,7 @@
 
 <div id="admin_contents" class="c_align">
   <% if flash[:notice_about_create_user] %><p class="c_align notice" style="color: red"><b><i><%= raw flash[:notice_about_create_user] %></i></b></p><br><% end %>
+  <% if flash[:company_update] %><p class="c_align notice" style="color: red"><b><i><%= raw flash[:company_update] %></i></b></p><br><% end %>
   <h3>社員登録・編集</h3><br>
   <p class="c_align">招待リンク: <a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
   <a href="/company/employees/register" class="a_btncmn radius5">+ 部署 / 社員を登録する</a>
