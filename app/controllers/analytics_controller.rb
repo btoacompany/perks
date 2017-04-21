@@ -35,6 +35,7 @@ class AnalyticsController < ApplicationController
   end
 
   def overall
+    @hahahaha = Time.now
     @hash = {}
     @points = {}
     @time_custom.each do |time|

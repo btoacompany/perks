@@ -111,7 +111,6 @@ class User < ActiveRecord::Base
         row_data["gender"] === "1" ? user.gender = 1 : user.gender = 0
         user.save!
         count_created_user_by_csv += 1 if user.save
-        session[:error_messages] = user.errors.full_messages if user.errors
         # add user to team
         check_department = Department.find_by(dep_name: row_data["department"])
         check_team = Team.find_by(team_name: row_data["team"] , department_id: check_department.id)
