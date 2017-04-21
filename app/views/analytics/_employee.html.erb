@@ -1,0 +1,7 @@
+<tr class="item_<%= item[:id] %>">
+  <td style="width:200px;"><%= "#{item[:lastname]} #{item[:firstname]}" %></td>
+  <td style="width:400px;"><%= item[:email] %></td>
+  <td><%= item[:in_points] %></td>
+  <td><%= item[:out_points] %></td>
+  <td align="center"><%= link_to "詳細を見る", "/analytics/user/#{item[:id]}" %></td>
+</tr>

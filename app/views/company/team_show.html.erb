@@ -1,0 +1,222 @@
+<div id="admin_wrapper">
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <li><%= link_to "会社情報", "/company/details" %></li>
+    <li class="admin_li"><%= link_to "カスタマイズ","/company/customize" %></li>
+    <li class="admin_li_checked"><%= link_to "部署・チーム情報","/company/teams" %></li>
+    <li><%= link_to "社員情報","/company/employees" %></li>
+    <li><%= link_to "ギフト","/company/rewards" %></li>
+    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+    <li><%= link_to "Slack連携", "/integration/slack"%></li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
+
+<div id="admin_contents" class="c_align">
+  <br><br>
+<%if @team_exist == 0 %>
+  <!-- team -->
+  <div id="tab-container" class="tab-container">
+  <%= form_tag({:controller => 'company', :action => 'employees'}) do %>
+  <select id="team_selected_id" name="team_selected_id">
+  <% unless @team_selected_id.present? %>
+    <option value="00">チームを選択してください</option>
+  <% end %> 
+  <% @teams.each do |team| %>
+    <option value=<%= team[:team_id] %> <% if team[:team_id] == @team_selected_id %> selected <% end %>>
+      <%= team[:team_name] %>
+    </option>
+  <% end %>
+  </select>
+  <input type="submit" value="表示" class="team_select_submit">
+  <% end %>
+
+  <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+  <div class="toolbox">
+    <% if @users.count == 0 %>
+      <p><i>社員を追加してください</i></p><br>
+    <% else %>
+      <!-- team -->
+      <% if @team_selected_id.present? %>
+      <% @teams.each do |team| %>
+      <% if team[:team_id] == @team_selected_id %>
+        <div id="<%= team[:team_id] %>" class="team_hidden">
+        <table class="tbl_tools" border="1">
+          <%= render 'employees_th' %>
+          <% team[:members].each do |item| %>
+            <% @render_user = User.find(item) %>
+            <%if @render_user.delete_flag == 0 %>
+            <%= render 'employees_tr', item: @render_user %>
+            <% end %>
+          <% end %>
+          </table>
+        </div>
+      <% end %>
+      <% end %>
+      <% else %>
+        <table class="tbl_tools" border="1">
+          <%= render 'employees_th' %>
+          <% @users.each do | item | %>
+            <%= render 'employees_tr', item: item %>
+          <% end %>
+          </table><br>
+          <div class="pagination clearfix">
+            <% if @total_pages > 8 %>
+              <% unless @page_now == 1 %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=1" %>">最初</a>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@previous_page}" %>">前へ</a>
+              <% end %>
+              <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@page_now}" %>"><%= @page_now %></a>
+              <% unless @page_now == @total_pages %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@next_page}" %>">次へ</a>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@total_pages}" %>">最後</a>
+              <% end %>
+              <% else %>
+              <% (1..@total_pages).each do | i | %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{i}" %>"><%= i %></a>
+              <% end %>
+            <% end %>
+          </div><br>
+      <% end %>
+      <!-- team -->
+    <% end %>
+  <br>
+</div> <!-- toolbox -->
+</div> <!-- tabcontainer -->
+
+<% else %>
+  <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+  <div class="toolbox">
+    <% if @users.count == 0 %>
+      <p><i>社員を追加してください</i></p><br>
+    <% else %>
+      <table class="tbl_tools" border="1">
+        <%= render 'employees_th' %>
+  <% @users.each do | item | %>
+    <%= render 'employees_tr', item: item %>
+  <% end %>
+      </table><br>
+      <div class="pagination clearfix">
+            <% if @total_pages > 8 %>
+              <% unless @page_now == 1 %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=1" %>">最初</a>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@previous_page}" %>">前へ</a>
+              <% end %>
+              <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@page_now}" %>"><%= @page_now %></a>
+              <% unless @page_now == @total_pages %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@next_page}" %>">次へ</a>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@total_pages}" %>">最後</a>
+              <% end %>
+              <% else %>
+              <% (1..@total_pages).each do | i | %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{i}" %>"><%= i %></a>
+              <% end %>
+            <% end %>
+          </div><br>
+    <% end %>
+</div>
+<% end %>
+
+</div> <!-- contents -->
+</div> <!-- wrapper -->
+
+
+<script type="text/javascript">
+$('.chk_admin').change(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if ($(this).is(":checked")) {
+    if (confirm("管理者にしますか？")) {
+      $.post("/company/employees/make_admin", { 'id': _id }); //send post request
+    } else {
+      $(this).prop("checked", false);
+      return false; //do nothing
+    }
+  } else {
+    if (confirm("本当に管理者から外しますか？")) {
+      $.post("/company/employees/make_user", { 'id': _id }); //send post request
+    } else {
+      $(this).prop("checked", true);
+      return false; //do nothing
+    }
+  }
+});
+
+$('.chk_manager').change(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if ($(this).is(":checked")) {
+    if (confirm("マネージャーにしますか？")) {
+      $.post("/company/employees/make_manager", { 'id': _id }); //send post request
+    } else {
+      $(this).prop("checked", false);
+      return false; //do nothing
+    }
+  } else {
+    if (confirm("本当にマネージャーから外しますか？")) {
+      $.post("/company/employees/make_non_manager", { 'id': _id }); //send post request
+    } else {
+      $(this).prop("checked", true);
+      return false; //do nothing
+    }
+  }
+});
+
+$('.delete_item').click(function() {
+  var _id = ($(this).attr('data-id'));
+  var mgr_check = ($(this).attr('mgr-id'));
+  //get attributes of clicked item
+
+  if (mgr_check == "mgr") {
+    alert("チームのマネージャーのため、削除できませんでした。マネージャーを変更後に削除してください。");
+  } else {
+  if (confirm("本当に削除しますか？")) {
+    $.post("/company/employees/delete", { 'id': _id }); //send post request
+    $(".item_" + _id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
+  }
+});
+
+$('.setting_color').css('color','gray');
+
+$(document).ready(function () {
+  $("#tab-container").easytabs();
+});
+
+$(".edit_email").click(function() {
+  window.location = "/company/employees/edit_email";
+});
+
+$("#open-sample-dialog").on("click", function(){
+  $("#sample-dialog").dialog();
+});
+
+// update email
+$(document).on('click','.modal-btn', function() {
+  $.ajax({ type: 'GET',
+    url: '/company/employees/edit_email',
+    data: {
+    id: $(this).attr('data-id')
+  },
+  success: function(data) {
+    $('#modal-label').append(data['name'] + "さんのメールアドレスを変更しますか。");
+    $('#modal-body').val(data['email']);
+    $('#modal-hidden').val(data['id']);
+    $('#my-modal').dialog();
+  },
+  error: function(data) {
+    alert('error');
+    }});
+  });
+
+$('.team_select_submit').click(function(){
+  input = $("#team_selected_id").val();
+  if (input.match(/00/)) {
+    alert("チームを選択してください。");
+    return false;
+  }
+});
+
+</script>

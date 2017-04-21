@@ -257,6 +257,7 @@ class CompanyController < ApplicationController
     else
       @team_exist = 1
     end
+
     users = User.where(:company_id => @id, :delete_flag => 0)
     all_users = users.sort_by &:create_time
     users_count = all_users.count
@@ -640,42 +641,94 @@ class CompanyController < ApplicationController
     logger.debug("------")
     @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
     @departments = Department.where(:company_id => @id, :delete_flag => 0)
-    teams = Team.where(:company_id => @id, :delete_flag => 0)
-    @users = User.where(company_id: @id, delete_flag: 0)
-    @emails = []
-    @users.each do |user|
-      @emails << user.email
-    end
-
-    @teams = []
-    data = {}
-
     @department = Department.new
-    teams.each do | team |
-      @department = Department.find(team.department_id)
-      if @department.delete_flag == 0
-      members = []
-      member_ids = team[:member_ids].split(",") if team[:member_ids].present?
-      member_ids.each do | mem_id |
-        unless mem_id.to_i == 0
-          members << User.find(mem_id)
-        end
-      end
+    # @users = User.where(company_id: @id, delete_flag: 0)
+    # @emails = []
+    # @users.each do |user|
+    #   @emails << user.email
+    # end
 
-      data = {
-        :id => team.id,
-        :department   => Department.find(team[:department_id]).dep_name,
-        :team_name    => team[:team_name],
-        :manager      => User.find(team[:manager_id]),
-        :members      => members
-      }
-      @teams << data
-      end
-    end
+    # @teams = []
+    # data = {}
+    # teams.each do | team |
+    #   @department = Department.find(team.department_id)
+    #   # if @department.delete_flag == 0
+    #   # members = []
+    #   # member_ids = team[:member_ids].split(",") if team[:member_ids].present?
+    #   # member_ids.each do | mem_id |
+    #   #   unless mem_id.to_i == 0
+    #   #     members << User.find(mem_id)
+    #   #   end
+    #   # end
+    #   data = {
+    #     :id => team.id,
+    #     :department   => Department.find(team[:department_id]).dep_name,
+    #     :team_name    => team[:team_name],
+    #     # :manager      => User.find(team[:manager_id]),
+    #     # :members      => members
+    #   }
+    #   @teams << data
+    #   end
+    # end
     logger.debug("======")
     logger.debug("#{hogehoge}")
     logger.debug("#{Time.now}")
     logger.debug("------")
+
+    teams = Team.where(:company_id => @id, :delete_flag => 0)
+    all_teams = teams.sort_by &:create_time
+    teams_count = all_teams.count
+    limit = 10
+    page = params[:page] || 1
+    @total_teams = teams_count
+    @total_pages = (@total_teams/limit.to_f).ceil
+    if page.to_i <= 1
+      page    = 1
+      offset  = 0
+    else
+      offset  = (page.to_i * limit) - limit
+    end
+    all_teams = all_teams[offset, limit]
+    @teams     = Team.where(id: all_teams.map(&:id)).order("id asc")
+    @page_now = params[:page].to_i
+    if @page_now == 0
+      @page_now = 1
+    end
+    @previous_page  = @page_now - 1
+    @next_page      = @page_now + 1
+  end
+
+  def team_show
+    @team = Team.find(params[:id])
+    unless @team.company_id == @id
+      redirect_to "/company/teams"
+    end
+    @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
+    user_ids = []
+    @team.member_ids.split(",").each do |id|
+      user_ids << id.to_i
+    end
+    users = User.where(:id => user_ids, :company_id => @id, :delete_flag => 0)
+    all_users = users.sort_by &:create_time
+    users_count = all_users.count
+    limit = 20
+    page = params[:page] || 1
+    @total_users = users_count
+    @total_pages = (@total_users/limit.to_f).ceil
+    if page.to_i <= 1
+      page    = 1
+      offset  = 0
+    else
+      offset  = (page.to_i * limit) - limit
+    end
+    all_users = all_users[offset, limit]
+    @users     = User.where(id: all_users.map(&:id)).order("id asc")
+    @page_now = params[:page].to_i
+    if @page_now == 0
+      @page_now = 1
+    end
+    @previous_page  = @page_now - 1
+    @next_page      = @page_now + 1
   end
 
   def add_teams_complete

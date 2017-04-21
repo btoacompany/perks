@@ -9,8 +9,8 @@
 
       <p align="center">
       <% if $use_select.include?(@user.company_id) %>
-        <div class="target_select">
-          <p>会社　　：
+        <div class="target_select clearfix">
+          <p style="float: left;">会社　　：
             <select class="target_select_department new_post_select">
               <option>選択してください</option>
               <% @departments.each do |dep| %>
@@ -18,17 +18,17 @@
               <% end %>
             </select>
           </p>
-          <p>部署　　：
+          <p style="float: left; margin-left: 20px;">部署　　：
             <select class="target_select_team new_post_select">
               <option>選択してください</option>
             </select>
           </p>
-          <p>贈り先　：
+          <p style="float: left;">贈り先　：
             <select class="target_select_user new_post_select">
               <option>選択してください</option>
             </select>
           </p>
-          <p>贈り主　：
+          <p style="float: left; margin-left: 20px;">贈り主　：
             <select class="select_giver_user new_post_select">
               <option>選択してください</option>
               <% $nicknames.each do |key, value| %>
@@ -137,12 +137,16 @@
 $(function() {
   $(".pointsbox").on("change",".target_select_department", function(){
     $(this).addClass("this_select");
+    $(".this_select").parent().parent().find(".target_select_team").empty();
+    $(".this_select").parent().parent().find(".target_select_user").empty();
     $.ajax({
       url: "/select_target_department",
       type: "POST",
       data: {id : $(this).val()
     },
     success: function(data) {
+      $(".this_select").parent().parent().find(".target_select_team").append('<option>選択してください</option>');
+      $(".this_select").parent().parent().find(".target_select_user").append('<option>選択してください</option>');
       $.each(data, function(key, value){
         $(".this_select").parent().parent().find(".target_select_team").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
       });
@@ -159,12 +163,14 @@ $(function() {
 $(function() {
   $(".pointsbox").on("change",".target_select_team", function(){
     $(this).addClass("this_select");
+    $(".this_select").parent().parent().find(".target_select_user").empty();
     $.ajax({
       url: "/select_target_team",
       type: "POST",
       data: {id : $(this).val()
     },
     success: function(data) {
+      $(".this_select").parent().parent().find(".target_select_user").append('<option>選択してください</option>');
       $.each(data, function(key, value){
         $(".this_select").parent().parent().find(".target_select_user").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
       });
