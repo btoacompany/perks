@@ -1,0 +1,114 @@
+<div class="analytics_holder">
+  <div class="analytics_time_select" >
+    <%= form_tag({:controller => 'analytics', :action => 'giver'}, remote: true, :class => "analytics_form") do%>
+      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
+      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
+      <input type="submit" value="適用">
+    <% end %>
+    <div class="clearfix"></div>
+  </div>
+  <%= render 'analytics'%>
+  <div class="analytics_container c_align" style="float: left; width: 80%; background-color: white; margin-bottom: 30px;">
+    <br><br>
+    <%if @team_exist == 0 %>
+      <!-- team -->
+      <div id="tab-container" class="tab-container">
+        <%= form_tag({:controller => 'analytics', :action => 'users'}) do %>
+          <select id="team_selected_id" name="team_selected_id">
+            <% unless @team_selected_id.present? %>
+              <option value="00">チームを選択してください</option>
+            <% end %> 
+            <% @teams.each do |team| %>
+              <option value=<%= team[:team_id] %> <% if team[:team_id] == @team_selected_id %> selected <% end %>>
+                <%= team[:team_name] %>
+              </option>
+            <% end %>
+          </select>
+          <input type="submit" value="表示" class="team_select_submit">
+        <% end %>
+        <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+        <div class="toolbox">
+          <% if @users.count == 0 %>
+            <p><i>社員を追加してください</i></p><br>
+          <% else %>
+          <!-- team -->
+          <% if @team_selected_id.present? %>
+            <% @teams.each do |team| %>
+              <% if team[:team_id] == @team_selected_id %>
+                <div id="<%= team[:team_id] %>" class="team_hidden">
+                  <table class="tbl_tools" border="1">
+                    <%= render 'employee_th' %>
+                    <% team[:members].each do |item| %>
+                      <% @render_user = User.find(item) %>
+                      <%if @render_user.delete_flag == 0 %>
+                        <%= render 'employee', item: @render_user %>
+                      <% end %>
+                    <% end %>
+                  </table>
+                </div>
+              <% end %>
+            <% end %>
+          <% else %>
+            <table class="tbl_tools" border="1">
+              <%= render 'employee_th' %>
+              <% @users.each do | item | %>
+                <%= render 'employee', item: item %>
+              <% end %>
+            </table><br>
+            <div class="pagination clearfix">
+              <% if @total_pages > 8 %>
+                <% unless @page_now == 1 %>
+                  <a href="<%= "#{@prizy_url}/analytics/users?page=1" %>">最初</a>
+                  <a href="<%= "#{@prizy_url}/analytics/users?page=#{@previous_page}" %>">前へ</a>
+                <% end %>
+                <a href="<%= "#{@prizy_url}/analytics/users?page=#{@page_now}" %>"><%= @page_now %></a>
+                <% unless @page_now == @total_pages %>
+                  <a href="<%= "#{@prizy_url}/analytics/users?page=#{@next_page}" %>">次へ</a>
+                  <a href="<%= "#{@prizy_url}/analytics/users?page=#{@total_pages}" %>">最後</a>
+                <% end %>
+              <% else %>
+                <% (1..@total_pages).each do | i | %>
+                  <a href="<%= "#{@prizy_url}/analytics/users?page=#{i}" %>"><%= i %></a>
+                <% end %>
+              <% end %>
+            </div><br>
+          <% end %>
+        <% end %>
+        <br>
+        </div> <!-- toolbox -->
+      </div> <!-- tabcontainer -->
+    <% else %>
+      <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+      <div class="toolbox">
+        <% if @users.count == 0 %>
+          <p><i>社員を追加してください</i></p><br>
+        <% else %>
+          <table class="tbl_tools" border="1">
+            <%= render 'employee_th' %>
+            <% @users.each do | item | %>
+              <%= render 'employee', item: item %>
+            <% end %>
+          </table><br>
+          <div class="pagination clearfix">
+            <% if @total_pages > 8 %>
+              <% unless @page_now == 1 %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=1" %>">最初</a>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@previous_page}" %>">前へ</a>
+              <% end %>
+              <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@page_now}" %>"><%= @page_now %></a>
+              <% unless @page_now == @total_pages %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@next_page}" %>">次へ</a>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@total_pages}" %>">最後</a>
+              <% end %>
+            <% else %>
+              <% (1..@total_pages).each do | i | %>
+                <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{i}" %>"><%= i %></a>
+              <% end %>
+            <% end %>
+          </div><br>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+</div>

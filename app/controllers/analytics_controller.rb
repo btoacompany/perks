@@ -189,6 +189,89 @@ class AnalyticsController < ApplicationController
     end
   end
 
+  def users
+    @company = Company.find(@id)
+    teams = Team.where(company_id: @id, delete_flag: 0)
+    @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
+    unless teams.empty?
+      @team_exist = 0
+      @teams = []
+      teams.each do |team|
+        team_members = []
+        logger.debug("-↓-too-many-SQL-")
+        team_members << User.find(team.manager_id)
+        logger.debug("-↑-too-many-SQL-")
+        team.member_ids.split(",").each do |id|
+          unless id.to_i == 0
+          team_members << id.to_i
+          end
+        end
+        each_team = {
+          :team_id => team.id,
+          :team_name => team.team_name,
+          :members => team_members
+        }
+        @teams << each_team
+      end
+      # 全社員のid取得
+      user_ids = []
+      User.where(company_id: @id, delete_flag: 0).each do |user|
+        user_ids << user.id
+      end
+      # 何かしらのチームに属してるid取得
+      in_team_user_ids = []
+      teams.each do |team|
+        in_team_user_ids.push(team.member_ids.split(","))
+        in_team_user_ids.push(team.manager_id)
+        in_team_user_ids.flatten!
+        in_team_user_ids.uniq
+      end
+      # 何もチームに属していないid取得
+      in_team_user_ids.each do |id|
+        user_ids.delete(id.to_i)
+      end
+      # 何もチームに属していないユーザーの配列
+      @non_team_user_ids = []
+      user_ids.each do |id|
+        @non_team_user_ids << id.to_i
+      end
+      # ハッシュ作成
+      non_team = {
+        :team_id => 0,
+        :team_name => "所属なしユーザー",
+        :members => @non_team_user_ids
+      }
+      @teams << non_team
+      if params[:team_selected_id].present?
+        @team_selected_id = params[:team_selected_id].to_i
+      end
+    else
+      @team_exist = 1
+    end
+
+    users = User.where(:company_id => @id, :delete_flag => 0)
+    all_users = users.sort_by &:create_time
+    users_count = all_users.count
+    limit = 10
+    page = params[:page] || 1
+    @total_users = users_count
+    @total_pages = (@total_users/limit.to_f).ceil
+    if page.to_i <= 1
+      page    = 1
+      offset  = 0
+    else
+      offset  = (page.to_i * limit) - limit
+    end
+    all_users = all_users[offset, limit]
+    @users     = User.where(id: all_users.map(&:id)).order("id asc")
+    @page_now = params[:page].to_i
+    if @page_now == 0
+      @page_now = 1
+    end
+    @previous_page  = @page_now - 1
+    @next_page      = @page_now + 1
+  end
+
   def user
     @userid = params[:id]
     @user = User.find(@userid)

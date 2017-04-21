@@ -132,30 +132,23 @@
 	<tr>
     <th>部署</th>
 	  <th>チーム</th>
-	  <th>マネージャー</th>
-	  <th>社員</th>
+    <th>メンバー一覧</th>
 	  <th class="c_align">編集・削除</th>
 	</tr>
 	<% @teams.each do | item | %>
-	<tr class="item_<%= item[:id] %>">
-    <td style="width:250px;"><%= item[:department] %></td>
-	  <td style="width:250px;"><%= item[:team_name] %></td>
-	  <td style="width:300px;"><%= item[:manager].lastname %> <%= item[:manager].firstname %></td>
-    <td style="width:300px;">
-    <ul class="team_member_list" >
-      <input type="button" value="メンバーを表示する" class="change_password_btn"/>
-      <% item[:members].each do |member| %>
-        <li class="team_member_list_each"><%= member.lastname %> <%= member.firstname %> (<%= member.email %>)</li>
-      <% end %>
-    </ul>
-    </td>
-	  <td class="c_align">
-	    <input type="button" class="btn edit_item" data-id="<%= item[:id] %>" value="編集" /> 
-	    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" />
+  <% @this_department = Department.find(item.department_id) %>
+	<tr class="item_<%= item.id %>">
+    <td class="c_align" style="width: 250px;"><%= @this_department.dep_name %></td>
+    <td class="c_align" style="width: 250px;"><%= item.team_name %></td>
+    <td class="c_align" style="width: 250px;"><%= link_to "一覧を表示する", "/company/team/#{item.id}/show" %></td>
+	  <td class="c_align" style="width: 250px;">
+	    <input type="button" class="btn edit_item" data-id="<%= item.id %>" value="編集" /> 
+	    <input type="button" class="btn delete_item" data-id="<%= item.id %>" value="削除" />
 	  </td>
 	</tr>
 	<% end %>
     </table><br>
+    <%= render "team_pagination" %>
     </div>
   <% end %>
 </div>
@@ -234,17 +227,5 @@ $(".btn_change_password").click(function() {
   $("#adding_member").append(element);
   $(':text[id="suggested_name"]').val("");
 });
-
-function startSuggest() {
-  new Suggest.LocalMulti(
-    "suggested_name",    // 入力のエレメントID
-    "suggest", // 補完候補を表示するエリアのID
-    <%= raw @emails %>,
-    {dispMax: 10, interval: 1000, prefix: true}); // オプション
-}
-
-window.addEventListener ?
-window.addEventListener('load', startSuggest, false) :
-window.attachEvent('onload', startSuggest);
 
 </script>
