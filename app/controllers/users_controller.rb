@@ -618,7 +618,6 @@ class UsersController < ApplicationController
   end
 
   def profile
-    logger.debug("#{Time.now}")
     @user = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
@@ -666,8 +665,6 @@ class UsersController < ApplicationController
       top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
       process_top_receivers(top_receivers)
     end
-    logger.debug("=====")
-    logger.debug("#{Time.now}")
   end
 
   def given
