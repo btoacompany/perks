@@ -207,7 +207,9 @@ class CompanyController < ApplicationController
       @teams = []
       teams.each do |team|
         team_members = []
+        logger.debug("-↓-too-many-SQL-")
         team_members << User.find(team.manager_id)
+        logger.debug("-↑-too-many-SQL-")
         team.member_ids.split(",").each do |id|
           unless id.to_i == 0
           team_members << id.to_i
@@ -256,7 +258,6 @@ class CompanyController < ApplicationController
       @team_exist = 1
     end
     users = User.where(:company_id => @id, :delete_flag => 0)
-
     all_users = users.sort_by &:create_time
     users_count = all_users.count
     limit = 10
@@ -314,7 +315,7 @@ class CompanyController < ApplicationController
       flash[:notice_about_create_user] = "文字化けしているデータがあります。"
     else
       # flash[:notice_about_create_user] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
-      flash[:notice_about_create_user] = "#{session[:error_messages]}"
+      flash[:notice_about_create_user] = "#{e}"
     end
     redirect_to '/company/employees/register'
   end
@@ -632,6 +633,10 @@ class CompanyController < ApplicationController
   end
 
   def teams 
+    logger.debug("======")
+    hogehoge = Time.now
+    logger.debug("#{Time.now}")
+    logger.debug("------")
     @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
     @departments = Department.where(:company_id => @id, :delete_flag => 0)
     teams = Team.where(:company_id => @id, :delete_flag => 0)
@@ -666,6 +671,10 @@ class CompanyController < ApplicationController
       @teams << data
       end
     end
+    logger.debug("======")
+    logger.debug("#{hogehoge}")
+    logger.debug("#{Time.now}")
+    logger.debug("------")
   end
 
   def add_teams_complete
