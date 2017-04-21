@@ -302,7 +302,7 @@ class CompanyController < ApplicationController
         redirect_to '/company/employees/register'
       else
         flash[:notice_about_create_user] = "社員#{count_created_user_by_csv}名を追加しました"
-        session[:current_invite_email_setting] = company.invite_email_flag
+        # session[:current_invite_email_setting] = company.invite_email_flag
         redirect_to '/company/employees/register'
       end
     else
