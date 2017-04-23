@@ -624,18 +624,19 @@ class UsersController < ApplicationController
 
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
-      get_team_users
-      @emails = []
-      @users.each do |user|
-        @emails << user.email
+      unless $use_select.include?(@company_id)
+        get_team_users
       end
+      # @emails = []
+      # @users.each do |user|
+      #   @emails << user.email
+      # end
       hashtags = @company.hashtags
       if hashtags.blank?
         @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
       else
         @hashtags = hashtags.split(",")
       end
-
     end
     # weekly_ranking
     receiver_ranking(@user)
@@ -673,10 +674,18 @@ class UsersController < ApplicationController
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
-      get_team_users
-      @emails = []
-      @users.each do |user|
-        @emails << user.email
+      unless $use_select.include?(@company_id)
+        get_team_users
+      end
+      # @emails = []
+      # @users.each do |user|
+      #   @emails << user.email
+      # end
+      hashtags = @company.hashtags
+      if hashtags.blank?
+        @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
+      else
+        @hashtags = hashtags.split(",")
       end
     end
     receiver_ranking(@user)

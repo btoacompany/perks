@@ -18,7 +18,9 @@
       <div class="analytics_profile" style="width: 20%">
         <h2><%= @user_name %></h2>
         <h3><%= @user_gender %></h3>
-        <h3>誕生日：<%= @user.birthday.strftime("%Y/%m/%d") %></h3>
+        <% unless @ser.birthday.blank? %>
+          <h3>誕生日：<%= @user.birthday.strftime("%Y/%m/%d") %></h3>
+        <% end %>
         <h3>貯まったポイント：<%= @user.in_points %></h3>
         <h3>贈れるポイント：<%= @user.out_points %></h3>
       </div>
