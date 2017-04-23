@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   $showoff_hashtag = [1,2,3,32 , 30]
   $ban_edit_name = [1,2,3,32 , 30]
   $allow_nickname = [1,2,3,32 , 30]
-  $use_select = [1,2,3,32 , 30]
+  $use_select = [1,2,3,32,30]
   $nicknames = {
     1 => "同僚さん",
     2 => "白パンさん",
