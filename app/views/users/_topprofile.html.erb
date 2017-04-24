@@ -10,7 +10,7 @@
       <p align="center">
       <% if $use_select.include?(@user.company_id) %>
         <div class="target_select clearfix">
-          <p style="float: left;">会社　　：
+          <p style="float: left; margin-right: 20px;">会社　　：
             <select class="target_select_department new_post_select">
               <option>選択してください</option>
               <% @departments.each do |dep| %>
@@ -18,17 +18,17 @@
               <% end %>
             </select>
           </p>
-          <p style="float: left; margin-left: 20px;">部署　　：
+          <p style="float: left;">部署　　：
             <select class="target_select_team new_post_select">
               <option>選択してください</option>
             </select>
           </p>
-          <p style="float: left;">贈り先　：
+          <p style="float: left; margin-right: 20px;">贈り先　：
             <select class="target_select_user new_post_select">
               <option>選択してください</option>
             </select>
           </p>
-          <p style="float: left; margin-left: 20px;">贈り主　：
+          <p style="float: left;">贈り主　：
             <select class="select_giver_user new_post_select">
               <option>選択してください</option>
               <% $nicknames.each do |key, value| %>
@@ -39,7 +39,6 @@
         </div>
       <% end %>
       <div class="dropdown">
-        <br>
         <% unless $use_select.include?(@user.company_id) %>
         <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png" onClick="return false;" title="褒める相手を選んでください。" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
         <% end %>
@@ -55,7 +54,7 @@
         <% end %>
         <% end %>
         <div id="myDropdown" class="dropdown-content"> </div>
-      </div><br><hr>
+      </div><hr>
 
   <div class="description">
       <span id="suggested_name_span" style="display: none;">To: </span>
@@ -386,17 +385,17 @@ $("#new_posts").on("mouseover", ".dropbtn", function() {
     var $post = $(this).closest(".new_post");
 
     // init suggest
-    new Suggest.LocalMulti(
-       $post.find("#suggested_name")[0],    // 入力のエレメント
-      $post.find("#suggest")[0], // 補完候補を表示するエリア
-      <%= raw @emails %>,
-      {dispMax: 10, interval: 1000, prefix: true} // オプション
-    );
+    // new Suggest.LocalMulti(
+    //    $post.find("#suggested_name")[0],    // 入力のエレメント
+    //   $post.find("#suggest")[0], // 補完候補を表示するエリア
+    //   <%= raw @emails %>,
+    //   {dispMax: 10, interval: 1000, prefix: true} // オプション
+    // );
 
-    var $post = $(this).closest(".new_post");
-    $post.find("#suggested_name_span").show();
-    $post.find("#suggested_name").show();
-    $post.find("#send_suggested_name").show();
+    // var $post = $(this).closest(".new_post");
+    // $post.find("#suggested_name_span").show();
+    // $post.find("#suggested_name").show();
+    // $post.find("#send_suggested_name").show();
   });
 
   $(".item").click(function() {
@@ -489,17 +488,17 @@ $("#new_posts").on("click", ".dropbtn", function() {
     var $post = $(this).closest(".new_post");
 
     // init suggest
-    new Suggest.LocalMulti(
-       $post.find("#suggested_name")[0],    // 入力のエレメント
-      $post.find("#suggest")[0], // 補完候補を表示するエリア
-      <%= raw @emails %>,
-      {dispMax: 10, interval: 1000, prefix: true} // オプション
-    );
+    // new Suggest.LocalMulti(
+    //    $post.find("#suggested_name")[0],    // 入力のエレメント
+    //   $post.find("#suggest")[0], // 補完候補を表示するエリア
+    //   <%= raw @emails %>,
+    //   {dispMax: 10, interval: 1000, prefix: true} // オプション
+    // );
 
-    var $post = $(this).closest(".new_post");
-    $post.find("#suggested_name_span").show();
-    $post.find("#suggested_name").show();
-    $post.find("#send_suggested_name").show();
+    // var $post = $(this).closest(".new_post");
+    // $post.find("#suggested_name_span").show();
+    // $post.find("#suggested_name").show();
+    // $post.find("#send_suggested_name").show();
   });
 
   $(".item").click(function() {
