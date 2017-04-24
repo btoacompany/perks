@@ -91,7 +91,7 @@ class CompanyController < ApplicationController
     rescue Exception => e
       logger.debug("=====-")
       logger.debug("#{e}")
-      flash[:test] = e
+      flash[:test] = "#{e}"
       logger.debug("-----")
       puts e.message
       flash[:notice] = "メールアドレスはすでにありました"
