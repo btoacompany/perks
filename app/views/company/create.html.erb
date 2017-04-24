@@ -9,6 +9,7 @@
   <div id="wrapper">
   <div id="contents" class="company_create_contents">
     <%= form_tag( "/company/register/complete", method: "post", id: "login_form" ) do %>
+    <% if flash[:test] %><p class="c_align notice"><%= flash[:test] %></p><% end %>
     <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
     <div id="createbox" class="center">
     <table class="company_create_table">

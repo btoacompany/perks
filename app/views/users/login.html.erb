@@ -8,7 +8,6 @@
 
   <div id="wrapper">
   <div id="contents" class="login_contents">
-  <% if flash[:test] %><p class="c_align notice"><%= flash[:test] %></p><% end %>
   <% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
   <%= form_tag( "/login/complete", method: "post", id: "login_form" ) do %>
   <h3 class="c_align">Prizyにログインする</h3>
