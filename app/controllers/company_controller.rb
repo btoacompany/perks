@@ -208,7 +208,7 @@ class CompanyController < ApplicationController
       teams.each do |team|
         team_members = []
         logger.debug("-↓-too-many-SQL-")
-        team_members << User.find(team.manager_id)
+        # team_members << User.find(team.manager_id)
         logger.debug("-↑-too-many-SQL-")
         team.member_ids.split(",").each do |id|
           unless id.to_i == 0
