@@ -4,8 +4,9 @@
   <th>ステータス</th>
   <th>取得ポイント</th>
   <th>残りポイント</th>
+  <% unless controller.controller_name == "company" && controller.action_name == "team_show" %>
   <th>管理者</th>
-  <th>マネージャー</th>
   <th>アカウント削除</th>
   <th>メールアドレス変更</th>
+  <% end %>
 </tr>

@@ -201,7 +201,7 @@ class CompanyController < ApplicationController
   def employees
     @company = Company.find(@id)
     teams = Team.where(company_id: @id, delete_flag: 0)
-    @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
+    # @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
     unless teams.empty?
       @team_exist = 0
       @teams = []
@@ -702,7 +702,7 @@ class CompanyController < ApplicationController
     unless @team.company_id == @id
       redirect_to "/company/teams"
     end
-    @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
+    # @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
     user_ids = []
     @team.member_ids.split(",").each do |id|
       user_ids << id.to_i
