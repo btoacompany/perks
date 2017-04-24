@@ -52,8 +52,8 @@ class Department < ActiveRecord::Base
         team = Team.new
         team.department_id = department.id
         team.company_id = current_user.company_id
-        # team.manager_id = ""
-        # team.member_ids = ""
+        team.manager_id = current_user.id
+        team.member_ids = current_user.id.to_s
         team.team_name = row_data["team"]
         logger.debug("#{team.errors.messages}")
         team.save!
