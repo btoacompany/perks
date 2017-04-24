@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
         user = User.new
         user.firstname = row_data["firstname"]
         user.lastname = row_data["lastname"]
-        user.name = row_data["firstname"].to_s + row_data["lastname"].to_s
+        user.name = row_data["lastname"].to_s + row_data["firstname"].to_s
         user.email = row_data["email"]
         if row_data["password"]
           user.password = row_data["password"]
