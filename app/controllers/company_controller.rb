@@ -89,10 +89,6 @@ class CompanyController < ApplicationController
       cookies.delete :id
       reset_session
     rescue Exception => e
-      logger.debug("=====-")
-      logger.debug("#{e}")
-      flash[:test] = "#{e}"
-      logger.debug("-----")
       puts e.message
       flash[:notice] = "メールアドレスはすでにありました"
       render 'create'
