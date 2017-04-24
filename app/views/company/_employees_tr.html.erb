@@ -1,6 +1,6 @@
 <tr class="item_<%= item[:id] %>">
-  <td><%= "#{item[:lastname]} #{item[:firstname]}" %></td>
-  <td><%= item[:email] %></td>
+  <td style="width: 200px;"><%= "#{item[:lastname]} #{item[:firstname]}" %></td>
+  <td style="width: 300px;"><%= item[:email] %></td>
   <td align="center">
     <% if item[:verified] == 0 %>保留 
     <% else %>登録済 
@@ -8,15 +8,16 @@
   </td>
   <td><%= item[:in_points] %></td>
   <td><%= item[:out_points] %></td>
+  <% unless controller.controller_name == "company" && controller.action_name == "team_show" %>
   <td align="center">
     <input type="checkbox" class="chk_admin" data-id="<%= item[:id] %>" value="1" <% if item[:admin] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>
   </td>
-  <td align="center">
+<!--   <td align="center">
     <% check_team = Team.find_by(manager_id: item[:id]) %>
     <input type="checkbox" class="chk_manager" data-id="<%= item[:id] %>" value="1" <% if item[:manager_flag] == 1 && check_team %> disabled checked <% elsif item[:manager_flag] == 1 %> checked <% end %> />
-  </td>
+  </td> -->
   <td align="center">
-    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" <% if @manager_ids.include?(item[:id]) %> mgr-id="mgr" <% else %> mgr-id="non_mgr" <% end %> value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
+    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" mgr-id="non_mgr" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
   </td>
   <td align="center">
     <!-- button -->
@@ -34,5 +35,6 @@
       <% end %>
     </div>
   </td>
+  <% end %>
 </tr>
 
