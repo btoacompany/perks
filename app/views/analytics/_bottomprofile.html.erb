@@ -1,12 +1,9 @@
 <% @posts.each do | post | %>
   <div id="postsbox" class="post_<%= post[:id] %>">
     <div class="images">
-      <table>
-        <tr>
-          <td><img src="<%= post[:user_img] %>" class=""/></td>
-          <td><img src="<%= post[:receiver_img] %>" class=""/></td>
-        </tr>
-      </table>
+    <div class="non_image" style="text-align: left; padding: 5px 10px; ">
+      <p>ありがとうを伝えています。</p>
+    </div>
     </div>
     <div class="posts">
       <div class="r_float">
