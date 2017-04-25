@@ -10,7 +10,7 @@
       <p align="center">
       <% if $use_select.include?(@user.company_id) %>
         <div class="target_select clearfix">
-          <p style="float: left; margin-right: 20px;">会社　　：
+          <p style="float: left; margin-right: 15px;">会社　：
             <select class="target_select_department new_post_select">
               <option>選択してください</option>
               <% @departments.each do |dep| %>
@@ -18,17 +18,17 @@
               <% end %>
             </select>
           </p>
-          <p style="float: left;">部署　　：
+          <p style="float: left;">部署　：
             <select class="target_select_team new_post_select">
               <option>選択してください</option>
             </select>
           </p>
-          <p style="float: left; margin-right: 20px;">贈り先　：
+          <p style="float: left; margin-right: 15px;">贈り先：
             <select class="target_select_user new_post_select">
               <option>選択してください</option>
             </select>
           </p>
-          <p style="float: left;">贈り主　：
+          <p style="float: left;">贈り主：
             <select class="select_giver_user new_post_select">
               <option>選択してください</option>
               <% $nicknames.each do |key, value| %>
