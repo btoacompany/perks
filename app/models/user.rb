@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
 
-  validate :check_maneger
+  # validate :check_maneger
 
   def self.koala(auth)
     access_token = auth['token']
