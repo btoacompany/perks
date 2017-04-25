@@ -470,7 +470,8 @@ class UsersController < ApplicationController
 
           if @company.give_point_to_sender_and_receiver_flag == 1
             sum_point = @company.send_point + @company.receive_point * receiver_count
-            if @company.bonus_points >= sum_point
+            # TBD
+            # if @company.bonus_points >= sum_point
               @user.in_points += @company.send_point
               receiver_ids.each do | receiver_id |
                 receiver = User.find(receiver_id.to_i)
@@ -480,7 +481,7 @@ class UsersController < ApplicationController
               @company.bonus_points -= sum_point
               @company.save
               @user.save
-            end
+            # end
           end
       	else
 	        flash[:notice] = "ポイントが足りません"
