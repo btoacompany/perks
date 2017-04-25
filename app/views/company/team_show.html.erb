@@ -16,6 +16,9 @@
 <div id="admin_contents" class="c_align">
   <br><br>
   <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+  <% unless @team.team_name.blank? %>
+    <p><b><%= @team.team_name %></b>に所属する社員一覧</p><br>
+  <% end %>
   <div class="toolbox">
     <% if @users.count == 0 %>
       <p><i>社員を追加してください</i></p><br>
