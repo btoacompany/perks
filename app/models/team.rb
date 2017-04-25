@@ -10,7 +10,11 @@ class Team < ActiveRecord::Base
     self.department_id	= params[:department_id].to_i if params[:department_id].present?
     self.team_name	= params[:team_name] if params[:team_name].present?
     self.company_id	= params[:company_id] if params[:company_id].present?
-    self.manager_id	= params[:manager_id].to_i if params[:manager_id].present?
+    if params[:manager_id].present?
+      self.manager_id	= params[:manager_id].to_i 
+    else
+      self.manager_id = 0
+    end
     self.member_ids	= params[:member_ids] if params[:member_ids].present?
     self.save
   end
