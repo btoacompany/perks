@@ -47,6 +47,7 @@
 	</td>
       </tr>
       <tr>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<td class="user_update_table_td">役職</td>
 	<td><input type="text" name="job_title" value="<%= @user.job_title %>", class="user_update_input"/></td>
       </tr>
@@ -66,7 +67,6 @@
 	    <span class="instructions">好きなユーザーネームに変更できます</span>
 	  </td>
 	</tr>
-  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= @user.lastname %>" required />  名 <input type="text" name="firstname" value="<%= @user.firstname %>" required /></td>
 	</tr>
@@ -76,6 +76,7 @@
       <label><input type="radio" name="gender" value="1" <% if @user.gender==1 %> checked <% end %>/>女</label></td>
 	</tr>
       <% else %>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td class="user_update_table_td">プロフィール写真</td>
 	  <td>
@@ -93,6 +94,7 @@
 	<tr>
 	  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= params[:fb_lname] %>"/>  名 <input type="text" name="firstname" value="<%= params[:fb_fname] %>"/></td>
 	</tr>
+  <% end %>
 	<tr>
 	  <td class="user_update_table_td">性  <label><input type="radio" name="gender" value="0" <% if params[:fb_gender]=="male" %> checked <% end %>/>男</label>
       <label><input type="radio" name="gender" value="1" <% if params[:fb_gender]=="female" %> checked <% end %>/>女</label></td>
