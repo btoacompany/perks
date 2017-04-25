@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 # セプテーニのcompany_idをいれる。今は暫定
   $showoff_timeline = [1,2,3,32,30,79]
   $showoff_ranking = [1,2,3,32,30,79]
-  $showoff_hashtag = [1,2,3,32,30]
+  $showoff_hashtag = [1,2,3,32,30,79]
   $ban_edit_name = [1,2,3,32,30,79]
   $allow_nickname = [1,2,3,32,30,79]
   $use_select = [1,2,3,32,30,79]
