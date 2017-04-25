@@ -47,12 +47,12 @@
 	</td>
       </tr>
       <tr>
-  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<td class="user_update_table_td">役職</td>
 	<td><input type="text" name="job_title" value="<%= @user.job_title %>", class="user_update_input"/></td>
       </tr>
 
       <% if @fb_data == 0 %>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td colspan="2" align="right"><input type="button" value="Facebookで簡単登録" class="btn_fb"/></td>
 	</tr>
@@ -60,6 +60,7 @@
 	  <td class="user_update_table_td">プロフィール写真</td>
 	  <td><%= file_field_tag :img_src %></td>
 	</tr>
+  <% end %>
 	<tr>
 	  <td class="user_update_table_td">ユーザー名</td>
 	  <td>
@@ -67,6 +68,7 @@
 	    <span class="instructions">好きなユーザーネームに変更できます</span>
 	  </td>
 	</tr>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= @user.lastname %>" required />  名 <input type="text" name="firstname" value="<%= @user.firstname %>" required /></td>
 	</tr>
@@ -84,6 +86,7 @@
 	    <input type="hidden" name="img_src" value="<%= params[:fb_pic] %>"/>
 	  </td>
 	</tr>
+  <% end %>
 	<tr>
 	  <td class="user_update_table_td">ユーザー名</td>
 	  <td>
@@ -91,6 +94,7 @@
 	    <span class="instructions">好きなユーザーネームに変更できます</span>
 	  </td>
 	</tr>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= params[:fb_lname] %>"/>  名 <input type="text" name="firstname" value="<%= params[:fb_fname] %>"/></td>
 	</tr>
