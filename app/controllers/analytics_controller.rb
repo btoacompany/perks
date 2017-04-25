@@ -198,9 +198,7 @@ class AnalyticsController < ApplicationController
       @teams = []
       teams.each do |team|
         team_members = []
-        logger.debug("-↓-too-many-SQL-")
-        team_members << User.find(team.manager_id)
-        logger.debug("-↑-too-many-SQL-")
+        team_members << User.find(team.manager_id) if team.manager_id != 0
         team.member_ids.split(",").each do |id|
           unless id.to_i == 0
           team_members << id.to_i
