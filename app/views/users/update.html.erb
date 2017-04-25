@@ -52,6 +52,7 @@
       </tr>
 
       <% if @fb_data == 0 %>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td colspan="2" align="right"><input type="button" value="Facebookで簡単登録" class="btn_fb"/></td>
 	</tr>
@@ -59,6 +60,7 @@
 	  <td class="user_update_table_td">プロフィール写真</td>
 	  <td><%= file_field_tag :img_src %></td>
 	</tr>
+  <% end %>
 	<tr>
 	  <td class="user_update_table_td">ユーザー名</td>
 	  <td>
@@ -76,6 +78,7 @@
       <label><input type="radio" name="gender" value="1" <% if @user.gender==1 %> checked <% end %>/>女</label></td>
 	</tr>
       <% else %>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td class="user_update_table_td">プロフィール写真</td>
 	  <td>
@@ -83,6 +86,7 @@
 	    <input type="hidden" name="img_src" value="<%= params[:fb_pic] %>"/>
 	  </td>
 	</tr>
+  <% end %>
 	<tr>
 	  <td class="user_update_table_td">ユーザー名</td>
 	  <td>
@@ -90,9 +94,11 @@
 	    <span class="instructions">好きなユーザーネームに変更できます</span>
 	  </td>
 	</tr>
+  <% unless $ban_edit_name.include?(@user.company_id) %>
 	<tr>
 	  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= params[:fb_lname] %>"/>  名 <input type="text" name="firstname" value="<%= params[:fb_fname] %>"/></td>
 	</tr>
+  <% end %>
 	<tr>
 	  <td class="user_update_table_td">性  <label><input type="radio" name="gender" value="0" <% if params[:fb_gender]=="male" %> checked <% end %>/>男</label>
       <label><input type="radio" name="gender" value="1" <% if params[:fb_gender]=="female" %> checked <% end %>/>女</label></td>

@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   $ban_edit_name = [1,2,3,32,30,79]
   $allow_nickname = [1,2,3,32,30,79]
   $use_select = [1,2,3,32,30,79]
+  $no_manager = [1,2,3,32,30,79]
   $nicknames = {
     1 => "同僚さん",
     2 => "白パンさん",

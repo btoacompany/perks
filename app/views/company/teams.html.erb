@@ -94,10 +94,11 @@
   </select>
       </td>
     </tr>
+    <% unless $no_manager.include?(@id) %>
     <tr>
       <th>マネージャー名</th>
       <td align="left">
-  <select id="manager_id" name="manager_id" required style="width:200px;">
+  <select id="manager_id" name="manager_id" style="width:200px;">
     <option value=""></option>
     <% @managers.each do | manager | %>
       <option value=<%= manager.id %>><%= manager.lastname %> <%= manager.firstname %></option>
@@ -105,6 +106,7 @@
   </select>
       </td>
     </tr>
+    <% end %>
     <tr>
       <th>所属社員</th>
       <td>
