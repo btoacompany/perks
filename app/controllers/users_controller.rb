@@ -593,14 +593,16 @@ class UsersController < ApplicationController
   def select_target_team
     @team = Team.find(params[:id])
     @targets = []
-    @manager = User.find(@team.manager_id)
-    unless @manger.nil? 
-      if @manager.lastname.nil? || @manager.firstname.nil?
-        @manager_name = @manager.name
-      else
-        @manager_name = @manager.lastname + @manager.firstname
+    unless @team.manager_id == 0
+      @manager = User.find(@team.manager_id)
+      unless @manger.nil? 
+        if @manager.lastname.nil? || @manager.firstname.nil?
+          @manager_name = @manager.name
+        else
+          @manager_name = @manager.lastname + @manager.firstname
+        end
+        @targets << [@manager.id, @manager_name]
       end
-      @targets << [@manager.id, @manager_name]
     end
 
     @team.member_ids.split(",").each do |id|
