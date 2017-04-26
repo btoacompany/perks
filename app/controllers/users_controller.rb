@@ -415,7 +415,7 @@ class UsersController < ApplicationController
 
     if (params[:receiver_id].present?)
       if params[:receiver_id].include?(@id)
-	      flash[:notice] = "自分にポイントあげることができません。"
+	      flash[:notice] = "自分にポイントを贈ることはできません。"
 	      error = 1
       end
 
