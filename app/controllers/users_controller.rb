@@ -534,7 +534,11 @@ class UsersController < ApplicationController
       res.save_record(params)
     end
 
-    redirect_page("users", "index")
+    if $showoff_timeline.include?(@company_id)
+      redirect_page("users", "profile")
+    else
+      redirect_page("users", "index")
+    end
   end
 
   def ios_push_notif(id, message, badge)
