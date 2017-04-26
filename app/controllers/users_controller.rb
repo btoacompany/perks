@@ -519,8 +519,8 @@ class UsersController < ApplicationController
     
     ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
 
-    # redirect_to "/user"
-    redirect_page("users", "index")
+    redirect_to "/user"
+    # redirect_page("users", "index")
   end
 
   def give_kudos
@@ -535,8 +535,8 @@ class UsersController < ApplicationController
       res = Kudos.new
       res.save_record(params)
     end
-    # redirect_to "/user"
-    redirect_page("users", "index")
+    redirect_to "/user"
+    # redirect_page("users", "index")
   end
 
   def ios_push_notif(id, message, badge)

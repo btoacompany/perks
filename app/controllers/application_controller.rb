@@ -97,7 +97,8 @@ protected
       @current_user = User.find(user_id)
       return true	
     else
-      redirect_page("users", "login")
+      # redirect_page("users", "login")
+      redirect_to "/user"
       #redirect_to "/login", :protocol => @protocol
       return false
     end
