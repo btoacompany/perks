@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session,
     if: Proc.new { |c| c.request.format =~ %r{application/json} }
-  helper_method :current_user
+  helper_method :current_userz
+
+  before_filter :init_url
 
 # セプテーニのcompany_idをいれる。今は暫定
   $showoff_timeline = [1,2,3,32,30,79]
