@@ -7,7 +7,11 @@ class ApplicationController < ActionController::Base
     if: Proc.new { |c| c.request.format =~ %r{application/json} }
   helper_method :current_user
 
-  before_filter :init_url
+  before_filter :set_access
+
+  def set_access
+    @response.headers["Access-Control-Allow-Origin"] = "*"
+  end
 
 # セプテーニのcompany_idをいれる。今は暫定
   $showoff_timeline = [1,2,3,32,30,79]
@@ -41,13 +45,19 @@ class ApplicationController < ActionController::Base
 
   def init_url
     #@slack_webhooks = "https://hooks.slack.com/services/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"
+    @protocol = "http://"
     if Rails.env.production?
-      @protocol = "https://"
-      @prizy_url = "https://www.prizy.me"
+      @prizy_url = "http://prizy.me"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
-      @s3_bucket = "prizy"      
+      @s3_bucket = "prizy"
+
+      sub_domain = request.subdomain
+      if sub_domain == "www"
+        @protocol = "https://"
+        @prizy_url = "https://www.prizy.me"
+        @protocol = "https://"
+      end
     elsif Rails.env.development?
-      @protocol = "http://"
       @prizy_url = "http://localhost:3000"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
       @s3_bucket = "btoa-img"
