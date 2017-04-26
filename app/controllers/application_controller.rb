@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
 
   def init_url
     #@slack_webhooks = "https://hooks.slack.com/services/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"
-    if request.server_protocol == "https://"
+    if request.subdomain == "www"
       @protocol = "https://"
     else
       @protocol = "http://"
@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
       @s3_bucket = "prizy"
 
-      sub_domain = request.subdomain 
+      sub_domain = request.subdomain
       if sub_domain == "www"
         @protocol = "https://"
       end
