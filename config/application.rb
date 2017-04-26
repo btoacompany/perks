@@ -26,13 +26,5 @@ module Perks
     # Precompile addtional assets
     config.assets.precompile += %w( default2.css )
     Koala.config.api_version="v2.0"
-
-    config.middleware.insert_before 0, "Rack::Cors" do
-      allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options]
-      end
-    end
-    
   end
 end
