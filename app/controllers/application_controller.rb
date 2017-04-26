@@ -105,7 +105,8 @@ protected
 
   def save_login_state
     if session[:id] || cookies[:id]
-      redirect_page("users", "index")
+      # redirect_page("users", "index")
+      redirect_to "/user"
       #redirect_to(:controller => 'top', :action => 'index', :protocol => @protocol)
       return false
     else
