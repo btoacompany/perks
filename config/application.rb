@@ -26,10 +26,5 @@ module Perks
     # Precompile addtional assets
     config.assets.precompile += %w( default2.css )
     Koala.config.api_version="v2.0"
-
-    config.action_dispatch.default_headers.merge!({
-      'Access-Control-Allow-Origin' => '*',
-      'Access-Control-Request-Method' => '*'
-    })
   end
 end
