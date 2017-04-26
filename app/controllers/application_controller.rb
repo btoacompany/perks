@@ -39,9 +39,10 @@ class ApplicationController < ActionController::Base
 
   def init_url
     #@slack_webhooks = "https://hooks.slack.com/services/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"
-    @protocol = "https://"
+    @protocol = "http://"
     if Rails.env.production?
       @prizy_url = "https://www.prizy.me"
+      @protocol = "https://"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
       @s3_bucket = "prizy"
       
