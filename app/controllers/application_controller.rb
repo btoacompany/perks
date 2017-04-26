@@ -48,8 +48,6 @@ class ApplicationController < ActionController::Base
       sub_domain = request.subdomain
       if sub_domain == "www"
         @protocol = "https://"
-        @prizy_url = "https://www.prizy.me"
-        @protocol = "https://"
       end
     elsif Rails.env.development?
       @prizy_url = "http://localhost:3000"
