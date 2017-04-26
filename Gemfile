@@ -71,5 +71,6 @@ gem 'slack-ruby-client'
 gem 'slack-notifier'
 gem 'omniauth-slack'
 gem 'whenever', :require => false
+gem 'rack-cors', '~> 0.3.1'
 
 
