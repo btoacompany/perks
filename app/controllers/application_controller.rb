@@ -54,9 +54,6 @@ class ApplicationController < ActionController::Base
         @protocol = "https://"
       end
     elsif Rails.env.development?
-      logger.debug("======")
-      logger.debug("#{@protocol}")
-      logger.debug("=====")
       @prizy_url = "http://localhost:3000"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
       @s3_bucket = "btoa-img"
@@ -104,8 +101,8 @@ protected
       @current_user = User.find(user_id)
       return true	
     else
-      # redirect_page("users", "login")
-      redirect_to "/login"
+      redirect_page("users", "login")
+      # redirect_to "/login"
       #redirect_to "/login", :protocol => @protocol
       return false
     end
@@ -113,8 +110,8 @@ protected
 
   def save_login_state
     if session[:id] || cookies[:id]
-      # redirect_page("users", "index")
-      redirect_to "/user"
+      redirect_page("users", "index")
+      # redirect_to "/user"
       #redirect_to(:controller => 'top', :action => 'index', :protocol => @protocol)
       return false
     else
