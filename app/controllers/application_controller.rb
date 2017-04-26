@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
     if: Proc.new { |c| c.request.format =~ %r{application/json} }
   helper_method :current_user
 
+  before_filter :init_url
+
 # セプテーニのcompany_idをいれる。今は暫定
   $showoff_timeline = [1,2,3,32,30,79]
   $showoff_ranking = [1,2,3,32,30,79]
