@@ -39,7 +39,11 @@ class ApplicationController < ActionController::Base
 
   def init_url
     #@slack_webhooks = "https://hooks.slack.com/services/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"
-    @protocol = "http://"
+    if request.server_protocol == "https://"
+      @protocol = "https://"
+    else
+      @protocol = "http://"
+    end
     if Rails.env.production?
       @prizy_url = "http://prizy.me"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
@@ -50,6 +54,9 @@ class ApplicationController < ActionController::Base
         @protocol = "https://"
       end
     elsif Rails.env.development?
+      logger.debug("======")
+      logger.debug("#{@protocol}")
+      logger.debug("=====")
       @prizy_url = "http://localhost:3000"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
       @s3_bucket = "btoa-img"
@@ -98,7 +105,7 @@ protected
       return true	
     else
       # redirect_page("users", "login")
-      redirect_to "/user"
+      redirect_to "/login"
       #redirect_to "/login", :protocol => @protocol
       return false
     end
