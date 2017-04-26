@@ -107,7 +107,8 @@ class UsersController < ApplicationController
   def index
     # $showoff_timeline
     if $showoff_timeline.include?(@company_id)
-      redirect_to "/profile"
+      # redirect_to "/profile"
+      redirect_page("users", "profile")
       return
     end
 
