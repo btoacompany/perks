@@ -323,13 +323,13 @@ class UsersController < ApplicationController
       	      receiver.in_points += params[:points]
       	      receiver.save
 
-      # 	      UserMailer.receive_points_email({
-		    # receiver:   receiver.name, 
-		    # email:	    receiver.email,
-		    # giver:	    user.name,
-		    # points:	    params[:points],
-		    # prizy_url:  @prizy_url + "/user"
-      # 	      }).deliver_later
+       	      UserMailer.receive_points_email({
+		    receiver:   receiver.name, 
+		    email:	    receiver.email,
+		    giver:	    user.name,
+		    points:	    params[:points],
+		    prizy_url:  @prizy_url + "/user"
+      	      }).deliver_later
 
       	      post = Post.new
       	      post.save_record(params)
@@ -450,15 +450,15 @@ class UsersController < ApplicationController
 	          receiver.in_points += params[:points]
 	          receiver.save
 
-    	      # unless params[:type] == "comment"
-	          #   UserMailer.receive_points_email({
-          	#     receiver:   receiver.name, 
-           #  	  email:	    receiver.email,
-        	  #     giver:	    @user.name,
-        	  #     points:	    params[:points],
-          	#     prizy_url:  @prizy_url + "/user"
-           #    }).deliver_later
-	          # end
+    	      unless params[:type] == "comment"
+	            UserMailer.receive_points_email({
+          	    receiver:   receiver.name, 
+            	  email:	    receiver.email,
+        	      giver:	    @user.name,
+        	      points:	    params[:points],
+          	    prizy_url:  @prizy_url + "/user"
+              }).deliver_later
+	          end
 
 		p @user
 		if @user[:badge].present?
@@ -1171,13 +1171,13 @@ class UsersController < ApplicationController
       	receiver.in_points += points.to_i
       	receiver.save
 
-      	# UserMailer.receive_points_email({
-      	#   receiver: receiver.name, 
-      	#   email: receiver.email,
-      	#   giver: @user.name,
-      	#   points: points,
-      	#   prizy_url: @prizy_url + "/user"
-      	# }).deliver_later
+      	UserMailer.receive_points_email({
+      	  receiver: receiver.name, 
+      	  email: receiver.email,
+      	  giver: @user.name,
+      	  points: points,
+      	  prizy_url: @prizy_url + "/user"
+      	}).deliver_later
 
       	post = Post.new
       	data = {
