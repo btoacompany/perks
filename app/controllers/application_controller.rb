@@ -48,8 +48,9 @@ class ApplicationController < ActionController::Base
       sub_domain = request.subdomain
       if sub_domain == "www"
         @protocol = "https://"
-        @prizy_url = "https://www.prizy.me"
+        # @prizy_url = "https://www.prizy.me"
       end
+      @prizy_url + @protocol + "www.prizy.me"
     elsif Rails.env.development?
       @prizy_url = "http://localhost:3000"
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
