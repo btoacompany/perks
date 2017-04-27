@@ -177,7 +177,7 @@ $(".btn_comment").click(function() {
 function postComment(post_id, comments) {
   $.ajax({
     type: "POST",
-    url: "/user/give_comments",
+    url: "https://www.prizy.me/user/give_comments",
     data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page') },
     success: function(data) {
       $(this).val("");
