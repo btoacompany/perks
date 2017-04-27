@@ -61,8 +61,8 @@ class ApplicationController < ActionController::Base
   def validate_user
     if @current_user.present?
       unless @current_user.admin == 1
-	#redirect_to "/"
-	redirect_page("users", "index")
+  #redirect_to "/"
+  redirect_page("users", "index")
       end
     end
   end
@@ -97,7 +97,7 @@ protected
     if user_id
       # set current user object to @current_user object variable
       @current_user = User.find(user_id)
-      return true	
+      return true
     else
       redirect_page("users", "login")
       # redirect_to "/login"
