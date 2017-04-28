@@ -382,7 +382,12 @@ class UsersController < ApplicationController
       parse_points(post)
     end
     # redirect_page("users", "index")
-    redirect_to "/user"
+    if $showoff_timeline.include?(@company_id)
+      redirect_to :back, notice: "送信が完了しました。"
+    else
+      redirect_to "/user", notice: "送信が完了しました。"
+    end
+    
 
 =begin
     description = params[:description]
