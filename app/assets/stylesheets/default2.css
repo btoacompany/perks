@@ -513,6 +513,9 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   line-height: 1.5em;
   word-wrap: break-word;
 }
+#error{
+  padding: 40px 200px;
+}
 
 /* --- TOP PAGE --- */
 #top_box .slide {
