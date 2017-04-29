@@ -274,7 +274,7 @@ class AnalyticsController < ApplicationController
     @userid = params[:id]
     @user = User.find(@userid)
     if @user.company_id.to_i == @id.to_i
-      if @user.firstname.blank?
+      if @user.firstname.blank? || @user.lastname.blank?
         @user_name = @user.name
       else
         @user_name = @user.lastname + @user.firstname

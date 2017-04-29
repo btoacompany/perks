@@ -108,10 +108,10 @@ window.onload = function () {
       dataPoints: [
         <% value.each do |a, b|%>
         <% @user = User.find(a) %>
-        <% if @user.lastname.blank? %>
+        <% if @user.lastname.blank? || @user.firstname.blank? %>
           { label: "<%= @user.name %>", y: <%= b %> },
         <% else %>
-          { label: "<%= @user.firstname %><%= @user.lastname %>", y: <%= b %> },
+          { label: "<%= @user.lastname %><%= @user.firstname %>", y: <%= b %> },
         <% end %>
         <% end %>
       ]

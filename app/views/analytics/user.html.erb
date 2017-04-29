@@ -31,7 +31,11 @@
         <div class="analytics_post_wrapper">
           <div class="analytics_post_top" >
             <img src="<%= post.user.img_src %>"  width="30px" height="30px">
-            <p><%= post.user.name %>から</p>
+            <% if post.user.lastname.present? && post.user.firstname.present? %>
+              <p><%= post.user.lastname%><%= post.user.firstname%>へ</p>
+            <% else %>
+              <p><%= post.user.name%>へ</p>
+            <% end %>
             <div class="analytics_clearfix"></div>
           </div>
           <div class="analytics_post_bottom" >
@@ -47,7 +51,11 @@
         <div class="analytics_post_wrapper">
           <div class="analytics_post_top" >
             <img src="<%= post.receiver.img_src %>" width="30px" height="30px">
-            <p><%= post.receiver.name %>へ</p>
+            <% if post.receiver.lastname.present? && post.receiver.firstname.present? %>
+              <p><%= post.receiver.lastname%><%= post.receiver.firstname%>へ</p>
+            <% else %>
+              <p><%= post.receiver.name%>へ</p>
+            <% end %>
             <div class="analytics_clearfix"></div>
           </div>
           <div class="analytics_post_bottom" >

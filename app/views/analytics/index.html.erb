@@ -50,7 +50,12 @@ window.onload = function () {
       dataPoints: [
         <% @hash_custom.first(10).each do |key, value| %>
         <% @key = User.find(key) %>
-        { label: "<%= @key.name %>",  y: <%= value %>, },
+        <% if @key.lastname.present? && @key.firstname.present? %>
+          <% @name = @key.lastname + @key.firstname %>
+        <% else %>
+          <% @name = @key.name %>
+        <% end %>
+        { label: "<%= @name %>",  y: <%= value %>, },
         <% end %>
       ]
     }
@@ -89,7 +94,12 @@ window.onload = function () {
       dataPoints: [
         <% @points_custom.first(10).each do |key, value| %>
         <% @key = User.find(key) %>
-        { label: "<%= @key.name %>",  y: <%= value %>, },
+        <% if @key.lastname.present? && @key.firstname.present? %>
+          <% @name = @key.lastname + @key.firstname %>
+        <% else %>
+          <% @name = @key.name %>
+        <% end %>
+        { label: "<%= @name %>",  y: <%= value %>, },
         <% end %>
       ]
     }
