@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   # for landing
   root to: 'landing#index'
 
+  get "bad_request" => "top#bad_request"
+  get "internal_server_error" => "top#internal_server_error"
+
   get	'/price'	    => 'landing#price'
   get	'/privacy'	    => 'landing#privacy'
   get	'/terms'	    => 'landing#terms'
@@ -140,4 +143,6 @@ Rails.application.routes.draw do
   #ios register
   post	'/device/ios/register'		  => 'device#register_ios'
   post	'/device/ios/unregister'	  => 'device#unregister_ios'
+
+  match "*anything" => "top#not_found" , via: [:get, :post , :patch , :delete ]
 end
