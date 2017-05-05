@@ -72,4 +72,4 @@ gem 'slack-notifier'
 gem 'omniauth-slack'
 gem 'whenever', :require => false
 gem 'rack-canonical-host'
-gem 'rack-ssl'
+# gem 'rack-ssl'

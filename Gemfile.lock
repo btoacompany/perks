@@ -163,8 +163,6 @@ GEM
     rack-canonical-host (0.2.3)
       addressable (> 0, < 3)
       rack (>= 1.0.0, < 3)
-    rack-ssl (1.4.1)
-      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.4)
@@ -280,7 +278,6 @@ DEPENDENCIES
   omniauth-slack
   puma
   rack-canonical-host
-  rack-ssl
   rails (= 4.2.4)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
