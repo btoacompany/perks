@@ -2,7 +2,7 @@ class LandingController < ApplicationController
 
   before_filter :init, :except => [:slack, :privacy, :terms, :contact, :contact_mail]
   before_filter :user_login, :only => [:slack, :privacy, :terms, :contact, :contact_mail]
-  # before_filter :init_url
+  before_filter :init_url
 
   def init
     if session[:id].present? || cookies[:id].present?
