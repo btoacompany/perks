@@ -113,6 +113,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_page(controller, action)
+    @protocol = "https://"
     redirect_to :protocol => @protocol, :controller => controller, :action => action
   end
 protected 
