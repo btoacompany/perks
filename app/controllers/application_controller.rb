@@ -54,6 +54,7 @@ class ApplicationController < ActionController::Base
 
   def ssl_configured?
     !Rails.env.development?
+    request.host == 'www.prizy.me'
   end
 
   def init_url
