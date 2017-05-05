@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   rescue_from Forbidden , with: :rescue_403
   rescue_from NotFound , with: :rescue_404
 
-  force_ssl if: :ssl_configured?
+  # force_ssl if: :ssl_configured?
 
   # def ssl_configured?
   #   !Rails.env.development?
