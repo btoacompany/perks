@@ -52,13 +52,13 @@ class ApplicationController < ActionController::Base
 
   force_ssl if: :ssl_configured?
 
-  def ssl_configured?
-    !Rails.env.development?
-    # if Rails.env.production?
-    #   @protocol = "https://"
-    #   request.host == 'www.prizy.me'
-    # end
-  end
+  # def ssl_configured?
+  #   !Rails.env.development?
+  #   # if Rails.env.production?
+  #   #   @protocol = "https://"
+  #   #   request.host == 'www.prizy.me'
+  #   # end
+  # end
 
   def init_url
     #@slack_webhooks = "https://hooks.slack.com/services/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"
