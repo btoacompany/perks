@@ -55,6 +55,7 @@ class ApplicationController < ActionController::Base
   def ssl_configured?
     # !Rails.env.development?
     if Rails.env.production?
+      @protocol = "https://"
       request.host == 'www.prizy.me'
     end
   end
