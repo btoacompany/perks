@@ -7,7 +7,7 @@ require 'json'
 
 class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout, :invite, :invite_complete, :give_points_slack, :give_points_slack_response, :forgot_password, :forgot_password_submit, :fb_auth]
-  # before_filter :init_url
+  before_filter :init_url
   before_action :timeline_message, :only => [:index, :profile, :given]
 
   def init
