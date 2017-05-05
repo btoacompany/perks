@@ -75,6 +75,7 @@ class ApplicationController < ActionController::Base
       @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
       @s3_bucket = "btoa-img"
     end
+  end
 
   def validate_user
     if @current_user.present?
