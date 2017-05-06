@@ -107,7 +107,7 @@ class UsersController < ApplicationController
   def index
     # $showoff_timeline
     if $showoff_timeline.include?(@company_id)
-      redirect_to "/profile"
+      redirect_page("users", "profile")
       return
     end
 
@@ -381,13 +381,8 @@ class UsersController < ApplicationController
     new_posts.each do |post|
       parse_points(post)
     end
-    # redirect_page("users", "index")
-    if $showoff_timeline.include?(@company_id)
-      redirect_to :back, notice: "送信が完了しました。"
-    else
-      redirect_to "/user", notice: "送信が完了しました。"
-    end
-    
+    flash[:notice] = "送信が完了しました。"
+    redirect_page("users", "index")
 
 =begin
     description = params[:description]
