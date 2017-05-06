@@ -40,12 +40,12 @@ class ApplicationController < ActionController::Base
   class Forbidden < StandardError ; end
   class NotFound < StandardError ; end
 
-  if Rails.env.production?
-    rescue_from Exception , with: :rescue_500
-    rescue_from ActionController::RoutingError , with: :rescue_404
-    rescue_from ActiveRecord::RecordNotFound , with: :rescue_404
-    rescue_from ActionController::ParameterMissing , with: :rescue_400
-  end
+  # if Rails.env.production?
+  #   rescue_from Exception , with: :rescue_500
+  #   rescue_from ActionController::RoutingError , with: :rescue_404
+  #   rescue_from ActiveRecord::RecordNotFound , with: :rescue_404
+  #   rescue_from ActionController::ParameterMissing , with: :rescue_400
+  # end
 
   rescue_from Forbidden , with: :rescue_403
   rescue_from NotFound , with: :rescue_404
