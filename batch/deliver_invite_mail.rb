@@ -4,7 +4,8 @@ elsif Rails.env.development?
   prizy_url = "http://localhost:3000"
 end
 
-# users = User.where(deliver_invite_mail: 0, delete_flag: 0)
+# company_ids = Company.where(invite_email_flag: 0).pluck(:id)
+# users = User.where(deliver_invite_mail: 0, delete_flag: 0 , company_id: company_ids)
 # sum = 0
 
 # users.each do | user |
