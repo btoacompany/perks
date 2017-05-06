@@ -51,7 +51,7 @@
     <div class="leftbox col-8" style="padding-left:0;">
     <div class="timeline">
       <div class="pagination" style="float:right">
-        <% if @total_pages > 20 %>
+        <% if @total_pages > 8 %>
           <% unless @page_now == 1 %>
             <a href="<%= "#{@prizy_url}/profile/given/?page=1" %>">最初</a>
             <a href="<%= "#{@prizy_url}/profile/given/?page=#{@previous_page}" %>">前へ</a>
@@ -70,7 +70,7 @@
       <div class="clearfix"></div>
       <%= render 'bottomprofile' %>
       <div class="pagination" style="float:right">
-        <% if @total_pages > 20 %>
+        <% if @total_pages > 8 %>
           <% unless @page_now == 1 %>
             <a href="<%= "#{@prizy_url}/profile/given/?page=1" %>">最初</a>
             <a href="<%= "#{@prizy_url}/profile/given/?page=#{@previous_page}" %>">前へ</a>
