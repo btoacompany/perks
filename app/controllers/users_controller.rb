@@ -677,21 +677,21 @@ class UsersController < ApplicationController
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @company = Company.find(@user.company_id)
-    if $showoff_timeline.include?(@company_id)
-      unless $use_select.include?(@company_id)
-        get_team_users
-      end
-      # @emails = []
-      # @users.each do |user|
-      #   @emails << user.email
-      # end
-      hashtags = @company.hashtags
-      if hashtags.blank?
-        @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
-      else
-        @hashtags = hashtags.split(",")
-      end
-    end
+    # if $showoff_timeline.include?(@company_id)
+    #   unless $use_select.include?(@company_id)
+    #     get_team_users
+    #   end
+    #   # @emails = []
+    #   # @users.each do |user|
+    #   #   @emails << user.email
+    #   # end
+    #   hashtags = @company.hashtags
+    #   if hashtags.blank?
+    #     @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
+    #   else
+    #     @hashtags = hashtags.split(",")
+    #   end
+    # end
     receiver_ranking(@user)
     giver_ranking(@user)
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
