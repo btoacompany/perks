@@ -694,21 +694,20 @@ class UsersController < ApplicationController
     end
     receiver_ranking(@user)
     giver_ranking(@user)
-    # posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
-    # process_posts = process_paging(posts)
+    posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
+    process_posts = process_paging(posts)
 
-    # @posts = []
-    # data = {}
+    @posts = []
+    data = {}
 
-    # process_posts.each do | post |
-    #   data = process_post(post)
-    #   @posts << data
-    # end
+    process_posts.each do | post |
+      data = process_post(post)
+      @posts << data
+    end
 
     top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
     process_top_givers(top_givers)
     @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
-    render template: "users/given"
   end
 
   def get_team_users
