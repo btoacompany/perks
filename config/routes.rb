@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   # for landing
   root to: 'landing#index'
 
-  get "bad_request" => "top#bad_request"
-  get "internal_server_error" => "top#internal_server_error"
+  # get "bad_request" => "top#bad_request"
+  # get "internal_server_error" => "top#internal_server_error"
 
   get	'/price'	    => 'landing#price'
   get	'/privacy'	    => 'landing#privacy'
