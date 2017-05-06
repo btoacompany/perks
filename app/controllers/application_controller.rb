@@ -40,6 +40,12 @@ class ApplicationController < ActionController::Base
   class Forbidden < StandardError ; end
   class NotFound < StandardError ; end
 
+  force_ssl if: :ssl_configured?
+ 
+  def ssl_configured?
+    !Rails.env.development?
+  end
+
   if Rails.env.production?
     rescue_from Exception , with: :rescue_500
     rescue_from ActionController::RoutingError , with: :rescue_404
