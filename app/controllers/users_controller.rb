@@ -705,9 +705,9 @@ class UsersController < ApplicationController
     #   @posts << data
     # end
 
-    # top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
-    # process_top_givers(top_givers)
-    # @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+    top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
+    process_top_givers(top_givers)
+    @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def get_team_users
