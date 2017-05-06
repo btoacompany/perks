@@ -53,11 +53,12 @@ class ApplicationController < ActionController::Base
   force_ssl if: :ssl_configured?
 
   def ssl_configured?
-    !Rails.env.development?
-  #   # if Rails.env.production?
-  #   #   @protocol = "https://"
-  #   #   request.host == 'www.prizy.me'
-  #   # end
+    # !Rails.env.development?
+    if Rails.env.production?
+      @protocol = "https://"
+      request.host == 'www.prizy.me'
+      true
+    end
   end
 
   def init_url
