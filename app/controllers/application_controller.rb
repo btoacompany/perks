@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
     if Rails.env.production?
       @protocol = "https://"
       request.host == 'www.prizy.me'
-      true
+      return true
     end
   end
 
