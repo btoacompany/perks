@@ -339,7 +339,12 @@ class CompanyController < ApplicationController
 
   # TODO Refactoring
   def export_csv_format_create_user
-    headers = %w(No lastname firstname email password department team birthday gender manager)
+    company = Company.find(current_user.company_id)
+    if company.invite_email_flag == 0
+      headers = %w(No lastname firstname email department team birthday gender manager)      
+    elsif company.invite_email_flag == 1
+      headers = %w(No lastname firstname email password department team birthday gender manager)
+    end
     data = CSV.generate("", headers: headers ) do |csv|
       csv << headers
     end
