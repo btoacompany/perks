@@ -77,12 +77,11 @@
         <th scope="row">メールアドレス</th>
         <td><input type="text" name="email" autocomplete="new-email" required /></td>
       </tr>
-      <% unless @company.invite_email_flag == 1 %>
-      <tr>
+      <% if @company.invite_email_flag == 1 %>
+<!--       <tr>
       <th scope="row"><span class="password_label">パスワード</span></th> 
         <td><input type="button" value="パスワードを設定する" class="change_password_btn"/></td>
-      </tr>
-      <% end %>
+      </tr> -->
       <tr class="password">
         <th scope="row">パスワード入力</th>
         <td><input type="password" name="password" value="" id="passwd1" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/></td>
@@ -93,6 +92,7 @@
         <span class="notice"></span>
         </td>
       </tr>
+      <% end %>
       <tr>
         <th scope="row">役職</th> 
         <td><input type="text" name="job_title" /></td>
