@@ -906,8 +906,12 @@ class UsersController < ApplicationController
     data[:prizy_url]  = @prizy_url + "/company/rewards/request#pending"
 
     CompanyMailer.request_reward_email(data).deliver_later
-
-    redirect_page("uses","rewards")
+    # begin
+    # logger.debug("=====")
+    redirect_page("users","rewards")
+    # rescue => e
+    #   logger.debug("#{e}")
+    # end
   end
 
   def rewards_status
