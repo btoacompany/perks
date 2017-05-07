@@ -82,9 +82,8 @@ $('.btn_buy').click(function() {
       url: "/rewards/request",
       data: { 'reward_id': _id, 'type': _type },
       success: function(data){
-	alert("ギフト交換の申請をしました。メールをお待ちください。");
-
-	window.location.reload(); 
+        alert("ギフト交換の申請をしました。メールをお待ちください。");
+        window.location.reload(); 
       }
     });
   }
