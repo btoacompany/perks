@@ -315,7 +315,6 @@ class CompanyController < ApplicationController
     if e && /.+Shift_JIS+./ =~ e.to_s
       flash[:notice_about_create_user] = "文字化けしているデータがあります。"
     else
-      # flash[:notice_about_create_user] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
       flash[:notice_about_create_user] = "#{e}"
     end
     redirect_to '/company/employees/register'
@@ -512,7 +511,7 @@ class CompanyController < ApplicationController
       res.save
     end
 
-    redirect_to "/company/rewards/request"
+    redirect_page("company","rewards_request")
   end
 
   def bonus 
