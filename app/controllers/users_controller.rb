@@ -381,7 +381,6 @@ class UsersController < ApplicationController
     new_posts.each do |post|
       parse_points(post)
     end
-    flash[:notice] = "送信が完了しました。"
     redirect_page("users", "index")
 
 =begin
@@ -465,7 +464,7 @@ class UsersController < ApplicationController
 		  @user.badge += 1
 		  @user.save
 		end
-
+            flash[:notice] = "送信が完了しました。"
   	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
 
