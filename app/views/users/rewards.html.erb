@@ -3,6 +3,7 @@
 <div id="contents">
   <div class="row">
     <div class="rewards_top">
+    <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
     <% if @rewards_prizy.count == 0 && @rewards.count == 0 %>
       <p class="font12" style="padding-top: 20px;">ギフトはまだ設定されていません。人事の方にお願いしてみてください！</p>
     <% else %>

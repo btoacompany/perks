@@ -381,7 +381,6 @@ class UsersController < ApplicationController
     new_posts.each do |post|
       parse_points(post)
     end
-    flash[:notice] = "送信が完了しました。"
     redirect_page("users", "index")
 
 =begin
@@ -402,6 +401,7 @@ class UsersController < ApplicationController
     @users  = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user   = User.find(@id)
     error   = 0
+    flash[:notice] = "送信が完了しました。"
 
     if @company.point_fixed_flag == 0
       points = params[:description].scan(/\+[^\s|　]+/).first.to_i
@@ -908,7 +908,7 @@ class UsersController < ApplicationController
 
     CompanyMailer.request_reward_email(data).deliver_later
 
-    redirect_to "/rewards"
+    redirect_to "/rewards", notice: "申請しました！承認をお待ちください！"
   end
 
   def rewards_status
