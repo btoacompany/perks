@@ -907,7 +907,7 @@ class UsersController < ApplicationController
 
     CompanyMailer.request_reward_email(data).deliver_later
 
-    redirect_to "/rewards"
+    redirect_page("uses","rewards")
   end
 
   def rewards_status
