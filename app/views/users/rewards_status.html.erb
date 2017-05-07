@@ -117,7 +117,8 @@ function setRequestAction( id, msg ) {
       url: "/rewards/cancel",
       data: { 'id': id },
       success: function(data){
-	window.location.reload(); 
+				alert("ギフト交換の申請を取り消しました");
+				window.location.reload(); 
       }
     });
   }
