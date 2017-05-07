@@ -147,7 +147,8 @@ function setRequestAction( id, stats, msg ) {
       url: "/company/rewards/request/action",
       data: { 'id': id, 'status': stats },
       success: function(data){
-	window.location.reload(); 
+        alert("完了しました");
+        window.location.reload(); 
       }
     });
   }

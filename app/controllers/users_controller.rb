@@ -885,11 +885,11 @@ class UsersController < ApplicationController
       points = res.rewards_prizy.points
 
       reward_data = {
-	:reward	  => res.rewards_prizy.title,
-	:points	  => res.rewards_prizy.points,
-	:username => user.name,
-	:email	  => user.email,
-	:company  => user.company.name
+        :reward   => res.rewards_prizy.title,
+        :points   => res.rewards_prizy.points,
+        :username => user.name,
+        :email    => user.email,
+        :company  => user.company.name
       }
 
       UserMailer.redeem_prizy_reward(reward_data).deliver_later
@@ -924,9 +924,9 @@ class UsersController < ApplicationController
       res.save
 
       if res.rewards_prizy.present? 
-	points = res.rewards_prizy.points
+        points = res.rewards_prizy.points
       else
-	points = res.reward.points
+        points = res.reward.points
       end
 
       user = User.find(@id)
@@ -945,9 +945,9 @@ class UsersController < ApplicationController
 
     if @user.birthday?
       bday = @user.birthday.to_s.split("-")
-      @b_year	= bday[0].to_i
-      @b_month	= bday[1].to_i
-      @b_day	= bday[2].to_i
+      @b_year  = bday[0].to_i
+      @b_month = bday[1].to_i
+      @b_day   = bday[2].to_i
     end
   end
 
@@ -959,11 +959,11 @@ class UsersController < ApplicationController
       invite_link = InviteLink.where(c_code: $c_code, delete_flag: 0)
 
       unless invite_link.empty?
-      	update_details
+        update_details
 
-      	company	      = Company.find(invite_link[0][:company_id])
-      	@company_name = company.name
-      	@company_id   = company.id
+        company       = Company.find(invite_link[0][:company_id])
+        @company_name = company.name
+        @company_id   = company.id
       else
         redirect_to "/login"
       end
