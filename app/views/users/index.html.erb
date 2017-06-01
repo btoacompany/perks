@@ -329,15 +329,15 @@
 		<p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
 	      </div>
 	      <% if post[:receiver_id].include?(@user.id) || post[:user_id].to_i == @user.id %> 
-		<div class="editnav dropdown r_float">
+		<!-- 
+    <div class="editnav dropdown r_float">
 		  <div><input type="button" class="dropbtn" value="▽"></div>
 		  <div class="dropdown-content">
 		      <a><input type="button" class="del del_post" data-id="<%= post[:id] %>" value="削除"/></a>
 		    <!-- for future 
 		    <a><input type="button" class="disabled" value="編集" disabled /></a>
-		    -->
 		  </div>
-		</div><br>
+		</div><br>-->
 	      <% end %>
 	    </div>
 	    From <span class="user giver"><b>@<% if $allow_nickname.include?(@company.id) %><%= post[:nickname] %><% else %><%= post[:full_user_name] %><% end %></b></span><br> 
