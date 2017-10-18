@@ -1,0 +1,25 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+	<div id="admin_contents" class="c_align">
+	  <h3>新しくバナーを設定する</h3>
+	  <p class="margin-top-5">※縦横比は1:3を推奨しています</p>
+	  <div class="margin-10">
+      <%= form_tag(company_banner_create_path, method: "post", :multipart => true) do %>
+        <input type="file" name="banner" %>
+        <input type="submit" value="設定する">
+      <% end %>
+	  </div>
+
+    <%if @banner.nil? %>
+	    <h3>トップバナーが設定されていません</h3>
+	  <% else %>
+		  <h3>現在表示しているトップバナー</h3>
+		  <div style="margin: 20px auto;">
+			  <img src="<%= @banner.img_src %>" width="900" height="300" />
+<!-- 			  <img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/sample_01.png"/>-->
+      </div>
+	  <% end %>
+
+	</div>
+</div>

@@ -72,3 +72,5 @@ gem 'slack-notifier'
 gem 'omniauth-slack'
 gem 'whenever', :require => false
 gem 'rack-canonical-host'
+gem 'gretel'
+gem 'impressionist', '~> 1.5.1'

@@ -7,6 +7,8 @@ class Company < ActiveRecord::Base
   has_many :rewards
   has_many :bonus
   has_many :posts
+  has_many :categories
+  has_many :tags
 
   before_create :set_create_time
   before_update :set_update_time

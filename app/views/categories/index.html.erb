@@ -1,0 +1,54 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+  <div id="admin_contents" class="c_align">
+    <div><br/><br/>
+      <%= link_to "+ 記事を作成する", company_article_new_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ 作成した記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ タグを登録・編集する", "/company/employees/add", {class: "a_btncmn radius5 width-250"} %>
+    </div>
+
+    <div>
+      <h3 class="margin-10">新しくカテゴリーを作成する</h3>
+      <%= form_tag( "/company/category/create", method: "post") do %>
+        <table class="horizontal width-50-percent">
+          <tr>
+            <th>カテゴリー名</th>
+            <td class="width-60-percent"><input name="name" class="width-100-percent"></td>
+            <td><input class="c_align" type="submit" value="作成" id="submit-btn"/></td>
+          </tr>
+        </table>
+      <% end %>
+    </div>
+
+    <% if @categories.count == 0 %>
+      <!-- <h3>記事が作成されていません</h3> -->
+    <% else %>
+      <h3>作成したカテゴリー 一覧</h3>
+      <div style="margin: 0px auto;">
+        <div >
+        <table class="admin_table c_align col-12">
+          <tr>
+            <th scope="row" style="width: 40%;">カテゴリー</th>
+            <th scope="row" style="width: 10%;">記事数</th>            
+            <th scope="row" style="width: 40%;">編集</th>
+            <th scope="row" style="width: 10%;">削除</th>
+          </tr>
+          <% @categories.each do |category| %>
+            <tr>
+              <td style="width: 40%;"><%= category.name %></td>
+              <td style="width: 10%;"><%= category.articles.count %> 記事</td>
+              <td style="width: 40%;">
+              <%= form_tag( "/company/category/#{category.id}/update", method: "post") do %>
+                <input type="text" name="name" class="width-80-percent" placeholder="新しいカテゴリー名を入力">
+                <input type="submit" class="width-10-percent" %>
+              <% end %>
+              </td>
+              <td style="width: 10%;"><%= link_to "削除", "/company/category/#{category.id}/destory", {method: :post, data: { :confirm => "選択したカテゴリーを本当に削除しますか？\n関連する記事も削除されます。"}} %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>

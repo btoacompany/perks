@@ -1,0 +1,39 @@
+<div class="admin_subheader">
+  <ul class="admin_list">
+    <% if params[:controller] == "company" && params[:action] == "details" %>
+      <li class="admin_li_checked"><%= link_to "会社情報", company_details_path %></li>
+    <% else %>
+      <li><%= link_to "会社情報", company_details_path %></li>
+    <% end %>
+    <% if params[:controller] == "company" && params[:action] == "customize" %>
+      <li class="admin_li_checked"><%= link_to "カスタマイズ", company_customize_path %></li>
+    <% else %>
+      <li><%= link_to "カスタマイズ", company_customize_path %></li>
+    <% end %>
+    <% if params[:controller] == "company" && params[:action] == "teams" %>
+      <li class="admin_li_checked"><%= link_to "部署・チーム情報", company_teams_path %></li>
+    <% else %>
+      <li><%= link_to "部署・チーム情報", company_teams_path %></li>
+    <% end %>
+    <% if params[:controller] == "company" && (params[:action] == "employees" || params[:action] == "register_employees" || params[:action] == "add_employees") %>
+      <li class="admin_li_checked"><%= link_to "社員情報", company_employees_path %></li>
+    <% else %>
+      <li><%= link_to "社員情報", company_employees_path %></li>
+    <% end %>
+    <% if params[:controller] == "landing" && params[:action] == "slack_add" %>
+      <li class="admin_li_checked"><%= link_to "Slack連携", integration_slack_path %></li>
+    <% else %>
+      <li><%= link_to "Slack連携", integration_slack_path %></li>
+    <% end %>
+    <% if params[:controller] == "articles" || params[:controller] == "categories" %>
+      <li class="admin_li_checked"><%= link_to "ブログ", company_articles_path %></li>
+    <% else %>
+      <li><%= link_to "ブログ", company_articles_path %></li>
+    <% end %>
+    <% if params[:controller] == "banners" %>
+      <li class="admin_li_checked"><%= link_to "バナー", company_articles_path %></li>
+    <% else %>
+      <li><%= link_to "バナー", company_banners_path %></li>
+    <% end %>
+  </ul>
+</div>

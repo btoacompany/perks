@@ -23,9 +23,9 @@ class UsersController < ApplicationController
       slack_code = params[:code]
 
       data = {
-	:client_id	=> "12258104198.88079493873",
-	:client_secret	=> "d3cc97422eac0aefbf7c097a3647306c",
-	:code		=> params[:code]
+      	:client_id	=> "12258104198.88079493873",
+      	:client_secret	=> "d3cc97422eac0aefbf7c097a3647306c",
+      	:code		=> params[:code]
       }
 
       uri	= URI.parse("https://slack.com/api/oauth.access")
@@ -34,18 +34,18 @@ class UsersController < ApplicationController
       slack	= SlackToken.where(:team_id => userinfo["team_id"]).first
       
       if slack.blank?
-	slack = SlackToken.new
+      	slack = SlackToken.new
 
-	slack.token	    = userinfo["access_token"]
-	slack.team_id	    = userinfo["team_id"]
-	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
-	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
-	slack.save
-      else
-	slack.token	    = userinfo["access_token"]
-	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
-	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
-	slack.save
+      	slack.token	    = userinfo["access_token"]
+      	slack.team_id	    = userinfo["team_id"]
+      	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
+      	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
+      	slack.save
+            else
+      	slack.token	    = userinfo["access_token"]
+      	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
+      	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
+      	slack.save
       end
     end
   end
@@ -228,10 +228,10 @@ class UsersController < ApplicationController
       
       if rewards_list.present?
         rewards_list.each do |key, value|
-	  @popular_rewards << RewardsPrizy.find(key) if key.present?
+	        @popular_rewards << RewardsPrizy.find(key) if key.present?
         end
         
-	@popular_rewards = RewardsPrizy.all if @popular_rewards.blank?
+	      @popular_rewards = RewardsPrizy.all if @popular_rewards.blank?
       else
         @popular_rewards = RewardsPrizy.all
       end
@@ -324,11 +324,11 @@ class UsersController < ApplicationController
       	      receiver.save
 
        	      UserMailer.receive_points_email({
-		    receiver:   receiver.name, 
-		    email:	    receiver.email,
-		    giver:	    user.name,
-		    points:	    params[:points],
-		    prizy_url:  @prizy_url + "/user"
+        		    receiver:   receiver.name, 
+        		    email:	    receiver.email,
+        		    giver:	    user.name,
+        		    points:	    params[:points],
+        		    prizy_url:  @prizy_url + "/user"
       	      }).deliver_later
 
       	      post = Post.new
@@ -624,6 +624,60 @@ class UsersController < ApplicationController
     @user = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
+    @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
+
+    @company = Company.find(@user.company_id)
+    if $showoff_timeline.include?(@company_id)
+      unless $use_select.include?(@company_id)
+        get_team_users
+      end
+      # @emails = []
+      # @users.each do |user|
+      #   @emails << user.email
+      # end
+      hashtags = @company.hashtags
+      if hashtags.blank?
+        @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
+      else
+        @hashtags = hashtags.split(",")
+      end
+    end
+    # weekly_ranking
+    receiver_ranking(@user)
+    giver_ranking(@user)
+
+
+    posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
+    process_posts = process_paging(posts)
+
+    @posts = []
+    data = {}
+
+    process_posts.each do | post |
+      data = process_post(post)
+      @posts << data
+    end
+
+    unless $showoff_ranking.include?(@user.company_id)
+      top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
+      process_top_receivers(top_receiver)
+      @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+    else 
+      @last_month = Date.today.prev_month.beginning_of_month..Date.today.beginning_of_month
+      top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
+      process_top_givers(top_givers)
+
+      top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
+      process_top_receivers(top_receivers)
+    end
+  end
+
+  def articles
+    @user = User.find(@id)
+    @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @departments = Department.where(company_id: @company_id, delete_flag: 0)
+    @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
+    @articles = Article.where(company_id: @company_id, is_deleted: 0)
 
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
