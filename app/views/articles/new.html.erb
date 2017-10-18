@@ -1,0 +1,170 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+  <div id="admin_contents" class="c_align"><br/>
+    <div class="margin-10">
+      <%= link_to "+ 記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ カテゴリーを登録・編集する", company_categories_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ タグを登録・編集する", "/company/employees/add", {class: "a_btncmn radius5 width-250"} %>
+    </div>
+    <div class="margin-top-10">
+    <h3 class="margin-bottom-10">記事を作成する</h3>
+    <%= form_tag(company_article_create_path,method: "post", :multipart => true) do %>
+      <table class="article_table horizontal width-80-percent">
+        <% if @categories.count > 0 %>
+          <tr>
+            <th class="width-20-percent">カテゴリー</th>
+            <td class="width-80-percent">
+              <select name="category_id" class="width-400">
+                <% @categories.each do |category| %>
+                  <option value="<%= category.id %>"><%= category.name %></option>
+                <% end %>
+              </select>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <th class="width-20-percent">タイトル</th>
+          <td><input name="title" class="width-100-percent"></td>
+        </tr>
+        <tr>
+          <th>ディスクリプション</th>
+          <td><textarea name="description" class="min-height-200 width-100-percent"></textarea></td>
+        </tr>
+        <% if @tags.count > 0 %>
+          <tr>
+            <th>キーワード</th>
+            <td style="width: 600px; display: block;">
+              <% @tags.each do |tag| %>
+                <input type="checkbox" name="tags[]" value=<%= tag.id %>><%= tag.tag_name %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <th>メニュー</th>
+          <td>
+            <ul class="clearfix">
+              <li class="title admin_menu c_align float_left margin-right-10">見出し</li>
+              <li class="text admin_menu c_align float_left margin-right-10">テキスト</li>
+              <li class="link admin_menu c_align float_left margin-right-10">リンク</li>
+              <li class="quotation admin_menu c_align float_left margin-right-10">引用</li>
+              <li class="image admin_menu c_align float_left">画像</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      <input class="c_align submit-btn" type="submit" value="作成する">
+    <% end %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+var num = 0;
+
+$('.admin_menu').click(function(){
+  num++;
+  var _num = String(num);
+  if ($(this).hasClass("title")) {
+    var element = document.createElement('input');
+    element.setAttribute("name", "paragraph_titles["+ _num +"]"); 
+    element.setAttribute("type", "text");
+    element.setAttribute("class", "width-100-percent");
+    var _content = $([
+      "<tr>",
+        "<th>見出し<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<td class='insert_element'>",
+        "</td>",
+      "</tr>"].join(""));
+    $(".article_table").append(_content);
+    $(".insert_element").append(element);
+    $(".insert_element").removeClass("insert_element");
+
+  } else if ($(this).hasClass("text")) {
+    var element = document.createElement('textarea');
+    element.setAttribute("name", "texts["+ _num +"]"); 
+    element.setAttribute("type", "text");
+    element.setAttribute("class", "width-100-percent height-200");
+    var _content = $([
+      "<tr>",
+        "<th>テキスト<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<td class='insert_element'>",
+        "</td>",
+      "</tr>"].join(""));
+    $(".article_table").append(_content);
+    $(".insert_element").append(element);
+    $(".insert_element").removeClass("insert_element");
+
+  } else if ($(this).hasClass("link")) {
+    var title = document.createElement('input');
+    title.setAttribute("name", "links["+ _num +"][]"); 
+    title.setAttribute("type", "text");
+    title.setAttribute("placeholder", "リンクタイトル");
+    title.setAttribute("class", "width-100-percent");
+    var url = document.createElement('input');
+    url.setAttribute("name", "links["+ _num +"][]"); 
+    url.setAttribute("type", "text");
+    url.setAttribute("placeholder", "リンク先のURL");
+    url.setAttribute("class", "width-100-percent");
+    var _content = $([
+      "<tr>",
+        "<th>リンク<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<td class='insert_element'>",
+        "</td>",
+      "</tr>"].join(""));
+    $(".article_table").append(_content);
+    $(".insert_element").append(title);
+    $(".insert_element").append('<br>');
+    $(".insert_element").append(url);
+    $(".insert_element").removeClass("insert_element");
+
+  } else if ($(this).hasClass("quotation")) {
+    var title = document.createElement('textarea');
+    title.setAttribute("name", "quotations["+ _num +"][]"); 
+    title.setAttribute("placeholder", "引用の内容");
+    title.setAttribute("class", "width-100-percent height-200");
+    var url = document.createElement('input');
+    url.setAttribute("name", "quotations["+ _num +"][]"); 
+    url.setAttribute("type", "text");
+    url.setAttribute("placeholder", "引用元ののURL");
+    url.setAttribute("class", "width-100-percent");
+    var _content = $([
+      "<tr>",
+        "<th>引用<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<td class='insert_element'>",
+        "</td>",
+      "</tr>"].join(""));
+    $(".article_table").append(_content);
+    $(".insert_element").append(title);
+    $(".insert_element").append('<br>');
+    $(".insert_element").append(url);
+    $(".insert_element").removeClass("insert_element");
+  } else {
+    var image = document.createElement('input');
+    image.setAttribute("type", "file");
+    image.setAttribute("multiple", "true");
+    image.setAttribute("name", "images["+ _num +"]");
+    image.setAttribute("required", "required");
+    var _content = $([
+      "<tr>",
+        "<th>画像<br/>横サイズのみ固定の300pxになります<br/><button type='button' class='delete_question'>削除する</button></th>",
+        "<td class='insert_element'>",
+        "</td>",
+      "</tr>"].join(""));
+    $(".article_table").append(_content);
+    $(".insert_element").append(image);
+    $(".insert_element").append('<br>');
+    $(".insert_element").append(title);
+    $(".insert_element").append('<br>');
+    $(".insert_element").append(url);
+    $(".insert_element").removeClass("insert_element");
+  }
+});
+
+$('.article_table').on('click', '.delete_question', function(){
+  $(this).parent().parent().remove();
+});
+
+
+</script>

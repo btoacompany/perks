@@ -8,13 +8,13 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
 # セプテーニのcompany_idをいれる。今は暫定
-  $showoff_timeline = [1,2,3,32,30,79,37,14,80]
-  $showoff_ranking = [1,2,3,32,30,79,37,14,80]
-  $showoff_hashtag = [1,2,3,32,30,79,37,14,80]
-  $ban_edit_name = [1,2,3,32,30,79,37,14,80]
-  $allow_nickname = [1,2,3,32,30,79,37,14,80]
-  $use_select = [1,2,3,27,32,30,79,37,14,80]
-  $no_manager = [1,2,3,32,30,79,37,14,80]
+  $showoff_timeline = [1,2,3,32,30,79,37,14,80,38]
+  $showoff_ranking = [1,2,3,32,30,79,37,14,80,38]
+  $showoff_hashtag = [1,2,3,32,30,79,37,14,80,38]
+  $ban_edit_name = [1,2,3,32,30,79,37,14,80,38]
+  $allow_nickname = [1,2,3,32,30,79,37,14,80,38]
+  $use_select = [1,2,3,27,32,30,79,37,14,80,38]
+  $no_manager = [1,2,3,32,30,79,37,14,80,38]
   $nicknames = {
     1 => "同僚さん",
     2 => "白パンさん",
@@ -92,6 +92,10 @@ class ApplicationController < ActionController::Base
       OpenStruct.new(name: "Guest")
     end
   end
+
+  # def current_company
+  #   @company = Company.find(@current_user.company_id)
+  # end
 
   def restrict_access_by_smartphone
     user_agent = request.env["HTTP_USER_AGENT"]

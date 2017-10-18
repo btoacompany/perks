@@ -1,0 +1,47 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+	<div id="admin_contents" class="c_align">
+	  <h3>ブログ</h3>
+	  <div class="margin-10">
+	    <%= link_to "+ 記事を作成する", company_article_new_path, {class: "a_btncmn radius5 width-250"} %>
+	    <%= link_to "+ カテゴリーを登録・編集する", company_categories_path, {class: "a_btncmn radius5 width-250"} %>
+	    <%= link_to "+ タグを登録・編集する", "/company/employees/add", {class: "a_btncmn radius5 width-250"} %>
+	  </div>
+
+	  <% if @articles.count == 0 %>
+	    <h3>記事が作成されていません</h3>
+	  <% else %>
+		  <h3>作成した記事一覧</h3>
+		  <div style="margin: 0px auto;">
+		    <div >
+			  <table class="admin_table c_align col-12">
+			  	<tr>
+			  	  <th scope="row" style="width: 60%;">タイトル</th>
+			  	  <th scope="row" style="width: 8%;">いいね数</th>
+			  	  <th scope="row" style="width: 8%;">PV数</th>
+			  	  <th scope="row" style="width: 8%;">状態</th>
+			  	  <!-- <th scope="row" style="width: 8%;">編集</th> -->
+			  	  <th scope="row" style="width: 8%;">削除</th>
+			  	</tr>
+			  	<% @articles.each do |article| %>
+				  	<tr>
+				  	  <td style="width: 60%;"><%= link_to article.title, "/company/article/#{article.id}" %></td>
+				  	  <td style="width: 8%;"><%= article.article_likes.count %></td>
+				  	  <td style="width: 8%;"><%= number_with_delimiter(article.impressionist_count) %></td>
+				  	  <td style="width: 8%;">
+				  	    <% if article.is_published == 0 %>
+				  	    	<%= link_to "未公開", "/company/article/#{article.id}/publish",{method: :post, title: "公開する", data: { :confirm => "選択した記事を公開しますか？"}} %>
+				  	    <% else %>
+				  	      <%= link_to "公開済み", "/company/article/#{article.id}/publish", {method: :post, title: "公開する", data: { :confirm => "選択した記事を非公開にしますか？"}} %>
+				  	    <% end %>
+				  	  </td>
+				  	  <!-- <td style="width: 8%;"><%= link_to "編集", "/company/article/#{article.id}/edit" %></td> -->
+				  	  <td style="width: 8%;"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
+				  	</tr>
+			  	<% end %>
+			  </table>
+			</div>
+	  <% end %>
+	</div>
+</div>

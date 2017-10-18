@@ -24,7 +24,7 @@ module Perks
     config.active_record.raise_in_transactional_callbacks = true
 
     # Precompile addtional assets
-    config.assets.precompile += %w( default2.css )
+    config.assets.precompile += %w(default2.css)
     Koala.config.api_version="v2.0"
   end
 end

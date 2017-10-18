@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :kudos
   has_many :hashtags
+  has_many :article_likes
+  has_many :articles, through: :article_likes
 
   before_save 	:encrypt_password
   after_save 	:clear_password

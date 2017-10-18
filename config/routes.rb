@@ -13,13 +13,6 @@ Rails.application.routes.draw do
   get '/contact' => 'landing#contact'
   post '/contact/complete' => 'landing#contact_mail'
 
-  # for testing
-  get	'/tests'		  => 'tests#index'
-  get	'/tests/create'		  => 'tests#create'
-  post	'/tests/create/complete'  => 'tests#create_complete'
-  get	'/tests/edit/:id'	  => 'tests#edit'
-  post	'/tests/edit/complete'	  => 'tests#edit_complete'
-
   # login
   get	'/login'		      => 'users#login'
   post	'/login/complete'	      => 'users#login_complete'
@@ -60,8 +53,8 @@ Rails.application.routes.draw do
   get	'/company/rewards/edit/:reward_id'  => 'company#edit_rewards'
   post	'/company/rewards/edit/complete'    => 'company#edit_rewards_complete'
   post	'/company/rewards/delete'	    => 'company#delete_rewards'
-  get	'/company/rewards/request'	    => 'company#rewards_request'
-  post	'/company/rewards/request/action'   => 'company#rewards_request_action'
+  # get	'/company/rewards/request'	    => 'company#rewards_request'
+  # post	'/company/rewards/request/action'   => 'company#rewards_request_action'
   # get	'/company/bonus'		    => 'company#bonus'
   # get	'/company/bonus/add'		    => 'company#add_bonus'
   # post	'/company/bonus/add/complete'	    => 'company#add_bonus_complete'
@@ -99,10 +92,11 @@ Rails.application.routes.draw do
   post	'/user/delete_comment'	    => 'users#delete_comment'
   get	'/profile'		    => 'users#profile'
   get	'/profile/given'	    => 'users#given'
-  get	'/rewards'		    => 'users#rewards'
-  post	'/rewards/request'	    => 'users#rewards_request'
-  get	'/rewards/status'	    => 'users#rewards_status'
-  post	'/rewards/cancel'	    => 'users#rewards_cancel'
+  get '/profile/articles'      => 'users#articles'
+  # get	'/rewards'		    => 'users#rewards'
+  # post	'/rewards/request'	    => 'users#rewards_request'
+  # get	'/rewards/status'	    => 'users#rewards_status'
+  # post	'/rewards/cancel'	    => 'users#rewards_cancel'
   # get	'/bonus'		    => 'users#bonus'
   post '/select_target_department' => 'users#select_target_department'
   post '/select_target_team' => 'users#select_target_team'
@@ -131,6 +125,25 @@ Rails.application.routes.draw do
   get 'analytics/user/:id/given' => 'analytics#usergiven'
   get 'analytics/user/:id/given' => 'analytics#usergiven'
   get 'analytics/user/:id/received' => 'analytics#userreceived'
+
+  # blog
+  get '/company/articles' => 'articles#index'
+  get '/company/article/new' => 'articles#new'
+  get '/company/article/:id' => 'articles#show'
+  post '/company/article/create'  => 'articles#create'
+  get '/company/article/:id/edit' => 'articles#edit'
+  post '/company/article/update'  => 'articles#update'
+  post '/company/article/:id/destory'     => 'articles#destory'
+  post '/company/article/:id/publish' => 'articles#publish'
+  post '/company/article/like' => 'articles#like'
+  get '/company/categories' => 'categories#index'
+  post '/company/category/create' => 'categories#create'
+  post '/company/category/:id/update' => 'categories#update'
+  post '/company/category/:id/destory' => 'categories#destory'
+
+  # banner
+  get '/company/banners' => 'banners#index'
+  post '/company/banner/create'  => 'banners#create'
 
   #facebook auth
   get	'auth/facebook', as: "auth_provider"
