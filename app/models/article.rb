@@ -1,7 +1,7 @@
 class Article < ActiveRecord::Base
   is_impressionable
 
-	belongs_to :categories
+	belongs_to :category
 	has_many :titles
 	has_many :texts
 	has_many :links

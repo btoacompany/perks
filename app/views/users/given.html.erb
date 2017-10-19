@@ -4,51 +4,57 @@
 <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
 <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
   <div class="mypage row">
-
-    <%= render 'topprofile' %>
-
-    <div class="col-4 chose_box">
-      <%= link_to "もらった投稿", "/profile", :class => "receiving_box" %>
-      <%= link_to "贈った投稿", "/profile/given", :class => "giving_box bkgc_white"%>
-      <%= link_to "ギフト交換履歴", "/rewards/status", :class => "present_box" %>
-    </div>
-    <div class="analytics_clearfix"></div>
-    
+    <% if @banner %>
+      <%= image_tag @banner.img_src ,class: "width-100-percent" %>
+    <% else %>
+      <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
+    <% end %>
     <div class="mypage row">
-    <div class="rightbox col-4">
-      <div class="title"> あなたが最も褒めている人 </div>
-      <div class="profilebox">
-        <% @top_givers.each do | item | %>
-          <div class="ranking">
-            <div class="left">
-              <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
-            </div>
-            <div class="right">
-              <%= item[:name] %>
-              <div class="score"><%= item[:count] %></div>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-        <% end %>
-      </div><br>
-
-      <% unless $showoff_ranking.include?(@user.company_id) %>
-      <div class="title"> あなたが褒めているポイント </div>
-      <div class="profilebox">
-        <% @top_hashtags.each do | k, v | %>
-        <div class="ranking">
-          <div class="left"><%= k %> </div>
-          <div class="right"> 
-            <div class="score"><%= v %></div>
-          </div>
-          <div class="clearfix"></div>
+      <div class="rightbox col-4" >
+        <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
+        <div class="profilebox">
+          <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+          <% if @receiver_ratio[1] == "-" %>
+            <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b></b></span><span style="font-size: 12px; color: #808080"><br><br>翌週から結果を表示します！</span>
+          <% elsif @receiver_ratio[1] > 0 %>
+            <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも褒められています！</span>
+          <% elsif @receiver_ratio[1] == 0 %>
+            <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
+          <% else %>
+            <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
+          <% end %>
         </div>
-        <% end %>
       </div><br>
-      <% end %>
-    </div>
-
+      <div class="title"> 今週、<%= @giver_ratio[0] %>回「ありがとう」を伝えています！</div>
+        <div class="profilebox">
+          <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+            <% if @giver_ratio[1] == "-" %>
+              <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b></b></span><span style="font-size: 12px; color: #808080"><br><br>翌週から結果を表示します！</span>
+            <% elsif @giver_ratio[1] > 0 %>
+              <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも感謝を伝えています！</span>
+            <% elsif @giver_ratio[1] == 0 %>
+              <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
+            <% else %>
+              <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
+            <% end %>
+          </div>
+        </div><br>
+      </div>
     <div class="leftbox col-8" style="padding-left:0;">
+      <div class="clearfix width-100-percent">
+      <%= link_to profile_articles_path, :class => "article_box" do %>
+        ニュース<br/>トピック
+      <% end %>
+      <%= link_to "/profile", :class => "receiving_box" do %>
+        もらったメッセージ<br/>を見る
+      <% end %>
+      <%= link_to "/profile/given", :class => "giving_box bkgc_white" do %>
+        贈ったメッセージ<br/>を見る
+      <% end %>
+      <%= link_to "/rewards/status", :class => "present_box" do %>
+        メッセージ<br/>を贈る
+      <% end %>
+      </div>
     <div class="timeline">
       <div class="pagination" style="float:right">
         <% if @total_pages > 8 %>

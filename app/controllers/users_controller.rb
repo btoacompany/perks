@@ -677,6 +677,7 @@ class UsersController < ApplicationController
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
+    # @articles = Article.where(company_id: @company_id, is_deleted: 0, is_published: 1)
     @articles = Article.where(company_id: @company_id, is_deleted: 0)
 
     @company = Company.find(@user.company_id)
@@ -730,6 +731,7 @@ class UsersController < ApplicationController
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @company = Company.find(@user.company_id)
+    @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     if $showoff_timeline.include?(@company_id)
       unless $use_select.include?(@company_id)
         get_team_users

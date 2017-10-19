@@ -172,9 +172,10 @@ table.horizontal td{
 
   .mypage .leftbox {
     padding: 0px;
+    width: 100%;
   }
   .mypage .outofboxmsg {
-    padding: 0px 5px;
+
   }
 }
 
@@ -872,6 +873,9 @@ hr.style-two {
 .margin-top-30 {
   margin-top: 30px;
 }
+.margin-bottom-5 {
+  margin-bottom: 5px;
+}
 .margin-bottom-10 {
   margin-bottom: 10px;
 }
@@ -1136,7 +1140,8 @@ hr.style-two {
 .mypage .rightbox .title {
   padding: 5px;
   text-align: center;
-  background-color: #aeaeae;
+  /*background-color: #aeaeae;*/
+  background-color: #ffc249;
   color: #fff;
 }
 
@@ -1337,42 +1342,41 @@ hr.style-two {
   padding: 0 0 0 0px;
 }
 
-.chose_box a{
-  color: black;
-}
+/*.chose_box a{
+  color: white;
+}*/
 
-.receiving_box, .giving_box, .present_box{
+.receiving_box, .giving_box, .present_box, .article_box{
+  color: white;
   display: block;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
-  width: 33%;
+  width: 22.5%;
   font-size:13px;
   font-weight:bold;
   text-decoration:none;
   text-align:center;
-  padding: 15px 0;
+  padding: 8px 0;
   float: left;
   margin-bottom: 10px;
-  background-color: #f0f0f0;
-  -moz-box-shadow: 1px 1px 1px rgba(000,000,000,0.3);
-  -webkit-box-shadow: 1px 1px 1px rgba(000,000,000,0.3);
+  background-color: #ff8290;
   position: relative;
   z-index: 2;
   overflow: hidden;
 }
 
-.receiving_box:hover, .giving_box:hover, .present_box:hover{
-  color: #fff;
-  background-color: #ff8d07;
+.receiving_box, .giving_box, .present_box, .article_box:not(:last-child){
+  margin-right: 2.5%;
+}
+
+.receiving_box:hover, .giving_box:hover, .present_box:hover, .article_box:hover{
+  color: #ff8290;
+  background-color: white;
+  border: 1px solid #ff8290;
 }
 
 .bkgc_white{
+  color: #ff8290;
   background-color: white;
-}
-
-.present_box{
-  border-right: 1px solid black;
+  border: 1px solid #ff8290;
 }
 
 /* --- for modal --*/
@@ -2410,13 +2414,13 @@ table.admin_table td textarea{
 }
 
 /*article*/
-.blog_article_index_top, .blog_article_sidebar_top{
+/*.blog_article_index_top, .blog_article_sidebar_top{
   color: white;
   background-image: -webkit-linear-gradient(left, #1d72ae, #02b9ae);
   background-image: -moz-linear-gradient(left, #1d72ae, #02b9ae);
   background-image: -ms-linear-gradient(left, #1d72ae, #02b9ae);
   background-image: -o-linear-gradient(left, #1d72ae, #02b9ae);
-}
+}*/
 
 .each_article:hover, .each_article_sidebar:hover{
   opacity: 0.7;
@@ -2483,45 +2487,15 @@ table.admin_table td textarea{
   }
 
   .blog_article_index{
-    width: 670px;
-    background-color: white;
-    margin-right: 40px;
-    padding-bottom: 40px;
-  }
-
-  .blog_article_index_top{
-    padding: 5px 30px;
+    /*width: 670px;*/
+    width: 100%;
+    /*background-color: white;*/
+    /*margin-right: 40px;*/
+    /*padding-bottom: 40px;*/
   }
 
   .blog_article_sidebar_top{
     padding: 5px 10px;
-  }
-
-  .each_article{
-    border-bottom: 2px solid #dfdfdf;
-    margin: 0 30px;
-    padding: 10px 0;
-  }
-
-  .each_article_left{
-    width: 100px;
-    height: 100px;
-  }
-
-  .each_article_right{
-    width: 480px;
-    margin-left: 15px;
-    margin-top: 10px;
-  }
-
-  .each_article_right h3{
-    font-size: 16px;
-  }
-
-  .each_article_right p{
-    font-size: 11px;
-    color: #848484;
-    margin-top: 3px;
   }
 
   .sp_view{
@@ -2529,23 +2503,11 @@ table.admin_table td textarea{
   }
 
   /*articles#show*/
-  .blog_article_content{
-    margin: 0 30px;
-    padding: 20px 0;
-  }
-
   .blog_article_content_time, .blog_article_content_description{
     font-size: 12px;
     color: #848484;
     margin-top: 10px;
   }
-
-  .blog_article_content_title{
-    font-size: 24px;
-    font-weight: bold;
-    line-height:32px;
-  }
-
   .blog_article_content_description{
     padding-bottom: 10px;
   }
@@ -2704,46 +2666,13 @@ table.admin_table td textarea{
   .blog_sidebar{
     display: none;
   }
-
-  .blog_article_index{
-    width: 100%;
-    background-color: white;
-    padding-bottom: 40px;
-  }
-
-  .blog_article_index_top{
-    padding: 5px 10px;
-  }
-
-  .each_article{
-    border-bottom: 2px solid #dfdfdf;
-    margin: 0 10px;
-    padding: 10px 0;
-  }
-
   .each_article_left{
     width: 25%;
-    height: 100px;
+    height: 200px;
   }
 
   .each_article_left img{
-    width: 95%;
-  }
-
-  .each_article_right{
-    margin-left: 15px;
-    margin-top: 10px;
-    width: 70%;
-  }
-
-  .each_article_right h3{
-    font-size: 15px;
-  }
-
-  .each_article_right p{
-    font-size: 11px;
-    color: #848484;
-    margin-top: 3px;
+    width: 100%;
   }
 
   .pc_view{
@@ -2751,11 +2680,6 @@ table.admin_table td textarea{
   }
 
   /*articles#show*/
-  .blog_article_content{
-    margin: 0 10px;
-    padding: 20px 0;
-  }
-
   .blog_article_content_time, .blog_article_content_description{
     font-size: 12px;
     color: #848484;
@@ -2906,13 +2830,13 @@ table.admin_table td textarea{
   }
 }
 /*article*/
-.blog_article_index_top, .blog_article_sidebar_top{
+/*.blog_article_index_top, .blog_article_sidebar_top{
   color: white;
   background-image: -webkit-linear-gradient(left, #1d72ae, #02b9ae);
   background-image: -moz-linear-gradient(left, #1d72ae, #02b9ae);
   background-image: -ms-linear-gradient(left, #1d72ae, #02b9ae);
   background-image: -o-linear-gradient(left, #1d72ae, #02b9ae);
-}
+}*/
 
 .each_article:hover, .each_article_sidebar:hover{
   opacity: 0.7;
@@ -2976,46 +2900,43 @@ table.admin_table td textarea{
     font-size: 14px;
   }
 
-  .blog_article_index{
-    width: 670px;
-    background-color: white;
-    margin-right: 40px;
-    padding-bottom: 40px;
-  }
-
-  .blog_article_index_top{
-    padding: 5px 30px;
-  }
-
-  .blog_article_sidebar_top{
-    padding: 5px 10px;
-  }
-
   .each_article{
-    border-bottom: 2px solid #dfdfdf;
-    margin: 0 30px;
-    padding: 10px 0;
+    background-color: white;
+    width: 100%;
+    /*border-bottom: 2px solid #dfdfdf;*/
+    margin-bottom: 20px;
+    padding: 15px;
   }
 
   .each_article_left{
-    width: 100px;
-    height: 100px;
+    width: 40%;
+    height: 150px;
   }
 
   .each_article_right{
-    width: 480px;
-    margin-left: 15px;
-    margin-top: 10px;
+    width: 50%;
+    margin-left: 25px;
+    margin-top: 20px;
+    position: relative;
   }
 
   .each_article_right h3{
-    font-size: 16px;
+    font-size: 18px;
+    line-height: 1.5em;
   }
 
   .each_article_right p{
-    font-size: 11px;
-    color: #848484;
-    margin-top: 3px;
+    font-size: 12px;
+    color: black;
+    /*padding-bottom: 3px;*/
+    text-align: right;
+  }
+  .each_article_right .footer{
+    position: absolute;
+    bottom: -110px;
+    height: 100%;
+    width: 100%;
+    right: 0px;
   }
 
   .sp_view{
@@ -3024,8 +2945,9 @@ table.admin_table td textarea{
 
   /*articles#show*/
   .blog_article_content{
-    margin: 0 30px;
-    padding: 20px 0;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
   }
 
   .blog_article_content_time, .blog_article_content_description{
@@ -3035,7 +2957,7 @@ table.admin_table td textarea{
   }
 
   .blog_article_content_title{
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     line-height:32px;
   }
@@ -3198,46 +3120,12 @@ table.admin_table td textarea{
   .blog_sidebar{
     display: none;
   }
-
-  .blog_article_index{
-    width: 100%;
-    background-color: white;
-    padding-bottom: 40px;
-  }
-
-  .blog_article_index_top{
-    padding: 5px 10px;
-  }
-
-  .each_article{
-    border-bottom: 2px solid #dfdfdf;
-    margin: 0 10px;
-    padding: 10px 0;
-  }
-
   .each_article_left{
     width: 25%;
-    height: 100px;
   }
 
   .each_article_left img{
     width: 95%;
-  }
-
-  .each_article_right{
-    margin-left: 15px;
-    margin-top: 10px;
-    width: 70%;
-  }
-
-  .each_article_right h3{
-    font-size: 15px;
-  }
-
-  .each_article_right p{
-    font-size: 11px;
-    color: #848484;
-    margin-top: 3px;
   }
 
   .pc_view{
@@ -3245,11 +3133,6 @@ table.admin_table td textarea{
   }
 
   /*articles#show*/
-  .blog_article_content{
-    margin: 0 10px;
-    padding: 20px 0;
-  }
-
   .blog_article_content_time, .blog_article_content_description{
     font-size: 12px;
     color: #848484;
@@ -3399,3 +3282,25 @@ table.admin_table td textarea{
     font-size: 15px;
   }
 }
+  .icon {
+    position: relative;
+  }
+  .icon .badge {
+    position: absolute;
+    top: -20px;
+    left: 195px;
+  }
+  .badge .short_term {
+    display: block;
+    position: relative;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 4px;
+    width: 50px;
+    height: 50px;
+    border-radius: 90%;
+    color: #fff;
+    line-height: 50px;
+    text-align: center;
+    background: black;
+  }
