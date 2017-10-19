@@ -121,8 +121,10 @@ class ArticlesController < ApplicationController
   end
 
   def show
+    @user = User.find(@id)
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
 	    if @article
+      @banner = Banner.find_by(company_id: @company.id, is_deleted: 0)
       impressionist(@article, nil, :unique => [:session_hash])
 	    @tags = @article.tags.where(is_deleted: 0)
 	    @article_tags = ArticleTag.where(article_id: @article.id).pluck(:tag_id)
@@ -195,6 +197,49 @@ class ArticlesController < ApplicationController
 	    @description = @article.description
 	    # @base_url = "https://betterengagee.com/blog/article/#{@article.id}"
 	    # @image_url = @first_pic.authenticated_image_url(:medium)
+      if $showoff_timeline.include?(@company_id)
+        unless $use_select.include?(@company_id)
+          get_team_users
+        end
+        # @emails = []
+        # @users.each do |user|
+        #   @emails << user.email
+        # end
+        hashtags = @company.hashtags
+        if hashtags.blank?
+          @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
+        else
+          @hashtags = hashtags.split(",")
+        end
+      end
+      # weekly_ranking
+      receiver_ranking(@user)
+      giver_ranking(@user)
+
+
+      posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
+      process_posts = process_paging(posts)
+
+      @posts = []
+      data = {}
+
+      process_posts.each do | post |
+        data = process_post(post)
+        @posts << data
+      end
+
+      unless $showoff_ranking.include?(@user.company_id)
+        top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
+        process_top_receivers(top_receiver)
+        @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+      else 
+        @last_month = Date.today.prev_month.beginning_of_month..Date.today.beginning_of_month
+        top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
+        process_top_givers(top_givers)
+
+        top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
+        process_top_receivers(top_receivers)
+      end
 	  else
 	  	redirect_to :root
     end
@@ -246,4 +291,87 @@ class ArticlesController < ApplicationController
     end
     redirect_to "/company/article/params[:article_id]"
   end
+
+  def receiver_ranking(user)
+    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
+    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+    
+    @receiver_ratio = []
+    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: this_week).count
+    @receiver_ratio << @this_week_posts
+
+    if this_week.cover?(user.create_time)
+      @receiver_ratio << "-"
+    else
+      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
+      @last_week_posts = 1 if @last_week_posts == 0
+      @receiver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      return @receiver_ratio
+    end
+  end
+
+  def giver_ranking(user)
+    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
+    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+
+    @giver_ratio =[]
+    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: this_week).count
+    @giver_ratio << @this_week_posts
+
+    if this_week.cover?(user.create_time)
+      @giver_ratio << "-"
+    else
+      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: last_week).count
+      @last_week_posts = 1 if @last_week_posts == 0
+      @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      return @giver_ratio
+    end
+  end
+  def process_paging(posts)
+    limit = 10
+    page  = params[:page] || 1
+    
+    @total_items = posts.count
+    @total_pages = (@total_items/limit.to_f).ceil
+
+    if page.to_i <= 1
+      page    = 1
+      offset  = 0
+    else
+      offset = (page.to_i * limit) - limit
+    end
+
+    posts = posts.offset(offset).limit(limit)
+
+    @page_now = params[:page].to_i
+    
+    if @page_now == 0
+      @page_now = 1
+    end
+
+    @previous_page  = @page_now - 1
+    @next_page      = @page_now + 1
+    return posts
+  end
+
+  def process_top_receivers(top_receivers)
+    @top_receivers = []
+    
+    top_receivers.each do | k, v |
+      user = User.find(k)
+      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
+      @top_receivers << data
+    end
+  end
+
+  def process_top_givers(top_givers)
+    @top_givers = []
+    
+    top_givers.each do | k, v |
+      user = User.find(k)
+      data = { name: user.name, img_src: user.img_src, count: v }
+      @top_givers << data
+    end
+  end
+
 end
