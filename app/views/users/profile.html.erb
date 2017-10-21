@@ -4,14 +4,13 @@
 <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
 <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
   <div class="mypage row">
-    
     <!-- render 'topprofile' -->
     <% if @banner %>
       <%= image_tag @banner.img_src ,class: "width-100-percent" %>
     <% else %>
       <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" width="900" height="300" />
     <% end %>
-    <div class="mypage row">
+    <div class="clearfix margin-top-10 width-100-percent">
       <div class="rightbox col-4" >
         <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
         <div class="profilebox">
@@ -54,7 +53,7 @@
       <%= link_to "/profile/given", :class => "giving_box" do %>
         贈ったメッセージ<br/>を見る
       <% end %>
-      <%= link_to "/rewards/status", :class => "present_box" do %>
+      <%= link_to "/rewards/status", :class => "present_box show-modal" do %>
         メッセージ<br/>を贈る
       <% end %>
       </div>
@@ -104,6 +103,87 @@
 </div> <!-- contents -->
 </div> <!-- wrapper -->
 </div>
+
+
+
+<!-- start_post -->
+<div id="modalwin" class="modalwin hide">
+  <a herf="#" class="modal-close"></a>
+  <h1>メッセージを贈る</h1>
+  <div class="modalwin-contents">
+    <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
+      <div class="pointsbox" id="pointsbox" style="padding: 10px;">
+        <div id="new_posts">
+          <div id="new_post" class="new_post display_hidden" name="new_post" style="margin-bottom:20px;">
+            <p align="center">
+            <% if $use_select.include?(@user.company_id) %>
+              <div class="target_select clearfix">
+
+                  <p style="float: left; margin-right: 5px;">会社　：
+                    <select class="target_select_department new_post_select">
+                      <option>選択してください</option>
+                      <% @departments.each do |dep| %>
+                        <option value="<%= dep.id %>"><%= dep.dep_name %></option>
+                     <% end %>
+                    </select>
+                  </p>
+                  <p style="float: left;">部署　：
+                    <select class="target_select_team new_post_select">
+                      <option>選択してください</option>
+                    </select>
+                  </p>
+
+                <div class="clearfix">
+                  <p style="float: left; margin-right: 5px;">贈り先：
+                    <select class="target_select_user new_post_select">
+                      <option>選択してください</option>
+                    </select>
+                  </p>
+                  <p style="float: left;">贈り主：
+                    <select class="select_giver_user new_post_select">
+                      <option>選択してください</option>
+                      <% $nicknames.each do |key, value| %>
+                        <option value="<%= key %>"><%= value %></option>
+                      <% end %>
+                    </select>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          <div class="dropdown">
+          <div id="myDropdown" class="dropdown-content"> </div>
+        </div><hr>
+        <div class="description">
+          <span id="suggested_name_span" style="display: none;">To: </span>
+          <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
+          <div id="suggest" style="display:none;"></div>
+          <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" 
+          <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
+        </div><br>
+        <div class="clearfix" style="width: 100%;">
+          <div class="tags" style="float:left">
+            <p>To &nbsp; &nbsp;: <span class="given_to"></span></p><br>
+            <% if $allow_nickname.include?(@user.company_id) %>
+            <p>From: <span class="given_from"></span></p><br>
+            <% end %>
+          </div>
+          <div style="float:right;" class="remove_div">
+            <span class="pointsInput"></span>
+            <p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
+          </div>
+        </div><!--clearfix -->
+      </div>
+    <% end %>
+  </div> <!-- pointsbox -->  
+</div>
+<!--         <img src="img/nomad_surfing_nangoku.png">
+        <p>テキスト</p>
+        <button>閉じる</button> -->
+    </div>
+</div></div>
+<!-- end_post -->
+
+
 
 <script type="text/javascript">
 $(".btn_edit").click(function() {
@@ -258,5 +338,395 @@ $(window).click(function() {
 $("#wrapper").click(function(event) {
   event.stopPropagation();
 });
+// show_modal
+$(function () {
+  // モーダルウィンドウを開く
+  function showModal(event) {
+    event.preventDefault();
+    var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#modalwin');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        });
+      }
+    function hideModal() {
+      $('#shade').remove();
+      $('#modalwin')
+        .removeClass('show')
+        .addClass('hide');
+      }
+      $('.show-modal').on('click', showModal);
+    }());
 
+<% if $use_select.include?(@user.company_id) %>
+$(function() {
+  $(".pointsbox").on("change",".target_select_department", function(){
+    $(this).addClass("this_select");
+    $(".this_select").parent().parent().find(".target_select_team").empty();
+    $(".this_select").parent().parent().find(".target_select_user").empty();
+    $.ajax({
+      url: "/select_target_department",
+      type: "POST",
+      data: {id : $(this).val()
+    },
+    success: function(data) {
+      $(".this_select").parent().parent().find(".target_select_team").append('<option>選択してください</option>');
+      $(".this_select").parent().parent().find(".target_select_user").append('<option>選択してください</option>');
+      $.each(data, function(key, value){
+        $(".this_select").parent().parent().find(".target_select_team").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
+      });
+      $(".this_select").removeClass("this_select");
+    },
+    error: function(data) {
+      alert("errror");
+      $(".this_select").removeClass("this_select");
+    }
+    });
+  });
+});
+
+$(function() {
+  $(".pointsbox").on("change",".target_select_team", function(){
+    $(this).addClass("this_select");
+    $(".this_select").parent().parent().find(".target_select_user").empty();
+    $.ajax({
+      url: "/select_target_team",
+      type: "POST",
+      data: {id : $(this).val()
+    },
+    success: function(data) {
+      $(".this_select").parent().parent().find(".target_select_user").append('<option>選択してください</option>');
+      $.each(data, function(key, value){
+        $(".this_select").parent().parent().find(".target_select_user").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
+      });
+      $(".this_select").removeClass("this_select");
+    },
+    error: function(data) {
+      alert("errror");
+      $(".this_select").removeClass("this_select");
+    }
+    });
+  });
+});
+
+$(function() {
+  $(".pointsbox").on("change",".target_select_user", function(){
+    var dataId = $(this).find("option:selected").val();
+    var content = $(this).find("option:selected").text()
+    var $selected = $(this).closest(".new_post");
+    $selected.find(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + dataId + "'/>").val(content));
+    $selected.find(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+  });
+});
+
+  <% if $allow_nickname.include?(@user.company_id) %>
+  $(function() {
+    $(".pointsbox").on("change",".select_giver_user", function(){
+      var dataId = $(this).find("option:selected").val();
+      var content = $(this).find("option:selected").text()
+      var $selected = $(this).closest(".new_post");
+      $selected.find(".tags .given_from").empty();
+      $selected.find(".tags .given_from").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + dataId + "'/>").val(content));
+      $selected.find(".tags .given_from").append($("<input type='hidden' class='nickname-selected given_user' name='new_post[][nickname_id]' data-id='" + dataId + "'/>").val(dataId));
+    });
+  });
+  <% end %>
+<% else %>
+
+function getName () {
+  items = {};
+  <% if @team_users.present? %>
+    <% @team_users.each do | user | %>
+    <% unless user.delete_flag == 1 %>
+      <% unless user.id == @user.id %> 
+  items["<%= user.id %>"] = "<%= user.lastname %> <%= user.firstname %>";
+      <% end %>
+    <% end %>
+    <% end %>
+  return items;
+
+  <% else %>
+    <% @users.each do | user | %>
+      <% unless user.id == @user.id %> 
+  items["<%= user.id %>"] = "<%= user.lastname %> <%= user.firstname %>";
+      <% end %>
+    <% end %>
+  return items;
+  <% end %>
+}
+<% end %>
+
+function getPoints () {
+  return ["10","20","30","40","50"];
+}
+
+<% if $allow_nickname.include?(@user.company_id) %>
+function getNickname () {
+  items = {};
+  <% $nicknames.each do |key, value| %>
+    items["<%= key %>"] = "<%= value %>";
+  <% end %>
+  return items;
+}
+<% end %>
+
+
+$(".btn_give").click(function() {
+  var isValid = true; // validationエラーの場合はfalseを返す
+
+  $(".new_post").not(".display_hidden").each(function(){
+    var $this = $(this);
+    var input = $this.find(".taginput").val();
+    var dataReceive = $this.find(".receiver-selected").val();
+    <% if $allow_nickname.include?(@user.company_id) %>
+      var dataNickname = $this.find(".nickname-selected").val();
+    <% end %>
+
+    // validationエラー表示の初期化
+    $(this).find(".dropbtn").removeClass("form_invalid");
+
+    <% if @company.point_fixed_flag == 0 %>
+    isPoint = input.match(/\+[^\s|  ]+/);
+    <% end %>
+    isTag = input.match(/\#[^\s|  ]+/);
+    
+    <% if $allow_nickname.include?(@user.company_id) %>
+      if(dataReceive == null || !isPoint || dataNickname == null) {
+
+                // エラー箇所のスタイルを変更
+        if(dataReceive == null) {
+          $this.find("#atbtn").addClass("form_invalid");
+        }
+        if(!isPoint) {
+          $this.find("#ptsbtn").addClass("form_invalid");
+        }
+        if(dataNickname == null) {
+          $this.find("#nicknamebtn").addClass("form_invalid");
+        }
+
+        <% if @company.point_fixed_flag == 0 %>
+          $("span.notice").text("投稿に不備があります。(誰に贈るのか、ニックネーム、ポイント数が必須です。)");
+          <% else %>
+          $("span.notice").text("投稿に不備があります。(誰に贈るのか、ニックネーム、を入力してください。)");
+          <% end %>
+      isValid = false;
+      } 
+    <% else %>
+      if(dataReceive == null || !isPoint ) {
+        // エラー箇所のスタイルを変更
+        if(dataReceive == null) {
+          $this.find("#atbtn").addClass("form_invalid");
+        }
+        if(!isPoint) {
+          $this.find("#ptsbtn").addClass("form_invalid");
+        }
+        <% if @company.point_fixed_flag == 0 %>
+          $("span.notice").text("投稿に不備があります。(誰に贈るのか、ポイント数が必須です。)");
+        <% else %>
+          $("span.notice").text("投稿に不備があります。(誰に贈るのか入力してください。)");
+        <% end %>
+      isValid = false;
+    } 
+    <% end %>
+    });
+    return isValid;
+});
+
+
+$(".selDropdown option").click(function() {
+  $(".tags span").empty();
+  $(".tags span").append($("<input type='button' class='btn radius5'/>").val($(this).text()));
+});
+
+$("#new_posts").on("click", "#myDropdown", function(e) {
+  var content = e.target.text;
+  var className = e.target.classList[1];
+  var dataId = e.target.dataset.id;
+  var $selected = $(this).closest(".new_post");
+
+  switch (className) {
+    case "drpPoints":
+      $selected.find(".taginput").val($selected.find(".taginput").val() + "+" + content + " ");
+      break;
+
+    case "drpAt":
+      //$(".tags span").empty();
+      if(!($selected.find(".tags .given_to input[data-id='" + dataId + "']").val())) {
+  $selected.find(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + dataId + "'/>").val(content));
+  $selected.find(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+      }
+      break;
+
+    case "drpTag":
+      $selected.find(".taginput").val($selected.find(".taginput").val() + "#" + content + " ");
+      break;
+
+    <% if $allow_nickname.include?(@user.company_id) %>
+    case "drpNickname":
+      $selected.find(".tags .given_from").empty();
+      $selected.find(".tags .given_from").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + dataId + "'/>").val(content));
+      $selected.find(".tags .given_from").append($("<input type='hidden' class='nickname-selected given_user' name='new_post[][nickname_id]' data-id='" + dataId + "'/>").val(dataId));
+      break;
+    <% end %>
+  }
+});
+
+$("#new_posts").on("mouseover", ".dropbtn", function() {
+  var symId = $(this).attr("id");
+  var className = "";
+  var dataId = "";
+  var $selected = $(this);
+  switch (symId) {
+    case "ptsbtn":
+      values = getPoints();
+      className = "drpPoints";
+      break;
+    case "atbtn":
+      values = getName();
+      className = "drpAt";
+      break;
+    case "tagbtn":
+      values = getTag();
+      className = "drpTag";
+      break;
+    <% if $allow_nickname.include?(@user.company_id) %>
+    case "nicknamebtn":
+      values = getNickname();
+      className = "drpNickname";
+      break;
+    <% end %>
+  }
+
+  $("#myDropdown > a").remove();
+  if (className == 'drpAt'){
+    $selected.siblings("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
+  };
+  $.each(values, function( index, value ) {
+    $selected.siblings("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
+  });
+
+  $selected.siblings("#myDropdown").show();
+  
+  $selected.closest(".new_post").find("#type_email").click(function(){
+    var $post = $(this).closest(".new_post");
+  });
+
+  $(".item").click(function() {
+    $(".taginput").focus();
+  });
+});
+
+$(document).mouseup(function(e) {
+  var subject = $(".pointsbox .dropbtn");
+  if(e.target.id != subject.attr("id")){
+    $(".dropdown-content").hide();
+  }
+
+  $(".tags .given_user").click(function() {
+    $(this).next().remove();
+    $(this).remove();
+  });
+});
+
+
+// email_click
+$("#new_posts").on("click", ".email_added", function(){
+  var $selected = $(this).closest(".new_post");
+  $.ajax({ type: 'GET',
+    url: '/user/getname',
+    data:{
+      email: $selected.find('#suggested_name').val()
+    },
+    success: function(data){
+      var element = document.createElement('input');
+      var elem = document.createElement('input');
+      element.setAttribute("type", "button");
+      element.setAttribute("class", "btn radius5 given_user");
+      element.setAttribute("value", data['name']);
+      element.setAttribute("data-id", data['id']);
+      elem.setAttribute("type", "hidden");
+      elem.setAttribute("class", "receiver-selected given_user");
+      elem.setAttribute("name", "new_post[][receiver_id][]");
+      elem.setAttribute("data-id", data['id']);
+      elem.setAttribute("value", data['id']);
+      $selected.find(".given_to").append(element);
+      $selected.find(".given_to").append(elem);
+      $selected.find("#suggested_name").val("");
+    },
+    error: function(data){
+      alert('該当のメールアドレスがありません');
+    }
+  });
+});
+
+
+$("#new_posts").on("click", ".dropbtn", function() {
+  var symId = $(this).attr("id");
+  var className = "";
+  var dataId = "";
+  var $selected = $(this);
+
+  switch (symId) {
+    case "ptsbtn":
+      values = getPoints();
+      className = "drpPoints";
+      break;
+    case "atbtn":
+      values = getName();
+      className = "drpAt";
+      break;
+    case "tagbtn":
+      values = getTag();
+      className = "drpTag";
+      break;
+    <% if $allow_nickname.include?(@user.company_id) %>
+    case "nicknamebtn":
+      values = getNickname();
+      className = "drpNickname";
+      break;
+    <% end %>
+  }
+
+  $("#myDropdown > a").remove();
+  if (className == 'drpAt'){
+    $selected.siblings("#myDropdown").append("<a id='type_email' class='drpAt'>メールアドレス入力</a>");
+  };
+  $.each(values, function( index, value ) {
+    $selected.siblings("#myDropdown").append($("<a data-id='"+index+"'></a>").addClass("item "+ className).text(value));
+  });
+
+  $selected.siblings("#myDropdown").show();
+  
+  $selected.closest(".new_post").find("#type_email").click(function(){
+    var $post = $(this).closest(".new_post");
+
+    // init suggest
+    // new Suggest.LocalMulti(
+    //    $post.find("#suggested_name")[0],    // 入力のエレメント
+    //   $post.find("#suggest")[0], // 補完候補を表示するエリア
+    //   <%= raw @emails %>,
+    //   {dispMax: 10, interval: 1000, prefix: true} // オプション
+    // );
+
+    // var $post = $(this).closest(".new_post");
+    // $post.find("#suggested_name_span").show();
+    // $post.find("#suggested_name").show();
+    // $post.find("#send_suggested_name").show();
+  });
+
+  $(".item").click(function() {
+    $(".taginput").focus();
+  });
+});
 </script>
