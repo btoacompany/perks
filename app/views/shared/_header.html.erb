@@ -10,7 +10,7 @@
     <% if session[:id] || cookies[:id] %>
   <div class="menu">
     <p align="center">
-      <a href="/user">トップ</a>
+      <a href="/profile/articles">トップ</a>
       <a href="/company/details" class="setting_color">基本設定</a>
       <a href="/analytics">アナリティクス</a>
       <a href="/logout">ログアウト</a>
@@ -34,7 +34,7 @@
     <p align="center">
     <% if @current_user.present? %>
       <% if @current_user.admin == 1 %>
-        <a href="/user">トップ</a>
+        <a href="/profile/articles">トップ</a>
         <a href="/company/details" class="setting_color">基本設定</a>
         <a href="/analytics">アナリティクス</a>
         <a href="/logout">ログアウト</a>
@@ -61,8 +61,6 @@
 </div> <!-- contents -->
 </div> <!-- header -->
 
-
-
 <% else %>
 <div id="header">
   <div class="contents">
@@ -74,7 +72,7 @@
 <% if session[:id] || cookies[:id] %>
   <div class="menu">
     <p align="center">
-    <a href="/user">トップ</a>
+    <a href="/profile/articles">トップ</a>
     <% if @current_user.present? %>
       <% if @current_user.admin == 1 %>
         <a href="/company/details">管理画面</a>

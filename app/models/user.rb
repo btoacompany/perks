@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   has_many :hashtags
   has_many :article_likes
   has_many :articles, through: :article_likes
+  has_many :tags
+  has_many :articles, through: :tags
 
   before_save 	:encrypt_password
   after_save 	:clear_password

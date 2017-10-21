@@ -91,29 +91,20 @@
                   </div>
                 <% end %>
               <% end %>
-              <div class="prizy_img">
-                <% if @tags.present? && @tags.pluck(:tag_name).include?("Prizy") %>
-                  <%= link_to "https://www.prizy.me/" do %>
-                    <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/dev-better-engage/banner_pc_02.png" %>
-                  <% end %>
-                <% end %>
-              </div>
               <div class="kudos">
                 <% if @article.article_likes.select { |like| like.user_id == @user_id && like.is_liked == 0 }.count > 0 %>
-                  <a data-id="<%= @article.id %>" class="a_btn btn_unlike"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
+                  <a data-id="<%= @article.id %>" class="a_btn btn_unlike" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
                 <% else %>
-                  <a data-id="<%= @article.id %>" class="a_btn btn_like"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
+                  <a data-id="<%= @article.id %>" class="a_btn btn_like" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
                 <% end %>
                 <span class="kudos_count"><%= @article.article_likes.where(is_liked: 1).count %>件</span>
               </div>
               <div class="article_tag_wrapper">
                 <div class="article_tags">
-                  <p>この記事に含まれるタグ</p>
+                  <p>この記事に登場する社員</p>
                   <ul class="clearfix">
                     <% @tags.each do |tag| %>
-                      <%= link_to "/blog/tag/#{tag.id}" do %>
-                        <li class="margin-bottom-5"><span><%= tag.tag_name %></span></li>
-                      <% end %>
+                      <li class="margin-bottom-5 name_tag"><span><%= tag.user.lastname + tag.user.firstname %></span></li>
                     <% end %>
                   </ul>
                 </div>

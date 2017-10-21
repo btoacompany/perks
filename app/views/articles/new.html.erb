@@ -5,7 +5,6 @@
     <div class="margin-10">
       <%= link_to "+ 記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ カテゴリーを登録・編集する", company_categories_path, {class: "a_btncmn radius5 width-250"} %>
-      <%= link_to "+ タグを登録・編集する", "/company/employees/add", {class: "a_btncmn radius5 width-250"} %>
     </div>
     <div class="margin-top-10">
     <h3 class="margin-bottom-10">記事を作成する</h3>
@@ -31,16 +30,17 @@
           <th>ディスクリプション</th>
           <td><textarea name="description" class="min-height-200 width-100-percent"></textarea></td>
         </tr>
-        <% if @tags.count > 0 %>
+
           <tr>
-            <th>キーワード</th>
-            <td style="width: 600px; display: block;">
-              <% @tags.each do |tag| %>
-                <input type="checkbox" name="tags[]" value=<%= tag.id %>><%= tag.tag_name %>
-              <% end %>
+            <th>記事に登場する社員</th>
+            <td style="display: block;">
+              <input type="text" id="suggested_name" name="tags[]" value="" size="100" placeholder="メールアドレスを入力してください" />
+              <input type="button" value="追加" class="btn_change_password"/>
+              <div id="suggest" style="display:none;"></div>
+              <div id="adding_member"></div>
             </td>
           </tr>
-        <% end %>
+
         <tr>
           <th>メニュー</th>
           <td>
@@ -164,6 +164,17 @@ $('.admin_menu').click(function(){
 
 $('.article_table').on('click', '.delete_question', function(){
   $(this).parent().parent().remove();
+});
+$(".btn_change_password").click(function() {
+  var addedname = $(':text[id="suggested_name"]').val();
+  var element = document.createElement('input');
+  element.setAttribute("name", "tags[]"); 
+  element.setAttribute("value", addedname);
+  element.setAttribute("type", "text");
+  element.setAttribute("size", "100"); 
+  element.setAttribute("style", "display:block;"); 
+  $("#adding_member").append(element);
+  $(':text[id="suggested_name"]').val("");
 });
 
 

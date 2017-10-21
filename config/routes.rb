@@ -140,6 +140,7 @@ Rails.application.routes.draw do
   post '/company/category/create' => 'categories#create'
   post '/company/category/:id/update' => 'categories#update'
   post '/company/category/:id/destory' => 'categories#destory'
+  get '/company/tags' => 'tags#index'
 
   # banner
   get '/company/banners' => 'banners#index'

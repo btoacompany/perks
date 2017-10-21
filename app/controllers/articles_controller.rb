@@ -34,7 +34,6 @@ class ArticlesController < ApplicationController
   def new
   	@articles = Article.new
   	@categories = Category.where(company_id: @company.id, is_deleted:0, company_id: @company.id)
-  	@tags = Tag.where(company_id: @company.id)
   end
 
   def create
@@ -46,17 +45,17 @@ class ArticlesController < ApplicationController
 				description: params[:description],
       	)
 
-      # if params[:tags].present?
-      #   params[:tags].each do |tag_id|
-      #     @articletag = {
-      #     	article_id: @article.id,
-      #     	tag_id: tag_id.to_i
-      #     }
-      #     params[:article_id] = @article.id
-      #     params[:tag_id] = tag_id.to_i
-      #     @articletag.save_record(params)
-      #   end
-      # end
+      if params[:tags].present?
+        params[:tags].each do |email|
+          user = User.find_by(email: email)
+          if user
+            Tag.create(
+              article_id: @article.id,
+              user_id: user.id
+              )
+          end
+        end
+      end
 
       if params[:texts].present?
         params[:texts].each do |key, value|
@@ -126,8 +125,7 @@ class ArticlesController < ApplicationController
 	    if @article
       @banner = Banner.find_by(company_id: @company.id, is_deleted: 0)
       impressionist(@article, nil, :unique => [:session_hash])
-	    @tags = @article.tags.where(is_deleted: 0)
-	    @article_tags = ArticleTag.where(article_id: @article.id).pluck(:tag_id)
+	    @tags = @article.tags
 	    # @first_pic = Image.find_by(article_id: @article.id)
 	    @contents = []
 	    @titles = @article.titles
