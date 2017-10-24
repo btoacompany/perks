@@ -12,31 +12,33 @@
 	    <h3>記事が作成されていません</h3>
 	  <% else %>
 		  <h3>作成した記事一覧</h3>
-		  <div style="margin: 0px auto;">
+		  <div style="margin: 10px auto 0px;">
 		    <div >
-			  <table class="admin_table c_align col-12">
+			  <table class="admin_table c_align width-90-percent">
 			  	<tr>
-			  	  <th scope="row" style="width: 60%;">タイトル</th>
-			  	  <th scope="row" style="width: 8%;">いいね数</th>
-			  	  <th scope="row" style="width: 8%;">PV数</th>
-			  	  <th scope="row" style="width: 8%;">状態</th>
-			  	  <!-- <th scope="row" style="width: 8%;">編集</th> -->
-			  	  <th scope="row" style="width: 8%;">削除</th>
+			  	  <th scope="row width-40-percent">タイトル</th>
+			  	  <th scope="row width-10-percent">いいね数</th>
+			  	  <th scope="row width-10-percent">PV数</th>
+			  	  <th scope="row width-10-percent">状態</th>
+			  	  <th scope="row width-10-percent">編集</th>
+			  	  <th scope="row width-10-percent">削除</th>
+			  	  <th scope="row width-10-percent">メール送信</th>
 			  	</tr>
 			  	<% @articles.each do |article| %>
 				  	<tr>
-				  	  <td style="width: 60%;"><%= link_to article.title, "/company/article/#{article.id}" %></td>
-				  	  <td style="width: 8%;"><%= article.article_likes.count %></td>
-				  	  <td style="width: 8%;"><%= number_with_delimiter(article.impressionist_count) %></td>
-				  	  <td style="width: 8%;">
+				  	  <td class="width-40-percent"><%= link_to article.title.truncate(35), "/company/article/#{article.id}" %></td>
+				  	  <td class="width-10-percent"><%= article.article_likes.count %></td>
+				  	  <td class="width-10-percent"><%= number_with_delimiter(article.impressionist_count) %></td>
+				  	  <td class="width-10-percent">
 				  	    <% if article.is_published == 0 %>
 				  	    	<%= link_to "未公開", "/company/article/#{article.id}/publish",{method: :post, title: "公開する", data: { :confirm => "選択した記事を公開しますか？"}} %>
 				  	    <% else %>
 				  	      <%= link_to "公開済み", "/company/article/#{article.id}/publish", {method: :post, title: "公開する", data: { :confirm => "選択した記事を非公開にしますか？"}} %>
 				  	    <% end %>
 				  	  </td>
-				  	  <!-- <td style="width: 8%;"><%= link_to "編集", "/company/article/#{article.id}/edit" %></td> -->
-				  	  <td style="width: 8%;"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
+				  	  <td class="width-10-percent"><%= link_to "編集", "" %></td>
+				  	  <td class="width-10-percent"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
+				  	  <td class="width-10-percent show-modal" id=<%= Rails.root.to_s + "/company/article/#{article.id}" %> value=<%= "#{article.title}" %>><%= link_to "メール送信", "#{article.id}" %></td>
 				  	</tr>
 			  	<% end %>
 			  </table>
@@ -44,3 +46,64 @@
 	  <% end %>
 	</div>
 </div>
+
+<div id="modalwin" class="modalwin hide">
+  <a herf="#" class="modal-close"></a>
+  <h1>メール送信</h1>
+  <div class="modalwin-contents">
+    <%= form_tag( "", method: "get", id: "login_form" ) do %>
+	    <div class="description">
+	      <p>件名<br/>
+	        <input autofocus="autofocus" type="text" name="title" required size="50" placeholder="メッセージを入力してください" style="font-size: 14px; padding: 8px;border:1px gray solid;">
+	      </p>
+	      <p>内容<br/>
+	        <textarea name="message" id="description" required rows="15" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください"></textarea>
+	      </p>
+	    </div>
+      <p align="right"><input type="submit" value="送信する"/></p>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function () {
+    // モーダルウィンドウを開く
+    function showModal(event) {
+      event.preventDefault();
+      var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#modalwin');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        });
+      }
+      function hideModal() {
+        $('#shade').remove();
+        $('#modalwin')
+        .removeClass('show')
+        .addClass('hide');
+      }
+
+      $('.show-modal').on('click', showModal);
+
+			$('.show-modal').on('click', function(){
+			    var url =  $(this).attr("id");
+			    var title = $(this).attr("value")
+          // $(".description textarea").attr("placeholder",id);
+          $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
+			});
+      // title.setAttribute("placeholder", "リンクタイトル");
+
+
+    }());
+</script>

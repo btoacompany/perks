@@ -873,11 +873,20 @@ hr.style-two {
 .margin-top-30 {
   margin-top: 30px;
 }
+.margin-left-5 {
+  margin-top: 5px;
+}
 .margin-bottom-5 {
   margin-bottom: 5px;
 }
 .margin-bottom-10 {
   margin-bottom: 10px;
+}
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+.margin-bottom-30 {
+  margin-bottom: 30px;
 }
 .margin-10 {
   margin: 10px;
@@ -896,6 +905,12 @@ hr.style-two {
 }
 .width-500{
   width: 250px;
+}
+.padding-10{
+  padding: 10px;
+}
+.padding-bottom-30{
+  padding-bottom: 30px;
 }
 
 .inactive_link {
@@ -1786,8 +1801,8 @@ table.admin_table {
   border-collapse: separate;
   border-spacing: 0;
   line-height: 1.5;
-  /*border-top: 1px solid #ccc;*/
-  /*border-left: 1px solid #ccc;*/
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
   margin: 0 auto;
 }
 
@@ -3341,7 +3356,7 @@ table.admin_table td textarea{
   text-align: center;
 }
 .modalwin-contents {
-  padding: 5px;
+  padding: 10px;
 }
 .modalwin-contents img {
   margin: 0 0 1em 0;

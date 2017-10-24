@@ -8,13 +8,13 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
 # セプテーニのcompany_idをいれる。今は暫定
-  $showoff_timeline = [1,2,3,32,30,79,37,14,80,38]
-  $showoff_ranking = [1,2,3,32,30,79,37,14,80,38]
-  $showoff_hashtag = [1,2,3,32,30,79,37,14,80,38]
-  $ban_edit_name = [1,2,3,32,30,79,37,14,80,38]
-  $allow_nickname = [1,2,3,32,30,79,37,14,80,38]
-  $use_select = [1,2,3,27,32,30,79,37,14,80,38]
-  $no_manager = [1,2,3,32,30,79,37,14,80,38]
+  $showoff_timeline = [1,2,3,14,30,32,37,38,79,80]
+  $showoff_ranking  = [1,2,3,14,30,32,37,38,79,80]
+  $showoff_hashtag  = [1,2,3,14,30,32,37,38,79,80]
+  $ban_edit_name    = [1,2,3,14,30,32,37,38,79,80]
+  $allow_nickname   = [1,2,3,14,30,32,37,38,79,80]
+  $use_select       = [1,2,3,14,27,30,32,37,38,79,80]
+  $no_manager       = [1,2,3,14,30,32,37,38,79,80]
   $nicknames = {
     1 => "同僚さん",
     2 => "白パンさん",
