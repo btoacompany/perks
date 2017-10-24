@@ -1,3 +1,4 @@
+<% if @posts.count > 0 %>
 <% @posts.each do | post | %>
   <div id="postsbox" class="post_<%= post[:id] %>">
   <div class="images">
@@ -149,3 +150,9 @@
           </div>
         </div><br>
       <% end %> <!-- posts -->
+
+<% else %>
+  <div class="each_article clearfix">
+    <p>メッセージがありません</p>
+  </div>
+<% end %>
