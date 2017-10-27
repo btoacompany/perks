@@ -5,6 +5,7 @@ class Team < ActiveRecord::Base
 
   before_create :set_create_time
   before_update :set_update_time
+  belongs_to :department
 
   def save_record(params)
     self.department_id	= params[:department_id].to_i if params[:department_id].present?

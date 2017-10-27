@@ -12,6 +12,13 @@
           <% end %>
           <div class="clearfix margin-top-10 width-100-percent">
             <div class="rightbox col-4" >
+              <div class="title"> 今までもらった「ありがとう」</div>
+              <div class="profilebox">
+                <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+                  <span style="color: #ff8d07; font-size: 40px"><b><%= @total_receive_message %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
+                  <span style="font-size: 12px; color: #808080"><br><br>test message</span>
+                </div>
+              </div><br>
               <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
               <div class="profilebox">
                 <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
@@ -44,6 +51,33 @@
                 <% end %>
               </div>
             </div><br>
+            <div class="title" style="background-color: #ff8290;">日々の感謝さん</div>
+            <div class="user_postbox">
+              <% if @user_posted_contents.count > 0 %>
+                <% @user_posted_contents.each do |article| %>
+                  <%= link_to "/company/article/#{article.id}" do %>
+                  <div class="each_post clearfix" style="padding: 0px;">
+                    <div class="each_post_left" style="float: left;">
+                      <% if article.images.present? %>
+                        <%= image_tag article.images.first.img_src, size: "100x70" %>
+                      <% else %>
+                        <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" width="100" height="70" />
+                      <% end %>
+                    </div>
+                    <div class="each_post_right" style="float: left;">
+                      <span class="date color-black"><%= article.updated_at.strftime("%Y.%m.%d") %></span>
+                      <h3 class="color-black pc_view" style="color: black;font-weight: normal;"><%= article.title.truncate(30) %></h3>
+                    </div>
+                  </div>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <div class="each_article clearfix">
+                  <p>記事が投稿されていません</p>
+                </div>
+              <% end %>
+            </div>
+            <div class="title border-radius-3 show-user-post" style="background-color: #ff8d07;">視聴者投稿はこちら</div>
           </div>
 
 			    <div class="leftbox col-8" style="padding-left:0;">
@@ -65,10 +99,9 @@
 				    <div class="blog_article_index">
 				      <% if @articles.count > 0 %>
 					      <% @articles.each do |article| %>
-					        <%= link_to "/company/article/#{article.id}" do %>
 					        <div class="each_article clearfix">
 					          <div class="each_article_left icon" style="float: left;">
-						          <% if article.updated_at > Date.today.months_ago(1) %>
+						          <% if article.is_new == 1 %>
 							          <p class="badge">
 							            <span class="short_term">New</span>
 							          </p>
@@ -83,19 +116,19 @@
 					            <% if article.category %>
 					              <h3 class="color-black pc_view" style="color: black;"><%= article.category.name.truncate(30) %></h3>
 					            <% end %>
-					            <h3 class="color-black pc_view" style="color: black;"><%= article.title.truncate(30) %></h3>
+					            <h3 class="color-black pc_view" style="color: black;"><%= link_to article.title, "/company/article/#{article.id}", class: "color-black text-decoration-none" %></h3>
 				              <% if article.tags.count > 0 %>
 					              <div class="margin-top-30">
 					                <p class="margin-bottom-5">この記事に登場する社員</p>
 						              <% article.tags.each do |tag| %>
-						                <span class="margin-bottom-5 name_tag show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+						                <span class="margin-bottom-5 name_tag show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                            <p class="fukidashi">クリックしてメッセージを贈る</p>
 						              <% end %>
 					              </div>
 					            <% end %>
 					            <p class="date color-black footer"><%= article.updated_at.strftime("%Y.%m.%d") %></p>
 					          </div>
 					        </div>
-					        <% end %>
 					      <% end %>
 					    <% else %>
 					      <div class="each_article clearfix">
@@ -160,23 +193,29 @@
     <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
       <div class="pointsbox" id="pointsbox" style="padding: 10px;">
         <div id="new_posts">
+          <p style="font-size: 15px;"><b>・名前からメッセージを贈る相手を探す</b><br/>
+            <input type="text" id="target_user_name" size="40" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>" style="border: #cccccc 1px solid;padding: 2px;">
+            <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+          </p>
+
           <div id="new_post" class="new_post display_hidden" name="new_post" style="margin-bottom:20px;">
             <p align="center">
             <% if $use_select.include?(@user.company_id) %>
               <div class="target_select clearfix">
-	                <p style="float: left; margin-right: 5px;">会社　：
-	                  <select class="target_select_department new_post_select">
-	                    <option>選択してください</option>
-	                    <% @departments.each do |dep| %>
-	                      <option value="<%= dep.id %>"><%= dep.dep_name %></option>
-	                   <% end %>
-	                  </select>
-	                </p>
-	                <p style="float: left;">部署　：
-	                  <select class="target_select_team new_post_select">
-	                    <option>選択してください</option>
-	                  </select>
-	                </p>
+                <p style="font-size: 15px;"><b>・所属からメッセージを贈る相手を探す</b></p>
+	              <p style="float: left; margin-right: 5px;">会社　：
+  	              <select class="target_select_department new_post_select">
+  	                <option>選択してください</option>
+  	                <% @departments.each do |dep| %>
+  	                  <option value="<%= dep.id %>"><%= dep.dep_name %></option>
+  	                <% end %>
+  	              </select>
+	              </p>
+	              <p style="float: left;">部署　：
+	                <select class="target_select_team new_post_select">
+	                  <option>選択してください</option>
+	                </select>
+	              </p>
 	              <div class="clearfix">
 				          <p style="float: left; margin-right: 5px;">贈り先：
 				            <select class="target_select_user new_post_select">
@@ -231,7 +270,7 @@
 
 <div id="modalmessage" class="modalwin hide">
   <a herf="#" class="modal-close"></a>
-  <h1>メッセージ</h1>
+  <h1>メッセージを贈る</h1>
   <div class="modalwin-contents">
     <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
       <div class="description">
@@ -256,6 +295,19 @@
 
 
 
+<div id="modal_user_post" class="modalwin hide">
+  <a herf="#" class="modal-close"></a>
+  <h1>視聴者投稿を贈る</h1>
+  <div class="modalwin-contents">
+    <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form" ) do %>
+      <textarea autofocus="autofocus" name="description" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。"></textarea>
+      <input type="file" name="image" %>
+      <p align="right"><input type="submit" value="送信する"/></p>
+    <% end %>
+  </div>
+</div>
+
+
 <script type="text/javascript">
 $(".btn_edit").click(function() {
   window.location = '/update';
@@ -263,6 +315,14 @@ $(".btn_edit").click(function() {
 </script>
 
 <script type="text/javascript">
+var user_datas = new Array();
+var user_names = $('#target_user_name').data('user');
+var user_ids = $('#target_user_name').data('user-id');
+for (var i=0; i < user_names.length; i++) {
+  user_datas[user_names[i]] = user_ids[i];
+}
+
+
 $.urlParam = function(name){
   var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
   if (results != null) {
@@ -502,6 +562,15 @@ $(function() {
   });
 });
 
+
+  $(".btn_change_password").click(function() {
+    var content = $('#target_user_name').val();
+    $('#target_user_name').val("");
+    $(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
+    var target_user_id = user_datas[content];
+    $(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
+  });
+
   <% if $allow_nickname.include?(@user.company_id) %>
   $(function() {
     $(".pointsbox").on("change",".select_giver_user", function(){
@@ -635,8 +704,8 @@ $("#new_posts").on("click", "#myDropdown", function(e) {
     case "drpAt":
       //$(".tags span").empty();
       if(!($selected.find(".tags .given_to input[data-id='" + dataId + "']").val())) {
-  $selected.find(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + dataId + "'/>").val(content));
-  $selected.find(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
+        $selected.find(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + dataId + "'/>").val(content));
+        $selected.find(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
       }
       break;
 
@@ -834,14 +903,57 @@ $(function () {
     }());
 
     $('.show-message').on('click', function(){
+      $('.destination').empty("");
+      $('.description #article_user').remove();
       var user_id =  $(this).attr("id");
       var name =  $(this).attr("name");
 
       // $(".description textarea").attr("placeholder",id);
-    $(".destination").append(name);
-    $(".description").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
+    $(".destination").append("To: " + name);
+    $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
       // $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
     });
 
+// show_modal
+$(function () {
+  // モーダルウィンドウを開く
+  function showModal(event) {
+    event.preventDefault();
+    var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#modal_user_post');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        });
+      }
+    function hideModal() {
+      $('#shade').remove();
+      $('#modal_user_post')
+        .removeClass('show')
+        .addClass('hide');
+      }
+      $('.show-user-post').on('click', showModal);
+    }());
+
+
+  $(function() {
+    var target_user_names = $('#target_user_name').data('user');
+// var availableTags = [];
+    $( "#target_user_name" ).autocomplete({
+      // source: "<%= @suggestions %>"
+      // source: $('#target_user_name').data('fullnames')
+      source: target_user_names
+    });
+  });
 
 </script>

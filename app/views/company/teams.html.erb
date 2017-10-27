@@ -74,31 +74,32 @@
     <tr>
       <th>部署名</th>
       <td align="left">
-  <select id="department_id" name="department_id" required style="width:200px;">
-    <option value=""></option>
-    <% @departments.each do | dept | %>
-      <option value=<%= dept[:id] %>><%= dept[:dep_name] %></option>
-    <% end %>
-  </select>
+        <select id="department_id" name="department_id" required style="width:200px;">
+          <option value=""></option>
+          <% @departments.each do | dept | %>
+            <option value=<%= dept[:id] %>><%= dept[:dep_name] %></option>
+          <% end %>
+        </select>
       </td>
     </tr>
     <% unless $no_manager.include?(@id) %>
     <tr>
       <th>マネージャー名</th>
       <td align="left">
-  <select id="manager_id" name="manager_id" style="width:200px;">
-    <option value=""></option>
-    <% @managers.each do | manager | %>
-      <option value=<%= manager.id %>><%= manager.lastname %> <%= manager.firstname %></option>
-    <% end %>
-  </select>
+        <select id="manager_id" name="manager_id" style="width:200px;">
+          <option value=""></option>
+          <% @managers.each do | manager | %>
+            <option value=<%= manager.id %>><%= manager.lastname %> <%= manager.firstname %></option>
+          <% end %>
+        </select>
       </td>
     </tr>
     <% end %>
     <tr>
       <th>所属社員</th>
       <td>
-        <input type="text" id="suggested_name" name="members[]" value="" size="32" style="width: 200px;"/>    <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+        <input type="text" id="suggested_name" name="members[]" value="" size="32" style="width: 200px;"/>
+        <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
         <div id="suggest" style="display:none;"></div>
         <br><br>
         <div id="adding_member"></div>
@@ -126,7 +127,7 @@
 	  <th class="c_align">編集・削除</th>
 	</tr>
 	<% @teams.each do | item | %>
-  <% @this_department = Department.find(item.department_id) %>
+  <% @this_department = item.department %>
 	<tr class="item_<%= item.id %>">
     <td class="c_align" style="width: 250px;"><%= @this_department.dep_name %></td>
     <td class="c_align" style="width: 250px;"><%= item.team_name %></td>

@@ -271,6 +271,19 @@ class ArticlesController < ApplicationController
   	redirect_to company_articles_path
   end
 
+  def update_is_new
+    @article = Article.find(params[:id])
+    if @article
+      if @article.is_new == 0
+        @article.is_new = 1
+      elsif @article.is_new == 1
+        @article.is_new = 0
+      end
+      @article.save
+    end
+    redirect_to company_articles_path
+  end
+
   def like
     like = ArticleLike.find_by(user_id: @user_id, article_id: params[:article_id])
     if like.present?
@@ -371,5 +384,4 @@ class ArticlesController < ApplicationController
       @top_givers << data
     end
   end
-
 end
