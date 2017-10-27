@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :articles, through: :article_likes
   has_many :tags
   has_many :articles, through: :tags
+  has_many :user_posted_contents
 
   before_save 	:encrypt_password
   after_save 	:clear_password
@@ -29,6 +30,20 @@ class User < ActiveRecord::Base
     access_token = auth['token']
     facebook = Koala::Facebook::API.new(access_token)
     facebook.get_object("me?fields=id,first_name,last_name,gender,name,picture")
+  end
+
+  def self.autocomplete_suggestions(company_id)
+    @user_ids = Array.new
+    @user_fullnames = Array.new
+    users = User.where(company_id: company_id)
+    users.each do |user|
+      if user.lastname && user.firstname
+        fullname = user.lastname + user.firstname
+        @user_ids.push(user.id)
+        @user_fullnames.push(fullname)
+      end
+    end
+    return @user_ids, @user_fullnames
   end
   
   def save_record(params)

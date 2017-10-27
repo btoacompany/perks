@@ -9,6 +9,7 @@ class Company < ActiveRecord::Base
   has_many :posts
   has_many :categories
   has_many :tags
+  has_many :user_posted_contents
 
   before_create :set_create_time
   before_update :set_update_time

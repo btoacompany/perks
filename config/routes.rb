@@ -135,12 +135,15 @@ Rails.application.routes.draw do
   post '/company/article/update'  => 'articles#update'
   post '/company/article/:id/destory'     => 'articles#destory'
   post '/company/article/:id/publish' => 'articles#publish'
+  post '/company/article/:id/update_is_new' => 'articles#update_is_new'
   post '/company/article/like' => 'articles#like'
   get '/company/categories' => 'categories#index'
   post '/company/category/create' => 'categories#create'
   post '/company/category/:id/update' => 'categories#update'
   post '/company/category/:id/destory' => 'categories#destory'
   get '/company/tags' => 'tags#index'
+  get '/company/user_posted_contents' => 'user_posted_contents#index'
+  post '/company/user_posted_content/create'  => 'user_posted_contents#create'  
 
   # banner
   get '/company/banners' => 'banners#index'

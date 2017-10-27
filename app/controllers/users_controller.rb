@@ -419,7 +419,7 @@ class UsersController < ApplicationController
       end
 
       if error == 0
-        receiver_ids  = params[:receiver_id]
+        receiver_ids  = params[:receiver_id].uniq
         receiver_count  = receiver_ids.count
    	    points		= points * receiver_count
 
@@ -678,7 +678,10 @@ class UsersController < ApplicationController
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @articles = Article.where(company_id: @company_id, is_deleted: 0, is_published: 1)
-    # @articles = Article.where(company_id: @company_id, is_deleted: 0)
+    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1)
+    @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
+
+    @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
 
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)

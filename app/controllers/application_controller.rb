@@ -8,13 +8,22 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
 # セプテーニのcompany_idをいれる。今は暫定
-  $showoff_timeline = [1,2,3,14,30,32,37,38,79,80]
-  $showoff_ranking  = [1,2,3,14,30,32,37,38,79,80]
-  $showoff_hashtag  = [1,2,3,14,30,32,37,38,79,80]
-  $ban_edit_name    = [1,2,3,14,30,32,37,38,79,80]
-  $allow_nickname   = [1,2,3,14,30,32,37,38,79,80]
-  $use_select       = [1,2,3,14,27,30,32,37,38,79,80]
-  $no_manager       = [1,2,3,14,30,32,37,38,79,80]
+  all_company_ids = Company.all.where(delete_flag: 0).pluck(:id)
+  $showoff_timeline = all_company_ids
+  $showoff_ranking  = all_company_ids
+  $showoff_hashtag  = all_company_ids
+  $ban_edit_name    = all_company_ids
+  $allow_nickname   = all_company_ids
+  $use_select       = all_company_ids
+  $no_manager       = all_company_ids
+
+  # $showoff_timeline = [1,2,3,14,30,32,37,38,79,80]
+  # $showoff_ranking  = [1,2,3,14,30,32,37,38,79,80]
+  # $showoff_hashtag  = [1,2,3,14,30,32,37,38,79,80]
+  # $ban_edit_name    = [1,2,3,14,30,32,37,38,79,80]
+  # $allow_nickname   = [1,2,3,14,30,32,37,38,79,80]
+  # $use_select       = [1,2,3,14,27,30,32,37,38,79,80]
+  # $no_manager       = [1,2,3,14,30,32,37,38,79,80]
   $nicknames = {
     1 => "同僚さん",
     2 => "白パンさん",
