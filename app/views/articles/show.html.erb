@@ -12,17 +12,33 @@
 
     <div class="clearfix margin-top-10" style="width: 100%;">
       <div class="rightbox col-4" >
+              <div class="title"> 今までもらった「ありがとう」</div>
+              <div class="profilebox">
+                <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+                  <% if @total_receive_message != 0 %>
+                    <span style="color: #ff8d07; font-size: 40px"><b><%= @total_receive_message %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
+                  <% else %>
+                    <span style="font-size: 12px; color: #808080">現在集計中です！！</span><br/><br/>
+                  <% end %>
+                </div>
+              </div><br>
         <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
         <div class="profilebox">
           <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
           <% if @receiver_ratio[1] == "-" %>
-            <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b></b></span><span style="font-size: 12px; color: #808080"><br><br>翌週から結果を表示します！</span>
+            <span class="font-size-40" style="color: #ff8d07;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
+            <span class="font-size-40" style="color: red;font-weight: 900"><b></b></span>
+            <span class="font-size-12" style="color: #808080"><br><br>翌週から結果を表示します！</span>
           <% elsif @receiver_ratio[1] > 0 %>
-            <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも褒められています！</span>
+            <span class="font-size-40" style="color: #ff8d07;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
+            <span class="font-size-40" style="color: red;font-weight: 900"><b>↑</b></span>
+            <span class="font-size-12" style="color: #808080"><br><br>先週よりも褒められています！</span>
           <% elsif @receiver_ratio[1] == 0 %>
             <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
           <% else %>
-            <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
+            <span class="font-size-36" style="color: #2d87e2;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
+            <span class="font-size-40" style="color: blue;font-weight: 900"><b>↓</b></span>
+            <span class="font-size-12" style="color: #808080"><br><br>先週に比べマイナスになっています><</span>
           <% end %>
         </div>
       </div><br>
@@ -40,6 +56,33 @@
             <% end %>
           </div>
         </div><br>
+        <div class="title" style="background-color: #ff8290;">日々の感謝さん</div>
+          <div class="user_postbox">
+            <% if @user_posted_contents.count > 0 %>
+              <% @user_posted_contents.each do |article| %>
+                <%= link_to "/company/article/#{article.id}" do %>
+                  <div class="each_post clearfix" style="padding: 0px;">
+                    <div class="each_post_left" style="float: left;">
+                      <% if article.images.present? %>
+                        <%= image_tag article.images.first.img_src, size: "100x70" %>
+                      <% else %>
+                        <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" width="100" height="70" />
+                      <% end %>
+                    </div>
+                    <div class="each_post_right" style="float: left;">
+                      <span class="date color-black"><%= article.updated_at.strftime("%Y.%m.%d") %></span>
+                      <h3 class="color-black pc_view" style="color: black;font-weight: normal;"><%= article.title.truncate(30) %></h3>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <div class="each_article clearfix">
+                <p>記事が投稿されていません</p>
+              </div>
+            <% end %>
+          </div>
+        <div class="title border-radius-3 show-user-post dropbtn" style="background-color: #ff8d07;font-size:13px;">視聴者投稿はこちら</div>
       </div>
 
       <div class="leftbox col-8" style="padding-left:0;">
@@ -99,21 +142,63 @@
                 <% end %>
                 <span class="kudos_count"><%= @article.article_likes.where(is_liked: 1).count %>件</span>
               </div>
-              <div class="article_tag_wrapper">
-                <div class="article_tags">
-                  <p>この記事に登場する社員</p>
-                  <ul class="clearfix">
-                    <% @tags.each do |tag| %>
-                      <li class="margin-bottom-5 name_tag"><span><%= tag.user.lastname + tag.user.firstname %></span></li>
-                    <% end %>
-                  </ul>
+              <% if @article.tags.count > 0 %>
+                <div class="article_tag_wrapper">
+                  <div class="article_tags clearfix">
+                    <div class="margin-top-10">
+                      <p>この記事に登場する社員</p>
+                      <% @article.tags.each do |tag| %>
+                        <span class="margin-bottom-5 name_tag show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                        <p class="fukidashi">クリックしてメッセージを贈る</p>
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              <% end %>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div id="modalmessage" class="modalwin hide">
+  <a herf="#" class="modal-close"></a>
+  <h1>メッセージを贈る</h1>
+  <div class="modalwin-contents">
+    <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
+      <div class="description">
+        <p class="destination">To:
+        </p>
+        <p style="float: left;">贈り主：
+          <select class="select_giver_user new_post_select" name="new_post[]nickname_id">
+            <option>選択してください</option>
+            <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
+            <% $nicknames.each do |key, value| %>
+              <option value="<%= key %>"><%= value %></option>
+            <% end %>
+          </select>
+        </p>
+        <p>
+          <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
+        </p>
+      </div>
+      <p align="right"><input type="submit" value="送信する"/></p>
+    <% end %>
+  </div>
+</div>
+
+
+<div id="modal_user_post" class="modalwin hide">
+  <a herf="#" class="modal-close"></a>
+  <h1>視聴者投稿を贈る</h1>
+  <div class="modalwin-contents">
+    <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form" ) do %>
+      <textarea autofocus="autofocus" name="description" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。"></textarea>
+      <input type="file" name="image" %>
+      <p align="right"><input type="submit" value="送信する"/></p>
+    <% end %>
   </div>
 </div>
 
@@ -143,4 +228,85 @@ $(".btn_unlike").mouseup(function() {
     }
   });
 });
+// show_modal
+$(function () {
+  // モーダルウィンドウを開く
+  function showModal(event) {
+    event.preventDefault();
+    var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#modalmessage');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        });
+      }
+    function hideModal() {
+      $('#shade').remove();
+      $('#modalmessage')
+        .removeClass('show')
+        .addClass('hide');
+      }
+      $('.show-message').on('click', showModal);
+    }());
+
+    $('.show-message').on('click', function(){
+      $('.destination').empty("");
+      $('.description #article_user').remove();
+      var user_id =  $(this).attr("id");
+      var name =  $(this).attr("name");
+
+      // $(".description textarea").attr("placeholder",id);
+    $(".destination").append("To: " + name);
+    $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
+      // $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
+    });
+
+// show_modal
+$(function () {
+  // モーダルウィンドウを開く
+  function showModal(event) {
+    event.preventDefault();
+    var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#modal_user_post');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        });
+      }
+    function hideModal() {
+      $('#shade').remove();
+      $('#modal_user_post')
+        .removeClass('show')
+        .addClass('hide');
+      }
+      $('.show-user-post').on('click', showModal);
+    }());
+
+
+  $(function() {
+    var target_user_names = $('#target_user_name').data('user');
+    $( "#target_user_name" ).autocomplete({
+      source: target_user_names
+    });
+  });
 </script>

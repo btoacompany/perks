@@ -121,7 +121,9 @@ class ArticlesController < ApplicationController
 
   def show
     @user = User.find(@id)
+    @total_receive_message = Post.where(company_id: @user.company_id, delete_flag: 0, receiver_id: @user.id).count
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
+    @user_posted_contents = Article.where(company_id: @company.id, is_casual: 1)
 	    if @article
       @banner = Banner.find_by(company_id: @company.id, is_deleted: 0)
       impressionist(@article, nil, :unique => [:session_hash])
