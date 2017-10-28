@@ -15,8 +15,11 @@
               <div class="title"> 今までもらった「ありがとう」</div>
               <div class="profilebox">
                 <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
-                  <span style="color: #ff8d07; font-size: 40px"><b><%= @total_receive_message %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
-                  <span style="font-size: 12px; color: #808080"><br><br>test message</span>
+                  <% if @total_receive_message != 0 %>
+                    <span style="color: #ff8d07; font-size: 40px"><b><%= @total_receive_message %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
+                  <% else %>
+                    <span style="font-size: 12px; color: #808080">現在集計中です！！</span><br/><br/>
+                  <% end %>
                 </div>
               </div><br>
               <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
@@ -225,6 +228,7 @@
 				          <p style="float: left;">贈り主：
 				            <select class="select_giver_user new_post_select">
 				              <option>選択してください</option>
+                      <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
 				              <% $nicknames.each do |key, value| %>
 				                <option value="<%= key %>"><%= value %></option>
 				              <% end %>
@@ -312,9 +316,7 @@
 $(".btn_edit").click(function() {
   window.location = '/update';
 });
-</script>
 
-<script type="text/javascript">
 var user_datas = new Array();
 var user_names = $('#target_user_name').data('user');
 var user_ids = $('#target_user_name').data('user-id');
@@ -948,10 +950,7 @@ $(function () {
 
   $(function() {
     var target_user_names = $('#target_user_name').data('user');
-// var availableTags = [];
     $( "#target_user_name" ).autocomplete({
-      // source: "<%= @suggestions %>"
-      // source: $('#target_user_name').data('fullnames')
       source: target_user_names
     });
   });
