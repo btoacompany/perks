@@ -459,11 +459,11 @@ class UsersController < ApplicationController
               }).deliver_later
 	          end
 
-		p @user
-		if @user[:badge].present?
-		  @user.badge += 1
-		  @user.save
-		end
+        		p @user
+        		if @user[:badge].present?
+        		  @user.badge += 1
+        		  @user.save
+        		end
             flash[:notice] = "送信が完了しました。"
   	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
@@ -625,6 +625,8 @@ class UsersController < ApplicationController
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
+    @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
+    @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
 
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
@@ -735,6 +737,8 @@ class UsersController < ApplicationController
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @company = Company.find(@user.company_id)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
+    @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
+    @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     if $showoff_timeline.include?(@company_id)
       unless $use_select.include?(@company_id)
         get_team_users
@@ -1138,11 +1142,12 @@ class UsersController < ApplicationController
       res.save_record(params)
     end
 
-    b_year  = params[:b_year]
-    b_month = params[:b_month]
-    b_day   = params[:b_day]
-    
-    params[:birthday] = DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d") 
+    if params[:b_year] && params[:b_month] && params[:b_day]
+      b_year  = params[:b_year]
+      b_month = params[:b_month]
+      b_day   = params[:b_day]
+      params[:birthday] = DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d") 
+    end
 
     if params[:img_src].present?
       unless params[:fb_data].to_i == 1

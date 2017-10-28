@@ -11,6 +11,16 @@
     <% end %>
     <div class="clearfix margin-top-10 width-100-percent">
       <div class="rightbox col-4" >
+        <div class="title"> 今までもらった「ありがとう」</div>
+        <div class="profilebox">
+          <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+            <% if @total_receive_message != 0 %>
+              <span style="color: #ff8d07; font-size: 40px"><b><%= @total_receive_message %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
+            <% else %>
+              <span style="font-size: 12px; color: #808080">現在集計中です！！</span><br/><br/>
+            <% end %>
+          </div>
+        </div><br>
         <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
         <div class="profilebox">
           <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
@@ -110,11 +120,15 @@
     <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
       <div class="pointsbox" id="pointsbox" style="padding: 10px;">
         <div id="new_posts">
+          <p style="font-size: 15px;"><b>・名前からメッセージを贈る相手を探す</b><br/>
+            <input type="text" id="target_user_name" size="40" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>" style="border: #cccccc 1px solid;padding: 2px;">
+            <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+          </p>
           <div id="new_post" class="new_post display_hidden" name="new_post" style="margin-bottom:20px;">
             <p align="center">
             <% if $use_select.include?(@user.company_id) %>
               <div class="target_select clearfix">
-
+                <p style="font-size: 15px;"><b>・所属からメッセージを贈る相手を探す</b></p>
                   <p style="float: left; margin-right: 5px;">会社　：
                     <select class="target_select_department new_post_select">
                       <option>選択してください</option>
@@ -138,6 +152,7 @@
                   <p style="float: left;">贈り主：
                     <select class="select_giver_user new_post_select">
                       <option>選択してください</option>
+                      <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
                       <% $nicknames.each do |key, value| %>
                         <option value="<%= key %>"><%= value %></option>
                       <% end %>
@@ -181,18 +196,18 @@
 
 
 <script type="text/javascript">
+  var user_datas = new Array();
+  var user_names = $('#target_user_name').data('user');
+  var user_ids = $('#target_user_name').data('user-id');
+  for (var i=0; i < user_names.length; i++) {
+    user_datas[user_names[i]] = user_ids[i];
+  }
+
+
 $(".btn_edit").click(function() {
   window.location = '/update';
 });
-</script>
 
-<script type="text/javascript">
-$(".btn_edit").click(function() {
-  window.location = '/update';
-});
-</script>
-
-<script type="text/javascript">
 $.urlParam = function(name){
   var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
   if (results != null) {
@@ -430,6 +445,16 @@ $(function() {
     $selected.find(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + dataId + "'/>").val(dataId));
   });
 });
+
+  $(".btn_change_password").click(function() {
+    var content = $('#target_user_name').val();
+    $('#target_user_name').val("");
+    $(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
+    var target_user_id = user_datas[content];
+    $(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
+  });
+
+
 
   <% if $allow_nickname.include?(@user.company_id) %>
   $(function() {
@@ -711,23 +736,16 @@ $("#new_posts").on("click", ".dropbtn", function() {
   
   $selected.closest(".new_post").find("#type_email").click(function(){
     var $post = $(this).closest(".new_post");
-
-    // init suggest
-    // new Suggest.LocalMulti(
-    //    $post.find("#suggested_name")[0],    // 入力のエレメント
-    //   $post.find("#suggest")[0], // 補完候補を表示するエリア
-    //   <%= raw @emails %>,
-    //   {dispMax: 10, interval: 1000, prefix: true} // オプション
-    // );
-
-    // var $post = $(this).closest(".new_post");
-    // $post.find("#suggested_name_span").show();
-    // $post.find("#suggested_name").show();
-    // $post.find("#send_suggested_name").show();
   });
 
   $(".item").click(function() {
     $(".taginput").focus();
   });
 });
+  $(function() {
+    var target_user_names = $('#target_user_name').data('user');
+    $( "#target_user_name" ).autocomplete({
+      source: target_user_names
+    });
+  });
 </script>
