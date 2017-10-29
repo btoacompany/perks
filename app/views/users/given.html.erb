@@ -64,7 +64,7 @@
                   </div>
                   <div class="each_post_right" style="float: left;">
                     <span class="date color-black"><%= article.updated_at.strftime("%Y.%m.%d") %></span>
-                    <h3 class="color-black pc_view" style="color: black;font-weight: normal;"><%= article.title.truncate(30) %></h3>
+                    <h3 class="color-black pc_view" style="word-break:break-all;color: black;font-weight: normal;"><%= article.title.truncate(30) %></h3>
                   </div>
                 </div>
               <% end %>

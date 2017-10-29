@@ -128,6 +128,7 @@ Rails.application.routes.draw do
 
   # blog
   get '/company/articles' => 'articles#index'
+  get '/company/casual_articles' => 'articles#casual'
   get '/company/article/new' => 'articles#new'
   get '/company/article/:id' => 'articles#show'
   post '/company/article/create'  => 'articles#create'

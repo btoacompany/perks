@@ -4,52 +4,44 @@
 	<div id="admin_contents" class="c_align">
 	  <h3>ブログ</h3>
 	  <div class="margin-10">
+	    <%= link_to "+ 記事を作成する", company_article_new_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ ニュース記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
-      <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
 	    <%= link_to "+ カテゴリーを登録・編集する", company_categories_path, {class: "a_btncmn radius5 width-250"} %>
+	    <%= link_to "+ 社員からの投稿を見る", company_user_posted_contents_path, {class: "a_btncmn radius5 width-250"} %>
 	  </div>
 
-	  <% if @user_posted_contents.count == 0 %>
-	    <h3>社員からの投稿はありません</h3>
+	  <% if @articles.count == 0 %>
+	    <h3>カジュアル記事が作成されていません</h3>
 	  <% else %>
-		  <h3>社員から投稿されたコンテンツ一覧</h3>
+		  <h3 class="margin-bottom-10">作成したカジュアル記事一覧</h3>
+		  <p>現在の公開記事数: <%= @articles.where(is_published: 1).count %>記事</p>
 		  <div style="margin: 10px auto 0px;">
 		    <div >
 			  <table class="admin_table c_align width-90-percent">
 			  	<tr>
-			  	  <th scope="row width-10-percent">投稿日</th>
-			  	  <th scope="row width-40-percent">内容</th>
-			  	  <th scope="row width-20-percent">画像</th>
-			  	  <th scope="row width-10-percent">投稿者</th>
-			  	  <th scope="row width-10-percent">所属会社</th>
-			  	  <th scope="row width-10-percent">所属部署</th>
+			  	  <th scope="row width-8-percent">作成日</th>
+			  	  <th scope="row width-30-percent">タイトル</th>
+			  	  <th scope="row width-8-percent">いいね数</th>
+			  	  <th scope="row width-8-percent">PV数</th>
+			  	  <th scope="row width-8-percent">公開/未公開</th>
+			  	  <th scope="row width-8-percent">削除</th>
+			  	  <th scope="row width-8-percent">メール送信</th>
 			  	</tr>
-			  	<% @user_posted_contents.each do |user_posted_content| %>
+			  	<% @articles.each do |article| %>
 				  	<tr>
-				  	  <td class="width-10percent"><%= user_posted_content.created_at.strftime("%Y/%m/%d") %></td>
-				  	  <td class="width-40percent"><%= user_posted_content.description %></td>
-				  	  <td scope="row width-20-percent">
-	              <% if user_posted_content.img_src.present? %>
-	                <%= image_tag user_posted_content.img_src, class: "article_image width-20-percent" %>
-	              <% else %>
-	                -
-	              <% end %>
-	            </td>
-				  	  <td class="width-10percent"><%= "#{user_posted_content.user.lastname}" + "#{user_posted_content.user.firstname}" %></td>
-				  	  <td class="width-10-percent">
-				  	    <% @team_members.each do |team_members, team| %>
-				  	      <% if team_members.include?(user_posted_content.user.id.to_s) %>
-				  	        <% team.department.dep_name %>
-				  	      <% end %>
+				  	  <td class="width-8-percent"><%= article.updated_at.strftime("%Y/%m/%d") %></td>
+				  	  <td class="width-30-percent"><%= link_to article.title.truncate(35), "/company/article/#{article.id}" %></td>
+				  	  <td class="width-8-percent"><%= article.article_likes.count %></td>
+				  	  <td class="width-8-percent"><%= number_with_delimiter(article.impressionist_count) %></td>
+				  	  <td class="width-8-percent">
+				  	    <% if article.is_published == 0 %>
+				  	    	<%= link_to "未公開", "/company/article/#{article.id}/publish",{method: :post, title: "公開する", data: { :confirm => "選択した記事を公開しますか？"}} %>
+				  	    <% else %>
+				  	      <%= link_to "公開済み", "/company/article/#{article.id}/publish", {method: :post, title: "非公開にする", data: { :confirm => "選択した記事を非公開にしますか？"}} %>
 				  	    <% end %>
 				  	  </td>
-				  	  <td class="width-10-percent">
-				  	    <% @team_members.each do |team_members, team| %>
-				  	      <% if team_members.include?(user_posted_content.user.id.to_s) %>
-				  	        <% team.team_name %>
-				  	      <% end %>
-				  	    <% end %>
-				  	  </td>
+				  	  <td class="width-8-percent"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
+				  	  <td class="width-8-percent show-modal" id=<%= Rails.root.to_s + "/company/article/#{article.id}" %> value=<%= "#{article.title}" %>><%= link_to "メール送信", "#{article.id}" %></td>
 				  	</tr>
 			  	<% end %>
 			  </table>
