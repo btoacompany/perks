@@ -4,7 +4,8 @@
   <div id="admin_contents" class="c_align">
     <div><br/><br/>
       <%= link_to "+ 記事を作成する", company_article_new_path, {class: "a_btncmn radius5 width-250"} %>
-      <%= link_to "+ 作成した記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ ニュース記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ 社員からの投稿を見る", company_user_posted_contents_path, {class: "a_btncmn radius5 width-250"} %>
     </div>
 
@@ -24,15 +25,15 @@
     <% if @categories.count == 0 %>
       <!-- <h3>記事が作成されていません</h3> -->
     <% else %>
-      <h3>作成したカテゴリー 一覧</h3>
+      <h3 class="margin-bottom-10">作成したカテゴリー 一覧</h3>
       <div style="margin: 0px auto;">
         <div >
-        <table class="admin_table c_align col-12">
+        <table class="admin_table c_align width-90-percent">
           <tr>
-            <th scope="row" style="width: 40%;">カテゴリー</th>
-            <th scope="row" style="width: 10%;">記事数</th>            
-            <th scope="row" style="width: 40%;">編集</th>
-            <th scope="row" style="width: 10%;">削除</th>
+            <th scope="row width-40-percent">カテゴリー</th>
+            <th scope="row width-10-percent">記事数</th>            
+            <th scope="row width-40-percent">編集</th>
+            <th scope="row width-10-percent">削除</th>
           </tr>
           <% @categories.each do |category| %>
             <tr>

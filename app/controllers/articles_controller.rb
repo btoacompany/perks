@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
   end
 
   def index
-    @articles = Article.where(company_id: @company.id, is_deleted: 0)
+    @articles = Article.where(company_id: @company.id, is_deleted: 0, is_casual: 0)
   end
 
   def new
@@ -43,6 +43,7 @@ class ArticlesController < ApplicationController
 				category_id: nil,
 				title: params[:title],
 				description: params[:description],
+        is_casual: params[:is_casual]
       	)
 
       if params[:tags].present?
@@ -273,6 +274,10 @@ class ArticlesController < ApplicationController
   	redirect_to company_articles_path
   end
 
+  def casual
+    @articles = Article.where(company_id: @company.id, is_deleted: 0, is_casual: 1)
+  end
+
   def update_is_new
     @article = Article.find(params[:id])
     if @article
@@ -340,6 +345,8 @@ class ArticlesController < ApplicationController
       return @giver_ratio
     end
   end
+
+
   def process_paging(posts)
     limit = 10
     page  = params[:page] || 1

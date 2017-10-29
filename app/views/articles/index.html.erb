@@ -5,14 +5,16 @@
 	  <h3>ブログ</h3>
 	  <div class="margin-10">
 	    <%= link_to "+ 記事を作成する", company_article_new_path, {class: "a_btncmn radius5 width-250"} %>
+	    <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
 	    <%= link_to "+ カテゴリーを登録・編集する", company_categories_path, {class: "a_btncmn radius5 width-250"} %>
 	    <%= link_to "+ 社員からの投稿を見る", company_user_posted_contents_path, {class: "a_btncmn radius5 width-250"} %>
 	  </div>
 
 	  <% if @articles.count == 0 %>
-	    <h3>記事が作成されていません</h3>
+	    <h3>ニュース記事が作成されていません</h3>
 	  <% else %>
-		  <h3>作成した記事一覧</h3>
+		  <h3 class="margin-bottom-10">作成したニュース記事一覧</h3>
+		  <p>現在の公開記事数: <%= @articles.where(is_published: 1).count %>記事</p>
 		  <div style="margin: 10px auto 0px;">
 		    <div >
 			  <table class="admin_table c_align width-90-percent">
@@ -23,7 +25,6 @@
 			  	  <th scope="row width-8-percent">PV数</th>
 			  	  <th scope="row width-8-percent">公開/未公開</th>
 			  	  <th scope="row width-8-percent">Newバッチ</th>
-			  	  <th scope="row width-8-percent">編集</th>
 			  	  <th scope="row width-8-percent">削除</th>
 			  	  <th scope="row width-8-percent">メール送信</th>
 			  	</tr>
@@ -47,7 +48,6 @@
 				  	      <%= link_to "-", "/company/article/#{article.id}/update_is_new", {method: :post, title: "バッチをつける", data: { :confirm => "選択した記事に「New」バッチをつけますか？"}} %>
 				  	    <% end %>
 				  	  </td>
-				  	  <td class="width-8-percent"><%= link_to "編集", "" %></td>
 				  	  <td class="width-8-percent"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
 				  	  <td class="width-8-percent show-modal" id=<%= Rails.root.to_s + "/company/article/#{article.id}" %> value=<%= "#{article.title}" %>><%= link_to "メール送信", "#{article.id}" %></td>
 				  	</tr>
