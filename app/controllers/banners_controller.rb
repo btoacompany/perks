@@ -29,11 +29,15 @@ class BannersController < ApplicationController
     if @current_banner
       @current_banner.update_all(is_deleted: 1)
     end
-    @banner_id = Banner.last.id + 1
+    if Banner.all.count == 0
+      @banner_id = 1
+    else
+      @banner_id = Banner.last.id + 1
+    end
     src    = params[:banner]
     src_ext    = File.extname(src.original_filename)
     s3  = Aws::S3::Resource.new
-    obj = s3.bucket(@s3_bucket).object("company/banner_#{@banner_id}_pic#{src_ext}")
+    obj = s3 .bucket(@s3_bucket).object("company/banner_#{@banner_id}_pic#{src_ext}")
     obj.upload_file src.tempfile, {acl: 'public-read'}
     Banner.create(
       company_id: @id,
