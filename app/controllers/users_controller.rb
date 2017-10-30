@@ -1163,7 +1163,7 @@ class UsersController < ApplicationController
       	s3  = Aws::S3::Resource.new
       	obj = s3 .bucket(@s3_bucket).object("profile/user_#{res.id}_pic#{src_ext}")
       	
-	obj.upload_file src.tempfile, {acl: 'public-read'}
+       	obj.upload_file src.tempfile, {acl: 'public-read'}
 
       	params[:img_src] = obj.public_url
       end
