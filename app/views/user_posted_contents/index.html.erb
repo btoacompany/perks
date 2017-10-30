@@ -4,6 +4,7 @@
 	<div id="admin_contents" class="c_align">
 	  <h3>ブログ</h3>
 	  <div class="margin-10">
+	    <%= link_to "+ 記事を作成する", company_article_new_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ ニュース記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
 	    <%= link_to "+ カテゴリーを登録・編集する", company_categories_path, {class: "a_btncmn radius5 width-250"} %>
@@ -26,24 +27,24 @@
 			  	</tr>
 			  	<% @user_posted_contents.each do |user_posted_content| %>
 				  	<tr>
-				  	  <td class="width-10percent"><%= user_posted_content.created_at.strftime("%Y/%m/%d") %></td>
-				  	  <td class="width-40percent"><%= user_posted_content.description %></td>
+				  	  <td class="row width-10-percent"><%= user_posted_content.created_at.strftime("%Y/%m/%d") %></td>
+				  	  <td class="row width-40-percent"><%= user_posted_content.description %></td>
 				  	  <td scope="row width-20-percent">
 	              <% if user_posted_content.img_src.present? %>
-	                <%= image_tag user_posted_content.img_src, class: "article_image width-20-percent" %>
+	                <%= image_tag user_posted_content.img_src, class: "article_image width-100-percent max-height-200" %>
 	              <% else %>
 	                -
 	              <% end %>
 	            </td>
-				  	  <td class="width-10percent"><%= "#{user_posted_content.user.lastname}" + "#{user_posted_content.user.firstname}" %></td>
-				  	  <td class="width-10-percent">
+				  	  <td class="row width-10percent"><%= "#{user_posted_content.user.lastname}" + "#{user_posted_content.user.firstname}" %></td>
+				  	  <td class="row width-10-percent">
 				  	    <% @team_members.each do |team_members, team| %>
 				  	      <% if team_members.include?(user_posted_content.user.id.to_s) %>
 				  	        <% team.department.dep_name %>
 				  	      <% end %>
 				  	    <% end %>
 				  	  </td>
-				  	  <td class="width-10-percent">
+				  	  <td class="row width-10-percent">
 				  	    <% @team_members.each do |team_members, team| %>
 				  	      <% if team_members.include?(user_posted_content.user.id.to_s) %>
 				  	        <% team.team_name %>
