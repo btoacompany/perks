@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
+  before_filter :init_url
   impressionist actions: [:index, :show]
   before_action :init
-  before_filter :init_url
 
   def init
     if session[:email].present? || cookies[:email].present?
@@ -99,7 +99,7 @@ class ArticlesController < ApplicationController
 	      	src	  = value
 	      	src_ext	  = File.extname(src.original_filename)
 	      	s3  = Aws::S3::Resource.new
-	      	obj = s3.bucket(@s3_bucket).object("article/article_#{@article.id}_pic#{src_ext}")
+	      	obj = s3 .bucket(@s3_bucket).object("article/article_#{@article.id}_pic#{src_ext}")
 	      	obj.upload_file src.tempfile, {acl: 'public-read'}
 	      	@image = Image.create(
 	      		article_id:   @article.id,
@@ -383,7 +383,7 @@ class ArticlesController < ApplicationController
           src    = value
           src_ext    = File.extname(src.original_filename)
           s3  = Aws::S3::Resource.new
-          obj = s3.bucket(@s3_bucket).object("article/article_#{@article.id}_pic#{src_ext}")
+          obj = s3 .bucket(@s3_bucket).object("article/article_#{@article.id}_pic#{src_ext}")
           obj.upload_file src.tempfile, {acl: 'public-read'}
           @image = Image.create(
             article_id:   @article.id,

@@ -36,7 +36,7 @@ class UserPostedContentsController < ApplicationController
 	    src    = params[:image]
 	    src_ext    = File.extname(src.original_filename)
 	    s3  = Aws::S3::Resource.new
-	    obj = s3.bucket(@s3_bucket).object("company/banner_#{@banner_id}_pic#{src_ext}")
+	    obj = s3 .bucket(@s3_bucket).object("company/banner_#{@banner_id}_pic#{src_ext}")
 	    obj.upload_file src.tempfile, {acl: 'public-read'}
 	    image = obj.public_url
 	  else
