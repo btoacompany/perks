@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
   impressionist actions: [:index, :show]
   before_action :init
+  before_filter :init_url
 
   def init
     if session[:email].present? || cookies[:email].present?
@@ -17,13 +18,6 @@ class ArticlesController < ApplicationController
       @company = Company.find(@id)
     else
       logout
-    end
-    if Rails.env.production?
-      @s3_url = "https://s3-ap-northeast-1.amazonaws.com/prizy"
-      @s3_bucket = "prizy"
-    elsif Rails.env.development?
-      @s3_url = "https://s3-ap-northeast-1.amazonaws.com/btoa-img"
-      @s3_bucket = "btoa-img"
     end
   end
 
