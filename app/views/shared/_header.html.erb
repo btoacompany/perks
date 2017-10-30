@@ -1,23 +1,23 @@
 <% if request.path.include?("analytics")%>
-<div id="header_analytics">
-  <div class="contents">
-    <div class="menu_panel">
-      <ul class="main_menu_analytics">
-        <li class="logo"><a href="<% if request.path.include?("analytics") %>/company/details<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
-      </ul>
-    </div>
+  <div id="header_analytics">
+    <div class="contents">
+      <div class="menu_panel">
+        <ul class="main_menu_analytics">
+          <li class="logo"><a href="<% if request.path.include?("analytics") %>/company/details<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
+        </ul>
+      </div>
 
-    <% if session[:id] || cookies[:id] %>
-  <div class="menu">
-    <p align="center">
-      <a href="/profile/articles">トップ</a>
-      <a href="/company/details" class="setting_color">基本設定</a>
-      <a href="/analytics">アナリティクス</a>
-      <a href="/logout">ログアウト</a>
-    </p>
+      <% if session[:id] || cookies[:id] %>
+    <div class="menu">
+      <p align="center">
+        <a href="/profile/articles">トップ</a>
+        <a href="/company/details" class="setting_color">基本設定</a>
+        <a href="/analytics">アナリティクス</a>
+        <a href="/logout">ログアウト</a>
+      </p>
+    </div>
+  <% end %>
   </div>
-<% end %>
-</div>
 </div> <!-- header -->
 
 <% elsif request.path.include?("company") %>
@@ -29,36 +29,41 @@
       </ul>
     </div>
 
-<% if session[:id] || cookies[:id] %>
-  <div class="menu">
-    <p align="center">
-    <% if @current_user.present? %>
-      <% if @current_user.admin == 1 %>
-        <a href="/profile/articles">トップ</a>
-        <a href="/company/details" class="setting_color">基本設定</a>
-        <a href="/analytics">アナリティクス</a>
-        <a href="/logout">ログアウト</a>
-      <% end %>
-    <% end %>
-    </p>
-  </div>
-  <div class="sp_menu">
-    <div class="sp_dropdown dropdown">
-      <input type="image" class="sp_dropbtn dropbtn" src="<%= "#{@s3_url}/common/gnav.png" %>"/>
-      <div class="sp_dropdown_content dropdown-content">
+    <% if session[:id] || cookies[:id] %>
+      <div class="menu">
+        <p align="center">
         <% if @current_user.present? %>
           <% if @current_user.admin == 1 %>
-            <a href="/company/details">会社情報</a>
-            <a href="/company/employees">社員情報</a>
-            <a href="/integration/slack">Slack連携</a>
-            <a href="/logout">Logout</a>
-           <% end %>
+            <a href="/profile/articles">トップ</a>
+            <a href="/company/details" class="setting_color">基本設定</a>
+            <a href="/analytics">アナリティクス</a>
+            <a href="/logout">ログアウト</a>
+          <% end %>
+        <% else %>
+          <a href="/profile/articles">トップ</a>
+          <a href="/company/details" class="setting_color">基本設定</a>
+          <a href="/analytics">アナリティクス</a>
+          <a href="/logout">ログアウト</a>
         <% end %>
+        </p>
       </div>
-    </div>
-  </div>
-<% end %>
-</div> <!-- contents -->
+      <div class="sp_menu">
+        <div class="sp_dropdown dropdown">
+          <input type="image" class="sp_dropbtn dropbtn" src="<%= "#{@s3_url}/common/gnav.png" %>"/>
+          <div class="sp_dropdown_content dropdown-content">
+            <% if @current_user.present? %>
+              <% if @current_user.admin == 1 %>
+                <a href="/company/details">会社情報</a>
+                <a href="/company/employees">社員情報</a>
+                <a href="/integration/slack">Slack連携</a>
+                <a href="/logout">Logout</a>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div> <!-- contents -->
 </div> <!-- header -->
 
 <% else %>
@@ -69,38 +74,38 @@
         <li class="logo"><a href="<% if request.path.include?("company") %>/company/details<% else %>/<% end %>"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png"/></a></li>
       </ul>
     </div>
-<% if session[:id] || cookies[:id] %>
-  <div class="menu">
-    <p align="center">
-    <a href="/profile/articles">トップ</a>
-    <% if @current_user.present? %>
-      <% if @current_user.admin == 1 %>
-        <a href="/company/details">管理画面</a>
+      <% if session[:id] || cookies[:id] %>
+        <div class="menu">
+          <p align="center">
+          <a href="/profile/articles">トップ</a>
+          <% if @current_user.present? %>
+            <% if @current_user.admin == 1 %>
+              <a href="/company/details">管理画面</a>
+            <% end %>
+          <% end %>
+          <% if $showoff_timeline.include?(@company_id) %>
+            <a href="/update">設定</a>
+          <% end %>
+          <a href="/logout">ログアウト</a>
+          </p>
+        </div>
+        <div class="sp_menu">
+          <div class="sp_dropdown dropdown">
+            <input type="image" class="sp_dropbtn dropbtn" src="<%= "#{@s3_url}/common/gnav.png" %>"/>
+            <div class="sp_dropdown_content dropdown-content" style="display: none;">
+              <% unless $showoff_timeline.include?(@company_id) %>
+                <a href="/user">トップ</a>
+              <% end %>
+              <% if $showoff_timeline.include?(@company_id) %>
+                <a href="/update">設定</a>
+              <% end %>
+              <a href="/logout">ログアウト</a>
+            </div>
+          </div>
+        </div>
       <% end %>
-    <% end %>
-    <% if $showoff_timeline.include?(@company_id) %>
-      <a href="/update">設定</a>
-    <% end %>
-    <a href="/logout">ログアウト</a>
-    </p>
-  </div>
-  <div class="sp_menu">
-    <div class="sp_dropdown dropdown">
-      <input type="image" class="sp_dropbtn dropbtn" src="<%= "#{@s3_url}/common/gnav.png" %>"/>
-      <div class="sp_dropdown_content dropdown-content" style="display: none;">
-        <% unless $showoff_timeline.include?(@company_id) %>
-          <a href="/user">トップ</a>
-        <% end %>
-        <% if $showoff_timeline.include?(@company_id) %>
-          <a href="/update">設定</a>
-        <% end %>
-        <a href="/logout">ログアウト</a>
-      </div>
-    </div>
-  </div>
-<% end %>
-</div> <!-- contents -->
-</div> <!-- header -->
+    </div> <!-- contents -->
+  </div> <!-- header -->
 <% end %>
 
 <script>
