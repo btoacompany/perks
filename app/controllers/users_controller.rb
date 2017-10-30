@@ -530,15 +530,9 @@ class UsersController < ApplicationController
     if kudo.present?
       kudo.kudos = params[:kudos]
       kudo.save
-    logger.debug("======")
-    logger.debug(kudo.errors.full_messages)
-    logger.debug("======")
     else
       res = Kudos.new
       res.save_record(params)
-    logger.debug("======")
-    logger.debug(res.errors.full_messages)
-    logger.debug("======")
     end
     # redirect_to "/user"
     redirect_page("users", "index")
