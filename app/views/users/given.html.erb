@@ -280,7 +280,7 @@
   <a herf="#" class="modal-close"></a>
   <h1>視聴者投稿を贈る</h1>
   <div class="modalwin-contents">
-    <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form" ) do %>
+    <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
       <textarea autofocus="autofocus" name="description" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。"></textarea>
       <input type="file" name="image" %>
       <p align="right"><input type="submit" value="送信する"/></p>
@@ -373,7 +373,7 @@
   <a herf="#" class="modal-close"></a>
   <h1>視聴者投稿を贈る</h1>
   <div class="modalwin-sp-contents">
-    <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form" ) do %>
+    <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
       <textarea autofocus="autofocus" name="description" id="description" class="taginput" required align="center" rows="5" cols="40" style="font-size: 14px; padding: 8px;border: 1px solid gray" placeholder="メッセージを入力してください。"></textarea>
       <input type="file" name="image" %>
       <p align="right"><input type="submit" value="送信する"/></p>
