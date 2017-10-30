@@ -453,8 +453,8 @@ class ArticlesController < ApplicationController
     		user_id: user_id,
     		is_liked: 1
     		)
+      redirect_to :protocol => @protocol, :controller => "articles", :action => "show", id: @like.article_id
     end
-    redirect_to :protocol => @protocol, :controller => "articles", :action => "show", id: @like.article_id
     # redirect_to "/company/article/params[:article_id]"
   end
 
