@@ -446,14 +446,14 @@ class ArticlesController < ApplicationController
         like.is_liked = 0
       end
       like.save
-      redirect_to :protocol => @protocol, :controller => "articles", :action => "show", id: like.article_id
+      redirect_to protocol: @protocol, :controller => "articles", :action => "show", id: like.article_id
     else
     	@like = ArticleLike.create(
       	article_id: params[:post_id].to_i,
     		user_id: user_id,
     		is_liked: 1
     		)
-      redirect_to :protocol => @protocol, :controller => "articles", :action => "show", id: @like.article_id
+      redirect_to protocol: @protocol, :controller => "articles", :action => "show", id: @like.article_id
     end
     # redirect_to "/company/article/params[:article_id]"
   end
