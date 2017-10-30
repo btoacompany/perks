@@ -530,9 +530,15 @@ class UsersController < ApplicationController
     if kudo.present?
       kudo.kudos = params[:kudos]
       kudo.save
+    logger.debug("======")
+    logger.debug(kudo.errors.full_messages)
+    logger.debug("======")
     else
       res = Kudos.new
       res.save_record(params)
+    logger.debug("======")
+    logger.debug(res.errors.full_messages)
+    logger.debug("======")
     end
     # redirect_to "/user"
     redirect_page("users", "index")
@@ -627,7 +633,7 @@ class UsersController < ApplicationController
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
-    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1)
+    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1).order(updated_at: :desc)
 
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
@@ -680,55 +686,26 @@ class UsersController < ApplicationController
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
-    @articles = Article.where(company_id: @company_id, is_deleted: 0, is_published: 1)
-    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1)
+    @user_posted_contents = Article.where(company_id: @company_id,is_published:1, is_casual: 1).order(updated_at: :desc)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
-
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
 
     @company = Company.find(@user.company_id)
-    if $showoff_timeline.include?(@company_id)
-      unless $use_select.include?(@company_id)
-        get_team_users
-      end
-      # @emails = []
-      # @users.each do |user|
-      #   @emails << user.email
-      # end
-      hashtags = @company.hashtags
-      if hashtags.blank?
-        @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
-      else
-        @hashtags = hashtags.split(",")
-      end
-    end
     # weekly_ranking
     receiver_ranking(@user)
     giver_ranking(@user)
 
+    # paging
+    # process_paging(@articles)
+    articles = Article.where(company_id: @company_id, is_deleted: 0, is_published: 1, is_casual: 0).order(updated_at: :desc)
+    process_posts = process_paging_articles(articles)
 
-    posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
-    process_posts = process_paging(posts)
-
-    @posts = []
+    @articles = []
     data = {}
 
     process_posts.each do | post |
-      data = process_post(post)
-      @posts << data
-    end
-
-    unless $showoff_ranking.include?(@user.company_id)
-      top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
-      process_top_receivers(top_receiver)
-      @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
-    else 
-      @last_month = Date.today.prev_month.beginning_of_month..Date.today.beginning_of_month
-      top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
-      process_top_givers(top_givers)
-
-      top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
-      process_top_receivers(top_receivers)
+      # data = process_post(post)
+      @articles << post
     end
   end
 
@@ -858,6 +835,33 @@ class UsersController < ApplicationController
 
     @previous_page  = @page_now - 1
     @next_page	    = @page_now + 1
+    return posts
+  end
+
+  def process_paging_articles(posts)
+    limit = 6
+    page  = params[:page] || 1
+    
+    @total_items = posts.count
+    @total_pages = (@total_items/limit.to_f).ceil
+
+    if page.to_i <= 1
+      page    = 1
+      offset  = 0
+    else
+      offset = (page.to_i * limit) - limit
+    end
+
+    posts = posts.offset(offset).limit(limit)
+
+    @page_now = params[:page].to_i
+    
+    if @page_now == 0
+      @page_now = 1
+    end
+
+    @previous_page  = @page_now - 1
+    @next_page      = @page_now + 1
     return posts
   end
 
