@@ -42,12 +42,15 @@
 .min-height-200{height: 200px;}
 .float_left{float: left;}
 .color-red{color: red;}
+.color-white{color: white;}
 .color-black{color: black;}
 .text-decoration-none{text-decoration:none;}
 .background-color-default{background-color: #ff8d07;}
 .border-radius-3{border-radius: 3px;}
+.border-radius-5{border-radius: 5px;}
 .font-size-12{font-size: 12px;}
 .font-size-14{font-size: 14px;}
+.font-size-18{font-size: 12px;}
 .font-size-36{font-size: 36px;}
 .font-size-40{font-size: 40px;}
 
@@ -914,6 +917,12 @@ hr.style-two {
 }
 .width-500{
   width: 250px;
+}
+.padding-3{
+  padding: 3px;
+}
+.padding-5{
+  padding: 5px;
 }
 .padding-10{
   padding: 10px;
@@ -3412,6 +3421,40 @@ table.admin_table td textarea{
   margin: 0 0 1em 0;
   line-height: 1.8em;
 }
+.modalwin-sp {
+  position: fixed;
+  width: 90%;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 #000;
+  z-index: 10;
+}
+.modalwin-sp dl {
+  padding: 0px 10px;
+}
+.modalwin-sp h1 {
+  background: #ededed;
+  padding: 20px;
+  border-radius: 5px 5px 0 0;
+  font-size: 1.2em;
+  margin-top: 0;
+  text-align: center;
+}
+.modalwin-sp-contents {
+  padding: 10px;
+}
+.modalwin-sp-contents img {
+  margin: 0 0 1em 0;
+  float: left;
+  width: 30%;
+  height: 30%;
+}
+.modalwin-sp-contents p {
+  margin: 0 0 1em 0;
+  line-height: 1.8em;
+}
+
+
 #shade {
   position: fixed;
   left: 0;top: 0;
@@ -3461,7 +3504,7 @@ table.admin_table td textarea{
     display: none;
     width: 200px;
     position: absolute;
-    top: 35px;
+    top: 50px;
     /*left: 150px;*/
     padding: 10px;
     border-radius: 5px;
@@ -3474,7 +3517,7 @@ table.admin_table td textarea{
     width: 0;
     height: 0;
     left: 0;
-    bottom: -19px;
+    bottom: -20px;
     margin-left: 10px;
     border: solid transparent;
     border-color: rgba(51, 204, 153, 0);
@@ -3486,3 +3529,11 @@ table.admin_table td textarea{
   .name_tag:hover + .fukidashi {
     display: block;
   }
+
+.sp_footer .title {
+  padding: 5px;
+
+  /*background-color: #aeaeae;*/
+  background-color: #ffc249;
+  color: #fff;
+}

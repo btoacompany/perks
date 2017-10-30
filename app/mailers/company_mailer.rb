@@ -15,4 +15,9 @@ class CompanyMailer < ApplicationMailer
     @company = data 
     mail(to: @company[:email], subject: "【Prizy】Reset Password")
   end
+
+  def release_article(data)
+    @company = data
+    mail(to: @company[:email], subject: @company[:subject])
+  end
 end

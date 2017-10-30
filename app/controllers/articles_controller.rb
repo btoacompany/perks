@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
   end
 
   def index
-    @articles = Article.where(company_id: @company.id, is_deleted: 0, is_casual: 0)
+    @articles = Article.where(company_id: @company.id, is_deleted: 0, is_casual: 0).order(updated_at: :desc)
   end
 
   def new
@@ -40,14 +40,14 @@ class ArticlesController < ApplicationController
     ActiveRecord::Base.transaction do
       @article = Article.create(
 				company_id: @company.id,
-				category_id: nil,
+				category_id: params[:category_id],
 				title: params[:title],
 				description: params[:description],
         is_casual: params[:is_casual]
       	)
 
       if params[:tags].present?
-        params[:tags].each do |email|
+        params[:tags].uniq.each do |email|
           user = User.find_by(email: email)
           if user
             Tag.create(
@@ -122,7 +122,10 @@ class ArticlesController < ApplicationController
 
   def show
     @user = User.find(@id)
-    @total_receive_message = Post.where(company_id: @user.company_id, delete_flag: 0, receiver_id: @user.id).count
+    @users    = User.where(:company_id => @company.id, :delete_flag => 0)
+    @departments = Department.where(company_id: @company.id, delete_flag: 0)
+    @total_receive_message = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: @user.id).count
+    @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
     @user_posted_contents = Article.where(company_id: @company.id, is_casual: 1)
 	    if @article
@@ -247,9 +250,158 @@ class ArticlesController < ApplicationController
   end
 
   def edit
+    @num = 1
+    @categories = Category.where(company_id: @company.id, is_deleted:0, company_id: @company.id)
+    @article = Article.find(params[:id])
+    @tags = User.where(is_deleted: 0, article_id: @article.id)
+    # @article_tags = ArticleTag.where(article_id: @article.id).pluck(:tag_id)
+    @contents = []
+    @titles = @article.titles
+    unless @titles.blank?
+      @titles.each do |item|
+        @data = {
+          :data_type => "title",
+          :place_number => item.place_number.to_i,
+          :title => item.title
+        }
+        @contents << @data
+      end
+    end
+
+    @texts = @article.texts
+    unless @titles.blank?
+      @texts.each do |item|
+        @data = {
+          :data_type => "text",
+          :place_number => item.place_number.to_i,
+          :text => item.text
+        }
+        @contents << @data
+      end
+    end
+
+    @links = @article.links
+    unless @links.blank?
+      @links.each do |item|
+        @data = {
+          :data_type => "link",
+          :place_number => item.place_number.to_i,
+          :link_title => item.link_title,
+          :link_url => item.url
+        }
+        @contents << @data
+      end
+    end
+
+    @quotations = @article.quotations
+    unless @quotations.blank?
+      @quotations.each do |item|
+        @data = {
+          :data_type => "quotation",
+          :place_number => item.place_number.to_i,
+          :quotation_title => item.quotation,
+          :quotation_url => item.url
+        }
+        @contents << @data
+      end
+    end
+
+    @images = @article.images
+    unless @images.blank?
+      @images.each do |item|
+        @data = {
+          :data_type => "image",
+          :place_number => item.place_number.to_i,
+          :image => item,
+          :image_title => item.image_title,
+          :image_url => item.image_url ,
+          :id => item.id
+        }
+        @contents << @data
+      end
+    end
+
+    @all_contents = @contents.sort{|aa, bb|
+      aa[:place_number] <=> bb[:place_number]
+    }
   end
 
   def update
+    ActiveRecord::Base.transaction do
+      @article = Article.find(params[:id])
+
+      @article.category_id = params[:category_id]
+      @article.title       = params[:title]
+      @article.description = params[:description]
+      @article.is_casual   = params[:is_casual]
+      @article.save
+
+      # ArticleTag.where(article_id: @article.id).destroy_all
+      Title.where(article_id: @article.id).destroy_all
+      Text.where(article_id: @article.id).destroy_all
+      Link.where(article_id: @article.id).destroy_all
+      Quotation.where(article_id: @article.id).destroy_all
+
+      if params[:paragraph_titles].present?
+        params[:paragraph_titles].each do |key, value|
+          @title = Title.create(
+            article_id:   @article.id,
+            content:      value,
+            place_number: key.to_i,
+          )
+        end
+      end
+
+      if params[:texts].present?
+        params[:texts].each do |key, value|
+          @text = Text.create(
+            article_id:   @article.id,
+            content:      value,
+            place_number: key.to_i,
+          )
+        end
+      end
+
+      if params[:links].present?
+        params[:links].each do |key, value|
+          @link = Link.create(
+            article_id:   @article.id,
+            content:     value[0],
+            url:          value[1],
+            place_number: key.to_i,
+          )
+        end
+      end
+
+      if params[:quotations].present?
+        params[:quotations].each do |key, value|
+          @quotation = Quotation.create(
+            article_id:    @article.id,
+            quotation:     value[0],
+            quotation_url: value[1],
+            place_number:  key.to_i,
+          )
+        end
+      end
+
+      if params[:images].present?
+        params[:images].each do |key, value|
+          src    = value
+          src_ext    = File.extname(src.original_filename)
+          s3  = Aws::S3::Resource.new
+          obj = s3.bucket(@s3_bucket).object("article/article_#{@article.id}_pic#{src_ext}")
+          obj.upload_file src.tempfile, {acl: 'public-read'}
+          @image = Image.create(
+            article_id:   @article.id,
+            img_src:      obj.public_url, 
+            place_number: key.to_i
+          )
+        end
+      end
+    end
+    redirect_to company_articles_path, notice: "記事を作成しました。"
+    rescue => e
+    redirect_to company_articles_path, notice: "失敗しました。"
   end
 
   def destory
@@ -275,7 +427,7 @@ class ArticlesController < ApplicationController
   end
 
   def casual
-    @articles = Article.where(company_id: @company.id, is_deleted: 0, is_casual: 1)
+    @articles = Article.where(company_id: @company.id, is_deleted: 0, is_casual: 1).order(updated_at: :desc)
   end
 
   def update_is_new
@@ -292,7 +444,7 @@ class ArticlesController < ApplicationController
   end
 
   def like
-    like = ArticleLike.find_by(user_id: @user_id, article_id: params[:article_id])
+    like = ArticleLike.find_by(user_id: user_id, article_id: params[:post_id])
     if like.present?
     	if like.is_liked == 0
     		like.is_liked = 1
@@ -301,9 +453,9 @@ class ArticlesController < ApplicationController
       end
       like.save
     else
-    	 @like = ArticleLike.create(
-    		article_id: params[:article_id],
-    		user_id: @user_id,
+    	@like = ArticleLike.create(
+      	article_id: params[:post_id].to_i,
+    		user_id: user_id,
     		is_liked: 1
     		)
     end
@@ -391,6 +543,18 @@ class ArticlesController < ApplicationController
       user = User.find(k)
       data = { name: user.name, img_src: user.img_src, count: v }
       @top_givers << data
+    end
+  end
+
+  def send_release_mail
+    @users = User.where(company_id: @company.id, delete_flag: 0)
+    @users.each do |user|
+      data = {
+        email:      user.email,
+        subject: params[:subject],
+        description: params[:description]        
+      }
+      CompanyMailer.release_article(data).deliver_now
     end
   end
 end

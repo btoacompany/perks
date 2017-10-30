@@ -10,7 +10,7 @@
     </div>
     <div class="margin-top-10">
     <h3 class="margin-bottom-10">記事を作成する</h3>
-    <%= form_tag(company_article_create_path,method: "post", :multipart => true) do %>
+    <%= form_tag(company_article_create_path, method: "post", :multipart => true) do %>
       <table class="article_table horizontal width-80-percent">
         <% if @categories.count > 0 %>
           <tr>
@@ -39,17 +39,15 @@
           <th>ディスクリプション</th>
           <td><textarea name="description" class="min-height-200 width-100-percent"></textarea></td>
         </tr>
-
-          <tr>
-            <th>記事に登場する社員</th>
-            <td style="display: block;">
-              <input type="text" id="suggested_name" name="tags[]" value="" size="100" placeholder="メールアドレスを入力してください" />
-              <input type="button" value="追加" class="btn_change_password"/>
-              <div id="suggest" style="display:none;"></div>
-              <div id="adding_member"></div>
-            </td>
-          </tr>
-
+        <tr>
+          <th>記事に登場する社員</th>
+          <td style="display: block;">
+            <input type="text" id="suggested_name" name="tags[]" value="" size="100" placeholder="メールアドレスを入力してください" />
+            <input type="button" value="追加" class="btn_change_password"/>
+            <div id="suggest" style="display:none;"></div>
+            <div id="adding_member"></div>
+          </td>
+        </tr>
         <tr>
           <th>メニュー</th>
           <td>
