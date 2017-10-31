@@ -448,15 +448,15 @@ class UsersController < ApplicationController
 	          receiver.in_points += params[:points]
 	          receiver.save
 
-    	      unless params[:type] == "comment"
-	            UserMailer.receive_points_email({
-          	    receiver:   receiver.name, 
-            	  email:	    receiver.email,
-        	      giver:	    @user.name,
-        	      points:	    params[:points],
-          	    prizy_url:  @prizy_url + "/user"
-              }).deliver_later
-	          end
+    	      # unless params[:type] == "comment"
+	          #   UserMailer.receive_points_email({
+          	#     receiver:   receiver.name, 
+           #  	  email:	    receiver.email,
+        	  #     giver:	    @user.name,
+        	  #     points:	    params[:points],
+          	#     prizy_url:  @prizy_url + "/user"
+           #    }).deliver_later
+	          # end
 
         		p @user
         		if @user[:badge].present?
