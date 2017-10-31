@@ -78,7 +78,7 @@
 	            <% elsif item[:data_type] == "image" %>
 	              <th>画像</th>
 	              <td>
-	                <%= link_to "画像を変更・削除する","/admin/image/#{item[:id]}/edit" %><br>
+                  <input type="file" name="images[<%= @num %>]" value="<%= item[:image_url] %>">
 	              </td>
 	            <% end %>
 	          </tr>

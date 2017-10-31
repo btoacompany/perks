@@ -464,10 +464,8 @@ class UsersController < ApplicationController
         		  @user.save
         		end
             flash[:notice] = "送信が完了しました。"
-  	        # ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
+  	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
-
-          
 
           if @company.give_point_to_sender_and_receiver_flag == 1
             sum_point = @company.send_point + @company.receive_point * receiver_count
@@ -713,6 +711,7 @@ class UsersController < ApplicationController
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1)
+
     receiver_ranking(@user)
     giver_ranking(@user)
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")

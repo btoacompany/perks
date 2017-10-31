@@ -241,7 +241,7 @@ class ArticlesController < ApplicationController
         @data = {
           :data_type => "title",
           :place_number => item.place_number.to_i,
-          :title => item.title
+          :title => item.content
         }
         @contents << @data
       end
@@ -253,7 +253,7 @@ class ArticlesController < ApplicationController
         @data = {
           :data_type => "text",
           :place_number => item.place_number.to_i,
-          :text => item.text
+          :text => item.content
         }
         @contents << @data
       end
@@ -265,7 +265,7 @@ class ArticlesController < ApplicationController
         @data = {
           :data_type => "link",
           :place_number => item.place_number.to_i,
-          :link_title => item.link_title,
+          :link_title => item.content,
           :link_url => item.url
         }
         @contents << @data
@@ -278,7 +278,7 @@ class ArticlesController < ApplicationController
         @data = {
           :data_type => "quotation",
           :place_number => item.place_number.to_i,
-          :quotation_title => item.quotation,
+          :quotation_title => item.content,
           :quotation_url => item.url
         }
         @contents << @data
@@ -289,12 +289,10 @@ class ArticlesController < ApplicationController
     unless @images.blank?
       @images.each do |item|
         @data = {
-          :data_type => "image",
-          :place_number => item.place_number.to_i,
-          :image => item,
-          :image_title => item.image_title,
-          :image_url => item.image_url ,
-          :id => item.id
+          data_type: "image",
+          place_number: item.place_number.to_i,
+          image_url: item.img_src ,
+          id: item.id
         }
         @contents << @data
       end
@@ -309,7 +307,6 @@ class ArticlesController < ApplicationController
     ActiveRecord::Base.transaction do
       @article = Article.find(params[:id])
 
-      @article.category_id = params[:category_id]
       @article.title       = params[:title]
       @article.description = params[:description]
       @article.is_casual   = params[:is_casual]
@@ -320,6 +317,7 @@ class ArticlesController < ApplicationController
       Text.where(article_id: @article.id).destroy_all
       Link.where(article_id: @article.id).destroy_all
       Quotation.where(article_id: @article.id).destroy_all
+      Image.where(article_id: @article.id).destroy_all
 
       if params[:paragraph_titles].present?
         params[:paragraph_titles].each do |key, value|
@@ -356,8 +354,8 @@ class ArticlesController < ApplicationController
         params[:quotations].each do |key, value|
           @quotation = Quotation.create(
             article_id:    @article.id,
-            quotation:     value[0],
-            quotation_url: value[1],
+            content:     value[0],
+            url: value[1],
             place_number:  key.to_i,
           )
         end
@@ -380,6 +378,7 @@ class ArticlesController < ApplicationController
     end
     redirect_to company_articles_path, notice: "記事を作成しました。"
     rescue => e
+      logger.debug("#{e}")
     redirect_to company_articles_path, notice: "失敗しました。"
   end
 
