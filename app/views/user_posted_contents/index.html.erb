@@ -7,7 +7,6 @@
 	    <%= link_to "+ 記事を作成する", company_article_new_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ ニュース記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
-	    <%= link_to "+ カテゴリーを登録・編集する", company_categories_path, {class: "a_btncmn radius5 width-250"} %>
 	  </div>
 
 	  <% if @user_posted_contents.count == 0 %>
@@ -22,8 +21,7 @@
 			  	  <th scope="row width-40-percent">内容</th>
 			  	  <th scope="row width-20-percent">画像</th>
 			  	  <th scope="row width-10-percent">投稿者</th>
-			  	  <th scope="row width-10-percent">所属会社</th>
-			  	  <th scope="row width-10-percent">所属部署</th>
+			  	  <th scope="row width-20-percent">所属会社/所属部署</th>
 			  	</tr>
 			  	<% @user_posted_contents.each do |user_posted_content| %>
 				  	<tr>
@@ -36,18 +34,11 @@
 	                -
 	              <% end %>
 	            </td>
-				  	  <td class="row width-10percent"><%= "#{user_posted_content.user.lastname}" + "#{user_posted_content.user.firstname}" %></td>
-				  	  <td class="row width-10-percent">
+				  	  <td class="row width-10-percent"><%= "#{user_posted_content.user.lastname} " + " #{user_posted_content.user.firstname}" %></td>
+				  	  <td class="row width-20-percent">
 				  	    <% @team_members.each do |team_members, team| %>
-				  	      <% if team_members.include?(user_posted_content.user.id.to_s) %>
-				  	        <% team.department.dep_name %>
-				  	      <% end %>
-				  	    <% end %>
-				  	  </td>
-				  	  <td class="row width-10-percent">
-				  	    <% @team_members.each do |team_members, team| %>
-				  	      <% if team_members.include?(user_posted_content.user.id.to_s) %>
-				  	        <% team.team_name %>
+				  	      <% if team_members.include?(user_posted_content.user_id.to_s) %>
+				  	        <%= team.department.dep_name + " / " + team.team_name %>
 				  	      <% end %>
 				  	    <% end %>
 				  	  </td>

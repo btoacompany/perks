@@ -515,8 +515,8 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 
 /* --- ITEM DETAILS PAGE --- */
 #modal-overlay{
-  z-index:1;
-  position:fixed;
+  z-index: 1;
+  position: fixed;
   top:0;
   left:0;
   width:100%;
@@ -3505,7 +3505,7 @@ table.admin_table td textarea{
     display: none;
     width: 200px;
     position: absolute;
-    top: 50px;
+    top: 35px;
     /*left: 150px;*/
     padding: 10px;
     border-radius: 5px;

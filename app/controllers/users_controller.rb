@@ -363,7 +363,6 @@ class UsersController < ApplicationController
       	flash[:notice]	= "Your email #{email} is not yet registered to #{team_domain} Prizy"
       end
     rescue Exception => e
-      logger.debug e.message
       if @company.point_fixed_flag == 0
       flash[:notice] = "投稿できませんでした。入力に不備があります。\n （入力例)\n「/prizy +20 @tanaka.naoki 会議の資料つくってくれてありがとう。グラフィックの出来が半端なかった！！#急成長 #デザインセンス抜群 #またお願いするわww」"
       else
@@ -740,9 +739,10 @@ class UsersController < ApplicationController
       @posts << data
     end
 
-    top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
-    process_top_givers(top_givers)
-    @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+
+    # top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
+    # process_top_givers(top_givers)
+    # @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def get_team_users
@@ -883,6 +883,10 @@ class UsersController < ApplicationController
     comments  = Comment.where(:post_id => post.id, :delete_flag => 0)
     kudos     = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
+    # if post.receiver_id.include?(",")
+    #   post.receiver_id = post.receiver_id.delete(",")
+    # end
+
     data = {
       id:		  post.id,
       user_id:		  post.user_id,
@@ -892,7 +896,7 @@ class UsersController < ApplicationController
       receiver_id:	  [],
       receiver_name:	  [],
       full_receiver_name: [],
-      receiver_img:	  post.receiver.img_src,
+      # receiver_img:	  post.receiver.img_src,
       user_img:		  post.user.img_src,
       points:		  post.points,
       description:	  post.description,
@@ -906,14 +910,19 @@ class UsersController < ApplicationController
 
     if post.receiver_id.present?
       receiver_ids = post.receiver_id.split(",")
+      logger.debug("LKO")
+      logger.debug(receiver_ids)
+      logger.debug("LKO")
+      receiver_ids.each do | r |
+        if r.present?
+          receiver_info = User.find(r)
+          data[:receiver_id]  << r
+          data[:receiver_name]  << receiver_info.name
+          data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
+        end
+      end
     end
 
-    receiver_ids.each do | r |
-      receiver_info = User.find(r)
-      data[:receiver_id]	<< r
-      data[:receiver_name]	<< receiver_info.name
-      data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
-    end
     return data
   end
 

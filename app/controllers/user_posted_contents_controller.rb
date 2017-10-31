@@ -26,7 +26,7 @@ class UserPostedContentsController < ApplicationController
     @team_members = Hash.new
     @teams.each do |team|
     	if team.member_ids.present?
-    		@team_members.store(team.member_ids.split(","), team.team_name)
+    		@team_members.store(team.member_ids.split(","), team)
     	end
     end
   end
