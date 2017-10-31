@@ -467,20 +467,22 @@ class UsersController < ApplicationController
   	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
 
-          if @company.give_point_to_sender_and_receiver_flag == 1
-            sum_point = @company.send_point + @company.receive_point * receiver_count
-            if @company.bonus_points >= sum_point
-              @user.in_points += @company.send_point
-              receiver_ids.each do | receiver_id |
-                receiver = User.find(receiver_id.to_i)
-                receiver.in_points += @company.receive_point
-                receiver.save
-              end
-              @company.bonus_points -= sum_point
-              @company.save
-              @user.save
-            end
-          end
+          
+
+          # if @company.give_point_to_sender_and_receiver_flag == 1
+          #   sum_point = @company.send_point + @company.receive_point * receiver_count
+          #   if @company.bonus_points >= sum_point
+          #     @user.in_points += @company.send_point
+          #     receiver_ids.each do | receiver_id |
+          #       receiver = User.find(receiver_id.to_i)
+          #       receiver.in_points += @company.receive_point
+          #       receiver.save
+          #     end
+          #     @company.bonus_points -= sum_point
+          #     @company.save
+          #     @user.save
+          #   end
+          # end
       	else
 	        flash[:notice] = "ポイントが足りません"
   	    end
@@ -711,10 +713,8 @@ class UsersController < ApplicationController
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1)
-
     receiver_ranking(@user)
     giver_ranking(@user)
-
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
     process_posts = process_paging(posts)
 
@@ -763,14 +763,15 @@ class UsersController < ApplicationController
     @receiver_ratio = []
     @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: this_week).count
     @receiver_ratio << @this_week_posts
+
     if this_week.cover?(user.create_time)
       @receiver_ratio << "-"
     else
       @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
       @receiver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      return @receiver_ratio
     end
-    return @receiver_ratio
   end
 
   def giver_ranking(user)
@@ -787,8 +788,8 @@ class UsersController < ApplicationController
       @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
       @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      return @giver_ratio
     end
-    return @giver_ratio
   end
 
   def process_paging(posts)
@@ -896,6 +897,9 @@ class UsersController < ApplicationController
 
     if post.receiver_id.present?
       receiver_ids = post.receiver_id.split(",")
+      logger.debug("LKO")
+      logger.debug(receiver_ids)
+      logger.debug("LKO")
       receiver_ids.each do | r |
         if r.present?
           receiver_info = User.find(r)
