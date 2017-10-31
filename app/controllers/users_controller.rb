@@ -434,13 +434,13 @@ class UsersController < ApplicationController
 	          params[:post_id] = post.id
 	        end
 
-    	    hashtags = params[:description].scan(/\#[^\s|　]+/)
+    	    # hashtags = params[:description].scan(/\#[^\s|　]+/)
 
-	        hashtags.each do | tag |
-	          params[:hashtag] = tag
-     	      hashtag = Hashtag.new
-	          hashtag.save_record(params)
-	        end
+	        # hashtags.each do | tag |
+	        #   params[:hashtag] = tag
+     	   #    hashtag = Hashtag.new
+	        #   hashtag.save_record(params)
+	        # end
 
     	    receiver_ids.each do | receiver_id |
 	          receiver = User.find(receiver_id.to_i)
@@ -459,10 +459,10 @@ class UsersController < ApplicationController
 	          end
 
         		p @user
-        		# if @user[:badge].present?
-        		#   @user.badge += 1
-        		#   @user.save
-        		# end
+        		if @user[:badge].present?
+        		  @user.badge += 1
+        		  @user.save
+        		end
             flash[:notice] = "送信が完了しました。"
   	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end

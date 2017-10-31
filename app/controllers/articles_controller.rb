@@ -122,7 +122,7 @@ class ArticlesController < ApplicationController
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
     @user_posted_contents = Article.where(company_id: @company.id, is_casual: 1)
-	    if @article
+	  if @article
       @banner = Banner.find_by(company_id: @company.id, is_deleted: 0)
       impressionist(@article, nil, :unique => [:session_hash])
 	    @tags = @article.tags
@@ -141,7 +141,7 @@ class ArticlesController < ApplicationController
 	    end
 
 	    @texts = @article.texts
-	    unless @titles.blank?
+	    unless @texts.blank?
 	      @texts.each do |item|
 	        @data = {
 	          :data_type => "text",
@@ -191,53 +191,8 @@ class ArticlesController < ApplicationController
 	    end
 	    @all_contents = @contents.sort{|aa, bb| aa[:place_number] <=> bb[:place_number]}
 
-	    @title = "#{@article.title} | BetterEngage (ベター・エンゲージ)"
+	    @title = "#{@article.title}"
 	    @description = @article.description
-	    # @base_url = "https://betterengagee.com/blog/article/#{@article.id}"
-	    # @image_url = @first_pic.authenticated_image_url(:medium)
-      if $showoff_timeline.include?(@company_id)
-        unless $use_select.include?(@company_id)
-          get_team_users
-        end
-        # @emails = []
-        # @users.each do |user|
-        #   @emails << user.email
-        # end
-        hashtags = @company.hashtags
-        if hashtags.blank?
-          @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
-        else
-          @hashtags = hashtags.split(",")
-        end
-      end
-      # weekly_ranking
-      receiver_ranking(@user)
-      giver_ranking(@user)
-
-
-      posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
-      process_posts = process_paging(posts)
-
-      @posts = []
-      data = {}
-
-      process_posts.each do | post |
-        data = process_post(post)
-        @posts << data
-      end
-
-      unless $showoff_ranking.include?(@user.company_id)
-        top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
-        process_top_receivers(top_receiver)
-        @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
-      else 
-        @last_month = Date.today.prev_month.beginning_of_month..Date.today.beginning_of_month
-        top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
-        process_top_givers(top_givers)
-
-        top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
-        process_top_receivers(top_receivers)
-      end
 	  else
 	  	redirect_to :root
     end
