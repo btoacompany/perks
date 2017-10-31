@@ -724,8 +724,6 @@ class UsersController < ApplicationController
       data = process_post(post)
       @posts << data
     end
-
-
     # top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
     # process_top_givers(top_givers)
     # @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
@@ -900,9 +898,6 @@ class UsersController < ApplicationController
 
     if post.receiver_id.present?
       receiver_ids = post.receiver_id.split(",")
-      logger.debug("LKO")
-      logger.debug(receiver_ids)
-      logger.debug("LKO")
       receiver_ids.each do | r |
         if r.present?
           receiver_info = User.find(r)

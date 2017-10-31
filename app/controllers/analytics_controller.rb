@@ -373,6 +373,7 @@ class AnalyticsController < ApplicationController
   def usergiven
     @userid = params[:id]
     @user = User.find(@id)
+    @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     posts = Post.where(:user_id => @userid, :delete_flag => 0).order("update_time desc")
     limit = 10
     page = params[:page] || 1
@@ -407,10 +408,10 @@ class AnalyticsController < ApplicationController
         user_id:  post.user_id,
         user_name:  post.user.name,
         full_user_name: "#{post.user.lastname} #{post.user.firstname}",
-        receiver_name:  post.receiver.name,
-        full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
         user_img: post.user.img_src,
-        # receiver_img: post.receiver.img_src,
+        receiver_id:    [],
+        receiver_name:    [],
+        full_receiver_name: [],
         points:   post.points,
         description:  post.description,
         hashtags: post.hashtags,
@@ -418,25 +419,32 @@ class AnalyticsController < ApplicationController
         kudos:    kudos,
         create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
+      receiver_ids = []
+
+      if post.receiver_id.present?
+        receiver_ids = post.receiver_id.split(",")
+        receiver_ids.each do | r |
+          if r.present?
+            receiver_info = User.find(r)
+            data[:receiver_id]  << r
+            data[:receiver_name]  << receiver_info.name
+            data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
+          end
+        end
+      end
 
       @posts << data
     end
 
-    # top_givers = Post.where(user_id: @userid, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
-
-    # @top_givers = []
-    # top_givers.each do | k, v |
-    #   user = User.find(k)
-    #   data = { name: user.name, img_src: user.img_src, count: v }
-    #   @top_givers << data
-    # end
-
-    # @top_hashtags = Hashtag.where(user_id: @userid, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+    receiver_ranking(@user)
+    giver_ranking(@user)
+    @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
   end
 
   def userreceived
     @userid = params[:id]
     @user = User.find(@id)
+    @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     posts = Post.where(:receiver_id => @userid, :delete_flag => 0).order("update_time desc")
 
     limit = 10
@@ -468,36 +476,78 @@ class AnalyticsController < ApplicationController
       kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
       data = {
-  id:   post.id,
-  user_id:  post.user_id,
-  user_name:  post.user.name,
-  receiver_name:  post.receiver.name,
-  user_img: post.user.img_src,
-  receiver_img: post.receiver.img_src,
-  receiver_id: post.receiver_id,
-  full_user_name: "#{post.user.lastname} #{post.user.firstname}",
-  full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
-  points:   post.points,
-  description:  post.description,
-  hashtags: post.hashtags,
-  comments: comments,
-  kudos:    kudos,
-  create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+        id:   post.id,
+        user_id:  post.user_id,
+        user_name:  post.user.name,
+        user_img: post.user.img_src,
+        full_user_name: "#{post.user.lastname} #{post.user.firstname}",
+        receiver_id:    [],
+        receiver_name:    [],
+        full_receiver_name: [],
+        points:   post.points,
+        description:  post.description,
+        hashtags: post.hashtags,
+        comments: comments,
+        kudos:    kudos,
+        create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
+      receiver_ids = []
+
+      if post.receiver_id.present?
+        receiver_ids = post.receiver_id.split(",")
+        receiver_ids.each do | r |
+          if r.present?
+            receiver_info = User.find(r)
+            data[:receiver_id]  << r
+            data[:receiver_name]  << receiver_info.name
+            data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
+          end
+        end
+      end
+
 
       @posts << data
     end
 
-    top_givers = Post.where(receiver_id: @userid, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
+    receiver_ranking(@user)
+    giver_ranking(@user)
+    @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
+  end
 
-    @top_givers = []
-    top_givers.each do | k, v |
-      user = User.find(k)
-      data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
-      @top_givers << data
+  def receiver_ranking(user)
+    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
+    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+    
+    @receiver_ratio = []
+    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: this_week).count
+    @receiver_ratio << @this_week_posts
+
+    if this_week.cover?(user.create_time)
+      @receiver_ratio << "-"
+    else
+      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
+      @last_week_posts = 1 if @last_week_posts == 0
+      @receiver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      return @receiver_ratio
     end
+  end
 
-    @top_hashtags = Hashtag.where(receiver_id: @userid, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+  def giver_ranking(user)
+    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
+    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+
+    @giver_ratio =[]
+    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: this_week).count
+    @giver_ratio << @this_week_posts
+
+    if this_week.cover?(user.create_time)
+      @giver_ratio << "-"
+    else
+      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: last_week).count
+      @last_week_posts = 1 if @last_week_posts == 0
+      @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      return @giver_ratio
+    end
   end
 
   def time_definition
