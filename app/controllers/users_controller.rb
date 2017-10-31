@@ -448,15 +448,15 @@ class UsersController < ApplicationController
 	          receiver.in_points += params[:points]
 	          receiver.save
 
-    	      # unless params[:type] == "comment"
-	          #   UserMailer.receive_points_email({
-          	#     receiver:   receiver.name, 
-           #  	  email:	    receiver.email,
-        	  #     giver:	    @user.name,
-        	  #     points:	    params[:points],
-          	#     prizy_url:  @prizy_url + "/user"
-           #    }).deliver_later
-	          # end
+    	      unless params[:type] == "comment"
+	            UserMailer.receive_points_email({
+          	    receiver:   receiver.name, 
+            	  email:	    receiver.email,
+        	      giver:	    @user.name,
+        	      points:	    params[:points],
+          	    prizy_url:  @prizy_url + "/user"
+              }).deliver_later
+	          end
 
         		p @user
         		if @user[:badge].present?
@@ -467,20 +467,20 @@ class UsersController < ApplicationController
   	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
 
-          if @company.give_point_to_sender_and_receiver_flag == 1
-            sum_point = @company.send_point + @company.receive_point * receiver_count
-            if @company.bonus_points >= sum_point
-              @user.in_points += @company.send_point
-              receiver_ids.each do | receiver_id |
-                receiver = User.find(receiver_id.to_i)
-                receiver.in_points += @company.receive_point
-                receiver.save
-              end
-              @company.bonus_points -= sum_point
-              @company.save
-              @user.save
-            end
-          end
+          # if @company.give_point_to_sender_and_receiver_flag == 1
+          #   sum_point = @company.send_point + @company.receive_point * receiver_count
+          #   if @company.bonus_points >= sum_point
+          #     @user.in_points += @company.send_point
+          #     receiver_ids.each do | receiver_id |
+          #       receiver = User.find(receiver_id.to_i)
+          #       receiver.in_points += @company.receive_point
+          #       receiver.save
+          #     end
+          #     @company.bonus_points -= sum_point
+          #     @company.save
+          #     @user.save
+          #   end
+          # end
       	else
 	        flash[:notice] = "ポイントが足りません"
   	    end
