@@ -65,9 +65,6 @@
                   <div class="each_post_right" style="float: left;">
                     <span class="date color-black"><%= article.updated_at.strftime("%Y.%m.%d") %></span>
                     <h3 class="color-black pc_view" style="word-break:break-all;color: black;font-weight: normal;"><%= article.title.truncate(30) %></h3>
-                    <% if article.category %>
-                      <div class="pc_view background-color-default padding-3 border-radius-5 color-white" style="float: right;">- <%= article.category.name.truncate(30) %> -</div>
-                    <% end %>
                   </div>
                 </div>
               <% end %>

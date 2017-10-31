@@ -119,7 +119,8 @@ class CompanyController < ApplicationController
       arr_hashtags.uniq!
       arr_hashtags.map{ | tag | tag.gsub(" ", "").strip }.compact.join(",")
     else
-      arr_hashtags="leadership,hardwork,creativity,positivity,teamwork"
+      # arr_hashtags="leadership,hardwork,creativity,positivity,teamwork"
+      arr_hashtags = ""
     end
   end
 

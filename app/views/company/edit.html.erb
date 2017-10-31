@@ -42,12 +42,6 @@
         <th scope="row">電話番号</th>
         <td><input type="text" name="phone" value="<%= @company[:phone] %>" required /></td>
       </tr>
-      <tr>
-        <th scope="row">コアバリュー</th> 
-        <td>
-          <textarea name="hashtags" value="" placeholder="leadership, hardwork, creativity..." required ><%= @company.hashtags %></textarea><br><span class="instructions">会社のコアバリューを入力してください。<br>複数記入する場合カンマ「,」をご利用ください。</span>
-        </td>
-      </tr>
     </table><br>
     <p align="center">
       <input type="button" value="戻る" class="btn btn_back" />

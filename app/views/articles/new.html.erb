@@ -5,25 +5,12 @@
     <div class="margin-10">
       <%= link_to "+ ニュース記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
-      <%= link_to "+ カテゴリーを登録・編集する", company_categories_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ 社員からの投稿を見る", company_user_posted_contents_path, {class: "a_btncmn radius5 width-250"} %>
     </div>
     <div class="margin-top-10">
     <h3 class="margin-bottom-10">記事を作成する</h3>
     <%= form_tag(company_article_create_path, method: "post", :multipart => true) do %>
       <table class="article_table horizontal width-80-percent">
-        <% if @categories.count > 0 %>
-          <tr>
-            <th class="width-20-percent">カテゴリー</th>
-            <td class="width-80-percent">
-              <select name="category_id" class="width-400">
-                <% @categories.each do |category| %>
-                  <option value="<%= category.id %>"><%= category.name %></option>
-                <% end %>
-              </select>
-            </td>
-          </tr>
-        <% end %>
         <tr>
           <th class="width-20-percent">記事タイプ</th>
           <td>

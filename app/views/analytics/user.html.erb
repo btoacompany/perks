@@ -78,13 +78,6 @@
       <div id="analytics_useage" style="min-height: 450px;"></div>
     </div> 
     <div class="analytics_clearfix"></div>
-
-    <div class="analytics_bottom" style="width: 100%;">
-      <div id="company_hashtag" style="min-height: 450px;"></div>
-      <div id="all_hashtags" style="min-height: 450px;"></div>
-    </div>
-    <div class="analytics_clearfix"></div>
-   
   </div>
   <div class="analytics_clearfix"></div>
 </div>
@@ -128,82 +121,6 @@ window.onload = function () {
     ]
   });
   chart.render();
-
-  var chart = new CanvasJS.Chart("company_hashtag", {
-    backgroundColor: "#3a3a3c",
-    animationEnabled: true, 
-    animationDuration: 3000,
-    title:{
-      text: "会社のコアバリュー",
-      fontSize: 16,
-      fontColor: "#E0E0E3"
-    },
-    axisX:{
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
-      },
-      axisY:{
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
-      },
-    dataPointMaxWidth: 15,
-    dataPointMinWidth: 15,
-    dataPointWidth: 15,
-    data: [              
-    {
-      // Change type to "doughnut", "line", "splineArea", etc.
-      type: "bar",
-      color: "#ff8d07",
-      dataPoints: [
-        <% @company_hash_custom.each do |key, value| %>
-        { label: "<%= key %>",  y: <%= value %>, },
-        <% end %>
-      ]
-    }
-    ]
-  });
-  chart.render();
-
-  var chart = new CanvasJS.Chart("all_hashtags", {
-    backgroundColor: "#3a3a3c",
-    animationEnabled: true, 
-    animationDuration: 3000,
-    title:{
-      text: "全てのハッシュタグ",
-      fontSize: 16,
-      fontColor: "#E0E0E3"
-    },
-    axisX:{
-      reversed: true,
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
-      },
-      axisY:{
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
-      },
-    dataPointMaxWidth: 15,
-    dataPointMinWidth: 15,
-    dataPointWidth: 15,
-    data: [              
-    {
-      // Change type to "doughnut", "line", "splineArea", etc.
-      type: "bar",
-      color: "#ff8d07",
-      dataPoints: [
-        <% @all_hashtags_custom.first(10).each do |key, value| %>
-        { label: "<%= key %>",  y: <%= value %>, },
-        <% end %>
-      ]
-    }
-    ]
-  });
-  chart.render();
-
 }
 
 $(function() {
