@@ -712,10 +712,9 @@ class UsersController < ApplicationController
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1)
 
-logger.debug("???????????")
     receiver_ranking(@user)
     giver_ranking(@user)
-logger.debug("???????????")
+
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
     process_posts = process_paging(posts)
 
@@ -897,9 +896,6 @@ logger.debug("???????????")
 
     if post.receiver_id.present?
       receiver_ids = post.receiver_id.split(",")
-      logger.debug("LKO")
-      logger.debug(receiver_ids)
-      logger.debug("LKO")
       receiver_ids.each do | r |
         if r.present?
           receiver_info = User.find(r)
