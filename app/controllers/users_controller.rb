@@ -660,18 +660,18 @@ class UsersController < ApplicationController
       @posts << data
     end
 
-    unless $showoff_ranking.include?(@user.company_id)
-      top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
-      process_top_receivers(top_receiver)
-      @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
-    else 
-      @last_month = Date.today.prev_month.beginning_of_month..Date.today.beginning_of_month
-      top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
-      process_top_givers(top_givers)
+    # unless $showoff_ranking.include?(@user.company_id)
+    #   top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
+    #   process_top_receivers(top_receiver)
+    #   @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+    # else 
+    #   @last_month = Date.today.prev_month.beginning_of_month..Date.today.beginning_of_month
+    #   top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
+    #   process_top_givers(top_givers)
 
-      top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
-      process_top_receivers(top_receivers)
-    end
+    #   top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
+    #   process_top_receivers(top_receivers)
+    # end
   end
 
   def articles
@@ -847,7 +847,11 @@ class UsersController < ApplicationController
 
   def process_top_receivers(top_receivers)
     @top_receivers = []
-    
+
+    logger.debug("=======")
+    logger.debug(top_receivers)
+    logger.debug("=======")
+
     top_receivers.each do | k, v |
       user = User.find(k)
       data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }

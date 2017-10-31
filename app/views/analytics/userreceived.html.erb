@@ -1,76 +1,69 @@
-<div id="wrapper">
-<div id="contents">
-  <div class="row">
-    <div class="col-4 chose_box">
-      <%= link_to "もらった投稿", "/analytics/user/#{@userid}/received", :class => "receiving_box", :style => "background-color:white;" %>
-      <%= link_to "贈った投稿", "/analytics/user/#{@userid}/given", :class => "giving_box" %>
-      <%= link_to "管理画面", "/analytics/user/#{@userid}", :class => "present_box" %>
-    </div>
-    <div class="analytics_clearfix"></div>
-    
-    <div class="mypage row">
-    <div class="rightbox col-4">
-      <div class="title"> 最も褒めてくれる人 </div>
-      <div class="profilebox">
-        <% @top_givers.each do | item | %>
-          <div class="ranking">
-            <div class="left">
-              <img src="<%= item[:img_src] %>" width="28" height="28" class="radius5"/>
-            </div>
-            <div class="right">
-              <%= item[:name] %>
-              <div class="score"><%= item[:count] %></div>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-        <% end %>
-      </div><br>
-
-      <div class="title"> 褒められポイント </div>
-      <div class="profilebox">
-        <% @top_hashtags.each do | k, v | %>
-        <div class="ranking">
-          <div class="left"><%= k %> </div>
-          <div class="right"> 
-            <div class="score"><%= v %></div>
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <% end %>
-      </div><br>
-    </div>
-
-    <div class="leftbox col-8">
-    <div class="timeline">
-      <div class="pagination" style="float:right">
-        <% if @total_pages > 8 %>
-          <% unless @page_now == 1 %>
-            <a href="<%= "#{@prizy_url}/profile/?page=1" %>">最初</a>
-            <a href="<%= "#{@prizy_url}/profile/?page=#{@previous_page}" %>">前へ</a>
-          <% end %>
-          <a href="<%= "#{@prizy_url}/profile/?page=#{@page_now}" %>"><%= @page_now %></a>
-          <% unless @page_now == @total_pages %>
-            <a href="<%= "#{@prizy_url}/profile/?page=#{@next_page}" %>">次へ</a>
-            <a href="<%= "#{@prizy_url}/profile/?page=#{@total_pages}" %>">最後</a>
-          <% end %>
+<div class="time_line_wrapper">
+  <div id="wrapper">
+    <div id="contents">
+      <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
+      <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
+      <div class="mypage row">
+        <% if @banner %>
+          <%= image_tag @banner.img_src ,class: "width-100-percent" %>
         <% else %>
-          <% (1..@total_pages).each do | i | %>
-            <a href="<%= "#{@prizy_url}/profile/?page=#{i}" %>"><%= i %></a>
-          <% end %>
+          <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
         <% end %>
-      </div><br>
-      <div class="clearfix"></div>
-      <%= render 'bottomprofile' %>
-      <div class="pagination" style="float:right">
-        <% (1..@total_pages).each do | i | %>
-          <a href="<%= "#{@prizy_url}/profile/?page=#{i}" %>"><%= i %></a>
-        <% end %>
-      </div><br>
-      <div class="clearfix"></div>
-    </div><!-- timeline -->
+        <div class="clearfix margin-top-10 width-100-percent">
+          <div class="row">
+            <div class="mypage row">
+              <div class="rightbox col-4">
+                <div class="title"> 最も褒めている人 </div>
+                <div class="profilebox"></div><br>
+                <div class="title"> 褒めているポイント </div>
+                <div class="profilebox"></div><br>
+              </div>
+
+              <div class="leftbox col-8" style="padding-left:0;">
+                <div class="clearfix width-100-percent pc_view">
+                  <%= link_to "/analytics/user/#{@userid}/received", :class => "receiving_box bkgc_white" do %>
+                    もらったメッセージ<br/>を見る
+                  <% end %>
+                  <%= link_to "/analytics/user/#{@userid}/given", :class => "giving_box" do %>
+                    贈ったメッセージ<br/>を見る
+                  <% end %>
+                  <%= link_to "/analytics/user/#{@userid}", :class => "present_box" do %>
+                    管理画面に<br/>戻る
+                  <% end %>
+                </div>
+                  
+                <div class="timeline">
+                  <div class="pagination" style="float:right">
+                    <% if @total_pages > 8 %>
+                      <% unless @page_now == 1 %>
+                        <a href="<%= "#{@prizy_url}/profile/?page=1" %>">最初</a>
+                        <a href="<%= "#{@prizy_url}/profile/?page=#{@previous_page}" %>">前へ</a>
+                      <% end %>
+                      <a href="<%= "#{@prizy_url}/profile/?page=#{@page_now}" %>"><%= @page_now %></a>
+                      <% unless @page_now == @total_pages %>
+                        <a href="<%= "#{@prizy_url}/profile/?page=#{@next_page}" %>">次へ</a>
+                        <a href="<%= "#{@prizy_url}/profile/?page=#{@total_pages}" %>">最後</a>
+                      <% end %>
+                    <% else %>
+                      <% (1..@total_pages).each do | i | %>
+                        <a href="<%= "#{@prizy_url}/profile/?page=#{i}" %>"><%= i %></a>
+                      <% end %>
+                    <% end %>
+                  </div><br>
+                  <div class="clearfix"></div>
+                  <%= render 'bottomprofile' %>
+                  <div class="pagination" style="float:right">
+                    <% (1..@total_pages).each do | i | %>
+                      <a href="<%= "#{@prizy_url}/profile/?page=#{i}" %>"><%= i %></a>
+                    <% end %>
+                  </div><br>
+                  <div class="clearfix"></div>
+                </div><!-- timeline -->
+              </div>  
+            </div>
+          </div><!-- row -->
+        </div> <!-- contents -->
+      </div>
     </div>
-    
-    </div>
-  </div><!-- row -->
-</div> <!-- contents -->
+  </div>
 </div> <!-- wrapper -->

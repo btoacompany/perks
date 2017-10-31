@@ -403,35 +403,35 @@ class AnalyticsController < ApplicationController
       kudos = Kudos.where(:post_id => post.id, :kudos => 1, :delete_flag => 0)
 
       data = {
-  id:   post.id,
-  user_id:  post.user_id,
-  user_name:  post.user.name,
-  full_user_name: "#{post.user.lastname} #{post.user.firstname}",
-  receiver_name:  post.receiver.name,
-  full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
-  user_img: post.user.img_src,
-  receiver_img: post.receiver.img_src,
-  points:   post.points,
-  description:  post.description,
-  hashtags: post.hashtags,
-  comments: comments,
-  kudos:    kudos,
-  create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
+        id:   post.id,
+        user_id:  post.user_id,
+        user_name:  post.user.name,
+        full_user_name: "#{post.user.lastname} #{post.user.firstname}",
+        receiver_name:  post.receiver.name,
+        full_receiver_name: "#{post.receiver.lastname} #{post.receiver.firstname}",
+        user_img: post.user.img_src,
+        # receiver_img: post.receiver.img_src,
+        points:   post.points,
+        description:  post.description,
+        hashtags: post.hashtags,
+        comments: comments,
+        kudos:    kudos,
+        create_time:  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
       }
 
       @posts << data
     end
 
-    top_givers = Post.where(user_id: @userid, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
+    # top_givers = Post.where(user_id: @userid, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
 
-    @top_givers = []
-    top_givers.each do | k, v |
-      user = User.find(k)
-      data = { name: user.name, img_src: user.img_src, count: v }
-      @top_givers << data
-    end
+    # @top_givers = []
+    # top_givers.each do | k, v |
+    #   user = User.find(k)
+    #   data = { name: user.name, img_src: user.img_src, count: v }
+    #   @top_givers << data
+    # end
 
-    @top_hashtags = Hashtag.where(user_id: @userid, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+    # @top_hashtags = Hashtag.where(user_id: @userid, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
   end
 
   def userreceived
