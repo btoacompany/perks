@@ -193,6 +193,36 @@ class ArticlesController < ApplicationController
 
 	    @title = "#{@article.title}"
 	    @description = @article.description
+	    # @base_url = "https://betterengagee.com/blog/article/#{@article.id}"
+	    # @image_url = @first_pic.authenticated_image_url(:medium)
+      # weekly_ranking
+      receiver_ranking(@user)
+      giver_ranking(@user)
+
+
+      # posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
+      # process_posts = process_paging(posts)
+
+      # @posts = []
+      # data = {}
+
+      # process_posts.each do | post |
+      #   data = process_post(post)
+      #   @posts << data
+      # end
+
+      # unless $showoff_ranking.include?(@user.company_id)
+      #   top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
+      #   process_top_receivers(top_receiver)
+      #   @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+      # else 
+      #   @last_month = Date.today.prev_month.beginning_of_month..Date.today.beginning_of_month
+      #   top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
+      #   process_top_givers(top_givers)
+
+      #   top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
+      #   process_top_receivers(top_receivers)
+      # end
 	  else
 	  	redirect_to :root
     end
