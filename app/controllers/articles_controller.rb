@@ -448,13 +448,13 @@ class ArticlesController < ApplicationController
     this_week = Date.today.beginning_of_week..Date.today.end_of_week
     
     @receiver_ratio = []
-    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: this_week).count
+    @this_week_posts = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: user.id, create_time: this_week).count
     @receiver_ratio << @this_week_posts
 
     if this_week.cover?(user.create_time)
       @receiver_ratio << "-"
     else
-      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
+      @last_week_posts = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
       @receiver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
       return @receiver_ratio
@@ -466,13 +466,13 @@ class ArticlesController < ApplicationController
     this_week = Date.today.beginning_of_week..Date.today.end_of_week
 
     @giver_ratio =[]
-    @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: this_week).count
+    @this_week_posts = Post.where(company_id: @company.id, delete_flag: 0, user_id: user.id, create_time: this_week).count
     @giver_ratio << @this_week_posts
 
     if this_week.cover?(user.create_time)
       @giver_ratio << "-"
     else
-      @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: last_week).count
+      @last_week_posts = Post.where(company_id: @company.id, delete_flag: 0, user_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
       @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
       return @giver_ratio

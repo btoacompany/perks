@@ -704,30 +704,18 @@ class UsersController < ApplicationController
 
   def given
     @user = User.find(@id)
-    @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @users    = User.where(company_id: @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @company = Company.find(@user.company_id)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1)
-    if $showoff_timeline.include?(@company_id)
-      unless $use_select.include?(@company_id)
-        get_team_users
-      end
-      # @emails = []
-      # @users.each do |user|
-      #   @emails << user.email
-      # end
-      hashtags = @company.hashtags
-      if hashtags.blank?
-        @hashtags = ["leadership","hardwork","creativity","positivity","teamwork"] 
-      else
-        @hashtags = hashtags.split(",")
-      end
-    end
+
+logger.debug("???????????")
     receiver_ranking(@user)
     giver_ranking(@user)
+logger.debug("???????????")
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
     process_posts = process_paging(posts)
 
@@ -776,15 +764,14 @@ class UsersController < ApplicationController
     @receiver_ratio = []
     @this_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: this_week).count
     @receiver_ratio << @this_week_posts
-
     if this_week.cover?(user.create_time)
       @receiver_ratio << "-"
     else
       @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
       @receiver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
-      return @receiver_ratio
     end
+    return @receiver_ratio
   end
 
   def giver_ranking(user)
@@ -801,8 +788,8 @@ class UsersController < ApplicationController
       @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
       @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
-      return @giver_ratio
     end
+    return @giver_ratio
   end
 
   def process_paging(posts)
