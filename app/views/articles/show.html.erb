@@ -101,16 +101,16 @@
           <% end %>
         </div>
         <div class="clearfix width-100-percent sp_view">
-          <%= link_to profile_articles_path, :class => "article_box bkgc_white", :style => "display:table-cell;" do %>
+          <%= link_to profile_articles_path, :class => "article_box bkgc_white", :style => "font-size:10px;" do %>
             ニュース<br/>トピック
           <% end %>
-          <%= link_to "/profile", :class => "receiving_box", :style => "display:table-cell;" do %>
+          <%= link_to "/profile", :class => "receiving_box", :style => "font-size:10px;" do %>
             もらったメッセージを見る
           <% end %>
-          <%= link_to "/profile/given", :class => "giving_box", :style => "display:table-cell;" do %>
+          <%= link_to "/profile/given", :class => "giving_box", :style => "font-size:10px;" do %>
             贈ったメッセージを見る
           <% end %>
-          <%= link_to "/rewards/status", :class => "present_box show-modal-sp", :style => "display:table-cell;" do %>
+          <%= link_to "/rewards/status", :class => "present_box show-modal-sp", :style => "font-size:10px;" do %>
             メッセージ<br/>を贈る
           <% end %>
         </div>
@@ -143,7 +143,7 @@
                   <p class="text_refferal"><span>引用元：<%= link_to "#{item[:quotation_url]}", "#{item[:quotation_url]}", :target => "_blank" %></span></p>
                 <% elsif item[:data_type] == "image" %>
                   <div>
-                    <%= image_tag item[:img_src], class: "article_image", class: "width-70-percent" %>
+                    <%= image_tag item[:img_src], class: "article_image", class: "width-70-percent margin-top-10" %>
                   </div>
                 <% end %>
               <% end %>
@@ -161,7 +161,7 @@
                     <div class="margin-top-10">
                       <p>この記事に登場する社員</p>
                       <% @article.tags.each do |tag| %>
-                        <span class="margin-bottom-5 name_tag pc_view show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                        <span class="margin-bottom-5 margin-right-5 name_tag pc_view show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
                         <span class="margin-bottom-5 name_tag sp_view show-message-sp" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
                         <p class="fukidashi">クリックしてメッセージを贈る</p>
                       <% end %>
