@@ -1,4 +1,29 @@
-<div class="landing_footer landing_pc">
+<% if session[:id] || cookies[:id] %>
+  <div class="landing_footer landing_pc">
+    <div class="landing_footer_wrapper">
+      <div class="landing_footer_left">
+        <%= image_tag ("https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_pc.png") %>
+      </div>
+      <div class="landing_footer_right">
+        <ul>
+          <li><%= link_to "ニューストピック", profile_articles_path %></li>
+          <li><%= link_to "もらったメッセージを見る", "/profile"%></li>
+          <li><%= link_to "贈ったメッセージを見る", "/profile/given"%></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="landing_footer landing_sp">
+    <div class="landing_footer_bottom">
+      <ul>
+        <li><%= link_to "ニューストピック", profile_articles_path %></li>
+        <li><%= link_to "もらったメッセージ", "/profile"%></li>
+        <li><%= link_to "贈ったメッセージ", "/profile/given"%></li>
+      </ul>
+    </div>
+  </div>
+<% else %>
+  <div class="landing_footer landing_pc">
     <div class="landing_footer_wrapper">
       <div class="landing_footer_left">
         <%= link_to "/" do %>
@@ -67,3 +92,4 @@
       </ul>
     </div>
   </div>
+<% end %>
