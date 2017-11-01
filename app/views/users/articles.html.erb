@@ -121,7 +121,7 @@
 					              <div class="margin-top-30">
 					                <p class="margin-bottom-5">この記事に登場する社員</p>
 						              <% article.tags.each do |tag| %>
-						                <span class="margin-bottom-5 name_tag show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+						                <span class="margin-bottom-5 margin-right-5 name_tag show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
                             <p class="fukidashi">クリックしてメッセージを贈る</p>
 						              <% end %>
 					              </div>
@@ -169,7 +169,7 @@
                         <div class="margin-top-10">
                           <p class="margin-bottom-5 font-size-12">この記事に登場する社員</p>
                           <% article.tags.each do |tag| %>
-                            <span class="margin-bottom-5 name_tag show-message-sp" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                            <span class="margin-bottom-5 margin-right-5 name_tag show-message-sp" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
                           <% end %>
                         </div>
                       <% end %>
@@ -1239,5 +1239,4 @@ $(function () {
       }
       $('.show-modal-sp').on('click', showModal);
     }());
-
 </script>
