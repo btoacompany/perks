@@ -887,7 +887,10 @@ hr.style-two {
   margin-top: 30px;
 }
 .margin-left-5 {
-  margin-top: 5px;
+  margin-left: 5px;
+}
+.margin-right-5 {
+  margin-right: 5px;
 }
 .margin-bottom-5 {
   margin-bottom: 5px;
@@ -3539,4 +3542,19 @@ table.admin_table td textarea{
   /*background-color: #aeaeae;*/
   background-color: #ffc249;
   color: #fff;
+}
+
+.user_subheader{
+  display:-webkit-box;
+  display:-moz-box;
+  display:-ms-flexbox;
+  display:-webkit-flex;
+  display:-moz-flex;
+  display:flex;
+  -webkit-box-lines:multiple;
+  -moz-box-lines:multiple;
+  -webkit-flex-wrap:wrap;
+  -moz-flex-wrap:wrap;
+  -ms-flex-wrap:wrap;
+  flex-wrap:wrap;
 }
