@@ -49,6 +49,7 @@
 .background-color-default{background-color: #ff8d07;}
 .border-radius-3{border-radius: 3px;}
 .border-radius-5{border-radius: 5px;}
+.font-size-10{font-size: 10px;}
 .font-size-12{font-size: 12px;}
 .font-size-14{font-size: 14px;}
 .font-size-18{font-size: 12px;}
@@ -1260,6 +1261,10 @@ hr.style-two {
 
 .new_post_select{
   width: 200px;
+  margin-bottom: 5px;
+}
+.new_post_select_sp{
+  width: 150px;
   margin-bottom: 5px;
 }
 
@@ -3418,13 +3423,13 @@ table.admin_table td textarea{
   padding: 10px;
 }
 .modalwin-contents img {
-  margin: 0 0 1em 0;
+/*  margin: 0 0 1em 0;*/
   float: left;
   width: 30%;
   height: 30%;
 }
 .modalwin-contents p {
-  margin: 0 0 1em 0;
+/*  margin: 0 0 1em 0;*/
   line-height: 1.8em;
 }
 .modalwin-sp {
@@ -3450,13 +3455,13 @@ table.admin_table td textarea{
   padding: 10px;
 }
 .modalwin-sp-contents img {
-  margin: 0 0 1em 0;
+/*  margin: 0 0 1em 0;*/
   float: left;
   width: 30%;
   height: 30%;
 }
 .modalwin-sp-contents p {
-  margin: 0 0 1em 0;
+  /*margin: 0 0 1em 0;*/
   line-height: 1.8em;
 }
 

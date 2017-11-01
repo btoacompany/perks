@@ -162,7 +162,7 @@
                       <p>この記事に登場する社員</p>
                       <% @article.tags.each do |tag| %>
                         <span class="margin-bottom-5 margin-right-5 name_tag pc_view show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
-                        <span class="margin-bottom-5 name_tag sp_view show-message-sp" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                        <span class="margin-bottom-5 margin-right-5 name_tag sp_view show-message-sp" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
                         <p class="fukidashi">クリックしてメッセージを贈る</p>
                       <% end %>
                     </div>
@@ -252,7 +252,7 @@
   <h1>視聴者投稿を贈る</h1>
   <div class="modalwin-sp-contents">
     <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
-      <textarea autofocus="autofocus" name="description" id="description" class="taginput" required align="center" rows="5" cols="40" style="font-size: 14px; padding: 8px;border: 1px solid gray" placeholder="メッセージを入力してください。"></textarea>
+      <textarea autofocus="autofocus" name="description" id="description" class="taginput width-100-percent" required align="center" rows="5" style="font-size: 14px; padding: 8px;border: 1px solid gray;" placeholder="メッセージを入力してください。"></textarea>
       <input type="file" name="image" %>
       <p align="right"><input type="submit" value="送信する"/></p>
     <% end %>
@@ -351,42 +351,42 @@
     <%= form_tag( "/user/give_points", method: "post" ) do %>
       <div class="pointsbox" id="pointsbox" style="padding: 10px;">
         <div id="new_posts">
-          <p style="font-size: 15px;"><b>・名前からメッセージを贈る相手を探す</b><br/>
-            <input type="text" id="target_user_name_sp" size="40" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>" style="border: #cccccc 1px solid;padding: 2px;">
-            <input type="button" value="追加" class="btn_change_password_sp" style="width: 50px;"/>
+          <p style="font-size: 13px;"><b>・名前からメッセージを贈る相手を探す</b><br/>
+            <input type="text" id="target_user_name_sp" class="width-60-percent" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>" style="border: #cccccc 1px solid;padding: 2px;">
+            <input type="button" value="追加" class="btn_change_password_sp" style="width: 50px;border: #cccccc;"/>
           </p>
-          <div id="new_post" class="new_post" name="new_post" style="margin-bottom:20px;">
+          <div id="new_post" class="new_post" name="new_post">
             <p align="center">
               <% if $use_select.include?(@user.company_id) %>
                 <div class="target_select clearfix">
                   <p class="clearfix">
-                    <p style="font-size: 15px;"><b>・所属からメッセージを贈る相手を探す</b></p>
-                    <p style="float: left; margin-right: 5px;">会社　：
-                      <select class="target_select_department new_post_select">
+                    <p style="font-size: 13px;"><b>・所属からメッセージを贈る相手を探す</b></p>
+                    <p style="float: left; margin-right: 5px;">会社: 
+                      <select class="target_select_department new_post_select_sp" style="border: #cccccc 1px solid;">
                         <option>選択してください</option>
                         <% @departments.each do |dep| %>
                           <option value="<%= dep.id %>"><%= dep.dep_name %></option>
-                       <% end %>
+                        <% end %>
                       </select>
                     </p>
-                    <p style="float: left;">部署　：
-                      <select class="target_select_team new_post_select">
+                    <p style="float: left;">部署: 
+                      <select class="target_select_team new_post_select_sp" style="border: #cccccc 1px solid;">
                         <option>選択してください</option>
                       </select>
                     </p>
                   </p>
                   <div class="clearfix">
-                    <p style="float: left; margin-right: 5px;">贈り先：
-                      <select class="target_select_user new_post_select">
+                    <p style="float: left; margin-right: 5px;">贈り先: 
+                      <select class="target_select_user new_post_select_sp" style="border: #cccccc 1px solid;">
                         <option>選択してください</option>
                       </select>
                     </p>
                   </div>
                 </div>
-                <p style="font-size: 15px;"><b>・贈り主を選択する</b></p>
+                <p style="font-size: 13px;"><b>・贈り主を選択する</b></p>
                 <div class="clearfix">
-                  <p style="float: left;">贈り主：
-                    <select class="select_giver_user new_post_select">
+                  <p style="float: left;">贈り主: 
+                    <select class="select_giver_user new_post_select_sp" style="border: #cccccc 1px solid;">
                       <option>選択してください</option>
                       <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
                       <% $nicknames.each do |key, value| %>
@@ -404,7 +404,7 @@
               <span id="suggested_name_span" style="display: none;">To: </span>
               <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
               <div id="suggest" style="display:none;"></div>
-              <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="40" style="font-size: 14px; padding: 8px;border: 1px solid gray;" placeholder="メッセージを入力してください。"></textarea><br>
+              <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput width-100-percent" required align="center" rows="3" style="font-size: 14px; padding: 8px;border: 1px solid gray;" placeholder="メッセージを入力してください。"></textarea><br>
             </div><br>
             <div class="clearfix" style="width: 100%;">
               <div class="tags" style="float:left">
@@ -444,7 +444,7 @@
           </select>
         </p>
         <p>
-          <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="40" style="font-size: 14px; padding: 8px;border: 1px solid gray" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
+          <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput width-100-percent" required align="center" rows="5" style="font-size: 14px; padding: 8px;border: 1px solid gray" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
         </p>
       </div>
       <p align="right"><input type="submit" value="送信する"/></p>
