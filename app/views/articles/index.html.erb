@@ -24,7 +24,6 @@
 			  	  <th scope="row width-8-percent">PV数</th>
 			  	  <th scope="row width-8-percent">公開/未公開</th>
 			  	  <th scope="row width-8-percent">Newバッチ</th>
-			  	  <th scope="row width-8-percent">編集</th>
 			  	  <th scope="row width-8-percent">削除</th>
 			  	  <th scope="row width-8-percent">メール送信</th>
 			  	</tr>
@@ -48,7 +47,6 @@
 				  	      <%= link_to "-", "/company/article/#{article.id}/update_is_new", {method: :post, title: "バッチをつける", data: { :confirm => "選択した記事に「New」バッチをつけますか？"}} %>
 				  	    <% end %>
 				  	  </td>
-				  	  <td class="width-8-percent"><%= link_to "編集", "/company/article/#{article.id}/edit" %></td>
 				  	  <td class="width-8-percent"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
 				  	  <td class="width-8-percent show-modal" id=<%= Rails.root.to_s + "/company/article/#{article.id}" %> value=<%= "#{article.title}" %>><%= link_to "メール送信", "#{article.id}" %></td>
 				  	</tr>

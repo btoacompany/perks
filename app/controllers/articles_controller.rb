@@ -115,7 +115,7 @@ class ArticlesController < ApplicationController
   end
 
   def show
-    @user = User.find(@id)
+    @user = User.find(@user_id)
     @users    = User.where(:company_id => @company.id, :delete_flag => 0)
     @departments = Department.where(company_id: @company.id, delete_flag: 0)
     @total_receive_message = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: @user.id).count

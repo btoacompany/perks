@@ -2567,6 +2567,7 @@ table.admin_table td textarea{
   .blog_article_content_text p{
     font-size: 15px;
     color: #333333;
+    line-height: 1.8em;
   }
 
   .blog_article_content_link{
@@ -2992,7 +2993,8 @@ table.admin_table td textarea{
   .each_post_right{
     width: 55%;
     margin-left: 2px;
-    margin-top: 2px;
+    /*margin-top: 2px;*/
+    margin-top: 5px;
     /*position: relative;*/
   }
 

@@ -129,7 +129,7 @@
                     <h3><%= item[:title] %></h3>
                   </div>
                 <% elsif item[:data_type] == "text" %>
-                  <div class="blog_article_content_text">
+                  <div class="blog_article_content_text" style="line-height: 1.3;">
                     <p><%= raw(item[:text].gsub(/\n/, '<br>'))  %></p>
                   </div>
                 <% elsif item[:data_type] == "link" %>
@@ -143,11 +143,11 @@
                   <p class="text_refferal"><span>引用元：<%= link_to "#{item[:quotation_url]}", "#{item[:quotation_url]}", :target => "_blank" %></span></p>
                 <% elsif item[:data_type] == "image" %>
                   <div>
-                    <%= image_tag item[:img_src], class: "article_image", size: "225x150" %>
+                    <%= image_tag item[:img_src], class: "article_image", class: "width-70-percent" %>
                   </div>
                 <% end %>
               <% end %>
-              <div class="kudos">
+              <div class="kudos margin-top-20">
                 <% if @article.article_likes.select { |like| like.user_id == @user_id && like.is_liked == 1 }.count > 0 %>
                   <a data-id="<%= @article.id %>" class="a_btn btn_unlike" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
                 <% else %>

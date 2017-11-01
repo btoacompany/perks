@@ -20,7 +20,7 @@
   </div>
 </div> <!-- header -->
 
-<% elsif request.path.include?("company") %>
+<% elsif request.path.include?("company") && (controller.controller_name != "articles" && controller.action_name != "show")  %>
 <div id="admin_header">
   <div class="contents">
     <div class="menu_panel">
