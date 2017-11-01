@@ -20,7 +20,7 @@
   </div>
 </div> <!-- header -->
 
-<% elsif request.path.include?("company") && (controller.controller_name != "articles" && controller.action_name != "show")  %>
+<% elsif (request.path.include?("company") && (controller.controller_name == "company" && controller.action_name != "arti")) || (controller.controller_name == "articles" && controller.action_name != "show") || controller.controller_name == "user_posted_contents" || controller.controller_name == "banners" %>
 <div id="admin_header">
   <div class="contents">
     <div class="menu_panel">
@@ -83,9 +83,7 @@
               <a href="/company/details">管理画面</a>
             <% end %>
           <% end %>
-          <% if $showoff_timeline.include?(@company_id) %>
-            <a href="/update">設定</a>
-          <% end %>
+          <a href="/update">設定</a>
           <a href="/logout">ログアウト</a>
           </p>
         </div>
