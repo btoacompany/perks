@@ -28,7 +28,7 @@
 <tr>
 <td>
 -------------------------------------<br>
-<%= @company[:description] %><br>
+<%= raw(@company[:description].gsub(/\n/, '<br>')) %><br>
 -------------------------------------<br>
 
 

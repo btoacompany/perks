@@ -536,5 +536,6 @@ class ArticlesController < ApplicationController
       }
       CompanyMailer.release_article(data).deliver_now
     end
+    redirect_to company_articles_path
   end
 end
