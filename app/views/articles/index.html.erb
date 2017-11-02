@@ -48,7 +48,7 @@
 				  	    <% end %>
 				  	  </td>
 				  	  <td class="width-8-percent"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
-				  	  <td class="width-8-percent show-modal" id=<%= Rails.root.to_s + "/company/article/#{article.id}" %> value=<%= "#{article.title}" %>><%= link_to "メール送信", "#{article.id}" %></td>
+				  	  <td class="width-8-percent show-modal" id=<%= "https://www.prizy.me/company/article/#{article.id}" %> value=<%= "#{article.title}" %>><%= link_to "メール送信", "#{article.id}" %></td>
 				  	</tr>
 			  	<% end %>
 			  </table>
