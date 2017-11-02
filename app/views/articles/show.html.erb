@@ -183,7 +183,7 @@
   <div class="user_postbox">
     <% if @user_posted_contents.count > 0 %>
       <% @user_posted_contents.each do |article| %>
-        <%= link_to "/company/article/#{article.id}" do %>
+
           <div class="each_post clearfix" style="padding: 10px;background-color: white;min-height: 80px;">
             <div class="each_post_left width-30-percent" style="float: left;">
               <% if article.images.present? %>
@@ -193,10 +193,10 @@
               <% end %>
             </div>
             <div class="each_post_right width-70-percent" style="float: left;padding-left: 10px;">
-              <h3 class="color-black" style="word-break:break-all;color: black;font-weight: normal;"><%= article.title.truncate(30) %></h3>
+              <h3><%= link_to article.title.truncate(30), "/company/article/#{article.id}", style: "word-break:break-all;color: black;font-weight: normal;text-decoration:none;" %></h3>
             </div>
           </div>
-        <% end %>
+
       <% end %>
     <% else %>
       <div class="each_article clearfix">
@@ -204,7 +204,7 @@
       </div>
     <% end %>
   </div>
-  <div class="title border-radius-5 show-user-post-sp dropbtn width-60-percent" style="margin:0px auto;background-color: #ff8d07;font-size:13px;">視聴者投稿はこちら</div>
+  <div class="title border-radius-5 show-user-post-sp dropbtn width-60-percent" style="margin:0px auto;background-color: #ff8d07;font-size:13px;text-align: center;">視聴者投稿はこちら</div>
 </div>
 <!-- end_sp -->
 
