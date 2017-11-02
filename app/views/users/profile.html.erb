@@ -173,7 +173,7 @@
             <% end %>
           </div>
           <div class="each_post_right width-70-percent" style="float: left;padding-left: 10px;">
-            <h3><%= link_to article.title.truncate(30), "/company/article/#{article.id}", style: "word-break:break-all;color: black;font-weight: normal;text-decoration:none;" %></h3>
+            <p><%= link_to article.title.truncate(30), "/company/article/#{article.id}", style: "word-break:break-all;color: black;font-weight: bold;text-decoration:none;" %></p>
           </div>
         </div>
       <% end %>
