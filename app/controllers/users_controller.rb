@@ -626,7 +626,7 @@ class UsersController < ApplicationController
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
-    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1).order(updated_at: :desc)
+    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(updated_at: :desc)
 
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
@@ -679,7 +679,7 @@ class UsersController < ApplicationController
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
-    @user_posted_contents = Article.where(company_id: @company_id,is_published:1, is_casual: 1).order(updated_at: :desc)
+    @user_posted_contents = Article.where(company_id: @company_id, is_published:1, is_casual: 1, is_deleted: 0).order(updated_at: :desc)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
 
@@ -710,7 +710,7 @@ class UsersController < ApplicationController
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
-    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1)
+    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1)
 
     receiver_ranking(@user)
     giver_ranking(@user)

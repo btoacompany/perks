@@ -122,7 +122,7 @@ class ArticlesController < ApplicationController
     @total_receive_message = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: @user.id).count
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
-    @user_posted_contents = Article.where(company_id: @company.id, is_casual: 1)
+    @user_posted_contents = Article.where(company_id: @company.id, is_casual: 1, is_deleted: 0, is_published: 1)
 	  if @article
       @banner = Banner.find_by(company_id: @company.id, is_deleted: 0)
       impressionist(@article, nil, :unique => [:session_hash])
