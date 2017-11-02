@@ -183,20 +183,18 @@
   <div class="user_postbox">
     <% if @user_posted_contents.count > 0 %>
       <% @user_posted_contents.each do |article| %>
-
-          <div class="each_post clearfix" style="padding: 10px;background-color: white;min-height: 80px;">
-            <div class="each_post_left width-30-percent" style="float: left;">
-              <% if article.images.present? %>
-                <%= image_tag article.images.first.img_src, class: "width-100-percent" %>
-              <% else %>
-                <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
-              <% end %>
-            </div>
-            <div class="each_post_right width-70-percent" style="float: left;padding-left: 10px;">
-              <h3><%= link_to article.title.truncate(30), "/company/article/#{article.id}", style: "word-break:break-all;color: black;font-weight: normal;text-decoration:none;" %></h3>
-            </div>
+        <div class="each_post clearfix" style="padding: 10px;background-color: white;min-height: 80px;">
+          <div class="each_post_left width-30-percent" style="float: left;">
+            <% if article.images.present? %>
+              <%= image_tag article.images.first.img_src, class: "width-100-percent" %>
+            <% else %>
+              <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
+            <% end %>
           </div>
-
+          <div class="each_post_right width-70-percent" style="float: left;padding-left: 10px;">
+            <h3><%= link_to article.title.truncate(30), "/company/article/#{article.id}", style: "word-break:break-all;color: black;font-weight: normal;text-decoration:none;" %></h3>
+          </div>
+        </div>
       <% end %>
     <% else %>
       <div class="each_article clearfix">
@@ -204,7 +202,7 @@
       </div>
     <% end %>
   </div>
-  <div class="title border-radius-5 show-user-post-sp dropbtn width-60-percent" style="margin:0px auto;background-color: #ff8d07;font-size:13px;text-align: center;">視聴者投稿はこちら</div>
+  <div class="title border-radius-5 show-user-post-sp dropbtn width-60-percent" style="margin:10px auto;background-color: #ff8d07;font-size:13px;text-align: center;">視聴者投稿はこちら</div>
 </div>
 <!-- end_sp -->
 

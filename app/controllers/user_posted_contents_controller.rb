@@ -21,7 +21,7 @@ class UserPostedContentsController < ApplicationController
   end
 
   def index
-    @user_posted_contents = UserPostedContent.where(company_id: @company.id)
+    @user_posted_contents = UserPostedContent.where(company_id: @company.id).order(updated_at: :desc)
     @teams = Team.where(company_id: @company.id, delete_flag: 0)
     @team_members = Hash.new
     @teams.each do |team|
