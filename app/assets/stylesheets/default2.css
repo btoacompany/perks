@@ -1409,7 +1409,29 @@ hr.style-two {
   overflow: hidden;
 }
 
+.receiving_box_sp, .giving_box_sp, .present_box_sp, .article_box_sp{
+  color: white;
+  display: block;
+  width: 47.5%;
+  font-size:13px;
+  font-weight:bold;
+  text-decoration:none;
+  text-align:center;
+  padding: 8px 0;
+  float: left;
+  margin-bottom: 10px;
+  background-color: #ff8290;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
 .receiving_box, .giving_box, .present_box, .article_box:not(:last-child){
+  margin-right: 2.5%;
+}
+
+
+.receiving_box_sp, .giving_box_sp, .present_box_sp, .article_box_sp:not(:last-child){
   margin-right: 2.5%;
 }
 
@@ -2733,10 +2755,10 @@ table.admin_table td textarea{
     margin-top: 10px;
   }
 
-  .blog_article_content_title{
-    font-size: 20px;
+  .blog_article_content_title_sp{
+    font-size: 16px;
     font-weight: bold;
-    line-height:32px;
+    line-height:24px;
   }
 
   .blog_article_content_description{
@@ -3035,6 +3057,10 @@ table.admin_table td textarea{
   /*articles#show*/
   .blog_article_content{
     margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+  }
+  .blog_article_content_sp{
     padding: 20px;
     background-color: white;
   }
