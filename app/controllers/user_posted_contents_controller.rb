@@ -42,12 +42,17 @@ class UserPostedContentsController < ApplicationController
 	  else
 	  	image = nil
 	  end
-    UserPostedContent.create(
+    @created_post = UserPostedContent.create(
       company_id: @id,
       user_id: @user_id,
       description: params[:description],
       img_src: image
       )
+    if @created_post.errors.full_messages.count == 0
+      flash[:notice] = "送信が完了しました。"
+    else
+      flash[:notice] = "送信に失敗しました。"      
+    end
     redirect_to "/profile/articles"
   end
 end
