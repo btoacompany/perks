@@ -52,7 +52,8 @@
 	  <span class="user receiver">
 	    <b>@<%= post[:full_receiver_name].join(", ") %></b>
 	  </span><br>
-    <span class="description" style="word-break:break-all;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span><br>
+    <span class="description pc_view" style="word-break:break-all;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %><br></span>
+    <span class="description sp_view font-size-13half" style="word-break:break-all;line-height: 1.6em;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %><br></span>
   </div>
 </div><br>
 <% end %> <!-- posts -->
