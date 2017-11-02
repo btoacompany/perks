@@ -99,7 +99,8 @@ class ArticlesController < ApplicationController
 	      	src	  = value
 	      	src_ext	  = File.extname(src.original_filename)
 	      	s3  = Aws::S3::Resource.new
-	      	obj = s3 .bucket(@s3_bucket).object("article/article_#{@article.id}_pic#{src_ext}")
+          @last_image = Image.last
+	      	obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id}_pic#{src_ext}")
 	      	obj.upload_file src.tempfile, {acl: 'public-read'}
 	      	@image = Image.create(
 	      		article_id:   @article.id,

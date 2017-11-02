@@ -137,7 +137,8 @@ $('.admin_menu').click(function(){
   } else {
     var image = document.createElement('input');
     image.setAttribute("type", "file");
-    image.setAttribute("name", "images["+ _num +"][]");
+    image.setAttribute("multiple", "true");
+    image.setAttribute("name", "images["+ _num +"]");
     image.setAttribute("required", "required");
     var _content = $([
       "<tr>",
