@@ -122,7 +122,7 @@
 					                <p class="margin-bottom-5">この記事に登場する社員</p>
 						              <% article.tags.each do |tag| %>
 						                <span class="margin-bottom-5 margin-right-5 name_tag show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
-                            <p class="fukidashi">クリックしてメッセージを贈る</p>
+                            <!-- <p class="fukidashi">クリックしてメッセージを贈る</p> -->
 						              <% end %>
 					              </div>
 					            <% end %>
@@ -139,18 +139,22 @@
 
 <!-- sp_view -->
             <div class="clearfix width-100-percent sp_view">
-              <%= link_to profile_articles_path, :class => "article_box bkgc_white", :style => "font-size:10px;" do %>
-                ニュース<br/>トピック
-              <% end %>
-              <%= link_to "/profile", :class => "receiving_box", :style => "font-size:10px;" do %>
-                もらったメッセージを見る
-              <% end %>
-              <%= link_to "/profile/given", :class => "giving_box", :style => "font-size:10px;" do %>
-                贈ったメッセージを見る
-              <% end %>
-              <%= link_to "/rewards/status", :class => "present_box show-modal-sp", :style => "font-size:10px;" do %>
-                メッセージ<br/>を贈る
-              <% end %>
+              <div class="clearfix width-100-percent">
+                <%= link_to profile_articles_path, :class => "article_box_sp bkgc_white", :style => "font-size:14px;" do %>
+                  ニュース<br/>トピック
+                <% end %>
+                <%= link_to "/profile", :class => "receiving_box_sp", :style => "font-size:14px;" do %>
+                  もらったメッセージを<br/>見る
+                <% end %>
+              </div>
+              <div class="clearfix width-100-percent">
+                <%= link_to "/profile/given", :class => "giving_box_sp", :style => "font-size:14px;" do %>
+                  贈ったメッセージを<br/>見る
+                <% end %>
+                <%= link_to "/rewards/status", :class => "present_box_sp show-modal-sp", :style => "font-size:14px;" do %>
+                  メッセージを<br/>贈る
+                <% end %>
+              </div>
             </div>
             <div class="blog_article_index sp_view">
               <% if @articles.count > 0 %>
@@ -164,10 +168,10 @@
                       <% end %>
                     </div>
                     <div class="each_article_right width-70-percent" style="float: left;padding-left: 10px;">
-                      <h3 class="color-black sp_view" style="color: black;"><%= link_to article.title, "/company/article/#{article.id}", class: "color-black text-decoration-none" %></h3>
+                      <p class="color-black sp_view" style="color: black;"><%= link_to article.title, "/company/article/#{article.id}", class: "color-black text-decoration-none" %></p>
                       <% if article.tags.count > 0 %>
                         <div class="margin-top-10">
-                          <p class="margin-bottom-5 font-size-12">この記事に登場する社員</p>
+                          <p class="margin-bottom-5 font-size-10">この記事に登場する社員</p>
                           <% article.tags.each do |tag| %>
                             <span class="margin-bottom-5 margin-right-5 name_tag show-message-sp" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
                           <% end %>

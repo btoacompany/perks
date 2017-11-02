@@ -101,36 +101,39 @@
           <% end %>
         </div>
         <div class="clearfix width-100-percent sp_view">
-          <%= link_to profile_articles_path, :class => "article_box bkgc_white", :style => "font-size:10px;" do %>
-            ニュース<br/>トピック
-          <% end %>
-          <%= link_to "/profile", :class => "receiving_box", :style => "font-size:10px;" do %>
-            もらったメッセージを見る
-          <% end %>
-          <%= link_to "/profile/given", :class => "giving_box", :style => "font-size:10px;" do %>
-            贈ったメッセージを見る
-          <% end %>
-          <%= link_to "/rewards/status", :class => "present_box show-modal-sp", :style => "font-size:10px;" do %>
-            メッセージ<br/>を贈る
-          <% end %>
+          <div class="clearfix width-100-percent">
+            <%= link_to profile_articles_path, :class => "article_box_sp bkgc_white", :style => "font-size:14px;" do %>
+              ニュース<br/>トピック
+            <% end %>
+            <%= link_to "/profile", :class => "receiving_box_sp", :style => "font-size:14px;" do %>
+              もらったメッセージを<br/>見る
+            <% end %>
+          </div>
+          <div class="clearfix width-100-percent">
+            <%= link_to "/profile/given", :class => "giving_box_sp", :style => "font-size:14px;" do %>
+              贈ったメッセージを<br/>見る
+            <% end %>
+            <%= link_to "/rewards/status", :class => "present_box_sp show-modal-sp", :style => "font-size:14px;" do %>
+              メッセージを<br/>贈る
+            <% end %>
+          </div>
         </div>
         <div class="blog_article_index">
-          <br/>
-          <div class="blog_article_content">
+          <div class="blog_article_content_sp">
             <% if @article.is_published == 0 %>
               <h2 class="color-red margin-bottom-5">※この記事は社員には公開されていません</h2>
             <% end %>
             <p class="blog_article_content_time margin-bottom-5"><%= @article.updated_at.strftime("%Y年%m月%d日") %></p>
-            <h2 class="blog_article_content_title"><%= @article.title %></h2>
-            <p class="blog_article_content_description"><%= @article.description %></p>
+            <p class="blog_article_content_title_sp"><%= @article.title %></p>
+            <p class="blog_article_content_description" style="line-height: 1.5em;font-size: 13px;"><%= @article.description %></p>
               <% @all_contents.each do |item| %>
                 <% if item[:data_type] == "title" %>
                   <div class="blog_article_content_head">
-                    <h3><%= item[:title] %></h3>
+                    <h3 style="line-height: 1.5em;"><%= item[:title] %></h3>
                   </div>
                 <% elsif item[:data_type] == "text" %>
-                  <div class="blog_article_content_text" style="line-height: 1.3;">
-                    <p><%= raw(item[:text].gsub(/\n/, '<br>'))  %></p>
+                  <div class="blog_article_content_text">
+                    <p style="line-height: 1.6em;font-size: 14.5px;"><%= raw(item[:text].gsub(/\n/, '<br>'))  %></p>
                   </div>
                 <% elsif item[:data_type] == "link" %>
                   <div class="blog_article_content_link">
@@ -138,7 +141,7 @@
                   </div>
                 <% elsif item[:data_type] == "quotation" %>
                   <div class="blog_article_content_quotation" >
-                    <p><%= item[:quotation_title] %></p>
+                    <p style="line-height: 1.5em;font-size: 13px;"><%= item[:quotation_title] %></p>
                   </div>
                   <p class="text_refferal"><span>引用元：<%= link_to "#{item[:quotation_url]}", "#{item[:quotation_url]}", :target => "_blank" %></span></p>
                 <% elsif item[:data_type] == "image" %>
