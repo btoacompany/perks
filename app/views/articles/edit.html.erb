@@ -63,21 +63,21 @@
 	          <tr>
 	            <% if item[:data_type] == "title" %>
 	              <th>タイトル<br><button type='button' class='delete_question'>削除する</button></th>
-	              <td><input name="paragraph_titles[<%= @num %>]" class="width-400" value="<%= item[:title] %>" /></td>
+	              <td><input name="paragraph_titles[<%= @num %>]" class="width-100-percent" value="<%= item[:title] %>" /></td>
 	            <% elsif item[:data_type] == "text" %>
 	              <th>テキスト<br><button type='button' class='delete_question'>削除する</button></th>
-	              <td><textarea name="texts[<%= @num %>]" class="width-400 height-200"><%= item[:text] %></textarea></td>
+	              <td><textarea name="texts[<%= @num %>]" class="width-100-percent height-200"><%= item[:text] %></textarea></td>
 	            <% elsif item[:data_type] == "link" %>
 	              <th>リンク<br><button type='button' class='delete_question'>削除する</button></th>
 	              <td>
-	                <input name="links[<%= @num %>][]" value="<%= item[:link_title] %>" class="width-400"><br>
-	                <input name="links[<%= @num %>][]" value="<%= item[:link_url] %>" class="width-400">
+	                <input name="links[<%= @num %>][]" value="<%= item[:link_title] %>" class="width-100-percent"><br>
+	                <input name="links[<%= @num %>][]" value="<%= item[:link_url] %>" class="width-100-percent">
 	              </td>
 	            <% elsif item[:data_type] == "quotation" %>
 	              <th>引用<br><button type='button' class='delete_question'>削除する</button></th>
 	              <td>
-	                <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_title] %>" class="width-400"><br>
-	                <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_url] %>" class="width-400">
+	                <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_title] %>" class="width-100-percent"><br>
+	                <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_url] %>" class="width-100-percent">
 	              </td>
 	            <% elsif item[:data_type] == "image" %>
 	              <th>画像<br/>※変更しない場合も再度選択してください</th>
