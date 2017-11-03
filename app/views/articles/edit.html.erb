@@ -40,7 +40,11 @@
 	            <input type="text" id="suggested_name" name="tags[]" value="" size="100" placeholder="メールアドレスを入力してください" />
 	            <input type="button" value="追加" class="btn_change_password"/>
 	            <div id="suggest" style="display:none;"></div>
-	            <div id="adding_member"></div>
+	            <div id="adding_member">
+                <% @article.tags.each do |tag| %>
+                  <input type="text" name="tags[]" value="<%= tag.user.email %>" size="100"/><br>
+                <% end %>
+              </div>
 	          </td>
 	        </tr>
 	        <tr>
@@ -76,7 +80,7 @@
 	                <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_url] %>" class="width-400">
 	              </td>
 	            <% elsif item[:data_type] == "image" %>
-	              <th>画像</th>
+	              <th>画像<br/>※変更しない場合も再度選択してください</th>
 	              <td>
                   <input type="file" name="images[<%= @num %>]" value="<%= item[:image_url] %>">
 	              </td>
@@ -179,7 +183,7 @@ $('.admin_menu').click(function(){
     image.setAttribute("required", "required");
     var _content = $([
       "<tr>",
-        "<th>画像<br/>横サイズのみ固定の300pxになります<br/><button type='button' class='delete_question'>削除する</button></th>",
+        "<th>画像<br/>※変更しない場合も再度選択してください<br/><button type='button' class='delete_question'>削除する</button></th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
