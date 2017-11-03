@@ -233,8 +233,11 @@ class ArticlesController < ApplicationController
     @num = 1
     @categories = Category.where(company_id: @company.id, is_deleted:0, company_id: @company.id)
     @article = Article.find(params[:id])
-    @tags = User.where(is_deleted: 0, article_id: @article.id)
-    # @article_tags = ArticleTag.where(article_id: @article.id).pluck(:tag_id)
+    logger.debug(@article.tags.count)
+    @article.tags.each do |tag|
+      logger.debug(tag)
+    end
+
     @contents = []
     @titles = @article.titles
     unless @titles.blank?
@@ -319,6 +322,7 @@ class ArticlesController < ApplicationController
       Link.where(article_id: @article.id).destroy_all
       Quotation.where(article_id: @article.id).destroy_all
       Image.where(article_id: @article.id).destroy_all
+      Tag.where(article_id: @article.id).destroy_all
 
       if params[:paragraph_titles].present?
         params[:paragraph_titles].each do |key, value|
@@ -327,6 +331,18 @@ class ArticlesController < ApplicationController
             content:      value,
             place_number: key.to_i,
           )
+        end
+      end
+
+      if params[:tags].present?
+        params[:tags].uniq.each do |email|
+          user = User.find_by(email: email)
+          if user
+            Tag.create(
+              article_id: @article.id,
+              user_id: user.id
+              )
+          end
         end
       end
 
@@ -367,7 +383,8 @@ class ArticlesController < ApplicationController
           src    = value
           src_ext    = File.extname(src.original_filename)
           s3  = Aws::S3::Resource.new
-          obj = s3 .bucket(@s3_bucket).object("article/article_#{@article.id}_pic#{src_ext}")
+          @last_image = Image.last
+          obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id}_pic#{src_ext}")
           obj.upload_file src.tempfile, {acl: 'public-read'}
           @image = Image.create(
             article_id:   @article.id,

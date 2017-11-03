@@ -39,6 +39,8 @@
 .width-100-percent{width: 100%;}
 
 .height-200{height: 200px;}
+.min-height-70{min-height: 70px;}
+.min-height-80{min-height: 80px;}
 .min-height-200{min-height: 200px;}
 .max-height-200{max-height: 200px;}
 .float_left{float: left;}
@@ -3014,12 +3016,10 @@ table.admin_table td textarea{
   .each_article_right .date{
     text-align: right;
   }
-  .each_article_right .footer{
+  .each_article .footer{
     position: absolute;
-    bottom: -110px;
-    height: 100%;
-    width: 100%;
-    right: 0px;
+    bottom: 10px; /** 場合によっては微調整 **/
+    right: 10px;
   }
 
   .each_post_right{
@@ -3044,13 +3044,13 @@ table.admin_table td textarea{
     color: gray;
     /*text-align: right;*/
   }
-  .each_post_right .footer{
+/*  .each_post_right .footer{
     position: absolute;
     bottom: -110px;
     height: 100%;
     width: 100%;
     right: 0px;
-  }
+  }*/
 
   .sp_view{
     display:none;
@@ -3541,17 +3541,18 @@ table.admin_table td textarea{
   }
   .fukidashi {
     display: none;
-    width: 200px;
+    width: 250px;
     position: absolute;
-    top: 35px;
+    top: -40px;
     /*left: 150px;*/
     padding: 10px;
     border-radius: 5px;
     background: #ff8d07;
     color: #fff;
     font-weight: bold;
+    text-align: center;
   }
-  .fukidashi:after {
+/*  .fukidashi:after {
     position: absolute;
     width: 0;
     height: 0;
@@ -3564,7 +3565,7 @@ table.admin_table td textarea{
     border-width: 10px;
     pointer-events: none;
     content: " ";
-  }
+  }*/
   .name_tag:hover + .fukidashi {
     display: block;
   }

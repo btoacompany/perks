@@ -60,11 +60,11 @@
                 <% @user_posted_contents.each do |article| %>
                   <%= link_to "/company/article/#{article.id}" do %>
                   <div class="each_post clearfix" style="padding: 0px;">
-                    <div class="each_post_left" style="float: left;">
+                    <div class="each_post_left width-30-percent" style="float: left;margin-right: 5px;">
                       <% if article.images.present? %>
-                        <%= image_tag article.images.first.img_src, size: "100x70" %>
+                        <%= image_tag article.images.first.img_src %>
                       <% else %>
-                        <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" width="100" height="70" />
+                        <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent min-height-70" />
                       <% end %>
                     </div>
                     <div class="each_post_right" style="float: left;">
@@ -101,7 +101,7 @@
 				    <div class="blog_article_index pc_view">
 				      <% if @articles.count > 0 %>
 					      <% @articles.each do |article| %>
-					        <div class="each_article clearfix">
+					        <div class="each_article clearfix" style="position: relative;">
 					          <div class="each_article_left icon width-30-percent" style="float: left;">
 						          <% if article.is_new == 1 %>
 							          <p class="badge">
@@ -121,13 +121,15 @@
 					              <div class="margin-top-30">
 					                <p class="margin-bottom-5">この記事に登場する社員</p>
 						              <% article.tags.each do |tag| %>
-						                <span class="margin-bottom-5 margin-right-5 name_tag show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
-                            <!-- <p class="fukidashi">クリックしてメッセージを贈る</p> -->
+                            <div style="position: relative;">
+  						                <span class="margin-bottom-5 margin-right-5 name_tag show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                              <p class="fukidashi">クリックしてメッセージを贈る</p>
+                            </div>
 						              <% end %>
 					              </div>
 					            <% end %>
-					            <p class="date color-black footer"><%= article.updated_at.strftime("%Y.%m.%d") %></p>
 					          </div>
+                    <p class="date color-black footer" style="text-align: right;"><%= article.updated_at.strftime("%Y.%m.%d") %></p>
 					        </div>
 					      <% end %>
 					    <% else %>
