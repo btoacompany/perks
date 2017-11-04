@@ -437,7 +437,7 @@ class ArticlesController < ApplicationController
   end
 
   def image
-    @image = Image.find(params[:id])
+    # @image = Image.find(params[:id])
   end
 
   def image_update
