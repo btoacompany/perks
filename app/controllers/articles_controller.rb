@@ -27,7 +27,6 @@ class ArticlesController < ApplicationController
 
   def new
   	@articles = Article.new
-  	@categories = Category.where(company_id: @company.id, is_deleted:0, company_id: @company.id)
   end
 
   def create
@@ -231,7 +230,6 @@ class ArticlesController < ApplicationController
 
   def edit
     @num = 1
-    @categories = Category.where(company_id: @company.id, is_deleted:0, company_id: @company.id)
     @article = Article.find(params[:id])
     logger.debug(@article.tags.count)
     @article.tags.each do |tag|
