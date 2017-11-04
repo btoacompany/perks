@@ -86,7 +86,7 @@
       </div>
 
       <div class="leftbox col-8" style="padding-left:0;">
-        <div class="margin-bottom-10 pc_view">
+        <div class="clearfix margin-bottom-10 pc_view width-100-percent">
           <%= link_to profile_articles_path, :class => "article_box bkgc_white" do %>
             ニュース<br/>トピック
           <% end %>
@@ -124,7 +124,8 @@
               <h2 class="color-red margin-bottom-5">※この記事は社員には公開されていません</h2>
             <% end %>
             <p class="blog_article_content_time margin-bottom-5"><%= @article.updated_at.strftime("%Y年%m月%d日") %></p>
-            <p class="blog_article_content_title_sp"><%= @article.title %></p>
+            <p class="blog_article_content_title_sp pc_view" style="font-size: 22px;font-weight: bold;line-height: 1.6em;"><%= @article.title %></p>
+            <p class="blog_article_content_title_sp sp_view"><%= @article.title %></p>
             <p class="blog_article_content_description" style="line-height: 1.5em;font-size: 13px;"><%= @article.description %></p>
               <% @all_contents.each do |item| %>
                 <% if item[:data_type] == "title" %>
