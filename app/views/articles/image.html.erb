@@ -1,0 +1,37 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+  <div id="admin_contents" class="c_align">
+    <h3>ブログ</h3>
+    <div class="margin-10">
+      <%= link_to "+ 記事を作成する", company_article_new_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ ニュース記事一覧", company_articles_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
+      <%= link_to "+ 社員からの投稿を見る", company_user_posted_contents_path, {class: "a_btncmn radius5 width-250"} %>
+    </div>
+
+    <div class="margin-top-10">
+      <h3 class="margin-bottom-10">画像を更新する</h3>
+      <h4 class="margin-10"><%= link_to "記事に戻る", "/company/article/#{@image.article_id}/edit", style: "text-decoration: none;" %></h4>
+      <%= form_tag( "/company/image/#{@image.id}/update", :multipart => true, method: "post") do %>
+        <table class="article_table horizontal width-80-percent">
+          <tr>
+            <th class="width-20-percent">現在の画像</th>
+            <td class="width-80-percent">
+              <%= image_tag @image.img_src, class: "height-300" %>
+            </td>
+          </tr>
+          <tr>
+            <th class="width-20-percent">画像</th>
+            <td class="width-80-percent"><input name="img_src" type="file"></td>
+          </tr>
+          <tr>
+            <th class="width-20-percent">削除</th>
+            <td class="width-80-percent"><%= link_to "削除する", "/company/image/#{@image.id}/delete", method: :post %></td>
+          </tr>
+        </table>
+        <input class="c_align margin-10" type="submit" value="送信" id="submit-btn"/>
+      <% end %>
+    </div>
+  </div>
+</div>
