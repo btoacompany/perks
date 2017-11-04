@@ -9,7 +9,7 @@
 	    <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
 	    <%= link_to "+ 社員からの投稿を見る", company_user_posted_contents_path, {class: "a_btncmn radius5 width-250"} %>
 	  </div>
-
+ 
     <div class="margin-top-10">
 	    <h3 class="margin-bottom-10">記事を編集する</h3>
 	    <%= form_tag( "/company/article/#{@article.id}/update", method: "post", :multipart => true) do %>
@@ -80,9 +80,11 @@
 	                <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_url] %>" class="width-100-percent">
 	              </td>
 	            <% elsif item[:data_type] == "image" %>
-	              <th>画像<br/>※変更しない場合も再度選択してください</th>
+	              <th>画像</th>
 	              <td>
-                  <input type="file" name="images[<%= @num %>]" value="<%= item[:image_url] %>">
+                  <%= link_to "画像を変更・削除する","/company/image/#{item[:id]}/edit" %><br>
+                  <%= image_tag item[:image_url], class: "width-30-percent max-height-200 margin-10" %>
+                  <!-- <input type="hidden" name="images[<%= @num %>][]" value="<%= item[:image_url] %>"> -->
 	              </td>
 	            <% end %>
 	          </tr>
@@ -96,7 +98,7 @@
 </div>
 
 <script type="text/javascript">
-var num = 0;
+var num = <%= @num %>;
 
 $('.admin_menu').click(function(){
   num++;
@@ -183,7 +185,7 @@ $('.admin_menu').click(function(){
     image.setAttribute("required", "required");
     var _content = $([
       "<tr>",
-        "<th>画像<br/>※変更しない場合も再度選択してください<br/><button type='button' class='delete_question'>削除する</button></th>",
+        "<th>画像<br/><button type='button' class='delete_question'>削除する</button></th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));

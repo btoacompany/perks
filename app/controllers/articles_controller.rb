@@ -321,7 +321,7 @@ class ArticlesController < ApplicationController
       Text.where(article_id: @article.id).destroy_all
       Link.where(article_id: @article.id).destroy_all
       Quotation.where(article_id: @article.id).destroy_all
-      Image.where(article_id: @article.id).destroy_all
+      # Image.where(article_id: @article.id).destroy_all
       Tag.where(article_id: @article.id).destroy_all
 
       if params[:paragraph_titles].present?
@@ -385,7 +385,7 @@ class ArticlesController < ApplicationController
           s3  = Aws::S3::Resource.new
           @last_image = Image.last
           obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id}_pic#{src_ext}")
-          obj.upload_file src.tempfile, {acl: 'public-read'}
+
           @image = Image.create(
             article_id:   @article.id,
             img_src:      obj.public_url, 
@@ -396,7 +396,6 @@ class ArticlesController < ApplicationController
     end
     redirect_to company_articles_path, notice: "記事を作成しました。"
     rescue => e
-      logger.debug("#{e}")
     redirect_to company_articles_path, notice: "失敗しました。"
   end
 
@@ -437,6 +436,30 @@ class ArticlesController < ApplicationController
       @article.save
     end
     redirect_to company_articles_path
+  end
+
+  def image
+    @image = Image.find(params[:id])
+  end
+
+  def image_update
+    @image = Image.find(params[:id])
+    if @image && params[:img_src].present?
+      src    = params[:img_src]
+      src_ext    = File.extname(src.original_filename)
+      s3  = Aws::S3::Resource.new
+      obj = s3 .bucket(@s3_bucket).object("article/article_#{@image.id}_pic#{src_ext}")
+      obj.upload_file src.tempfile, {acl: 'public-read'}
+      @image.img_src = obj.public_url
+      @image.save
+    end
+    redirect_to "/company/article/#{@image.article_id}/edit"
+  end
+
+  def image_delete
+    @image = Image.find(params[:id])
+    @image.destroy
+    redirect_to "/company/article/#{@image.article_id}/edit"
   end
 
   def like
