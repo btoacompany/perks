@@ -396,9 +396,6 @@ class ArticlesController < ApplicationController
     end
     redirect_to company_articles_path, notice: "記事を作成しました。"
     rescue => e
-      logger.debug("========")
-      logger.debug("#{e}")
-      logger.debug("========")
     redirect_to company_articles_path, notice: "失敗しました。"
   end
 
