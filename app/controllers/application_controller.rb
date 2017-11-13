@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   $allow_nickname   = all_company_ids
   $use_select       = all_company_ids
   $no_manager       = all_company_ids
+  $use_timeline     = [14,115,27]
 
   # $showoff_timeline = [1,2,3,14,30,32,37,38,79,80]
   # $showoff_ranking  = [1,2,3,14,30,32,37,38,79,80]
