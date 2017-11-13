@@ -8,7 +8,7 @@ require 'json'
 class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout, :invite, :invite_complete, :give_points_slack, :give_points_slack_response, :forgot_password, :forgot_password_submit, :fb_auth]
   before_filter :init_url
-  before_action :timeline_message, :only => [:index, :profile, :given]
+  before_action :timeline_message, :only => [:index, :profile, :given, :timeline]
 
   def init
     if session[:id].present? || cookies[:id].present?
@@ -659,19 +659,33 @@ class UsersController < ApplicationController
       data = process_post(post)
       @posts << data
     end
+  end
 
-    # unless $showoff_ranking.include?(@user.company_id)
-    #   top_receiver = Post.where(receiver_id: @id, delete_flag: 0).group(:user_id).order("count_all desc").limit(5).count
-    #   process_top_receivers(top_receiver)
-    #   @top_hashtags = Hashtag.where(company_id: @company_id, receiver_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
-    # else 
-    #   @last_month = Date.today.prev_month.beginning_of_month..Date.today.beginning_of_month
-    #   top_givers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month ).group(:user_id).order("count_all desc").limit(3).count
-    #   process_top_givers(top_givers)
+  def timeline
+    @user = User.find(@id)
+    @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
+    @departments = Department.where(company_id: @company_id, delete_flag: 0)
+    @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
+    @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
+    @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
+    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(updated_at: :desc)
 
-    #   top_receivers = Post.where(company_id: @company_id, delete_flag: 0, create_time: @last_month).group(:receiver_id).order("count_all desc").limit(3).count
-    #   process_top_receivers(top_receivers)
-    # end
+    @company = Company.find(@user.company_id)
+    # weekly_ranking
+    receiver_ranking(@user)
+    giver_ranking(@user)
+
+
+    posts = Post.where(delete_flag: 0).order("update_time desc")
+    process_posts = process_paging(posts)
+
+    @posts = []
+    data = {}
+
+    process_posts.each do | post |
+      data = process_post(post)
+      @posts << data
+    end
   end
 
   def articles
@@ -689,7 +703,6 @@ class UsersController < ApplicationController
     giver_ranking(@user)
 
     # paging
-    # process_paging(@articles)
     articles = Article.where(company_id: @company_id, is_deleted: 0, is_published: 1, is_casual: 0).order(updated_at: :desc)
     process_posts = process_paging_articles(articles)
 
@@ -697,7 +710,6 @@ class UsersController < ApplicationController
     data = {}
 
     process_posts.each do | post |
-      # data = process_post(post)
       @articles << post
     end
   end
@@ -845,11 +857,6 @@ class UsersController < ApplicationController
 
   def process_top_receivers(top_receivers)
     @top_receivers = []
-
-    logger.debug("=======")
-    logger.debug(top_receivers)
-    logger.debug("=======")
-
     top_receivers.each do | k, v |
       user = User.find(k)
       data = { name: "#{user.lastname} #{user.firstname}", img_src: user.img_src, count: v }
