@@ -83,7 +83,11 @@ class UsersController < ApplicationController
       	if verified == 0
       	  redirect_page("users", "update")
       	else
-      	  redirect_page("users", "index")
+          if $use_timeline.include?(authorized_user.company_id)
+            redirect_page("users", "timeline")
+          else
+      	    redirect_page("users", "index")
+          end
       	end
       end
     else

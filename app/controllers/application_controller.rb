@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
   def validate_user
     if @current_user.present?
       unless @current_user.admin == 1
-  redirect_page("users", "index")
+        redirect_page("users", "index")
       end
     end
   end
@@ -102,10 +102,6 @@ class ApplicationController < ActionController::Base
       OpenStruct.new(name: "Guest")
     end
   end
-
-  # def current_company
-  #   @company = Company.find(@current_user.company_id)
-  # end
 
   def restrict_access_by_smartphone
     user_agent = request.env["HTTP_USER_AGENT"]
