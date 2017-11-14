@@ -676,7 +676,7 @@ class UsersController < ApplicationController
     giver_ranking(@user)
 
 
-    posts = Post.where(company_id: @company_id, delete_flag: 0).order("update_time desc")
+    posts = Post.where(company_id: @company.id, delete_flag: 0).order("update_time desc")
     process_posts = process_paging(posts)
 
     @posts = []
