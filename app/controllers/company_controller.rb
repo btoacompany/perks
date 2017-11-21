@@ -62,14 +62,14 @@ class CompanyController < ApplicationController
 
       user = User.new
       user.save_record({
-  :email      => params[:email],
-  :password   => params[:password],
-  :img_src    => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
-  :name      => params[:email].split("@")[0],
-  :company_id => company.id,
-  :out_points => 150,
-  :admin      => 1,
-  :deliver_invite_mail => 3,
+        :email      => params[:email],
+        :password   => params[:password],
+        :img_src    => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+        :name      => params[:email].split("@")[0],
+        :company_id => company.id,
+        :out_points => 150,
+        :admin      => 1,
+        :deliver_invite_mail => 3,
       })
 
       c_code = (Time.now.to_i).to_s + "_" + (company.id).to_s
@@ -77,13 +77,12 @@ class CompanyController < ApplicationController
       company.save
 
       if company.save
-  CompanyMailer.welcome_email(params).deliver_later
-
-  invite_link = InviteLink.new
-  invite_link.save_record({
-    :company_id   => company.id,
-    :c_code  => c_code
-  })
+        CompanyMailer.welcome_email(params).deliver_later
+          invite_link = InviteLink.new
+          invite_link.save_record({
+            :company_id   => company.id,
+            :c_code  => c_code
+          })
       end
       session[:id] = nil
       cookies.delete :id
