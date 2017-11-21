@@ -1064,7 +1064,6 @@ class UsersController < ApplicationController
     url	    = "https://graph.facebook.com/#{fb_user['id']}/picture?width=300&height=300"
     res	    = Net::HTTP.get_response(URI(url))
     fb_pic  = res['location']
-
     fb_data = {
       :fb_data	  => 1,
       :fb_name	  => fb_user['name'],
@@ -1073,11 +1072,9 @@ class UsersController < ApplicationController
       :fb_gender  => fb_user['gender'],
       :fb_pic	  => fb_pic 
     }
-
     if $c_code.present?
       fb_data[:c_code] = $c_code
     end
-
     return fb_data
   end
 
@@ -1281,13 +1278,11 @@ class UsersController < ApplicationController
   def delete_comment
     comment = Comment.find(params[:comment_id])
     comment.delete_record
-
     redirect_to "/user" 
   end
 
   def delete_post
     post_id = params[:post_id]
-
     post      = Post.where(id: post_id).update_all(delete_flag: 1)
     comments  = Comment.where(post_id: post_id).update_all(delete_flag: 1)
     kudos     = Kudos.where(post_id: post_id).update_all(delete_flag: 1)
