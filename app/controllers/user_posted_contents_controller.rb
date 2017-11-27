@@ -1,6 +1,6 @@
 class UserPostedContentsController < ApplicationController
   before_action :init
-  before_filter :init_url
+  before_filter :init_url, :authenticate_user
 
   def init
     if session[:email].present? || cookies[:email].present?
