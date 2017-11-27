@@ -1278,7 +1278,7 @@ class UsersController < ApplicationController
   def delete_comment
     comment = Comment.find(params[:comment_id])
     comment.delete_record
-    redirect_to "/user" 
+    redirect_to "/user"
   end
 
   def delete_post
@@ -1288,7 +1288,7 @@ class UsersController < ApplicationController
     kudos     = Kudos.where(post_id: post_id).update_all(delete_flag: 1)
     hashtags  = Hashtag.where(post_id: post_id).update_all(delete_flag: 1)
 
-    redirect_to "/user" 
+    redirect_page(params[:before_controller], params[:before_action])
   end
 
   def redirect_to_index
