@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   impressionist actions: [:index, :show]
-  before_filter :init_url
+  before_filter :init_url, :authenticate_user
   before_action :init
 
   def init
