@@ -1,88 +1,88 @@
 <div class="profile">
-  <!-- タイムラインを表示するときの処理 -->
   <%if $showoff_timeline.include?(@company_id) %>
-  <div class="leftbox col-8 timeline" style="padding-left: 0px; ">
-    <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
-    <div class="pointsbox" id="pointsbox">
-      <div id="new_posts">
-      <div id="new_post" class="new_post display_hidden" name="new_post" style="margin-bottom:20px;">
+    <div class="leftbox col-8 timeline" style="padding-left: 0px; ">
+      <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
+        <div class="pointsbox" id="pointsbox">
+          <div id="new_posts">
+            <div id="new_post" class="new_post display_hidden" name="new_post" style="margin-bottom:20px;">
 
-      <p align="center">
-      <% if $use_select.include?(@user.company_id) %>
-        <div class="target_select clearfix">
-          <p style="float: left; margin-right: 15px;">会社　：
-            <select class="target_select_department new_post_select">
-              <option>選択してください</option>
-              <% @departments.each do |dep| %>
-                <option value="<%= dep.id %>"><%= dep.dep_name %></option>
-              <% end %>
-            </select>
-          </p>
-          <p style="float: left;">部署　：
-            <select class="target_select_team new_post_select">
-              <option>選択してください</option>
-            </select>
-          </p>
-          <p style="float: left; margin-right: 15px;">贈り先：
-            <select class="target_select_user new_post_select">
-              <option>選択してください</option>
-            </select>
-          </p>
-          <p style="float: left;">贈り主：
-            <select class="select_giver_user new_post_select">
-              <option>選択してください</option>
-              <% $nicknames.each do |key, value| %>
-                <option value="<%= key %>"><%= value %></option>
-              <% end %>
-            </select>
-          </p>
-        </div>
-      <% end %>
-      <div class="dropdown">
-        <% unless $use_select.include?(@user.company_id) %>
-        <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png" onClick="return false;" title="褒める相手を選んでください。" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
-        <% end %>
-        <% if @company.point_fixed_flag == 0 %>
-          <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" title="贈るポイント数を選んでください。" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
-        <% end %>
-        <% unless $showoff_hashtag.include?(@user.company_id) %>
-        <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="コアバリューを選択できます。" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
-        <% end %>
-        <% unless $use_select.include?(@user.company_id) %>
-        <% if $allow_nickname.include?(@user.company_id) %>
-          <input type="image" id="nicknamebtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" title="ニックネームを選択できます。" data-intro="ニックネームを選択してください。相手は、誰から褒められたのかはわかりませんが、ニックネームが表示されます。" <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
-        <% end %>
-        <% end %>
-        <div id="myDropdown" class="dropdown-content"> </div>
-      </div><hr>
+              <p align="center">
+                <% if $use_select.include?(@user.company_id) %>
+                  <div class="target_select clearfix">
+                    <p style="float: left; margin-right: 15px;">会社　：
+                      <select class="target_select_department new_post_select">
+                        <option>選択してください</option>
+                        <% @departments.each do |dep| %>
+                          <option value="<%= dep.id %>"><%= dep.dep_name %></option>
+                        <% end %>
+                      </select>
+                    </p>
+                    <p style="float: left;">部署　：
+                      <select class="target_select_team new_post_select">
+                        <option>選択してください</option>
+                      </select>
+                    </p>
+                    <p style="float: left; margin-right: 15px;">贈り先：
+                      <select class="target_select_user new_post_select">
+                        <option>選択してください</option>
+                      </select>
+                    </p>
+                    <p style="float: left;">贈り主：
+                      <select class="select_giver_user new_post_select">
+                        <option>選択してください</option>
+                        <% $nicknames.each do |key, value| %>
+                          <option value="<%= key %>"><%= value %></option>
+                        <% end %>
+                      </select>
+                    </p>
+                  </div>
+                <% end %>
+                <div class="dropdown">
+                  <% unless $use_select.include?(@user.company_id) %>
+                    <input type="image" id="atbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/btn_icon_04.png" onClick="return false;" title="褒める相手を選んでください。" data-intro="ボタンをクリックし、ボーナスを贈る相手を選びましょう。" data-step="2"/>
+                  <% end %>
+                  <% if @company.point_fixed_flag == 0 %>
+                    <input type="image" id="ptsbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_01.png" onClick="return false;" title="贈るポイント数を選んでください。" data-intro="贈るポイント数を選ぶことができます。<br>選択肢にないポイント数も、投稿欄に「+」と記入することで、贈ることができます。" data-step="3"/>
+                  <% end %>
+                  <% unless $showoff_hashtag.include?(@user.company_id) %>
+                    <input type="image" id="tagbtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_03.png" onClick="return false;" title="コアバリューを選択できます。" data-intro="相手の良いところをハッシュタグにして、褒めてあげましょう。<br>ボタンをクリックすると会社のコアバリューが選択できます。選択肢にないハッシュタグはコメント欄で「#」と記入することで贈ることができます。" 
+                    <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
+                  <% end %>
+                  <% unless $use_select.include?(@user.company_id) %>
+                    <% if $allow_nickname.include?(@user.company_id) %>
+                      <input type="image" id="nicknamebtn" class="dropbtn" src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_icon_02.png" onClick="return false;" title="ニックネームを選択できます。" data-intro="ニックネームを選択してください。相手は、誰から褒められたのかはわかりませんが、ニックネームが表示されます。" 
+                      <% if @company.point_fixed_flag == 0 %> data-step="4" <% else %> data-step="3" <% end %>/>
+                    <% end %>
+                  <% end %>
+                  <div id="myDropdown" class="dropdown-content"> </div>
+                </div><hr>
 
-  <div class="description">
-      <span id="suggested_name_span" style="display: none;">To: </span>
-      <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
-    <div id="suggest" style="display:none;"></div>
-    <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="80" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
-  </div><br>
-  <div class="clearfix" style="width: 100%;">
-    <div class="tags" style="float:left">
-      <p>To &nbsp; &nbsp;: <span class="given_to"></span></p><br>
-      <% if $allow_nickname.include?(@user.company_id) %>
-      <p>From: <span class="given_from"></span></p><br>
-      <% end %>
-    </div>
-    <div style="float:right;" class="remove_div">
-      <span class="pointsInput"></span>
-      <p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
-    </div>
-  </div><!--clearfix -->
-  </div>
-  </div>
-  <button type="button" id="addItem">もう一件投稿する</button>
-
-    </div> <!-- pointsbox -->  
-    <% end %>
-    <br>
-</div>
-  <% else %>
+                <div class="description">
+                  <span id="suggested_name_span" style="display: none;">To: </span>
+                  <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
+                  <div id="suggest" style="display:none;"></div>
+                  <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="80" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
+                </div><br>
+                <div class="clearfix" style="width: 100%;">
+                  <div class="tags" style="float:left">
+                    <p>To &nbsp; &nbsp;: <span class="given_to"></span></p><br>
+                    <% if $allow_nickname.include?(@user.company_id) %>
+                      <p>From: <span class="given_from"></span></p><br>
+                    <% end %>
+                  </div>
+                  <div style="float:right;" class="remove_div">
+                    <span class="pointsInput"></span>
+                    <p align="right"><input type="submit" value="送信する" class="radius5 btn_give"/></p>
+                  </div>
+                </div><!--clearfix -->
+              </div>
+            </div>
+            <button type="button" id="addItem">もう一件投稿する</button>
+          </div> <!-- pointsbox -->  
+        <% end %>
+        <br>
+      </div>
+    <% else %>
     <!-- タイムラインを表示するときの処理 -->
     <div class="profile_pic col-3" style="padding-left: 0px; padding-bottom: 0px;">
        <img src="<%= @user.img_src %>" class="radius10"/>
@@ -90,10 +90,10 @@
     </div>
     <div class="info col-5">
       <h2 class="name"><%= @user.lastname %> <%= @user.firstname %> (<%= @user.name %>)</h2>
-       <h3 class="gray"><%= @user.company.name %></h3>
-       <h4 class="gray"><u><%= @user.email %></u></h4><br>
-       <h2>獲得したポイント: <%= number_with_delimiter(@user.in_points, :delimiter => ',') %></h2>
-       <h2>贈れるポイント: <%= number_with_delimiter(@user.out_points, :delimiter => ',') %></h2>
+      <h3 class="gray"><%= @user.company.name %></h3>
+      <h4 class="gray"><u><%= @user.email %></u></h4><br>
+      <h2>獲得したポイント: <%= number_with_delimiter(@user.in_points, :delimiter => ',') %></h2>
+      <h2>贈れるポイント: <%= number_with_delimiter(@user.out_points, :delimiter => ',') %></h2>
     </div>
   <% end %>
     <div class="rightbox col-4">

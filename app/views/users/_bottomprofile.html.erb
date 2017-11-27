@@ -1,65 +1,85 @@
 <% if @posts.count > 0 %>
-<% @posts.each do | post | %>
-  <div id="postsbox" class="post_<%= post[:id] %>">
-  <div class="images">
-    <% if @company.change_timeline_image_size == 1 %>
-    <div class="non_image" style="text-align: left; padding: 5px 10px; ">
-      <p><%= @random_messages.sample %></p>
-    </div>
-    <% else %>
-    <table>
-    <tr>
-      <td><img src="<%= post[:user_img] %>" class=""/></td>
-		  <td>
-		    <div>
-		    <% if post[:receiver_id].count == 1 %>
-		      <img src="<%= post[:receiver_img] %>" class=""/>
-		    <% else %>
-		      <div class="m_receivers_panel">
-			      <img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/sample_01.png"/>
-		      </div>
-		      <div class="m_receivers">
-			      <div class="m_receivers_left">
-			        <% post[:full_receiver_name].each_with_index do | name, i |%>
-			          <% if (i+1) % 2 != 0 %>
-			            <p><%= truncate(name.upcase, :length=>12) %></p>
-			          <% end %>
-			        <% end %>
-			      </div>
-			      <div class="m_receivers_right">
-			        <% post[:full_receiver_name].each_with_index do | name, i |%>
-			          <% if (i+1) % 2 == 0 %>
-			            <p><%= truncate(name.upcase, :length=>12) %></p>
-			          <% end %>
-			        <% end %>
-			     </div>
-		      </div>
-		    <% end %>
-		    </div>
-		  </td>
-    </tr>
-    </table>
-    <% end %>
-  </div>
-  <div class="posts">
-  	<div class="r_float">
-  	  <div class="time" data-id="<% post[:id] %>">
-  		  <p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
-  	  </div>
-  	</div>
-	  From <span class="user giver"><b>@<% if $allow_nickname.include?(@user.company_id) && post[:nickname].present? %><%= post[:nickname] %><% else %><%= post[:full_user_name] %><% end %></b></span><br> 
-	  To 
-	  <span class="user receiver">
-	    <b>@<%= post[:full_receiver_name].join(", ") %></b>
-	  </span><br>
-    <span class="description pc_view" style="word-break:break-all;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %><br></span>
-    <span class="description sp_view font-size-13half" style="word-break:break-all;line-height: 1.6em;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %><br></span>
-  </div>
-</div><br>
-<% end %> <!-- posts -->
-
+  <% @posts.each do | post | %>
+    <div id="postsbox" class="post_<%= post[:id] %>">
+      <div class="images">
+        <% if @company.change_timeline_image_size == 1 %>
+          <div class="non_image" style="padding: 5px 10px;">
+            <div class="clearfix width-100-percent" style="vertical-align: middle;">
+              <div style="display: inline;float: left;text-align: left;color: white;">
+                <%= @random_messages.sample %>
+              </div>
+              <div style="display: inline;float: right;text-align: right;color: white;">
+                <span class="delete_post" data-post_id="<%= post[:id] %>" data-before_controller="<%= controller.controller_name %>" data-before_action="<%= controller.action_name %>">×</span>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <table>
+            <tr>
+              <td><img src="<%= post[:user_img] %>" class=""/></td>
+          	  <td>
+		            <div>
+		              <% if post[:receiver_id].count == 1 %>
+		                <img src="<%= post[:receiver_img] %>" class=""/>
+           		    <% else %>
+          		      <div class="m_receivers_panel">
+          			      <img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/sample_01.png"/>
+		                </div>
+          		      <div class="m_receivers">
+			                <div class="m_receivers_left">
+          			        <% post[:full_receiver_name].each_with_index do | name, i |%>
+			                    <% if (i+1) % 2 != 0 %>
+          			            <p><%= truncate(name.upcase, :length=>12) %></p>
+			                    <% end %>
+           	  	        <% end %>
+          			      </div>
+			                <div class="m_receivers_right">
+          			        <% post[:full_receiver_name].each_with_index do | name, i |%>
+			                    <% if (i+1) % 2 == 0 %>
+          			            <p><%= truncate(name.upcase, :length=>12) %></p>
+			                    <% end %>
+          			        <% end %>
+			                </div>
+          		      </div>
+          		    <% end %>
+        		    </div>
+        		  </td>
+            </tr>
+          </table>
+        <% end %>
+      </div>
+      <div class="posts">
+  	    <div class="r_float">
+      	  <div class="time" data-id="<% post[:id] %>">
+  	    	  <p class="time_<% post[:id] %>" align="right"><%= post[:create_time] %></p>
+  	      </div>
+      	</div>
+	      From <span class="user giver"><b>@<% if $allow_nickname.include?(@user.company_id) && post[:nickname].present? %><%= post[:nickname] %><% else %><%= post[:full_user_name] %><% end %></b></span><br> 
+    	  To 
+	      <span class="user receiver">
+    	    <b>@<%= post[:full_receiver_name].join(", ") %></b>
+	      </span><br>
+        <span class="description pc_view" style="word-break:break-all;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %><br></span>
+        <span class="description sp_view font-size-13half" style="word-break:break-all;line-height: 1.6em;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %><br></span>
+      </div>
+    </div><br>
+  <% end %> <!-- posts -->
 <% else %>
   <div class="each_article clearfix">
     <p>メッセージがありません</p>
   </div>
 <% end %>
+
+<script type="text/javascript">
+$('.delete_post').click(function() {
+  var post_id = ($(this).attr('data-post_id')); //get attributes of clicked item
+  var before_controller = ($(this).attr('data-before_controller'));
+  var before_action = ($(this).attr('data-before_action'));
+
+  if (confirm("本当にこの投稿を削除しますか？")) {
+    $.post("/user/delete_post", { 'post_id': post_id, 'before_controller': before_controller, 'before_action': before_action}); //send post request
+    location.reload();
+  }
+  return false; //do nothing
+});
+</script>

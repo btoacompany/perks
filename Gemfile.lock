@@ -279,7 +279,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   koala (~> 1.10.0rc)
-  mysql2 (~> 0.3.20)
+  mysql2 (~> 0.3.21)
   omniauth-facebook (~> 1.4.1)
   omniauth-slack
   puma
@@ -299,4 +299,4 @@ DEPENDENCIES
   will_paginate (~> 3.1.0)
 
 BUNDLED WITH
-   1.14.6
+   1.16.0

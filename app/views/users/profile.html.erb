@@ -234,8 +234,10 @@
                   <select class="select_giver_user new_post_select">
                     <option>選択してください</option>
                     <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-                    <% $nicknames.each do |key, value| %>
-                      <option value="<%= key %>"><%= value %></option>
+                    <% unless $use_timeline.include?(@current_user.company_id) %>
+                      <% $nicknames.each do |key, value| %>
+                        <option value="<%= key %>"><%= value %></option>
+                      <% end %>
                     <% end %>
                   </select>
                 </p>
@@ -257,6 +259,7 @@
             <% if $allow_nickname.include?(@user.company_id) %>
             <p>From: <span class="given_from"></span></p><br>
             <% end %>
+            <span style="color:gray;">※ 贈り主/贈り先はクリックすると削除することができます</span>
           </div>
           <div style="float:right;" class="remove_div">
             <span class="pointsInput"></span>
@@ -280,7 +283,8 @@
   <h1>視聴者投稿を贈る</h1>
   <div class="modalwin-contents">
     <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
-      <textarea autofocus="autofocus" name="description" id="description" class="taginput width-100-percent" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。"></textarea>
+      <textarea autofocus="autofocus" name="description" id="description" class="taginput width-100-percent" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="\\ みんなの活躍を教えてください！！ //
+受付がわからず迷っていたお客さんに自ら声をかけ案内していた○○さん！"></textarea>
       <input type="file" name="image" %>
       <p align="right"><input type="submit" value="送信する"/></p>
     <% end %>
@@ -292,7 +296,8 @@
   <h1>視聴者投稿を贈る</h1>
   <div class="modalwin-sp-contents">
     <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
-      <textarea autofocus="autofocus" name="description" id="description" class="taginput width-100-percent" required align="center" rows="5" cols="40" style="font-size: 14px; padding: 8px;border: 1px solid gray" placeholder="メッセージを入力してください。"></textarea>
+      <textarea autofocus="autofocus" name="description" id="description" class="taginput width-100-percent" required align="center" rows="5" cols="40" style="font-size: 14px; padding: 8px;border: 1px solid gray" placeholder="\\ みんなの活躍を教えてください！！ //
+受付がわからず迷っていたお客さんに自ら声をかけ案内していた○○さん！"></textarea>
       <input type="file" name="image" %>
       <p align="right"><input type="submit" value="送信する"/></p>
     <% end %>
@@ -344,8 +349,10 @@
                     <select class="select_giver_user new_post_select_sp" style="border: #cccccc 1px solid;">
                       <option>選択してください</option>
                       <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-                      <% $nicknames.each do |key, value| %>
-                        <option value="<%= key %>"><%= value %></option>
+                      <% unless $use_timeline.include?(@current_user.company_id) %>
+                        <% $nicknames.each do |key, value| %>
+                          <option value="<%= key %>"><%= value %></option>
+                        <% end %>                          
                       <% end %>
                     </select>
                   </p>
@@ -1057,5 +1064,4 @@ $(function () {
       }
       $('.show-modal-sp').on('click', showModal);
     }());
-
 </script>
