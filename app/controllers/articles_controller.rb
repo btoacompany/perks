@@ -4,18 +4,11 @@ class ArticlesController < ApplicationController
   before_action :init
 
   def init
-    if session[:email].present? || cookies[:email].present?
-      email = session[:email] || cookies[:email]
-      user = User.find_by_email(email)
-      unless user.nil?
-        if user.admin == 1
-          @id = user.company_id
-          @user_id = user.id
-        end
-      else
-        redirect_to "/logout"
-      end
-      @company = Company.find(@id)
+    if session[:id].present? || cookies[:id].present?
+      @id = session[:id] || cookies[:id]
+      user = User.find(@id)
+      @user_id = user.id
+      @company = Company.find(user.company_id)
     else
       logout
     end
