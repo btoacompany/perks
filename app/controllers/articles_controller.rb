@@ -15,10 +15,18 @@ class ArticlesController < ApplicationController
   end
 
   def index
+    @user = User.find(@user_id)
+    if @user.admin == 0
+      redirect_to :root
+    end
     @articles = Article.where(company_id: @company.id, is_deleted: 0, is_casual: 0).order(updated_at: :desc)
   end
 
   def new
+    @user = User.find(@user_id)
+    if @user.admin == 0
+      redirect_to :root
+    end
   	@articles = Article.new
   end
 
@@ -222,6 +230,10 @@ class ArticlesController < ApplicationController
   end
 
   def edit
+    @user = User.find(@user_id)
+    if @user.admin == 0
+      redirect_to :root
+    end
     @num = 1
     @article = Article.find(params[:id])
     logger.debug(@article.tags.count)
