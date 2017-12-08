@@ -110,9 +110,11 @@ class ArticlesController < ApplicationController
 	      end
 	    end
     end
-    redirect_to company_articles_path, notice: "記事を作成しました。"
-    # rescue => e
-    # redirect_to "company_article_new_path", notice: "失敗しました。"
+    if @article.is_casual == 0
+      redirect_to company_articles_path, notice: "記事を作成しました。"
+    else
+      redirect_to company_casual_articles_path, notice: "記事を作成しました。"
+    end
   end
 
   def show
