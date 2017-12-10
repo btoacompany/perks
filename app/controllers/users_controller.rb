@@ -450,7 +450,7 @@ class UsersController < ApplicationController
         		  @user.save
         		end
             flash[:notice] = "送信が完了しました。"
-  	        ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
+  	        # ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
 
           if @company.give_point_to_sender_and_receiver_flag == 1
@@ -462,9 +462,6 @@ class UsersController < ApplicationController
               @user.save
             end
           end
-
-
-          
       	else
           flash[:notice] = "ポイントが足りません"
           # flash[:notice] = "#{e}"
