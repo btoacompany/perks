@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
 
+  validates :email, uniqueness: true
+
   # validate :check_maneger
 
   def self.koala(auth)

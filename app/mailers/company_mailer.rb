@@ -1,4 +1,4 @@
-class CompanyMailer < ApplicationMailer
+class CompanyMailer < ActionMailer::Base
   default from: "support.prizy@btoa-company.com"
 
   def welcome_email(data)
@@ -16,8 +16,12 @@ class CompanyMailer < ApplicationMailer
     mail(to: @company[:email], subject: "【Prizy】Reset Password")
   end
 
-  def release_article(data)
-    @company = data
-    mail(to: @company[:email], subject: @company[:subject])
+  def release_article(user_emails, subject, description)
+    user_emails.each do |email|
+      @subject = subject
+      @description = description
+      mail(to: email, subject: @subject)
+      sleep(0.8)
+    end
   end
 end
