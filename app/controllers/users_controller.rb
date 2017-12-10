@@ -397,10 +397,8 @@ class UsersController < ApplicationController
     else
       points = @company.fixed_point
     end
-
     params[:user_id]	= @id
     params[:company_id] = @company_id
-
     params[:points]	= points
 
     if (params[:receiver_id].present?)
@@ -426,19 +424,11 @@ class UsersController < ApplicationController
 	          params[:post_id] = post.id
 	        end
 
-    	    # hashtags = params[:description].scan(/\#[^\s|　]+/)
-
-	        # hashtags.each do | tag |
-	        #   params[:hashtag] = tag
-     	   #    hashtag = Hashtag.new
-	        #   hashtag.save_record(params)
-	        # end
-
     	    receiver_ids.each do | receiver_id |
 	          receiver = User.find(receiver_id.to_i)
 
-            if receiver.in_points == 0
-              params[:points] = @company.send_point_for_not_received
+            if @company.send_point_for_not_received_flag == 1 && receiver.in_points == 0
+              @user.in_points += @company.send_point_for_not_received
             end
 
 	          receiver.in_points += params[:points]
@@ -476,6 +466,8 @@ class UsersController < ApplicationController
 	        flash[:notice] = "ポイントが足りません"
   	    end
       end
+    else
+      flash[:notice] = "送信に失敗しました。送信相手を選択してください。"
     end
   end
 

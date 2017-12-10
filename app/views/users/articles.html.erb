@@ -8,7 +8,7 @@
           <% if @banner %>
             <%= image_tag @banner.img_src ,class: "width-100-percent" %>
           <% else %>
-            <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
+            <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent"/>
           <% end %>
           <div class="clearfix margin-top-10 width-100-percent">
             <div class="rightbox col-4" >
@@ -221,7 +221,6 @@
   <div class="user_postbox">
     <% if @user_posted_contents.count > 0 %>
       <% @user_posted_contents.each do |article| %>
-
           <div class="each_post clearfix" style="padding: 10px;background-color: white;min-height: 80px;">
             <div class="each_post_left width-30-percent" style="float: left;">
               <% if article.images.present? %>
@@ -319,7 +318,7 @@
 			    <div class="tags" style="float:left">
 			      <p>To &nbsp; &nbsp;: <span class="given_to"></span></p><br>
 			      <% if $allow_nickname.include?(@user.company_id) %>
-			      <p>From: <span class="given_from"></span></p><br>
+			        <p>From: <span class="given_from"></span></p><br>
 			      <% end %>
             <span style="color:gray;">※ 贈り主/贈り先はクリックすると削除することができます</span>
 			    </div>
@@ -353,8 +352,12 @@
           <select class="select_giver_user new_post_select" name="new_post[]nickname_id">
             <option>選択してください</option>
             <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-            <% $nicknames.each do |key, value| %>
-              <option value="<%= key %>"><%= value %></option>
+            <% if $allow_nickname.include?(@current_user.company_id) %>
+              <% $nicknames.each do |key, value| %>
+                <option value="<%= key %>"><%= value %></option>
+              <% end %>
+            <% else %>
+              <option value="4">匿名希望さん</option>
             <% end %>
           </select>
         </p>
@@ -379,8 +382,12 @@
           <select class="select_giver_user new_post_select" name="new_post[]nickname_id">
             <option>選択してください</option>
             <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-            <% $nicknames.each do |key, value| %>
-              <option value="<%= key %>"><%= value %></option>
+            <% if $allow_nickname.include?(@current_user.company_id) %>
+              <% $nicknames.each do |key, value| %>
+                <option value="<%= key %>"><%= value %></option>
+              <% end %>
+            <% else %>
+              <option value="4">匿名希望さん</option>
             <% end %>
           </select>
         </p>
