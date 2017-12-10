@@ -462,8 +462,12 @@ class UsersController < ApplicationController
               @user.save
             end
           end
+
+
+          rescue => e
       	else
-	        flash[:notice] = "ポイントが足りません"
+          # flash[:notice] = "ポイントが足りません"
+          flash[:notice] = "#{e}"
   	    end
       end
     else
