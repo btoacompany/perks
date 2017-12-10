@@ -462,17 +462,15 @@ class UsersController < ApplicationController
               @user.save
             end
           end
-
-
-          rescue => e
-      	else
-          # flash[:notice] = "ポイントが足りません"
-          flash[:notice] = "#{e}"
-  	    end
+        else
+          flash[:notice] = "ポイントが足りません"
+        end
       end
     else
       flash[:notice] = "送信に失敗しました。送信相手を選択してください。"
     end
+    # rescue => e
+    # flash[:notice] = "#{e}"
   end
 
   def give_comments 
