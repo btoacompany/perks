@@ -378,25 +378,12 @@ class UsersController < ApplicationController
   end
 
   def give_points
-
     new_posts = params[:new_post]
 
     new_posts.each do |post|
       parse_points(post)
     end
     redirect_page("users", "given")
-
-=begin
-    description = params[:description]
-    if description.length >= 190
-      flash[:notice] = '投稿は190文字以内にしてください'
-      redirect_page("users", "index")
-    else
-      parse_points(params)
-      redirect_page("users", "index")
-    end
-=end
-
   end
 
   def parse_points(params)
@@ -413,6 +400,7 @@ class UsersController < ApplicationController
 
     params[:user_id]	= @id
     params[:company_id] = @company_id
+
     params[:points]	= points
 
     if (params[:receiver_id].present?)
@@ -449,6 +437,10 @@ class UsersController < ApplicationController
     	    receiver_ids.each do | receiver_id |
 	          receiver = User.find(receiver_id.to_i)
 
+            if receiver.in_points == 0
+              params[:points] = @company.send_point_for_not_received
+            end
+
 	          receiver.in_points += params[:points]
 	          receiver.save
 
@@ -472,14 +464,9 @@ class UsersController < ApplicationController
 	        end
 
           if @company.give_point_to_sender_and_receiver_flag == 1
-            sum_point = @company.send_point + @company.receive_point * receiver_count
+            sum_point = @company.send_point
             if @company.bonus_points >= sum_point
               @user.in_points += @company.send_point
-              receiver_ids.each do | receiver_id |
-                receiver = User.find(receiver_id.to_i)
-                receiver.in_points += @company.receive_point
-                receiver.save
-              end
               @company.bonus_points -= sum_point
               @company.save
               @user.save
