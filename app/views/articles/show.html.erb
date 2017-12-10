@@ -1,185 +1,185 @@
 <div class="time_line_wrapper">
-<div id="wrapper">
-<div id="contents">
-<% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
-<div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
-  <div class="mypage row">
-    <% if @banner %>
-      <%= image_tag @banner.img_src , class: "width-100-percent"%>
-    <% else %>
-      <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
-    <% end %>
+  <div id="wrapper">
+    <div id="contents">
+      <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
+      <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
+      <div class="mypage row">
+        <% if @banner %>
+          <%= image_tag @banner.img_src , class: "width-100-percent"%>
+        <% else %>
+          <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
+        <% end %>
 
-    <div class="clearfix margin-top-10" style="width: 100%;">
-      <div class="rightbox col-4" >
-        <div class="title"> 今までもらった「ありがとう」</div>
-        <div class="profilebox">
-          <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
-            <% if @total_receive_message != 0 %>
-              <span style="color: #ff8d07; font-size: 40px"><b><%= @total_receive_message %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
-            <% else %>
-              <span style="font-size: 12px; color: #808080">現在集計中です！！</span><br/><br/>
-            <% end %>
-          </div>
-        </div><br>
-        <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
-        <div class="profilebox">
-          <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
-          <% if @receiver_ratio[1] == "-" %>
-            <span class="font-size-40" style="color: #ff8d07;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
-            <span class="font-size-40" style="color: red;font-weight: 900"><b></b></span>
-            <span class="font-size-12" style="color: #808080"><br><br>翌週から結果を表示します！</span>
-          <% elsif @receiver_ratio[1] > 0 %>
-            <span class="font-size-40" style="color: #ff8d07;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
-            <span class="font-size-40" style="color: red;font-weight: 900"><b>↑</b></span>
-            <span class="font-size-12" style="color: #808080"><br><br>先週よりも褒められています！</span>
-          <% elsif @receiver_ratio[1] == 0 %>
-            <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
-          <% else %>
-            <span class="font-size-36" style="color: #2d87e2;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
-            <span class="font-size-40" style="color: blue;font-weight: 900"><b>↓</b></span>
-            <span class="font-size-12" style="color: #808080"><br><br>先週に比べマイナスになっています><</span>
-          <% end %>
-        </div>
-      </div><br>
-      <div class="title"> 今週、<%= @giver_ratio[0] %>回「ありがとう」を伝えています！</div>
-        <div class="profilebox">
-          <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
-            <% if @giver_ratio[1] == "-" %>
-              <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b></b></span><span style="font-size: 12px; color: #808080"><br><br>翌週から結果を表示します！</span>
-            <% elsif @giver_ratio[1] > 0 %>
-              <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも感謝を伝えています！</span>
-            <% elsif @giver_ratio[1] == 0 %>
-              <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
-            <% else %>
-              <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
-            <% end %>
-          </div>
-        </div><br>
-        <div class="title" style="background-color: #ff8290;">日々の感謝さん</div>
-          <div class="user_postbox">
-            <% if @user_posted_contents.count > 0 %>
-              <% @user_posted_contents.each do |article| %>
-                <%= link_to "/company/article/#{article.id}" do %>
-                  <div class="each_post clearfix" style="padding: 0px;">
-                    <div class="each_post_left" style="float: left;">
-                      <% if article.images.present? %>
-                        <%= image_tag article.images.first.img_src, size: "100x70" %>
-                      <% else %>
-                        <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" width="100" height="70" />
-                      <% end %>
-                    </div>
-                    <div class="each_post_right" style="float: left;">
-                      <span class="date color-black"><%= article.updated_at.strftime("%Y.%m.%d") %></span>
-                      <h3 class="color-black pc_view" style="word-break:break-all;color: black;font-weight: normal;"><%= article.title.truncate(30) %></h3>
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
-            <% else %>
-              <div class="each_article clearfix">
-                <p>記事が投稿されていません</p>
-              </div>
-            <% end %>
-          </div>
-          <div class="title border-radius-5 show-user-post dropbtn width-60-percent" style="margin:0px auto;background-color: #ff8d07;font-size:13px;">視聴者投稿はこちら</div>
-      </div>
-
-      <div class="leftbox col-8" style="padding-left:0;">
-        <div class="clearfix margin-bottom-10 pc_view width-100-percent">
-          <%= link_to profile_articles_path, :class => "article_box bkgc_white" do %>
-            ニュース<br/>トピック
-          <% end %>
-          <%= link_to "/profile", :class => "receiving_box" do %>
-            もらったメッセージ<br/>を見る
-          <% end %>
-          <%= link_to "/profile/given", :class => "giving_box" do %>
-            贈ったメッセージ<br/>を見る
-          <% end %>
-          <%= link_to "/rewards/status", :class => "present_box show-modal" do %>
-            メッセージ<br/>を贈る
-          <% end %>
-        </div>
-        <div class="clearfix width-100-percent sp_view">
-          <div class="clearfix width-100-percent">
-            <%= link_to profile_articles_path, :class => "article_box_sp bkgc_white", :style => "font-size:14px;" do %>
-              ニュース<br/>トピック
-            <% end %>
-            <%= link_to "/profile", :class => "receiving_box_sp", :style => "font-size:14px;" do %>
-              もらったメッセージを<br/>見る
-            <% end %>
-          </div>
-          <div class="clearfix width-100-percent">
-            <%= link_to "/profile/given", :class => "giving_box_sp", :style => "font-size:14px;" do %>
-              贈ったメッセージを<br/>見る
-            <% end %>
-            <%= link_to "/rewards/status", :class => "present_box_sp show-modal-sp", :style => "font-size:14px;" do %>
-              メッセージを<br/>贈る
-            <% end %>
-          </div>
-        </div>
-        <div class="blog_article_index">
-          <div class="blog_article_content_sp">
-            <% if @article.is_published == 0 %>
-              <h2 class="color-red margin-bottom-5">※この記事は社員には公開されていません</h2>
-            <% end %>
-            <p class="blog_article_content_time margin-bottom-5"><%= @article.updated_at.strftime("%Y年%m月%d日") %></p>
-            <p class="blog_article_content_title_sp pc_view" style="font-size: 22px;font-weight: bold;line-height: 1.6em;"><%= @article.title %></p>
-            <p class="blog_article_content_title_sp sp_view"><%= @article.title %></p>
-            <p class="blog_article_content_description" style="line-height: 1.5em;font-size: 13px;"><%= @article.description %></p>
-              <% @all_contents.each do |item| %>
-                <% if item[:data_type] == "title" %>
-                  <div class="blog_article_content_head">
-                    <h3 style="line-height: 1.5em;"><%= item[:title] %></h3>
-                  </div>
-                <% elsif item[:data_type] == "text" %>
-                  <div class="blog_article_content_text">
-                    <p style="line-height: 1.6em;font-size: 14.5px;"><%= raw(item[:text].gsub(/\n/, '<br>'))  %></p>
-                  </div>
-                <% elsif item[:data_type] == "link" %>
-                  <div class="blog_article_content_link">
-                    <%= link_to "#{item[:link_title]}", "#{:link_url}" %>
-                  </div>
-                <% elsif item[:data_type] == "quotation" %>
-                  <div class="blog_article_content_quotation" >
-                    <p style="line-height: 1.5em;font-size: 13px;"><%= item[:quotation_title] %></p>
-                  </div>
-                  <p class="text_refferal"><span>引用元：<%= link_to "#{item[:quotation_url]}", "#{item[:quotation_url]}", :target => "_blank" %></span></p>
-                <% elsif item[:data_type] == "image" %>
-                  <div>
-                    <%= image_tag item[:img_src], class: "article_image", class: "width-70-percent margin-top-10" %>
-                  </div>
-                <% end %>
-              <% end %>
-              <div class="kudos margin-top-20">
-                <% if @article.article_likes.select { |like| like.user_id == @user_id && like.is_liked == 1 }.count > 0 %>
-                  <a data-id="<%= @article.id %>" class="a_btn btn_unlike" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
+        <div class="clearfix margin-top-10" style="width: 100%;">
+          <div class="rightbox col-4" >
+            <div class="title"> 今までもらった「ありがとう」</div>
+            <div class="profilebox">
+              <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+                <% if @total_receive_message != 0 %>
+                  <span style="color: #ff8d07; font-size: 40px"><b><%= @total_receive_message %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
                 <% else %>
-                  <a data-id="<%= @article.id %>" class="a_btn btn_like" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
+                  <span style="font-size: 12px; color: #808080">現在集計中です！！</span><br/><br/>
                 <% end %>
-                <span class="kudos_count"><%= @article.article_likes.where(is_liked: 1).count %>件</span>
               </div>
-              <% if @article.tags.count > 0 %>
-                <div class="article_tag_wrapper">
-                  <div class="article_tags clearfix">
-                    <div class="margin-top-10">
-                      <p>この記事に登場する社員</p>
-                      <% @article.tags.each do |tag| %>
-                        <span class="margin-bottom-5 margin-right-5 name_tag pc_view show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
-                        <span class="margin-bottom-5 margin-right-5 name_tag sp_view show-message-sp" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
-                        <p class="fukidashi">クリックしてメッセージを贈る</p>
-                      <% end %>
-                    </div>
+            </div><br>
+            <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
+              <div class="profilebox">
+                <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+                  <% if @receiver_ratio[1] == "-" %>
+                    <span class="font-size-40" style="color: #ff8d07;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
+                    <span class="font-size-40" style="color: red;font-weight: 900"><b></b></span>
+                    <span class="font-size-12" style="color: #808080"><br><br>翌週から結果を表示します！</span>
+                  <% elsif @receiver_ratio[1] > 0 %>
+                    <span class="font-size-40" style="color: #ff8d07;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
+                    <span class="font-size-40" style="color: red;font-weight: 900"><b>↑</b></span>
+                    <span class="font-size-12" style="color: #808080"><br><br>先週よりも褒められています！</span>
+                  <% elsif @receiver_ratio[1] == 0 %>
+                    <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
+                  <% else %>
+                    <span class="font-size-36" style="color: #2d87e2;"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span>
+                    <span class="font-size-40" style="color: blue;font-weight: 900"><b>↓</b></span>
+                    <span class="font-size-12" style="color: #808080"><br><br>先週に比べマイナスになっています><</span>
+                  <% end %>
+                </div>
+              </div><br>
+              <div class="title"> 今週、<%= @giver_ratio[0] %>回「ありがとう」を伝えています！</div>
+              <div class="profilebox">
+                <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+                  <% if @giver_ratio[1] == "-" %>
+                    <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b></b></span><span style="font-size: 12px; color: #808080"><br><br>翌週から結果を表示します！</span>
+                  <% elsif @giver_ratio[1] > 0 %>
+                    <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも感謝を伝えています！</span>
+                  <% elsif @giver_ratio[1] == 0 %>
+                    <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
+                  <% else %>
+                    <span style="color: #2d87e2; font-size: 36px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: blue; font-size: 40px; font-weight: 900"><b>↓</b></span><span style="font-size: 12px; color: #808080"><br><br>先週に比べマイナスになっています><</span>
+                  <% end %>
+                </div>
+              </div><br>
+              <div class="title" style="background-color: #ff8290;">日々の感謝さん</div>
+              <div class="user_postbox">
+                <% if @user_posted_contents.count > 0 %>
+                  <% @user_posted_contents.each do |article| %>
+                    <%= link_to "/company/article/#{article.id}" do %>
+                      <div class="each_post clearfix" style="padding: 0px;">
+                        <div class="each_post_left" style="float: left;">
+                          <% if article.images.present? %>
+                            <%= image_tag article.images.first.img_src, size: "100x70" %>
+                          <% else %>
+                            <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" width="100" height="70" />
+                          <% end %>
+                        </div>
+                        <div class="each_post_right" style="float: left;">
+                          <span class="date color-black"><%= article.updated_at.strftime("%Y.%m.%d") %></span>
+                          <h3 class="color-black pc_view" style="word-break:break-all;color: black;font-weight: normal;"><%= article.title.truncate(30) %></h3>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  <div class="each_article clearfix">
+                    <p>記事が投稿されていません</p>
+                  </div>
+                <% end %>
+              </div>
+              <div class="title border-radius-5 show-user-post dropbtn width-60-percent" style="margin:0px auto;background-color: #ff8d07;font-size:13px;">視聴者投稿はこちら</div>
+              </div>
+
+              <div class="leftbox col-8" style="padding-left:0;">
+                <div class="clearfix margin-bottom-10 pc_view width-100-percent">
+                  <%= link_to profile_articles_path, :class => "article_box bkgc_white" do %>
+                    ニュース<br/>トピック
+                  <% end %>
+                  <%= link_to "/profile", :class => "receiving_box" do %>
+                    もらったメッセージ<br/>を見る
+                  <% end %>
+                  <%= link_to "/profile/given", :class => "giving_box" do %>
+                    贈ったメッセージ<br/>を見る
+                  <% end %>
+                  <%= link_to "/rewards/status", :class => "present_box show-modal" do %>
+                    メッセージ<br/>を贈る
+                  <% end %>
+                </div>
+                <div class="clearfix width-100-percent sp_view">
+                  <div class="clearfix width-100-percent">
+                    <%= link_to profile_articles_path, :class => "article_box_sp bkgc_white", :style => "font-size:14px;" do %>
+                      ニュース<br/>トピック
+                    <% end %>
+                    <%= link_to "/profile", :class => "receiving_box_sp", :style => "font-size:14px;" do %>
+                      もらったメッセージを<br/>見る
+                    <% end %>
+                  </div>
+                  <div class="clearfix width-100-percent">
+                    <%= link_to "/profile/given", :class => "giving_box_sp", :style => "font-size:14px;" do %>
+                      贈ったメッセージを<br/>見る
+                    <% end %>
+                    <%= link_to "/rewards/status", :class => "present_box_sp show-modal-sp", :style => "font-size:14px;" do %>
+                      メッセージを<br/>贈る
+                    <% end %>
                   </div>
                 </div>
-              <% end %>
+                <div class="blog_article_index">
+                  <div class="blog_article_content_sp">
+                    <% if @article.is_published == 0 %>
+                      <h2 class="color-red margin-bottom-5">※この記事は社員には公開されていません</h2>
+                    <% end %>
+                    <p class="blog_article_content_time margin-bottom-5"><%= @article.updated_at.strftime("%Y年%m月%d日") %></p>
+                    <p class="blog_article_content_title_sp pc_view" style="font-size: 22px;font-weight: bold;line-height: 1.6em;"><%= @article.title %></p>
+                    <p class="blog_article_content_title_sp sp_view"><%= @article.title %></p>
+                    <p class="blog_article_content_description" style="line-height: 1.5em;font-size: 13px;"><%= @article.description %></p>
+                    <% @all_contents.each do |item| %>
+                      <% if item[:data_type] == "title" %>
+                        <div class="blog_article_content_head">
+                          <h3 style="line-height: 1.5em;"><%= item[:title] %></h3>
+                        </div>
+                      <% elsif item[:data_type] == "text" %>
+                        <div class="blog_article_content_text">
+                          <p style="line-height: 1.6em;font-size: 14.5px;"><%= raw(item[:text].gsub(/\n/, '<br>'))  %></p>
+                        </div>
+                      <% elsif item[:data_type] == "link" %>
+                        <div class="blog_article_content_link">
+                          <%= link_to "#{item[:link_title]}", "#{:link_url}" %>
+                        </div>
+                      <% elsif item[:data_type] == "quotation" %>
+                        <div class="blog_article_content_quotation" >
+                          <p style="line-height: 1.5em;font-size: 13px;"><%= item[:quotation_title] %></p>
+                        </div>
+                        <p class="text_refferal"><span>引用元：<%= link_to "#{item[:quotation_url]}", "#{item[:quotation_url]}", :target => "_blank" %></span></p>
+                      <% elsif item[:data_type] == "image" %>
+                        <div>
+                          <%= image_tag item[:img_src], class: "article_image", class: "width-70-percent margin-top-10" %>
+                        </div>
+                      <% end %>
+                    <% end %>
+                    <div class="kudos margin-top-20">
+                      <% if @article.article_likes.select { |like| like.user_id == @user_id && like.is_liked == 1 }.count > 0 %>
+                        <a data-id="<%= @article.id %>" class="a_btn btn_unlike" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
+                      <% else %>
+                        <a data-id="<%= @article.id %>" class="a_btn btn_like" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
+                      <% end %>
+                      <span class="kudos_count"><%= @article.article_likes.where(is_liked: 1).count %>件</span>
+                    </div>
+                    <% if @article.tags.count > 0 %>
+                      <div class="article_tag_wrapper">
+                        <div class="article_tags clearfix">
+                          <div class="margin-top-10">
+                            <p>この記事に登場する社員</p>
+                            <% @article.tags.each do |tag| %>
+                              <span class="margin-bottom-5 margin-right-5 name_tag pc_view show-message" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                              <span class="margin-bottom-5 margin-right-5 name_tag sp_view show-message-sp" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                              <p class="fukidashi">クリックしてメッセージを贈る</p>
+                            <% end %>
+                          </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
 <!-- sp -->
 <div class="sp_view sp_footer">
@@ -222,8 +222,12 @@
           <select class="select_giver_user new_post_select" name="new_post[]nickname_id">
             <option>選択してください</option>
             <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-            <% $nicknames.each do |key, value| %>
-              <option value="<%= key %>"><%= value %></option>
+            <% if $allow_nickname.include?(@current_user.company_id) %>
+              <% $nicknames.each do |key, value| %>
+                <option value="<%= key %>"><%= value %></option>
+              <% end %>
+            <% else %>
+              <option value="4">匿名希望さん</option>
             <% end %>
           </select>
         </p>
@@ -273,7 +277,6 @@
             <input type="text" id="target_user_name" size="40" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>" style="border: #cccccc 1px solid;padding: 2px;">
             <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
           </p>
-
           <div id="new_post" class="new_post display_hidden" name="new_post" style="margin-bottom:20px;">
             <p align="center">
               <% if $use_select.include?(@user.company_id) %>
@@ -308,8 +311,12 @@
                     <select class="select_giver_user new_post_select">
                       <option>選択してください</option>
                       <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-                      <% $nicknames.each do |key, value| %>
-                        <option value="<%= key %>"><%= value %></option>
+                      <% if $allow_nickname.include?(@current_user.company_id) %>
+                        <% $nicknames.each do |key, value| %>
+                          <option value="<%= key %>"><%= value %></option>
+                        <% end %>
+                      <% else %>
+                        <option value="4">匿名希望さん</option>                    
                       <% end %>
                     </select>
                   </p>
@@ -391,8 +398,12 @@
                     <select class="select_giver_user new_post_select_sp" style="border: #cccccc 1px solid;">
                       <option>選択してください</option>
                       <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-                      <% $nicknames.each do |key, value| %>
-                        <option value="<%= key %>"><%= value %></option>
+                      <% if $allow_nickname.include?(@current_user.company_id) %>
+                        <% $nicknames.each do |key, value| %>
+                          <option value="<%= key %>"><%= value %></option>
+                        <% end %>
+                      <% else %>
+                        <option value="4">匿名希望さん</option>
                       <% end %>
                     </select>
                   </p>
@@ -440,8 +451,12 @@
           <select class="select_giver_user new_post_select" name="new_post[]nickname_id">
             <option>選択してください</option>
             <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-            <% $nicknames.each do |key, value| %>
-              <option value="<%= key %>"><%= value %></option>
+            <% if $allow_nickname.include?(@current_user.company_id) %>
+              <% $nicknames.each do |key, value| %>
+                <option value="<%= key %>"><%= value %></option>
+              <% end %>
+            <% else %>
+              <option value="4">匿名希望さん</option>
             <% end %>
           </select>
         </p>

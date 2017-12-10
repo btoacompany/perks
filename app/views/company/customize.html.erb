@@ -83,7 +83,7 @@
         <input type="radio" name="send_point_for_not_received_flag" id="send_point_for_not_received_flag0" value="0" <% if @company.send_point_for_not_received_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
         <label for="send_point_for_not_received_flag0" class="switch-off">しない</label>
         <input type="radio" id="send_point_for_not_received_flag1" name="send_point_for_not_received_flag" value="1" <% if @company.send_point_for_not_received_flag == 1  %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="send_point_for_not_received_flag1" class="switch-on">設定する</label>
+        <label for="send_point_for_not_received_flag1" class="switch-on">する</label>
         <select id="send_point_for_not_received" name="send_point_for_not_received" class="for_not_received" min="0" max="50" <% unless @company.send_point_for_not_received_flag == 1 %> style="display: none;width: 50px;"<% else %> required <% end %> >
         <% @nums.each do |num| %>
           <option value=<%= num %> <% if num == @company.send_point_for_not_received %> selected = "true" <% end %> >

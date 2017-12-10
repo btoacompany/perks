@@ -3,18 +3,11 @@ class UserPostedContentsController < ApplicationController
   before_filter :init_url, :authenticate_user
 
   def init
-    if session[:email].present? || cookies[:email].present?
-      email = session[:email] || cookies[:email]
-      user = User.find_by_email(email)
-      unless user.nil?
-        if user.admin == 1
-          @id = user.company_id
-          @user_id = user.id
-        end
-      else
-        redirect_to "/logout"
-      end
-      @company = Company.find(@id)
+    if session[:id].present? || cookies[:id].present?
+      @id = session[:id] || cookies[:id]
+      user = User.find(@id)
+      @user_id = user.id
+      @company = Company.find(user.company_id)
     else
       logout
     end
@@ -44,7 +37,7 @@ class UserPostedContentsController < ApplicationController
 	  	image = nil
 	  end
     @created_post = UserPostedContent.create(
-      company_id: @id,
+      company_id: @company.id,
       user_id: @user_id,
       description: params[:description],
       img_src: image
