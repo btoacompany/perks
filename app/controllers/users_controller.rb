@@ -415,7 +415,7 @@ class UsersController < ApplicationController
 	      params[:receiver_id] = receiver_ids.join(",")
 
 	      if (points <= @user[:out_points])
-	        @user.out_points -= points 
+	        @user.out_points -= points
 	        @user.save
 
 	        unless params[:type] == "comment"
@@ -427,9 +427,21 @@ class UsersController < ApplicationController
     	    receiver_ids.each do | receiver_id |
 	          receiver = User.find(receiver_id.to_i)
 
-            if @company.send_point_for_not_received_flag == 1 && receiver.in_points == 0
-              @user.in_points += @company.send_point_for_not_received
+            if @company.give_point_to_sender_and_receiver_flag == 0
+              if @company.send_point_for_not_received_flag == 1 && receiver.in_points == 0
+                @user.in_points += @company.send_point_for_not_received
+              end
+            elsif @company.give_point_to_sender_and_receiver_flag == 1
+              if @company.send_point_for_not_received_flag == 1 && receiver.in_points == 0
+                @user.in_points += @company.send_point_for_not_received
+                @company.bonus_points -= @company.send_point_for_not_received
+              else
+                @user.in_points += @company.send_point
+                @company.bonus_points -= @company.send_point
+              end
             end
+            @company.save
+            @user.save
 
 	          receiver.in_points += params[:points]
 	          receiver.save
@@ -452,16 +464,6 @@ class UsersController < ApplicationController
             flash[:notice] = "送信が完了しました。"
   	        # ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
-
-          if @company.give_point_to_sender_and_receiver_flag == 1
-            sum_point = @company.send_point
-            if @company.bonus_points >= sum_point
-              @user.in_points += @company.send_point
-              @company.bonus_points -= sum_point
-              @company.save
-              @user.save
-            end
-          end
         else
           flash[:notice] = "ポイントが足りません"
         end
