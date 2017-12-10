@@ -573,15 +573,14 @@ class ArticlesController < ApplicationController
   end
 
   def send_release_mail
-    @users = User.where(company_id: @company.id, delete_flag: 0)
-    @users.each do |user|
-      data = {
-        email:      user.email,
-        subject: params[:subject],
-        description: params[:description]        
-      }
-      CompanyMailer.release_article(data).deliver_now
-    end
+    user_emails = User.where(company_id: @company.id, delete_flag: 0).pluck(:email)
+    data = {
+      user_emails: user_emails,
+      subject: params[:subject],
+      description: params[:description]
+    }
+    ReleaseArticleJob.perform_later(data)
+
     redirect_to company_articles_path
   end
 end
