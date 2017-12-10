@@ -1,89 +1,114 @@
 <div id="admin_wrapper">
-<%= render "admin_subheader" %>
+  <%= render "admin_subheader" %>
 
-<div id="admin_contents" class="c_align">
-  <% if flash[:notice_about_create_user] %><p class="c_align notice" style="color: red"><b><i><%= raw flash[:notice_about_create_user] %></i></b></p><br><% end %>
-  <% if flash[:company_update] %><p class="c_align notice" style="color: red"><b><i><%= raw flash[:company_update] %></i></b></p><br><% end %>
-  <h3>社員登録・編集</h3><br>
-  <p class="c_align">招待リンク: <a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
-  <a href="/company/employees/register" class="a_btncmn radius5">+ 部署 / 社員を登録する</a>
-  <% if @company.invite_email_flag == 0 %> 
-    <a href="/company/employees/add" class="a_btncmn radius5">+ 社員に登録してもらう</a>
-  <% end %>
-  <br/><br/>
-  <br><br>
-<%if @team_exist == 0 %>
-  <!-- team -->
-  <div id="tab-container" class="tab-container">
-  <%= form_tag({:controller => 'company', :action => 'employees'}) do %>
-  <select id="team_selected_id" name="team_selected_id">
-  <% unless @team_selected_id.present? %>
-    <option value="00">チームを選択してください</option>
-  <% end %> 
-  <% @teams.each do |team| %>
-    <option value=<%= team[:team_id] %> <% if team[:team_id] == @team_selected_id %> selected <% end %>>
-      <%= team[:team_name] %>
-    </option>
-  <% end %>
-  </select>
-  <input type="submit" value="表示" class="team_select_submit">
-  <% end %>
-
-  <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
-  <div class="toolbox">
-    <% if @users.count == 0 %>
-      <p><i>社員を追加してください</i></p><br>
-    <% else %>
+  <div id="admin_contents" class="c_align">
+    <% if flash[:notice_about_create_user] %><p class="c_align notice" style="color: red"><b><i><%= raw flash[:notice_about_create_user] %></i></b></p><br><% end %>
+    <% if flash[:company_update] %><p class="c_align notice" style="color: red"><b><i><%= raw flash[:company_update] %></i></b></p><br><% end %>
+    <h3>社員登録・編集</h3><br>
+    <p class="c_align">招待リンク: <a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
+    <a href="/company/employees/register" class="a_btncmn radius5">+ 部署 / 社員を登録する</a>
+    <% if @company.invite_email_flag == 0 %> 
+      <a href="/company/employees/add" class="a_btncmn radius5">+ 社員に登録してもらう</a>
+    <% end %>
+    <br/><br/>
+    <br><br>
+    <%if @team_exist == 0 %>
       <!-- team -->
-      <% if @team_selected_id.present? %>
-      <% @teams.each do |team| %>
-      <% if team[:team_id] == @team_selected_id %>
-        <div id="<%= team[:team_id] %>" class="team_hidden">
-        <table class="tbl_tools" border="1">
-        	<%= render 'employees_th' %>
-          <% team[:members].each do |item| %>
-            <% @render_user = User.find(item) %>
-            <%if @render_user.delete_flag == 0 %>
-            <%= render 'employees_tr', item: @render_user %>
+      <div id="tab-container" class="tab-container">
+        <%= form_tag({:controller => 'company', :action => 'employees'}) do %>
+          <table style="margin: 0 auto; text-align: left">
+            <tr>
+              <td>メールアドレスで検索</td>
+              <td><input type="text" name="email" size="30"></td>
+              <td>
+                <button type="submit" name="search_type" value="email" style="margin: 10px 0px;width: 50px;background-color: white;">表示</button>
+              </td>
+            </tr>
+            <tr>
+              <td>チームで検索</td>
+              <td>
+                <select id="team_selected_id" name="team_selected_id">
+                  <% unless @team_selected_id.present? %>
+                    <option value="00">未選択</option>
+                  <% end %> 
+                  <% @teams.each do |team| %>
+                    <option value=<%= team[:team_id] %> <% if team[:team_id] == @team_selected_id %> selected <% end %>>
+                      <%= team[:team_name] %>
+                    </option>
+                  <% end %>
+                </select>
+              </td>
+              <td>
+                <button type="submit" name="search_type" value="teams" class="team_select_submit" style="margin: 10px 0px;width: 50px;">表示</button>
+              </td>
+            </tr>
+          </table>
+        <% end %>
+
+        <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+        <div class="toolbox" style="margin-top: 20px;">
+          <% if @users.count == 0 %>
+            <p><i>社員を追加してください</i></p><br>
+          <% else %>
+            <!-- team -->
+            <% if @search_type == "email" %>
+              <p style="margin-bottom: 10px;font-weight: bold;">メールアドレス: "<%= @search_content %>"で検索しています
+                <table class="tbl_tools" border="1">
+                  <%= render 'employees_th' %>
+                    <% @searched_users.each do |user| %>
+                    <%= render 'employees_tr', item: user %>
+                  <% end %>
+                </table><br>
+            <% else %>
+              <% if @team_selected_id.present? %>
+                <% @teams.each do |team| %>
+                  <% if team[:team_id] == @team_selected_id %>
+                    <div id="<%= team[:team_id] %>" class="team_hidden">
+                      <table class="tbl_tools" border="1">
+                        <%= render 'employees_th' %>
+                        <% team[:members].each do |item| %>
+                          <% @render_user = User.find(item) %>
+                          <%if @render_user.delete_flag == 0 %>
+                            <%= render 'employees_tr', item: @render_user %>
+                          <% end %>
+                        <% end %>
+                      </table>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <table class="tbl_tools" border="1">
+                  <%= render 'employees_th' %>
+                  <% @users.each do | item | %>
+                    <%= render 'employees_tr', item: item %>
+                  <% end %>
+                </table><br>
+                <%= render 'employees_pagination' %>
+              <% end %>
+              <!-- team -->
             <% end %>
           <% end %>
-          </table>
-        </div>
-      <% end %>
-      <% end %>
-      <% else %>
-        <table class="tbl_tools" border="1">
-          <%= render 'employees_th' %>
-          <% @users.each do | item | %>
-            <%= render 'employees_tr', item: item %>
-          <% end %>
+          <br>
+        </div> <!-- toolbox -->
+      </div> <!-- tabcontainer -->
+
+    <% else %>
+      <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+      <div class="toolbox">
+        <% if @users.count == 0 %>
+          <p><i>社員を追加してください</i></p><br>
+        <% else %>
+          <table class="tbl_tools" border="1">
+            <%= render 'employees_th' %>
+            <% @users.each do | item | %>
+              <%= render 'employees_tr', item: item %>
+            <% end %>
           </table><br>
           <%= render 'employees_pagination' %>
-      <% end %>
-      <!-- team -->
+        <% end %>
+      </div>
     <% end %>
-  <br>
-</div> <!-- toolbox -->
-</div> <!-- tabcontainer -->
-
-<% else %>
-  <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
-  <div class="toolbox">
-    <% if @users.count == 0 %>
-      <p><i>社員を追加してください</i></p><br>
-    <% else %>
-      <table class="tbl_tools" border="1">
-        <%= render 'employees_th' %>
-  <% @users.each do | item | %>
-    <%= render 'employees_tr', item: item %>
-  <% end %>
-      </table><br>
-      <%= render 'employees_pagination' %>
-    <% end %>
-</div>
-<% end %>
-
-</div> <!-- contents -->
+  </div> <!-- contents -->
 </div> <!-- wrapper -->
 
 

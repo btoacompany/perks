@@ -12,16 +12,16 @@
         <% end %>
         <div class="clearfix margin-top-10 width-100-percent">    
           <div class="rightbox col-4" >
-            <div class="title"> 今までもらった「ありがとう」</div>
-            <div class="profilebox">
-              <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
-                <% if @total_receive_message != 0 %>
-                  <span style="color: #ff8d07; font-size: 40px"><b><%= @total_receive_message %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
-                <% else %>
-                  <span style="font-size: 12px; color: #808080">現在集計中です！！</span><br/><br/>
-                <% end %>
-              </div>
-            </div><br>
+              <div class="title"> 今まで取得したポイント数</div>
+              <div class="profilebox">
+                <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
+                  <% if @in_points != 0 %>
+                    <span style="color: #ff8d07; font-size: 40px"><b><%= @user.in_points %></b></span><span style="color: red; font-size: 40px; font-weight: 900"></span>
+                  <% else %>
+                    <span style="font-size: 12px; color: #808080">現在集計中です！！</span><br/><br/>
+                  <% end %>
+                </div>
+              </div><br>
           <div class="title"> 今週、<%= @receiver_ratio[0] %>回「ありがとう」をもらっています！</div>
           <div class="profilebox">
             <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">

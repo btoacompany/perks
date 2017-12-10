@@ -17,9 +17,9 @@ class Company < ActiveRecord::Base
   validates :address , length: {maximum: 190}
   validates :url , length: {maximum: 190}
   validates :phone , length: {maximum: 190}
-  validates :fixed_point, numericality: { only_integer: true, greater_than_or_equal_to: 5 , less_than_or_equal_to: 50} , if: :check_point_fixed_flag
-  validates :receive_point, numericality: { only_integer: true, greater_than_or_equal_to: 1 , less_than_or_equal_to: 15} , if: :check_give_point_to_sender_and_receiver_flag
-  validates :send_point, numericality: { only_integer: true, greater_than_or_equal_to: 1 , less_than_or_equal_to: 15} , if: :check_give_point_to_sender_and_receiver_flag
+  validates :fixed_point, numericality: { only_integer: true, greater_than_or_equal_to: 0 , less_than_or_equal_to: 50} , if: :check_point_fixed_flag
+  validates :receive_point, numericality: { only_integer: true, greater_than_or_equal_to: 0 , less_than_or_equal_to: 15} , if: :check_give_point_to_sender_and_receiver_flag
+  validates :send_point, numericality: { only_integer: true, greater_than_or_equal_to: 0 , less_than_or_equal_to: 15} , if: :check_give_point_to_sender_and_receiver_flag
   validates :reset_point_date , format: { with: /\A\d{4}[\-]\d{2}[\-]\d{2}\z/ } , if: :check_reset_point_flag
   validate :check_received_ips , on: :update , if: :check_ip_limit_flag
 

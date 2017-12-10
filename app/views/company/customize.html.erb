@@ -42,7 +42,7 @@
         <label for="fixed_point_setting0" class="switch-off">しない</label>
         <input type="radio" id="fixed_point_setting1" name="fixed_point_setting" value="1" <% if @company.point_fixed_flag == 1  %> checked="checked" <% end %> style="opacity: 0;" />
         <label for="fixed_point_setting1" class="switch-on">固定する</label>
-        <select id="fixed_point" name="fixed_point" class="fixed_point" min="5" max="50" <% unless @company.point_fixed_flag == 1 %> style="display: none;"<% else %> required <% end %> >
+        <select id="fixed_point" name="fixed_point" class="fixed_point" min="0" max="50" <% unless @company.point_fixed_flag == 1 %> style="display: none;"<% else %> required <% end %> >
         <% @nums.each do |num| %>
           <option value=<%= num %> <% if num == @company.fixed_point %> selected = "true" <% end %> >
             <%= num %>
@@ -55,33 +55,44 @@
       </dd>
     </div>
 
-
     <div class="give_point_to_sender_and_receiver_setting clearfix">
-      <dt class="customize_left">投稿した社員、投稿を受けた社員に、会社からポイントをプレゼントしますか。</dt>
+      <dt class="customize_left">投稿した社員に、会社からポイントをプレゼントしますか。</dt>
       <dd class="customize_right">
         <input type="radio" name="give_point_to_sender_and_receiver_setting" id="give_point_to_sender_and_receiver_setting0" value="0" <% if @company.give_point_to_sender_and_receiver_flag == 0  %> checked="checked" <% end %> style="opacity: 0;" />
         <label for="give_point_to_sender_and_receiver_setting0" class="switch-off">しない</label>
         <input type="radio" id="give_point_to_sender_and_receiver_setting1" name="give_point_to_sender_and_receiver_setting" value="1" <% if @company.give_point_to_sender_and_receiver_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
         <label for="give_point_to_sender_and_receiver_setting1" class="switch-on">する</label>
 
-        <p id="give_point_to_sender_and_receiver0" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% end %>>送信者</p>
-        <select id="give_point_to_sender" name="give_point_to_sender" class="give_point_to_sender" min="1" max="15" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% else %> required <% end %>>
+        <p id="give_point_to_sender_and_receiver0" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% end %>>投稿者</p>
+        <select id="give_point_to_sender" name="give_point_to_sender" class="give_point_to_sender" min="0" max="15" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% else %> required <% end %>>
         <% @send_point_nums.each do |num| %>
           <option value=<%= num %> <% if num == @company.send_point %> selected = "true" <% end %> >
             <%= num %>
           </option>
         <% end %>
         </select>
-        <p id="give_point_to_sender_and_receiver1" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% end %>>受信者</p>
-        <select id="give_point_to_receiver" name="give_point_to_receiver" class="give_point_to_receiver" min="1" max="15"<% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% else %> required <% end %>>
-        <% @send_point_nums.each do |num| %>
-          <option value=<%= num %> <% if num == @company.receive_point %> selected = "true" <% end %> >
+
+        <% if flash[:give_point_to_sender_and_receiver_setting] %>  <b><i><%= flash[:give_point_to_sender_and_receiver_setting] %></i></b>
+        <% end %>
+      </dd>
+    </div>
+
+    <div class="fixed_point_setting clearfix">
+      <dt class="customize_left">メッセージをもらったことがない人にメッセージを送った時のポイントを設定しますか。</dt>
+      <dd class="customize_right">
+        <input type="radio" name="send_point_for_not_received_flag" id="send_point_for_not_received_flag0" value="0" <% if @company.send_point_for_not_received_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+        <label for="send_point_for_not_received_flag0" class="switch-off">しない</label>
+        <input type="radio" id="send_point_for_not_received_flag1" name="send_point_for_not_received_flag" value="1" <% if @company.send_point_for_not_received_flag == 1  %> checked="checked" <% end %> style="opacity: 0;" />
+        <label for="send_point_for_not_received_flag1" class="switch-on">設定する</label>
+        <select id="send_point_for_not_received" name="send_point_for_not_received" class="for_not_received" min="0" max="50" <% unless @company.send_point_for_not_received_flag == 1 %> style="display: none;width: 50px;"<% else %> required <% end %> >
+        <% @nums.each do |num| %>
+          <option value=<%= num %> <% if num == @company.send_point_for_not_received %> selected = "true" <% end %> >
             <%= num %>
           </option>
         <% end %>
         </select>
 
-        <% if flash[:give_point_to_sender_and_receiver_setting] %>  <b><i><%= flash[:give_point_to_sender_and_receiver_setting] %></i></b>
+        <% if flash[:send_point_for_not_received] %>  <b><i><%= flash[:send_point_for_not_received] %></i></b>
         <% end %>
       </dd>
     </div>
@@ -137,6 +148,14 @@
       $("#fixed_point").hide();
     }else if($('input[name="fixed_point_setting"]:checked').val() === '1'){
       $("#fixed_point").show();
+    }
+  });
+
+  $('input[name="send_point_for_not_received_flag"]').change(function() {
+    if ($('input[name="send_point_for_not_received_flag"]:checked').val() === '0'){
+      $("#send_point_for_not_received").hide();
+    }else if($('input[name="send_point_for_not_received_flag"]:checked').val() === '1'){
+      $("#send_point_for_not_received").show();
     }
   });
 

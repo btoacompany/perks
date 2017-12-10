@@ -7,14 +7,14 @@
 
 	<div class="user_update_wrapper">
 		<div id="wrapper">
-			<div id="contents" class="clearfix">
-				<div class="user_update_left width-40-percent">
+			<div id="contents" class="clearfix width-100-percent">
+				<div class="user_update_left width-50-percent">
   				<h3>Prizyなら好きなときに、<br>好きな方法で。</h3>
   				<p>Slack連携なら、いつものコミュニケーションで<br>感謝を伝えよう。</p>
   				<%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/prizy_userprofile/pc_profile_img.png", class: "width-100-percent") %>
 				</div>
 
-				<div class="user_update_right" style="margin-top: 100px;">
+				<div class="user_update_right" style="margin-top: 80px;">
   				<% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
 					<%= form_tag( "/update/complete", method: "post", id: "login_form", multipart: true ) do %>
 					  <div class="toolbox">

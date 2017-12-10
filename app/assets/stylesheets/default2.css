@@ -2229,7 +2229,7 @@ table.admin_table td textarea{
 
   .user_update_right{
     float: right;
-    margin-right: 50px;
+    /*margin-right: 50px;*/
   }
 
   .user_update_right .toolbox{
@@ -2358,7 +2358,7 @@ table.admin_table td textarea{
     padding: 10px 0;
   }
 
-  .fixed_point , .give_point_to_receiver , .give_point_to_sender {
+  .fixed_point , .give_point_to_receiver , .give_point_to_sender, .for_not_received {
     width: 50px;
     height: 34px;
     margin: 10px;
@@ -2369,17 +2369,17 @@ table.admin_table td textarea{
     height: 34px;
   }
 
-  .fixed_point, #allowed_ips , .give_point_to_receiver, .give_point_to_sender{
+  .fixed_point, #allowed_ips , .give_point_to_receiver, .give_point_to_sender, .for_not_received{
     font-size: 14px;
   }
 
-  .fixed_point_setting , .give_point_to_sender_and_receiver_setting{
+  .fixed_point_setting , .give_point_to_sender_and_receiver_setting, .send_point_for_not_received{
     width: 1050px;
     padding: 10px 0;
     border-bottom: 1px solid #f0f1f5;
   }
 
-  .fixed_point_setting label , .give_point_to_sender_and_receiver_setting label {
+  .fixed_point_setting label , .give_point_to_sender_and_receiver_setting label, .for_not_received label {
     display: inline-block;
     float: left;
     cursor: pointer;
@@ -2394,12 +2394,12 @@ table.admin_table td textarea{
     transition: .2s;
   }
 
-  input[name="give_point_to_sender_and_receiver_setting"]:checked + .switch-on , input[name="change_timeline_image_size"]:checked + .switch-on, input[name="invite_email_setting"]:checked + .switch-on,input[name="fixed_point_setting"]:checked + .switch-on,input[name="time_select"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
+  input[name="send_point_for_not_received_flag"]:checked + .switch-on, input[name="give_point_to_sender_and_receiver_setting"]:checked + .switch-on , input[name="change_timeline_image_size"]:checked + .switch-on, input[name="invite_email_setting"]:checked + .switch-on,input[name="fixed_point_setting"]:checked + .switch-on,input[name="time_select"]:checked + .switch-on, input[name="ip_address_setting"]:checked + .switch-on {
     background-color: #ff8d07;
     color: #fff;
   }
 
-  input[name="give_point_to_sender_and_receiver_setting"]:checked + .switch-off, input[name="invite_email_setting"]:checked + .switch-off, input[name="fixed_point_setting"]:checked + .switch-off, input[name="time_select"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
+  input[name="send_point_for_not_received_flag"]:checked + .switch-off, input[name="give_point_to_sender_and_receiver_setting"]:checked + .switch-off, input[name="invite_email_setting"]:checked + .switch-off, input[name="fixed_point_setting"]:checked + .switch-off, input[name="time_select"]:checked + .switch-off, input[name="ip_address_setting"]:checked + .switch-off{
     background-color: #C30;
     color: #fff;
   }

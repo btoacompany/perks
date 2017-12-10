@@ -125,8 +125,8 @@ class CompanyController < ApplicationController
 
   def customize
     @company = Company.find(@id)
-    @nums = (1..10).map{|i| i*5 }
-    @send_point_nums = (1..15).map{|i| i*1 }
+    @nums = (0..10).map{|i| i*1 }
+    @send_point_nums = (0..15).map{|i| i*1 }
   end
 
   def customize_update
@@ -138,6 +138,8 @@ class CompanyController < ApplicationController
     @company.fixed_point = params[:fixed_point].to_i
     @company.send_point = params[:give_point_to_sender].to_i
     @company.receive_point = params[:give_point_to_receiver].to_i
+    @company.send_point_for_not_received = params[:send_point_for_not_received].to_i
+    @company.send_point_for_not_received_flag = params[:send_point_for_not_received_flag].to_i
     @company.ip_limit_flag = params[:ip_address_setting]
     if params[:ip_address_setting].to_i == 1
       if params[:allowed_ips].empty?
@@ -156,11 +158,11 @@ class CompanyController < ApplicationController
     if @company.save
       redirect_to '/company/customize', notice: "変更を保存しました。"
     else
-      if @company.fixed_point.integer? && @company.fixed_point.between?(5, 50)
+      if @company.fixed_point.integer? && @company.fixed_point.between?(0, 50)
       else
-        @fixed_point = "5以上50以下のポイント数を設定してください。"
+        @fixed_point = "0以上50以下のポイント数を設定してください。"
       end
-      unless @company.send_point.integer? && @company.send_point.between?(1, 15) && @company.receive_point.integer? && @company.receive_point.between?(1, 15)
+      unless @company.send_point.integer? && @company.send_point.between?(0, 15) && @company.receive_point.integer? && @company.receive_point.between?(0, 15)
         @give_point_to_sender_and_receiver_setting = "1以上15以下のポイント数を設定してください。"
       end
       if @company.reset_point_flag == 1
@@ -207,9 +209,6 @@ class CompanyController < ApplicationController
       @teams = []
       teams.each do |team|
         team_members = []
-        logger.debug("-↓-too-many-SQL-")
-        # team_members << User.find(team.manager_id)
-        logger.debug("-↑-too-many-SQL-")
         team.member_ids.split(",").each do |id|
           unless id.to_i == 0
           team_members << id.to_i
@@ -251,8 +250,12 @@ class CompanyController < ApplicationController
         :members => @non_team_user_ids
       }
       @teams << non_team
-      if params[:team_selected_id].present?
-        @team_selected_id = params[:team_selected_id].to_i
+      @search_type = params[:search_type]
+      if @search_type == "email"
+        @searched_users = User.where("email like '%" + params[:email] + "%'")
+        @search_content = params[:email]
+      elsif @search_type == "teams"
+        @team_selected_id = params[:team_selected_id].to_i          
       end
     else
       @team_exist = 1
