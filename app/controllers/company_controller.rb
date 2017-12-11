@@ -252,7 +252,7 @@ class CompanyController < ApplicationController
       @teams << non_team
       @search_type = params[:search_type]
       if @search_type == "email"
-        @searched_users = User.where("email like '%" + params[:email] + "%'")
+        @searched_users = User.where("email like '%" + params[:email] + "%'").where(company_id: @company.id)
         @search_content = params[:email]
       elsif @search_type == "teams"
         @team_selected_id = params[:team_selected_id].to_i          
