@@ -8,14 +8,14 @@
 	<div class="user_update_wrapper">
 		<div id="wrapper">
 			<div id="contents" class="clearfix width-100-percent">
-				<div class="user_update_left width-50-percent">
+				<div class="user_update_left width-40-percent">
   				<h3>Prizyなら好きなときに、<br>好きな方法で。</h3>
   				<p>Slack連携なら、いつものコミュニケーションで<br>感謝を伝えよう。</p>
   				<%= image_tag("https://s3-ap-northeast-1.amazonaws.com/btoa-img/prizy_userprofile/pc_profile_img.png", class: "width-100-percent") %>
 				</div>
 
-				<div class="user_update_right" style="margin-top: 80px;">
-  				<% if flash[:notice] %><p class="c_align notice"><%= flash[:notice] %></p><% end %>
+				<div class="user_update_right width-50-percent" style="margin-top: 80px;">
+  				<% if flash[:notice] %><p class="c_align notice" style="padding:20px 0px 0px 0px;color: red;"><%= flash[:notice] %></p><% end %>
 					<%= form_tag( "/update/complete", method: "post", id: "login_form", multipart: true ) do %>
 					  <div class="toolbox">
 					    <input type="hidden" name="fb_data" value="<%= @fb_data %>"/>
@@ -43,49 +43,6 @@
 									  <span class="notice"></span>
 									</td>
 					      </tr>
-
-	      				<% if @fb_data == 0 %>
-								  <% unless $ban_edit_name.include?(@user.company_id) %>
-										<tr>
-										  <td colspan="2" align="right"><input type="button" value="Facebookで簡単登録" class="btn_fb"/></td>
-										</tr>
-										<tr>
-										  <td class="user_update_table_td">プロフィール写真</td>
-										  <td><%= file_field_tag :img_src %></td>
-										</tr>
-								  <% end %>
-								  <% unless $ban_edit_name.include?(@user.company_id) %>
-										<tr>
-										  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= @user.lastname %>" required />  名 <input type="text" name="firstname" value="<%= @user.firstname %>" required /></td>
-										</tr>
-								  <% end %>
-					      <% else %>
-	  							<% unless $ban_edit_name.include?(@user.company_id) %>
-										<tr>
-										  <td class="user_update_table_td">プロフィール写真</td>
-										  <td>
-										    <%= image_tag params[:fb_pic], width: 48, height: 48 %>
-										    <input type="hidden" name="img_src" value="<%= params[:fb_pic] %>"/>
-										  </td>
-										</tr>
-									<% end %>
-							  	<tr>
-									  <td class="user_update_table_td">ユーザー名</td>
-									  <td>
-									    <input type="text" name="name" value="<%= params[:fb_name] %>", class="user_update_input"/><br>
-									    <span class="instructions">好きなユーザーネームに変更できます</span>
-									  </td>
-									</tr>
-								  <% unless $ban_edit_name.include?(@user.company_id) %>
-										<tr>
-										  <td class="user_update_table_td update_name">姓 <input type="text" name="lastname" value="<%= params[:fb_lname] %>"/>  名 <input type="text" name="firstname" value="<%= params[:fb_fname] %>"/></td>
-										</tr>
-									<% end %>
-									<tr>
-									  <td class="user_update_table_td">性  <label><input type="radio" name="gender" value="0" <% if params[:fb_gender]=="male" %> checked <% end %>/>男</label>
-							      <label><input type="radio" name="gender" value="1" <% if params[:fb_gender]=="female" %> checked <% end %>/>女</label></td>
-									</tr>
-						    <% end %>
 					    </table><br>
 							<p align="center">
 					      <input type="submit" value="" class="user_update_submit"/>
