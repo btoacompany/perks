@@ -583,5 +583,7 @@ class ArticlesController < ApplicationController
 
     flash[:notice] = "メール配信が完了しました"
     redirect_to company_articles_path
+    rescue => e
+      flash[:notice] = "#{e}"
   end
 end
