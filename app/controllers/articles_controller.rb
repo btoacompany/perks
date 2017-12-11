@@ -581,6 +581,7 @@ class ArticlesController < ApplicationController
     }
     ReleaseArticleJob.perform_later(data)
 
+    flash[:notice] = "メール配信が完了しました"
     redirect_to company_articles_path
   end
 end

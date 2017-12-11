@@ -12,6 +12,7 @@
 	  <% if @articles.count == 0 %>
 	    <h3>ニュース記事が作成されていません</h3>
 	  <% else %>
+      <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
 		  <h3 class="margin-bottom-10">作成したニュース記事一覧</h3>
 		  <p>現在の公開記事数: <%= @articles.where(is_published: 1).count %>記事</p>
 		  <div style="margin: 10px auto 0px;">
