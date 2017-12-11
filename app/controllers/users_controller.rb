@@ -1085,7 +1085,8 @@ class UsersController < ApplicationController
   end
 
   def update_complete_details
-    name_exist = "そのユーザー名はすでに使われております。他のユーザー名をご指定ください。"
+    password_short = "パスワードは4文字以上にしてください"
+    name_exist = "そのユーザー名はすでに使われております。"
     email_exist = "そのメールアドレスはすでに使われております。"
     session[:redirect] = nil
 
@@ -1099,11 +1100,16 @@ class UsersController < ApplicationController
       verified	= res.verified
 
       unless res.name == params[:name]
-      	if username_exist.present?
-      	  flash[:notice]      = name_exist 
-      	  session[:redirect]  = 1
+      	# if username_exist.present?
+      	#   flash[:notice]      = name_exist 
+      	#   session[:redirect]  = 1
 
-      	  redirect_to "/update" and return
+      	#   redirect_to "/update" and return
+        if params[:password].length < 4
+          flash[:notice]      = password_short 
+          session[:redirect]  = 1
+
+          redirect_to "/update" and return
       	end
       end
     else
