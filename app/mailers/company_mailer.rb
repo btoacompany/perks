@@ -16,12 +16,9 @@ class CompanyMailer < ActionMailer::Base
     mail(to: @company[:email], subject: "【Prizy】Reset Password")
   end
 
-  def release_article(user_emails, subject, description)
-    user_emails.each do |email|
+  def release_article(email, subject, description)
       @subject = subject
       @description = description
       mail(to: email, subject: @subject)
-      sleep(0.8)
-    end
   end
 end
