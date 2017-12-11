@@ -1085,7 +1085,7 @@ class UsersController < ApplicationController
   end
 
   def update_complete_details
-    password_short = "パスワードは4文字以上にしてください"
+    password_short = "設定に失敗しました。パスワードは4文字以上にしてください。"
     name_exist = "そのユーザー名はすでに使われております。"
     email_exist = "そのメールアドレスはすでに使われております。"
     session[:redirect] = nil
