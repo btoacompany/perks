@@ -1158,7 +1158,7 @@ class UsersController < ApplicationController
       end
     end
 
-    params[:out_points] = 150 if verified == 0
+    params[:out_points] = 100000 if verified == 0
     params[:verified] = 1 
       
     if url.include?("invite")
