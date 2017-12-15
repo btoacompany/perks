@@ -569,7 +569,7 @@ class UsersController < ApplicationController
   end
 
   def select_target_department
-    @teams = Team.where(company_id: @company_id, delete_flag: 0, department_id: params[:id])
+    @teams = Team.where(company_id: @company_id, delete_flag: 0, department_id: params[:id]).order(sort: :asc)
     @targets = []
     @teams.each do |team|
       @targets << [team.id, team.team_name]
@@ -609,7 +609,7 @@ class UsersController < ApplicationController
   def profile
     @user = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
-    @departments = Department.where(company_id: @company_id, delete_flag: 0)
+    @departments = Department.where(company_id: @company_id, delete_flag: 0).order(sort: :asc)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
@@ -651,7 +651,7 @@ class UsersController < ApplicationController
   def timeline
     @user = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
-    @departments = Department.where(company_id: @company_id, delete_flag: 0)
+    @departments = Department.where(company_id: @company_id, delete_flag: 0).order(sort: :asc)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
@@ -678,7 +678,7 @@ class UsersController < ApplicationController
   def articles
     @user = User.find(@id)
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
-    @departments = Department.where(company_id: @company_id, delete_flag: 0)
+    @departments = Department.where(company_id: @company_id, delete_flag: 0).order(sort: :asc)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_posted_contents = Article.where(company_id: @company_id, is_published:1, is_casual: 1, is_deleted: 0).order(updated_at: :desc)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
@@ -704,7 +704,7 @@ class UsersController < ApplicationController
   def given
     @user = User.find(@id)
     @users    = User.where(company_id: @company_id, :delete_flag => 0) 
-    @departments = Department.where(company_id: @company_id, delete_flag: 0)
+    @departments = Department.where(company_id: @company_id, delete_flag: 0).order(sort: :asc)
     @company = Company.find(@user.company_id)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
@@ -1062,14 +1062,15 @@ class UsersController < ApplicationController
   end
 
   def invite_complete
+    params[:name] = params[:lastname] + params[:firstname]
     update_complete_details
 
     if session[:redirect].nil?
       data = {
-      	:email	    => params[:email],
-      	:name	    => params[:name],
-      	:password   => params[:password],
-      	:prizy_url  => @prizy_url
+        :email    => params[:email],
+        :name     => params[:name],
+        :password   => params[:password],
+        :prizy_url  => @prizy_url
       }
       UserMailer.invite_welcome_email(data).deliver_later
       logout

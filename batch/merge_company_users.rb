@@ -22,7 +22,7 @@ company.each do | c |
     user.img_src    = "https://#{s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
     user.name	    = (c.email).split("@")[0]
     user.company_id = c.id
-    user.out_points = 150
+    user.out_points = 100000
     user.admin	    = 1
     user.verified   = 0
     user.deliver_invite_mail = 3
