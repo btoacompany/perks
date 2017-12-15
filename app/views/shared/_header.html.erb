@@ -75,7 +75,7 @@
       <% if session[:id] || cookies[:id] %>
         <div class="menu">
           <p align="center">
-            <% if $use_timeline.include?(@current_user.company_id) %>
+            <% if $use_timeline.include?(@company_id) %>
               <a href="/profile/timeline">タイムライン</a>
             <% else %>
               <a href="/profile/articles">トップ</a>

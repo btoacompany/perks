@@ -67,7 +67,7 @@ class CompanyController < ApplicationController
         :img_src    => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
         :name      => params[:email].split("@")[0],
         :company_id => company.id,
-        :out_points => 150,
+        :out_points => 100000,
         :admin      => 1,
         :deliver_invite_mail => 3,
       })
@@ -202,7 +202,7 @@ class CompanyController < ApplicationController
 
   def employees
     @company = Company.find(@id)
-    teams = Team.where(company_id: @id, delete_flag: 0)
+    teams = Team.where(company_id: @id, delete_flag: 0).order(sort: :asc)
     # @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
     unless teams.empty?
       @team_exist = 0
@@ -641,47 +641,10 @@ class CompanyController < ApplicationController
   end
 
   def teams 
-    logger.debug("======")
-    hogehoge = Time.now
-    logger.debug("#{Time.now}")
-    logger.debug("------")
     @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
-    @departments = Department.where(:company_id => @id, :delete_flag => 0)
+    @departments = Department.where(:company_id => @id, :delete_flag => 0).order(sort: :asc)
     @department = Department.new
-    # @users = User.where(company_id: @id, delete_flag: 0)
-    # @emails = []
-    # @users.each do |user|
-    #   @emails << user.email
-    # end
-
-    # @teams = []
-    # data = {}
-    # teams.each do | team |
-    #   @department = Department.find(team.department_id)
-    #   # if @department.delete_flag == 0
-    #   # members = []
-    #   # member_ids = team[:member_ids].split(",") if team[:member_ids].present?
-    #   # member_ids.each do | mem_id |
-    #   #   unless mem_id.to_i == 0
-    #   #     members << User.find(mem_id)
-    #   #   end
-    #   # end
-    #   data = {
-    #     :id => team.id,
-    #     :department   => Department.find(team[:department_id]).dep_name,
-    #     :team_name    => team[:team_name],
-    #     # :manager      => User.find(team[:manager_id]),
-    #     # :members      => members
-    #   }
-    #   @teams << data
-    #   end
-    # end
-    logger.debug("======")
-    logger.debug("#{hogehoge}")
-    logger.debug("#{Time.now}")
-    logger.debug("------")
-
-    teams = Team.where(:company_id => @id, :delete_flag => 0)
+    teams = Team.where(:company_id => @id, :delete_flag => 0).order(sort: :asc)
     all_teams = teams.sort_by &:create_time
     teams_count = all_teams.count
     limit = 10
@@ -695,7 +658,7 @@ class CompanyController < ApplicationController
       offset  = (page.to_i * limit) - limit
     end
     all_teams = all_teams[offset, limit]
-    @teams     = Team.where(id: all_teams.map(&:id)).order("id asc")
+    @teams     = Team.where(id: all_teams.map(&:id)).order(sort: :asc)
     @page_now = params[:page].to_i
     if @page_now == 0
       @page_now = 1

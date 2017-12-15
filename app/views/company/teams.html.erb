@@ -1,148 +1,146 @@
 <div id="admin_wrapper">
-<%= render "admin_subheader" %>
+  <%= render "admin_subheader" %>
 
-<div id="admin_contents" class="c_align">
-  <br>
-<% if flash[:notice] %>
-  <p class="notice" style="color: red"><b><i><%= flash[:notice] %></i></b></p>
-<% end %>
-<div class="clearfix">
-  <div class="add_department">
-  <h3 align="center">部署の追加</h3><br>
-  <h5>CSVで部署を登録する</h5><br>
-  <%= form_for @department , url: company_employees_create_department_and_team_by_csv_path(@department) , method: :post do |f| %>
-    <%= f.file_field :upload_file %>
-    <%= f.hidden_field :id %>
-    <%= f.submit "送信", class: "btn", style: "width:50px;height:27px; padding: 0 5p" %>
-
-  <% end %>
-  <%= button_to 'CSVフォーマットはこちらからダウンロードできます。', company_employees_export_csv_format_create_department_and_team_path(format: 'csv'), class: "csv_download_button" %><br><br>
-
-
-  <h5>フォームから部署を登録する</h5><br>
-  <%= form_tag( "/company/departments/add/complete", method: "post") do %>
-  <div class="toolbox center">
-  <table class="admin_table">
-    <tr>
-      <th>部署を追加する</th>
-      <td>
-        <input type="text" name="dep_name" value="" size="32" maxlength="25" style="width: 150px;" required/>
-        <input type="submit" value="送信" class="btn" style="width:50px;height:27px; padding: 0 5px"/>
-      </td>
-    </tr>
-    <tr>
-      <th>登録済みの部署</th>
-      <td>
-        <% if @departments.count == 0 %>
-          <p align="center"><i>Departmentが追加されていません</i></p><br>
-        <% else %>
-        <ul class="department_list">
-          <% @departments.each do |dep| %>
-            <li data-id="<%= dep.id %>" class="modal-btn deparment_list_each"><%= dep.dep_name %>
-            </li>
-          <% end %>
-        </ul>
+  <div id="admin_contents" class="c_align">
+    <br>
+    <% if flash[:notice] %>
+      <p class="notice" style="color: red"><b><i><%= flash[:notice] %></i></b></p>
+    <% end %>
+    <div class="clearfix">
+      <div class="add_department">
+        <h3 align="center">部署の追加</h3><br>
+        <h5>CSVで部署を登録する</h5><br>
+        <%= form_for @department , url: company_employees_create_department_and_team_by_csv_path(@department) , method: :post do |f| %>
+          <%= f.file_field :upload_file %>
+          <%= f.hidden_field :id %>
+          <%= f.submit "送信", class: "btn", style: "width:50px;height:27px; padding: 0 5p" %>
         <% end %>
-      </td>
-    </tr>
-    </table>
-  </div><br><br>
-  <% end %>
-  </div>
+        <%= button_to 'CSVフォーマットはこちらからダウンロードできます。', company_employees_export_csv_format_create_department_and_team_path(format: 'csv'), class: "csv_download_button" %><br><br>
 
-  <div id="my-modal" title="部署の編集・削除" style="display:none;">
-    <%= form_tag "/company/departments/edit/complete" , :method => "post" do %>
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-label" /></h5>
+
+        <h5>フォームから部署を登録する</h5><br>
+        <%= form_tag( "/company/departments/add/complete", method: "post") do %>
+          <div class="toolbox center">
+            <table class="admin_table">
+              <tr>
+                <th>部署を追加する</th>
+                <td>
+                  <input type="text" name="dep_name" value="" size="32" maxlength="25" style="width: 150px;" required/>
+                  <input type="submit" value="送信" class="btn" style="width:50px;height:27px; padding: 0 5px"/>
+                </td>
+              </tr>
+              <tr>
+                <th>登録済みの部署</th>
+                <td>
+                  <% if @departments.count == 0 %>
+                    <p align="center"><i>Departmentが追加されていません</i></p><br>
+                  <% else %>
+                    <ul class="department_list">
+                      <% @departments.each do |dep| %>
+                        <li data-id="<%= dep.id %>" class="modal-btn deparment_list_each"><%= dep.dep_name %></li>
+                      <% end %>
+                    </ul>
+                  <% end %>
+                </td>
+              </tr>
+            </table>
+          </div><br><br>
+        <% end %>
       </div>
-      <input type="text" name="dep_name" id="modal-body" required >
-      <input type="hidden" name="dep_id" id="modal-hidden" required>
-      <input type="submit" class="btn" value="送信">
-      <input type="button" class="btn delete_department" data-id="" value="削除" />
-    <% end %>
-  </div>
 
-  <div class="add_team">
-  <h3 align="center">チームの追加</h3><br>
-  <%= form_tag( "/company/teams/add/complete", method: "post", :multipart => true) do %>
-  <div class="toolbox center">
-  <table class="admin_table">
-    <tr style="text-align: left;">
-      <th>チーム名</th>
-      <td><input type="text" name="team_name" value="" size="32" maxlength="25" style="width: 200px;" required/></td>
-    </tr>
-    <tr>
-      <th>部署名</th>
-      <td align="left">
-        <select id="department_id" name="department_id" required style="width:200px;">
-          <option value=""></option>
-          <% @departments.each do | dept | %>
-            <option value=<%= dept[:id] %>><%= dept[:dep_name] %></option>
-          <% end %>
-        </select>
-      </td>
-    </tr>
-    <% unless $no_manager.include?(@id) %>
-    <tr>
-      <th>マネージャー名</th>
-      <td align="left">
-        <select id="manager_id" name="manager_id" style="width:200px;">
-          <option value=""></option>
-          <% @managers.each do | manager | %>
-            <option value=<%= manager.id %>><%= manager.lastname %> <%= manager.firstname %></option>
-          <% end %>
-        </select>
-      </td>
-    </tr>
-    <% end %>
-    <tr>
-      <th>所属社員</th>
-      <td>
-        <input type="text" id="suggested_name" name="members[]" value="" size="32" style="width: 200px;"/>
-        <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
-        <div id="suggest" style="display:none;"></div>
-        <br><br>
-        <div id="adding_member"></div>
-      </td>
-    </tr>
-    </table>
-  </div>
-  <p align="center">
-    <input type="submit" value="送信" class="btn" style="width:50px;height:27px; margin-top: 5px; padding: 0 5px"/>
-  </p>
-  <% end %>
-  </div>
-</div>
+      <div id="my-modal" title="部署の編集・削除" style="display:none;">
+        <%= form_tag "/company/departments/edit/complete" , :method => "post" do %>
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal-label" /></h5>
+          </div>
+          <input type="text" name="dep_name" id="modal-body" required >
+          <input type="hidden" name="dep_id" id="modal-hidden" required>
+          <input type="submit" class="btn" value="送信">
+          <input type="button" class="btn delete_department" data-id="" value="削除" />
+        <% end %>
+      </div>
 
-  <h3>チームの登録・編集</h3><br>
-  <% if @teams.count == 0 %>
-    <p align="center"><i>チームが追加されていません</i></p><br>
-  <% else %>
-  <div class="toolbox center">
-  <table class="admin_table">
-	<tr>
-    <th>部署</th>
-	  <th>チーム</th>
-    <th>メンバー一覧</th>
-	  <th class="c_align">編集・削除</th>
-	</tr>
-	<% @teams.each do | item | %>
-  <% @this_department = item.department %>
-	<tr class="item_<%= item.id %>">
-    <td class="c_align" style="width: 250px;"><%= @this_department.try(:dep_name) %></td>
-    <td class="c_align" style="width: 250px;"><%= item.team_name %></td>
-    <td class="c_align" style="width: 250px;"><%= link_to "一覧を表示する", "/company/team/#{item.id}/show" %></td>
-	  <td class="c_align" style="width: 250px;">
-	    <input type="button" class="btn edit_item" data-id="<%= item.id %>" value="編集" /> 
-	    <input type="button" class="btn delete_item" data-id="<%= item.id %>" value="削除" />
-	  </td>
-	</tr>
-	<% end %>
-    </table><br>
-    <%= render "team_pagination" %>
+      <div class="add_team">
+        <h3 align="center">チームの追加</h3><br>
+        <%= form_tag( "/company/teams/add/complete", method: "post", :multipart => true) do %>
+          <div class="toolbox center">
+            <table class="admin_table">
+              <tr style="text-align: left;">
+                <th>チーム名</th>
+                <td><input type="text" name="team_name" value="" size="32" maxlength="25" style="width: 200px;" required/></td>
+              </tr>
+              <tr>
+                <th>部署名</th>
+                <td align="left">
+                  <select id="department_id" name="department_id" required style="width:200px;">
+                    <option value=""></option>
+                    <% @departments.each do | dept | %>
+                      <option value=<%= dept[:id] %>><%= dept[:dep_name] %></option>
+                    <% end %>
+                  </select>
+                </td>
+              </tr>
+              <% unless $no_manager.include?(@id) %>
+                <tr>
+                  <th>マネージャー名</th>
+                  <td align="left">
+                    <select id="manager_id" name="manager_id" style="width:200px;">
+                      <option value=""></option>
+                      <% @managers.each do | manager | %>
+                        <option value=<%= manager.id %>><%= manager.lastname %> <%= manager.firstname %></option>
+                      <% end %>
+                    </select>
+                  </td>
+                </tr>
+              <% end %>
+              <tr>
+                <th>所属社員</th>
+                <td>
+                  <input type="text" id="suggested_name" name="members[]" value="" size="32" style="width: 200px;"/>
+                  <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+                  <div id="suggest" style="display:none;"></div>
+                  <br><br>
+                  <div id="adding_member"></div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <p align="center">
+            <input type="submit" value="送信" class="btn" style="width:50px;height:27px; margin-top: 5px; padding: 0 5px"/>
+          </p>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-</div>
+
+    <h3>チームの登録・編集</h3><br>
+    <% if @teams.count == 0 %>
+      <p align="center"><i>チームが追加されていません</i></p><br>
+    <% else %>
+      <div class="toolbox center">
+        <table class="admin_table">
+          <tr>
+            <th>部署</th>
+            <th>チーム</th>
+            <th>メンバー一覧</th>
+            <th class="c_align">編集・削除</th>
+          </tr>
+          <% @teams.each do | item | %>
+            <% @this_department = item.department %>
+            <tr class="item_<%= item.id %>">
+              <td class="c_align" style="width: 250px;"><%= @this_department.try(:dep_name) %></td>
+              <td class="c_align" style="width: 250px;"><%= item.team_name %></td>
+              <td class="c_align" style="width: 250px;"><%= link_to "一覧を表示する", "/company/team/#{item.id}/show" %></td>
+              <td class="c_align" style="width: 250px;">
+                <input type="button" class="btn edit_item" data-id="<%= item.id %>" value="編集" /> 
+                <input type="button" class="btn delete_item" data-id="<%= item.id %>" value="削除" />
+              </td>
+            </tr>
+          <% end %>
+        </table><br>
+        <%= render "team_pagination" %>
+      </div>
+    <% end %>
+  </div>
 </div> <!-- container -->
 </div> <!-- wrapper -->
 

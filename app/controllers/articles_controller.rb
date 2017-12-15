@@ -120,7 +120,7 @@ class ArticlesController < ApplicationController
   def show
     @user = User.find(@user_id)
     @users    = User.where(:company_id => @company.id, :delete_flag => 0)
-    @departments = Department.where(company_id: @company.id, delete_flag: 0)
+    @departments = Department.where(company_id: @company.id, delete_flag: 0).order(sort: :asc)
     @total_receive_message = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: @user.id).count
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
