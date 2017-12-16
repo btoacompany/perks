@@ -287,6 +287,7 @@ class CompanyController < ApplicationController
   def register_employees
     @user = User.new
     @department = Department.new
+    @departments = Department.where(company_id: @id, delete_flag: 0).order(sort: :asc)
     @years = Util.years
     @b_year   = 0
     @b_month  = 0
@@ -405,7 +406,14 @@ class CompanyController < ApplicationController
       @user = User.new
       @user.save_record(@data)
       flash[:notice_about_create_user] = "社員を追加しました"
-      session[:current_invite_email_setting] = company.invite_email_flag
+
+      # add_team
+      team_id = params[:team_id]
+      team = Team.find(team_id)
+      if team
+        team.member_ids = team.member_ids + "," + @user.id.to_s
+        team.save
+      end
     end
 
     if @duplicate_emails.present?

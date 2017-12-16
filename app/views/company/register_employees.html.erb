@@ -17,38 +17,6 @@
     <% end %>
     <%= button_to 'CSVフォーマットはこちらからダウンロードできます。', company_employees_export_csv_format_create_user_path(format: 'csv'),class: "csv_download_button" %><br><br>
 
-    <% if session[:current_invite_email_setting] %>
-      <div id="modal-overlay"></div>
-      <div id="my-modal" title="招待メールを送信しますか？">
-        <b><p style="color: red"><%= session[:error_not_match_invite_email_setting] %></p></b>  
-        <%= form_tag "/company/confirm_invite_email_setting" , :method => "post" do %>
-          <%= flash[:notice_about_create_user] %>
-          <% if session[:error_not_match_invite_email_setting] %>
-            <p>自動招待メールの設定を変更しますか？</p>
-          <% else %>
-            <p>登録した社員に招待メールを送信しますか?</p>
-          <% end %>
-          <% if session[:current_invite_email_setting] == 0 %>
-            <p style="color: red">※現在、招待メールを送信する設定です。</p>
-          <% else %>
-            <p style="color: red">※現在、招待メールを送信しない設定です。</p>
-          <% end %>
-          <% if session[:error_not_match_invite_email_setting] %>
-            <input type="radio" id="invite_email_setting_true" name="invite_email_setting" class="display-none" value= 0 required/>
-            <label for="invite_email_setting_true" name="invite_email_setting" >招待メールを送信する</label><br/>
-            <input type="radio" id="invite_email_setting_false" name="invite_email_setting" class="display-none" value= 1 required/>
-            <label for="invite_email_setting_false" name="invite_email_setting">招待メールを送信しない</label>
-          <% else %>
-            <input type="radio" id="invite_email_setting_true" name="invite_email_setting" class="display-none" value= 0 required/>
-            <label for="invite_email_setting_true" name="invite_email_setting" >はい</label>
-            <input type="radio" id="invite_email_setting_false" name="invite_email_setting" class="display-none" value= 1 required/>
-            <label for="invite_email_setting_false" name="invite_email_setting">いいえ</label>
-          <% end %>
-          <input type="submit" class="btn" value="送信">
-        <% end %>
-      </div>
-    <% end %>
-
     <h3 class="c_align">社員を登録する</h3><br>
     <%= form_tag("/company/employees/register/complete", method: "post", id: "login_form") do %>
       <div class="toolbox center">
@@ -65,19 +33,25 @@
             <th scope="row">メールアドレス</th>
             <td><input type="text" name="email" class="width-100-percent" autocomplete="new-email" required /></td>
           </tr>
-          <% if @company.invite_email_flag == 1 %>
-            <tr class="password">
-              <th scope="row">パスワード入力</th>
-              <td><input type="password" name="password" value="" id="passwd1" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/></td>
-            </tr>
-            <tr class="password">
-              <th scope="row">パスワード確認</th>
-              <td>
-                <input type="password" name="password" value="" id="passwd2" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/><br>
-                <span class="notice"></span>
-              </td>
-            </tr>
-          <% end %>
+          <tr>
+            <th scope="row">会社</th>
+            <td>
+              <select class="target_select_department width-100-percent" name="department_id">
+                <option>選択してください</option>
+                <% @departments.each do |dep| %>
+                  <option value="<%= dep.id %>"><%= dep.dep_name %></option>
+                <% end %>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">部署</th>
+            <td>
+              <select class="target_select_team width-100-percent" name="team_id">
+                <option>選択してください</option>
+              </select>
+            </td>
+          </tr>
           <tr>
             <th scope="row">性別</th> 
             <td>
@@ -148,9 +122,24 @@ $(".change_password_btn").click(function() {
 });
 
 
+$(".target_select_department").change(function(){
+  $(".target_select_team").empty();
+  $.ajax({
+    url: "/select_target_department",
+    type: "POST",
+    data: {id : $(this).val()
+  },
+  success: function(data) {
+    $.each(data, function(key, value){
+      $(".target_select_team").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
+    });
+  },
+  error: function(data) {
+    alert("チームが見つかりませんでした");
+  }
+  });
+});
 
-$(document).ready($(function() {
-    $( "#my-modal" ).dialog();
-  }));
+
 
 </script>

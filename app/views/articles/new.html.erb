@@ -29,7 +29,7 @@
         <tr>
           <th>記事に登場する社員</th>
           <td style="display: block;">
-            <input type="text" id="suggested_name" name="tags[]" value="" size="100" placeholder="メールアドレスを入力してください" />
+            <input type="text" id="suggested_name" name="tags[]" size="100" placeholder="社員名を入力してください" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>"/>
             <input type="button" value="追加" class="btn_change_password"/>
             <div id="suggest" style="display:none;"></div>
             <div id="adding_member"></div>
@@ -56,6 +56,20 @@
 
 <script type="text/javascript">
 var num = 0;
+
+  var user_datas = new Array();
+  var user_names = $('#suggested_name').data('user');
+  var user_ids = $('#suggested_name').data('user-id');
+  for (var i=0; i < user_names.length; i++) {
+    user_datas[user_names[i]] = user_ids[i];
+  };
+
+  $(function() {
+    var target_user_names = $('#suggested_name').data('user');
+    $( "#suggested_name" ).autocomplete({
+      source: target_user_names
+    });
+  });
 
 $('.admin_menu').click(function(){
   num++;
@@ -168,8 +182,8 @@ $(".btn_change_password").click(function() {
   element.setAttribute("size", "100"); 
   element.setAttribute("style", "display:block;"); 
   $("#adding_member").append(element);
+    var target_user_id = user_datas[addedname];
+    $("#adding_member").append($("<input type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
   $(':text[id="suggested_name"]').val("");
 });
-
-
 </script>

@@ -28,6 +28,7 @@ class ArticlesController < ApplicationController
       redirect_to :root
     end
   	@articles = Article.new
+    @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
   end
 
   def create
@@ -40,9 +41,9 @@ class ArticlesController < ApplicationController
         is_casual: params[:is_casual]
       	)
 
-      if params[:tags].present?
-        params[:tags].uniq.each do |email|
-          user = User.find_by(email: email)
+      if params[:tag_user_ids].present?
+        params[:tag_user_ids].uniq.each do |id|
+          user = User.find(id)
           if user
             Tag.create(
               article_id: @article.id,
