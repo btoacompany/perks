@@ -1,133 +1,115 @@
 <div id="admin_wrapper">
-<%= render "admin_subheader" %>
+  <%= render "admin_subheader" %>
 
-<div id="admin_contents" style="padding-left: 40px">
-<h3>カスタマイズ</h3>
-<% if flash[:notice] %>
-  <p class="notice"><b><i><%= flash[:notice] %></i></b></p>
-<% end %>
+  <div id="admin_contents" style="padding-left: 40px">
+    <h3>カスタマイズ</h3>
+    <% if flash[:notice] %>
+      <p class="notice"><b><i><%= flash[:notice] %></i></b></p>
+    <% end %>
 
-<%= form_tag( "/company/customize/update", method: "post") do %>
-  <dl class="customize_box">
-  <div><p>投稿の表示に関して</p></div>
+    <%= form_tag( "/company/customize/update", method: "post") do %>
+      <dl class="customize_box">
+        <div><p>投稿の表示に関して</p></div>
+        <div class="fixed_point_setting clearfix">
+          <dt class="customize_left">タイムラインのデザインを選択してください。</dt>
+          <dd class="customize_right">
+            <input type="radio" name="change_timeline_image_size" id="change_timeline_image_size0" value="0" <% if @company.change_timeline_image_size == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+            <label for="change_timeline_image_size0" class="switch-on">ユーザー<br>画像あり</label>
+            <input type="radio" id="change_timeline_image_size1" name="change_timeline_image_size" value="1" <% if @company.change_timeline_image_size == 1 %> checked="checked" <% end %> style="opacity: 0;" />
+            <label for="change_timeline_image_size1" class="switch-on">ユーザー<br>画像なし</label>
+          </dd>
+          <div class="clearfix"></div>
+        </div>
 
-    <div class="fixed_point_setting clearfix">
-      <dt class="customize_left">タイムラインのデザインを選択してください。</dt>
-      <dd class="customize_right">
-        <input type="radio" name="change_timeline_image_size" id="change_timeline_image_size0" value="0" <% if @company.change_timeline_image_size == 0 %>checked="checked" <% end %> style="opacity: 0;" />
-        <label for="change_timeline_image_size0" class="switch-on">ユーザー<br>画像あり</label>
-        <input type="radio" id="change_timeline_image_size1" name="change_timeline_image_size" value="1" <% if @company.change_timeline_image_size == 1 %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="change_timeline_image_size1" class="switch-on">ユーザー<br>画像なし</label>
-      </dd>
-      <div class="clearfix"></div>
-    </div>
+        <div><p>ポイントに関して</p></div>
+        <div class="fixed_point_setting clearfix">
+          <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。</dt>
+          <dd class="customize_right">
+            <input type="radio" name="fixed_point_setting" id="fixed_point_setting0" value="0" <% if @company.point_fixed_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+            <label for="fixed_point_setting0" class="switch-off">しない</label>
+            <input type="radio" id="fixed_point_setting1" name="fixed_point_setting" value="1" <% if @company.point_fixed_flag == 1  %> checked="checked" <% end %> style="opacity: 0;" />
+            <label for="fixed_point_setting1" class="switch-on">固定する</label>
+            <select id="fixed_point" name="fixed_point" class="fixed_point" min="0" max="50" <% unless @company.point_fixed_flag == 1 %> style="display: none;"<% else %> required <% end %> >
+              <% @nums.each do |num| %>
+                <option value=<%= num %> <% if num == @company.fixed_point %> selected = "true" <% end %> >
+                  <%= num %>
+                </option>
+              <% end %>
+            </select>
+            <% if flash[:fixed_point] %><b><i><%= flash[:fixed_point] %></i></b><% end %>
+          </dd>
+          <div class="clearfix"></div>
+        </div><br/>
 
-  <div><p>社員登録に関して</p></div>
-    <div class="fixed_point_setting clearfix">
-      <dt class="customize_left">社員登録をした際に、Prizyに招待されたことを自動メールで送信しますか？</dt>
-      <dd class="customize_right">
-        <input type="radio" name="invite_email_setting" id="invite_email_setting0" value="1" <% if @company.invite_email_flag == 1 %>checked="checked" <% end %> style="opacity: 0;" />
-        <label for="invite_email_setting0" class="switch-off">しない</label>
-        <input type="radio" id="invite_email_setting1" name="invite_email_setting" value="0" <% if @company.invite_email_flag == 0 %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="invite_email_setting1" class="switch-on">する</label>
-      </dd>
-      <div class="clearfix"></div>
-    </div>
+        <div class="give_point_to_sender_and_receiver_setting clearfix">
+          <dt class="customize_left">投稿した社員に、会社からポイントをプレゼントしますか。</dt>
+          <dd class="customize_right">
+            <input type="radio" name="give_point_to_sender_and_receiver_setting" id="give_point_to_sender_and_receiver_setting0" value="0" <% if @company.give_point_to_sender_and_receiver_flag == 0  %> checked="checked" <% end %> style="opacity: 0;" />
+            <label for="give_point_to_sender_and_receiver_setting0" class="switch-off">しない</label>
+            <input type="radio" id="give_point_to_sender_and_receiver_setting1" name="give_point_to_sender_and_receiver_setting" value="1" <% if @company.give_point_to_sender_and_receiver_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
+            <label for="give_point_to_sender_and_receiver_setting1" class="switch-on">する</label>
+            <p id="give_point_to_sender_and_receiver0" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% end %>>投稿者</p>
+            <select id="give_point_to_sender" name="give_point_to_sender" class="give_point_to_sender" min="0" max="15" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% else %> required <% end %>>
+              <% @send_point_nums.each do |num| %>
+                <option value=<%= num %> <% if num == @company.send_point %> selected = "true" <% end %> >
+                  <%= num %>
+                </option>
+              <% end %>
+            </select>
+            <% if flash[:give_point_to_sender_and_receiver_setting] %><b><i><%= flash[:give_point_to_sender_and_receiver_setting] %></i></b><% end %>
+          </dd>
+          <div class="clearfix"></div>
+        </div>
 
-  <div><p>ポイントに関して</p></div>
-    <div class="fixed_point_setting clearfix">
-      <dt class="customize_left">1投稿あたりに贈るポイント数を固定にしますか。</dt>
-      <dd class="customize_right">
-        <input type="radio" name="fixed_point_setting" id="fixed_point_setting0" value="0" <% if @company.point_fixed_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
-        <label for="fixed_point_setting0" class="switch-off">しない</label>
-        <input type="radio" id="fixed_point_setting1" name="fixed_point_setting" value="1" <% if @company.point_fixed_flag == 1  %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="fixed_point_setting1" class="switch-on">固定する</label>
-        <select id="fixed_point" name="fixed_point" class="fixed_point" min="0" max="50" <% unless @company.point_fixed_flag == 1 %> style="display: none;"<% else %> required <% end %> >
-        <% @nums.each do |num| %>
-          <option value=<%= num %> <% if num == @company.fixed_point %> selected = "true" <% end %> >
-            <%= num %>
-          </option>
-        <% end %>
-        </select>
+        <div class="fixed_point_setting clearfix">
+          <dt class="customize_left">メッセージをもらったことがない人にメッセージを送った時のポイントを設定しますか。</dt>
+          <dd class="customize_right">
+            <input type="radio" name="send_point_for_not_received_flag" id="send_point_for_not_received_flag0" value="0" <% if @company.send_point_for_not_received_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+            <label for="send_point_for_not_received_flag0" class="switch-off">しない</label>
+            <input type="radio" id="send_point_for_not_received_flag1" name="send_point_for_not_received_flag" value="1" <% if @company.send_point_for_not_received_flag == 1  %> checked="checked" <% end %> style="opacity: 0;" />
+            <label for="send_point_for_not_received_flag1" class="switch-on">する</label>
+            <select id="send_point_for_not_received" name="send_point_for_not_received" class="for_not_received" min="0" max="50" <% unless @company.send_point_for_not_received_flag == 1 %> style="display: none;width: 50px;"<% else %> required <% end %> >
+              <% @nums.each do |num| %>
+                <option value=<%= num %> <% if num == @company.send_point_for_not_received %> selected = "true" <% end %> >
+                  <%= num %>
+                </option>
+              <% end %>
+            </select>
+            <% if flash[:send_point_for_not_received] %><b><i><%= flash[:send_point_for_not_received] %></i></b><% end %>
+          </dd>
+          <div class="clearfix"></div>
+        </div>
 
-        <% if flash[:fixed_point] %>  <b><i><%= flash[:fixed_point] %></i></b>
-        <% end %>
-      </dd>
-    </div>
+        <div class="fixed_point_setting clearfix">
+          <dt class="customize_left">ポイントをリセットする日にちを設定しますか。</dt>
+          <dd class="customize_right">
+            <input name="time_select" type="radio" id="time_select0" value="0" style="opacity: 0;" <% if @company.reset_point_date.nil? %>checked="checked" <% end %> />
+            <label for="time_select0" class="switch-off">しない</label>
+            <input name="time_select" type="radio" id="time_select1" value="1" style="opacity: 0;"  <% if @company.reset_point_date.present? %>checked="checked" <% end %>/>
+            <label for="time_select1" class="switch-on">する</label>
+            <input type="text" id="datepicker_set_time" class="time_select" name="reset_point_date" <% if @company.reset_point_date.nil? %> style="display:none;" <% end %> value=<%= @company.reset_point_date.try(:strftime, ("%Y/%m/%d")) %> >
+            <% if flash[:reset_point_date] %><b><i><%= flash[:reset_point_date] %></i></b><% end %>
+          </dd>
+        </div>
 
-    <div class="give_point_to_sender_and_receiver_setting clearfix">
-      <dt class="customize_left">投稿した社員に、会社からポイントをプレゼントしますか。</dt>
-      <dd class="customize_right">
-        <input type="radio" name="give_point_to_sender_and_receiver_setting" id="give_point_to_sender_and_receiver_setting0" value="0" <% if @company.give_point_to_sender_and_receiver_flag == 0  %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="give_point_to_sender_and_receiver_setting0" class="switch-off">しない</label>
-        <input type="radio" id="give_point_to_sender_and_receiver_setting1" name="give_point_to_sender_and_receiver_setting" value="1" <% if @company.give_point_to_sender_and_receiver_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="give_point_to_sender_and_receiver_setting1" class="switch-on">する</label>
+        <div><p>セキュリティに関して</p></div>
+        <div class="fixed_point_setting clearfix">
+          <dt class="customize_left">管理画面へのアクセスをIPアドレスで制限しますか。</dt>
+          <dd class="customize_right">
+            <input type="radio" name="ip_address_setting" id="ip_address_setting0" value="0" <% if @company.ip_limit_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
+            <label for="ip_address_setting0" class="switch-off">しない</label>
+            <input type="radio" id="ip_address_setting1" name="ip_address_setting" value="1" <% if @company.ip_limit_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
+            <label for="ip_address_setting1" class="switch-on">する</label>
+            <div class="clearfix"></div>
+            <textarea id="allowed_ips" name="allowed_ips" <% if @company.ip_limit_flag == 0 %> style="display: none;"<% end %> placeholder="IPアドレス" cols="40" rows="5" ><%= @company.allowed_ips %></textarea> 
+            <% if flash[:allowed_ips] %><b><i><%= flash[:allowed_ips] %></i></b><% end %>
+          </dd>
+        </div>
+      </dl>
+      <input type="submit" class="btn btn_submit" value="送信" style="width:80px;height:30px; margin-bottom: 10px;"/>
+    <% end %>
 
-        <p id="give_point_to_sender_and_receiver0" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% end %>>投稿者</p>
-        <select id="give_point_to_sender" name="give_point_to_sender" class="give_point_to_sender" min="0" max="15" <% if @company.give_point_to_sender_and_receiver_flag == 0 %> style="display: none;"<% else %> required <% end %>>
-        <% @send_point_nums.each do |num| %>
-          <option value=<%= num %> <% if num == @company.send_point %> selected = "true" <% end %> >
-            <%= num %>
-          </option>
-        <% end %>
-        </select>
-
-        <% if flash[:give_point_to_sender_and_receiver_setting] %>  <b><i><%= flash[:give_point_to_sender_and_receiver_setting] %></i></b>
-        <% end %>
-      </dd>
-    </div>
-
-    <div class="fixed_point_setting clearfix">
-      <dt class="customize_left">メッセージをもらったことがない人にメッセージを送った時のポイントを設定しますか。</dt>
-      <dd class="customize_right">
-        <input type="radio" name="send_point_for_not_received_flag" id="send_point_for_not_received_flag0" value="0" <% if @company.send_point_for_not_received_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
-        <label for="send_point_for_not_received_flag0" class="switch-off">しない</label>
-        <input type="radio" id="send_point_for_not_received_flag1" name="send_point_for_not_received_flag" value="1" <% if @company.send_point_for_not_received_flag == 1  %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="send_point_for_not_received_flag1" class="switch-on">する</label>
-        <select id="send_point_for_not_received" name="send_point_for_not_received" class="for_not_received" min="0" max="50" <% unless @company.send_point_for_not_received_flag == 1 %> style="display: none;width: 50px;"<% else %> required <% end %> >
-        <% @nums.each do |num| %>
-          <option value=<%= num %> <% if num == @company.send_point_for_not_received %> selected = "true" <% end %> >
-            <%= num %>
-          </option>
-        <% end %>
-        </select>
-
-        <% if flash[:send_point_for_not_received] %>  <b><i><%= flash[:send_point_for_not_received] %></i></b>
-        <% end %>
-      </dd>
-    </div>
-
-    <div class="fixed_point_setting clearfix">
-      <dt class="customize_left">ポイントをリセットする日にちを設定しますか。</dt>
-      <dd class="customize_right">
-        <input name="time_select" type="radio" id="time_select0" value="0" style="opacity: 0;" <% if @company.reset_point_date.nil? %>checked="checked" <% end %> />
-        <label for="time_select0" class="switch-off">しない</label>
-        <input name="time_select" type="radio" id="time_select1" value="1" style="opacity: 0;"  <% if @company.reset_point_date.present? %>checked="checked" <% end %>/>
-        <label for="time_select1" class="switch-on">する</label>
-        <input type="text" id="datepicker_set_time" class="time_select" name="reset_point_date" <% if @company.reset_point_date.nil? %> style="display:none;" <% end %> value=<%= @company.reset_point_date.try(:strftime, ("%Y/%m/%d")) %> >
-        <% if flash[:reset_point_date] %><b><i><%= flash[:reset_point_date] %></i></b>
-        <% end %>
-      </dd>
-    </div>
-
-    <div><p>セキュリティに関して</p></div>
-    <div class="fixed_point_setting clearfix">
-      <dt class="customize_left">管理画面へのアクセスをIPアドレスで制限しますか。</dt>
-      <dd class="customize_right">
-        <input type="radio" name="ip_address_setting" id="ip_address_setting0" value="0" <% if @company.ip_limit_flag == 0 %>checked="checked" <% end %> style="opacity: 0;" />
-        <label for="ip_address_setting0" class="switch-off">しない</label>
-        <input type="radio" id="ip_address_setting1" name="ip_address_setting" value="1" <% if @company.ip_limit_flag == 1 %> checked="checked" <% end %> style="opacity: 0;" />
-        <label for="ip_address_setting1" class="switch-on">する</label>
-        <div class="clearfix"></div>
-        <textarea id="allowed_ips" name="allowed_ips" <% if @company.ip_limit_flag == 0 %> style="display: none;"<% end %> placeholder="IPアドレス" cols="40" rows="5" ><%= @company.allowed_ips %></textarea> 
-        <% if flash[:allowed_ips] %><b><i><%= flash[:allowed_ips] %></i></b><% end %>
-      </dd>
-    </div>
-  </dl>
-  <input type="submit" class="btn btn_submit" value="送信" style="width:80px;height:30px; margin-bottom: 10px;"/>
-<% end %>
-
-</div>
+  </div>
 </div>
 
 

@@ -118,27 +118,32 @@ class User < ActiveRecord::Base
         user.lastname = row_data["lastname"]
         user.name = row_data["lastname"].to_s + row_data["firstname"].to_s
         user.email = row_data["email"]
-        if row_data["password"]
-          user.password = row_data["password"]
-        elsif invite_email_flag == 1
-          user.verified = 1
-          user.password = SecureRandom.hex(4)
-        end
+        user.verified = 1
+        user.password = SecureRandom.hex(4)
         user.salt = BCrypt::Engine.generate_salt
         user.password = BCrypt::Engine.hash_secret(user.password, user.salt)
         user.company_id = current_user.company_id
-        user.birthday = row_data["birthday"]
+        user.birthday = row_data["birthday"] if row_data["birthday"]
         user.img_src = "//btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
         row_data["gender"] === "1" ? user.gender = 1 : user.gender = 0
         user.save!
+        logger.debug("LLLLLL")
+        logger.debug(user.errors.full_messages)
+        logger.debug("PPPPPPP")
         count_created_user_by_csv += 1 if user.save
         # add user to team
         check_department = Department.find_by(dep_name: row_data["department"])
+        logger.debug("PPPPPPP2")
         check_team = Team.find_by(team_name: row_data["team"] , department_id: check_department.id)
+        logger.debug("PPPPPPP2")
         if check_department && check_team
+          logger.debug("PPPPPPP2")
           check_team.manager_id = user.id if row_data["manager"] === "1"
           check_team.member_ids = check_team.member_ids + "," + user.id.to_s
+          logger.debug("IIIIII")
+          logger.debug(check_team.valid?)
           check_team.save!
+          logger.debug("UUUUUUUU")
         end
       end
     end

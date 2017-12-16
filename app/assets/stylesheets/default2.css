@@ -2374,9 +2374,9 @@ table.admin_table td textarea{
   }
 
   .fixed_point_setting , .give_point_to_sender_and_receiver_setting, .send_point_for_not_received{
-    width: 1050px;
+    /*width: 1050px;*/
     padding: 10px 0;
-    border-bottom: 1px solid #f0f1f5;
+    /*border-bottom: 1px solid #f0f1f5;*/
   }
 
   .fixed_point_setting label , .give_point_to_sender_and_receiver_setting label, .for_not_received label {

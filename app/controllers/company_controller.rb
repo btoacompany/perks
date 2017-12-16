@@ -132,7 +132,7 @@ class CompanyController < ApplicationController
   def customize_update
     @company = Company.find(@id)
     @company.change_timeline_image_size = params[:change_timeline_image_size]
-    @company.invite_email_flag = params[:invite_email_setting]
+    @company.invite_email_flag = 0
     @company.point_fixed_flag = params[:fixed_point_setting]
     @company.give_point_to_sender_and_receiver_flag = params[:give_point_to_sender_and_receiver_setting]
     @company.fixed_point = params[:fixed_point].to_i
@@ -342,18 +342,23 @@ class CompanyController < ApplicationController
 
   # TODO Refactoring
   def export_csv_format_create_user
-    company = Company.find(current_user.company_id)
-    if company.invite_email_flag == 0
-      headers = %w(No lastname firstname email department team birthday gender manager)      
-    elsif company.invite_email_flag == 1
-      headers = %w(No lastname firstname email password department team birthday gender manager)
+    file_location = "data_import/employees/【サンプル】社員登録フォーマット.csv"
+    if file_location
+      send_file File.join(Rails.root, "public", file_location)
     end
-    data = CSV.generate("", headers: headers ) do |csv|
-      csv << headers
-    end
-    datetime = Time.now
-    format_datetime = datetime.strftime('%Y%m%d%H%M%S')
-    send_data(data , filename: "user" + "#{format_datetime}" + '.csv',type: 'csv')
+
+    # company = Company.find(current_user.company_id)
+    # if company.invite_email_flag == 0
+    #   headers = %w(No lastname firstname email department team birthday gender manager)      
+    # elsif company.invite_email_flag == 1
+    #   headers = %w(No lastname firstname email password department team birthday gender manager)
+    # end
+    # data = CSV.generate("", headers: headers ) do |csv|
+    #   csv << headers
+    # end
+    # datetime = Time.now
+    # format_datetime = datetime.strftime('%Y%m%d%H%M%S')
+    # send_data(data , filename: "user" + "#{format_datetime}" + '.csv',type: 'csv')
   end
 
   def export_csv_format_create_department_and_team
