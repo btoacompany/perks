@@ -1,128 +1,118 @@
 <div id="admin_wrapper">
-<%= render "admin_subheader" %>
+  <%= render "admin_subheader" %>
 
-<div id="admin_contents" class="c_align">
-  <h3 class="c_align">招待状をリンクで送る</h3><br>
-  <p>下記、招待リンクをシェアしてください。</p>
-  <p class="c_align"><a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
+  <div id="admin_contents" class="c_align">
+    <h3 class="c_align">招待状をリンクで送る</h3><br>
+    <p>下記、招待リンクをシェアしてください。</p>
+    <p class="c_align"><a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
 
-  <h5>CSVで社員を登録する</h5><br>
-  <% if flash[:notice_about_create_user] %>
-    <p class="notice" style="color: red"><b><i><%= flash[:notice_about_create_user] %></i></b></p>
-  <% end %>
-  <%= form_for @user , url: company_employees_create_users_by_csv_path(@user) , method: :post do |f| %>
-    <%= f.file_field :upload_file %>
-    <%= f.hidden_field :id %>
-    <%= f.submit "送信", class: "btn", style: "width:50px;height:27px; padding: 0 5p" %>
-  <% end %>
-  <%= button_to 'CSVフォーマットはこちらからダウンロードできます。', company_employees_export_csv_format_create_user_path(format: 'csv'),class: "csv_download_button" %><br><br>
+    <h5>CSVで社員を登録する</h5><br>
+    <% if flash[:notice_about_create_user] %>
+      <p class="notice" style="color: red"><b><i><%= flash[:notice_about_create_user] %></i></b></p>
+    <% end %>
+    <%= form_for @user , url: company_employees_create_users_by_csv_path(@user) , method: :post do |f| %>
+      <%= f.file_field :upload_file %>
+      <%= f.hidden_field :id %>
+      <%= f.submit "送信", class: "btn", style: "width:50px;height:27px; padding: 0 5p" %>
+    <% end %>
+    <%= button_to 'CSVフォーマットはこちらからダウンロードできます。', company_employees_export_csv_format_create_user_path(format: 'csv'),class: "csv_download_button" %><br><br>
 
-  <% if session[:current_invite_email_setting] %>
-    <div id="modal-overlay"></div>
-    <div id="my-modal" title="招待メールを送信しますか？">
-    <b><p style="color: red"><%= session[:error_not_match_invite_email_setting] %></p></b>  
-      <%= form_tag "/company/confirm_invite_email_setting" , :method => "post" do %>
-        <%= flash[:notice_about_create_user] %>
-        <% if session[:error_not_match_invite_email_setting] %>
-          <p>自動招待メールの設定を変更しますか？</p>
-        <% else %>
-          <p>登録した社員に招待メールを送信しますか?</p>
+    <% if session[:current_invite_email_setting] %>
+      <div id="modal-overlay"></div>
+      <div id="my-modal" title="招待メールを送信しますか？">
+        <b><p style="color: red"><%= session[:error_not_match_invite_email_setting] %></p></b>  
+        <%= form_tag "/company/confirm_invite_email_setting" , :method => "post" do %>
+          <%= flash[:notice_about_create_user] %>
+          <% if session[:error_not_match_invite_email_setting] %>
+            <p>自動招待メールの設定を変更しますか？</p>
+          <% else %>
+            <p>登録した社員に招待メールを送信しますか?</p>
+          <% end %>
+          <% if session[:current_invite_email_setting] == 0 %>
+            <p style="color: red">※現在、招待メールを送信する設定です。</p>
+          <% else %>
+            <p style="color: red">※現在、招待メールを送信しない設定です。</p>
+          <% end %>
+          <% if session[:error_not_match_invite_email_setting] %>
+            <input type="radio" id="invite_email_setting_true" name="invite_email_setting" class="display-none" value= 0 required/>
+            <label for="invite_email_setting_true" name="invite_email_setting" >招待メールを送信する</label><br/>
+            <input type="radio" id="invite_email_setting_false" name="invite_email_setting" class="display-none" value= 1 required/>
+            <label for="invite_email_setting_false" name="invite_email_setting">招待メールを送信しない</label>
+          <% else %>
+            <input type="radio" id="invite_email_setting_true" name="invite_email_setting" class="display-none" value= 0 required/>
+            <label for="invite_email_setting_true" name="invite_email_setting" >はい</label>
+            <input type="radio" id="invite_email_setting_false" name="invite_email_setting" class="display-none" value= 1 required/>
+            <label for="invite_email_setting_false" name="invite_email_setting">いいえ</label>
+          <% end %>
+          <input type="submit" class="btn" value="送信">
         <% end %>
-        <% if session[:current_invite_email_setting] == 0 %>
-          <p style="color: red">※現在、招待メールを送信する設定です。</p>
-        <% else %>
-          <p style="color: red">※現在、招待メールを送信しない設定です。</p>
-        <% end %>
-        <% if session[:error_not_match_invite_email_setting] %>
-          <input type="radio" id="invite_email_setting_true" name="invite_email_setting" class="display-none" value= 0 required/>
-          <label for="invite_email_setting_true" name="invite_email_setting" >招待メールを送信する</label><br/>
-          <input type="radio" id="invite_email_setting_false" name="invite_email_setting" class="display-none" value= 1 required/>
-          <label for="invite_email_setting_false" name="invite_email_setting">招待メールを送信しない</label>
-        <% else %>
-          <input type="radio" id="invite_email_setting_true" name="invite_email_setting" class="display-none" value= 0 required/>
-          <label for="invite_email_setting_true" name="invite_email_setting" >はい</label>
-          <input type="radio" id="invite_email_setting_false" name="invite_email_setting" class="display-none" value= 1 required/>
-          <label for="invite_email_setting_false" name="invite_email_setting">いいえ</label>
-        <% end %>
-        <input type="submit" class="btn" value="送信">
-      <% end %>
-    </div>
-  <% end %>
+      </div>
+    <% end %>
 
-<h3 class="c_align">社員を登録する</h3><br>
-<%= form_tag("/company/employees/register/complete", method: "post", id: "login_form") do %>
-  <div class="toolbox center">
-    <table class="admin_table">
-      <tr>
-         <th scope="row">姓</th>
-         <td><input type="text" name="lastname" required /></td>
-      </tr>
-      <tr>
-         <th scope="row">名</th>
-         <td><input type="text" name="firstname" required /></td>
-      </tr>
-      <tr>
-        <th scope="row">メールアドレス</th>
-        <td><input type="text" name="email" autocomplete="new-email" required /></td>
-      </tr>
-      <% if @company.invite_email_flag == 1 %>
-<!--       <tr>
-      <th scope="row"><span class="password_label">パスワード</span></th> 
-        <td><input type="button" value="パスワードを設定する" class="change_password_btn"/></td>
-      </tr> -->
-      <tr class="password">
-        <th scope="row">パスワード入力</th>
-        <td><input type="password" name="password" value="" id="passwd1" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/></td>
-      </tr>
-      <tr class="password">
-        <th scope="row">パスワード確認</th>
-        <td><input type="password" name="password" value="" id="passwd2" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/><br>
-        <span class="notice"></span>
-        </td>
-      </tr>
-      <% end %>
-      <tr>
-        <th scope="row">役職</th> 
-        <td><input type="text" name="job_title" /></td>
-      </tr>
-      <tr>
-        <th scope="row">性別</th> 
-        <td>
-          <input type="radio" name="gender" value="0" style="width: 20px; height: 13px;" checked>男性
-          <input type="radio" name="gender" value="1" style="width: 20px; height: 13px;">女性</option>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">生年月日</th> 
-        <td>
-          <select name="b_year">
-            <% @years.reverse_each do | val | %>
-              <option value="<%= val %>" <% if @b_year==val %> selected <% end %>><%= val %></option>
-            <% end %>
-          </select> 年 
-          <select name="b_month">
-            <% (1..12).each do | val | %>
-              <option value="<%= val %>" <% if @b_month==val %> selected <% end %>><%= val %></option>
-            <% end %>
-          </select> 月 
-          <select name="b_day">
-            <% (1..31).each do | val | %>
-              <option value="<%= val %>" <% if @b_day==val %> selected <% end %>><%= val %></option>
-            <% end %>
-          </select> 日
-        </td>
-      </tr>
-    </table><br>
-    <p align="center">
-      <input type="button" value="戻る" class="btn btn_back" />
-      <input type="submit" value="送信" class="btn" />
-    </p>
-  </div><br><br>
-<% end %>
-
-
-
-</div> <!-- admin_contents -->
+    <h3 class="c_align">社員を登録する</h3><br>
+    <%= form_tag("/company/employees/register/complete", method: "post", id: "login_form") do %>
+      <div class="toolbox center">
+        <table class="admin_table">
+          <tr>
+            <th scope="row">姓</th>
+            <td><input type="text" name="lastname" class="width-100-percent" required /></td>
+          </tr>
+          <tr>
+            <th scope="row">名</th>
+            <td><input type="text" name="firstname" class="width-100-percent" required /></td>
+          </tr>
+          <tr>
+            <th scope="row">メールアドレス</th>
+            <td><input type="text" name="email" class="width-100-percent" autocomplete="new-email" required /></td>
+          </tr>
+          <% if @company.invite_email_flag == 1 %>
+            <tr class="password">
+              <th scope="row">パスワード入力</th>
+              <td><input type="password" name="password" value="" id="passwd1" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/></td>
+            </tr>
+            <tr class="password">
+              <th scope="row">パスワード確認</th>
+              <td>
+                <input type="password" name="password" value="" id="passwd2" class="user_update_input" autocomplete="new-password" <% if @company.invite_email_flag == 1 %> required <% end %>/><br>
+                <span class="notice"></span>
+              </td>
+            </tr>
+          <% end %>
+          <tr>
+            <th scope="row">性別</th> 
+            <td>
+              <input type="radio" name="gender" value="0" style="width: 20px; height: 13px;" checked>男性
+              <input type="radio" name="gender" value="1" style="width: 20px; height: 13px;">女性</option>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">生年月日</th> 
+            <td>
+              <select name="b_year">
+                <% @years.reverse_each do |val| %>
+                  <option value="<%= val %>" <% if @b_year==val %> selected <% end %>><%= val %></option>
+                <% end %>
+              </select> 年 
+              <select name="b_month">
+                <% (1..12).each do |val| %>
+                  <option value="<%= val %>" <% if @b_month==val %> selected <% end %>><%= val %></option>
+                <% end %>
+              </select> 月 
+              <select name="b_day">
+                <% (1..31).each do |val| %>
+                  <option value="<%= val %>" <% if @b_day==val %> selected <% end %>><%= val %></option>
+                <% end %>
+              </select> 日
+            </td>
+          </tr>
+        </table><br>
+        <p align="center">
+          <input type="button" value="戻る" class="btn btn_back" />
+          <input type="submit" value="送信" class="btn" />
+        </p>
+      </div><br><br>
+    <% end %>
+  </div> <!-- admin_contents -->
 </div> <!-- wrapper -->
 
 <script type="text/javascript">

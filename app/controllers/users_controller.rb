@@ -765,7 +765,7 @@ class UsersController < ApplicationController
     else
       @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
-      @receiver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      @receiver_ratio << (@this_week_posts.to_f / @last_week_posts.to_f) * 100
       return @receiver_ratio
     end
   end
@@ -783,7 +783,7 @@ class UsersController < ApplicationController
     else
       @last_week_posts = Post.where(company_id: @company_id, delete_flag: 0, user_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
-      @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      @giver_ratio << (@this_week_posts.to_f / @last_week_posts.to_f) * 100
       return @giver_ratio
     end
   end

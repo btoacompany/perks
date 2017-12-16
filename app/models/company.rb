@@ -23,6 +23,12 @@ class Company < ActiveRecord::Base
   validates :reset_point_date , format: { with: /\A\d{4}[\-]\d{2}[\-]\d{2}\z/ } , if: :check_reset_point_flag
   validate :check_received_ips , on: :update , if: :check_ip_limit_flag
 
+  
+  # invite_email_flag = {
+  #   0 => "配信する",
+  #   1 => "配信しない"
+  # }
+
   def save_record(params)
     self.name	      = params[:name]	      if params[:name].present?
     self.owner	      = params[:owner]	      if params[:owner].present?
