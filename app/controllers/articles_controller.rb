@@ -237,6 +237,7 @@ class ArticlesController < ApplicationController
     if @user.admin == 0
       redirect_to :root
     end
+    @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
     @num = 1
     @article = Article.find(params[:id])
     logger.debug(@article.tags.count)
@@ -340,9 +341,9 @@ class ArticlesController < ApplicationController
         end
       end
 
-      if params[:tags].present?
-        params[:tags].uniq.each do |email|
-          user = User.find_by(email: email)
+      if params[:tag_user_ids].present?
+        params[:tag_user_ids].uniq.each do |id|
+          user = User.find(id)
           if user
             Tag.create(
               article_id: @article.id,
