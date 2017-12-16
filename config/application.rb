@@ -25,6 +25,7 @@ module Perks
 
     # Precompile addtional assets
     config.assets.precompile += %w(default2.css)
+    config.filter_parameters += %w(password)
     Koala.config.api_version="v2.0"
   end
 end

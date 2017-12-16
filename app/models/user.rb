@@ -127,23 +127,14 @@ class User < ActiveRecord::Base
         user.img_src = "//btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
         row_data["gender"] === "1" ? user.gender = 1 : user.gender = 0
         user.save!
-        logger.debug("LLLLLL")
-        logger.debug(user.errors.full_messages)
-        logger.debug("PPPPPPP")
         count_created_user_by_csv += 1 if user.save
         # add user to team
         check_department = Department.find_by(dep_name: row_data["department"])
-        logger.debug("PPPPPPP2")
         check_team = Team.find_by(team_name: row_data["team"] , department_id: check_department.id)
-        logger.debug("PPPPPPP2")
         if check_department && check_team
-          logger.debug("PPPPPPP2")
           check_team.manager_id = user.id if row_data["manager"] === "1"
           check_team.member_ids = check_team.member_ids + "," + user.id.to_s
-          logger.debug("IIIIII")
-          logger.debug(check_team.valid?)
           check_team.save!
-          logger.debug("UUUUUUUU")
         end
       end
     end

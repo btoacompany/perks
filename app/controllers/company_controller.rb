@@ -337,7 +337,7 @@ class CompanyController < ApplicationController
     end
     rescue => e
     flash[:notice] = "CSVファイルに空のセルはありませんか？もう一度送信をお願いいたします。"
-    redirect_to '/company/teams'    
+    redirect_to '/company/teams'
   end
 
   # TODO Refactoring
