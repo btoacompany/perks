@@ -182,8 +182,8 @@ $(".btn_change_password").click(function() {
   element.setAttribute("size", "100"); 
   element.setAttribute("style", "display:block;"); 
   $("#adding_member").append(element);
-    var target_user_id = user_datas[addedname];
-    $("#adding_member").append($("<input type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
+  var target_user_id = user_datas[addedname];
+  $("#adding_member").append($("<input type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
   $(':text[id="suggested_name"]').val("");
 });
 </script>
