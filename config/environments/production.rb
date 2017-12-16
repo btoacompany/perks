@@ -36,6 +36,7 @@ Rails.application.configure do
   config.assets.digest = true
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
+  config.assets.initialize_on_precompile = false
   config.assets.precompile += %w[default2.css jquery.easytabs.js]
 
   # Specifies the header that your server uses for sending files.
