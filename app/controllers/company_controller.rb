@@ -256,10 +256,12 @@ class CompanyController < ApplicationController
         @searched_users = User.where("email like '%" + params[:email] + "%'").where(company_id: @company.id)
         @search_content = params[:email]
       elsif @search_type == "teams"
-        @team_selected_id = params[:team_selected_id].to_i
-        @selected_team = Team.find(@team_selected_id)
-        @selected_department = Department.find(@selected_team.try(:department_id))
-        @selected_department_child_teams = Team.where(department_id: @selected_department.id, delete_flag: 0)
+        if params[:team_selected_id] && params[:team_selected_id] != "00"
+          @team_selected_id = params[:team_selected_id].to_i
+          @selected_team = Team.find(@team_selected_id)
+          @selected_department = Department.find(@selected_team.try(:department_id))
+          @selected_department_child_teams = Team.where(department_id: @selected_department.id, delete_flag: 0)
+        end
       end
     else
       @team_exist = 1

@@ -130,6 +130,12 @@ class User < ActiveRecord::Base
         count_created_user_by_csv += 1 if user.save
         # add user to team
         check_department = Department.find_by(dep_name: row_data["department"])
+        unless check_department
+          check_department = Department.new
+          check_department.dep_name = row_data["department"]
+          check_department.company_id = current_user.company_id
+          check_department.save!
+        end
         check_team = Team.find_by(team_name: row_data["team"] , department_id: check_department.id)
         if check_department && check_team
           check_team.manager_id = user.id if row_data["manager"] === "1"
