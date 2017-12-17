@@ -349,19 +349,19 @@ class CompanyController < ApplicationController
 
   # TODO Refactoring
   def export_csv_format_create_user
-    # file_location = "data_import/employees/【サンプル】社員登録フォーマット.csv"
-    # if file_location
-    #   send_file File.join(Rails.root, "public", file_location)
-    # end
-
-    company = Company.find(current_user.company_id)
-    headers = %w(No lastname firstname email department team birthday gender)
-    data = CSV.generate("", headers: headers ) do |csv|
-      csv << headers
+    file_location = "data_import/employees/【サンプル】社員登録フォーマット.csv"
+    if file_location
+      send_file File.join(Rails.root, "public", file_location)
     end
-    datetime = Time.now
-    format_datetime = datetime.strftime('%Y_%m_%d_%H%M')
-    send_data(data , filename:  "#{format_datetime}" + "社員登録フォーマット" + '.csv',type: 'csv')
+
+    # company = Company.find(current_user.company_id)
+    # headers = %w(No lastname firstname email department team birthday gender)
+    # data = CSV.generate("", headers: headers ) do |csv|
+    #   csv << headers
+    # end
+    # datetime = Time.now
+    # format_datetime = datetime.strftime('%Y_%m_%d_%H%M')
+    # send_data(data , filename:  "#{format_datetime}" + "社員登録フォーマット" + '.csv',type: 'csv')
   end
 
   def export_csv_format_create_department_and_team
