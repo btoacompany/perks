@@ -491,8 +491,8 @@ class ArticlesController < ApplicationController
   end
 
   def receiver_ranking(user)
-    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
-    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+    last_week =  Date.today.prev_week.beginning_of_week...Date.today.beginning_of_week
+    this_week = Date.today.beginning_of_week...Date.today.next_week.beginning_of_week
     
     @receiver_ratio = []
     @this_week_posts = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: user.id, create_time: this_week).count
@@ -503,14 +503,14 @@ class ArticlesController < ApplicationController
     else
       @last_week_posts = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
-      @receiver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      @receiver_ratio << (@this_week_posts.to_f / @last_week_posts.to_f) * 100
       return @receiver_ratio
     end
   end
 
   def giver_ranking(user)
-    last_week =  Date.today.prev_week.beginning_of_week..Date.today.prev_week.end_of_week
-    this_week = Date.today.beginning_of_week..Date.today.end_of_week
+    last_week =  Date.today.prev_week.beginning_of_week...Date.today.beginning_of_week
+    this_week = Date.today.beginning_of_week...Date.today.next_week.beginning_of_week
 
     @giver_ratio =[]
     @this_week_posts = Post.where(company_id: @company.id, delete_flag: 0, user_id: user.id, create_time: this_week).count
@@ -521,7 +521,7 @@ class ArticlesController < ApplicationController
     else
       @last_week_posts = Post.where(company_id: @company.id, delete_flag: 0, user_id: user.id, create_time: last_week).count
       @last_week_posts = 1 if @last_week_posts == 0
-      @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
+      @giver_ratio << (@this_week_posts.to_f / @last_week_posts.to_f) * 100
       return @giver_ratio
     end
   end
