@@ -1011,10 +1011,10 @@ class UsersController < ApplicationController
 
       unless invite_link.empty?
         update_details
-
         company       = Company.find(invite_link[0][:company_id])
         @company_name = company.name
         @company_id   = company.id
+        @departments = Department.where(company_id: @company_id, delete_flag: 0).order(sort: :asc)
       else
         redirect_to "/login"
       end
@@ -1064,6 +1064,15 @@ class UsersController < ApplicationController
   def invite_complete
     params[:name] = params[:lastname] + params[:firstname]
     update_complete_details
+
+    # add_team
+    team_id = params[:team_id]
+    team = Team.find(team_id)
+    if team
+      user = User.find_by(email: params[:email])
+      team.member_ids = team.member_ids + "," + user.id.to_s
+      team.save
+    end
 
     if session[:redirect].nil?
       data = {
