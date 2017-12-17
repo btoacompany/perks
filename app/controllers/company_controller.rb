@@ -355,7 +355,7 @@ class CompanyController < ApplicationController
     # end
 
     company = Company.find(current_user.company_id)
-    headers = %w(No lastname firstname email department team birthday gender manager)
+    headers = %w(No lastname firstname email department team birthday gender)
     data = CSV.generate("", headers: headers ) do |csv|
       csv << headers
     end
@@ -757,7 +757,7 @@ class CompanyController < ApplicationController
       @members = []
       @team.member_ids.split(",").each do |mem|
         unless mem.to_i == 0
-          @members << User.find(mem.to_i)
+          @members << User.find_by(id: mem.to_i, delete_flag: 0)
         end
       end
     else

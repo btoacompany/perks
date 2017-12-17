@@ -25,26 +25,14 @@
     <tr>
       <th>部署名</th>
       <td align="left">
-  <select id="department_id" name="department_id" style="width: 200px;">
-    <option value=""></option>
-    <% @departments.each do | dept | %>
-      <option value=<%= dept.id %> <%if @team.department_id == dept.id %> selected <% end %>>
-        <%= dept[:dep_name] %>
-      </option>
-    <% end %>
-  </select>
-      </td>
-    </tr>
-    <tr>
-    <tr>
-      <th>マネージャー名</th>
-      <td align="left">
-  <select id="manager_id" name="manager_id" style="width: 200px;">
-    <option value=""></option>
-    <% @managers.each do | manager | %>
-      <option value=<%= manager[:id] %> <% if @team.manager_id == manager[:id] %> selected <% end %> ><%= manager[:name] %></option>
-    <% end %>
-  </select>
+        <select id="department_id" name="department_id" style="width: 200px;">
+          <option value=""></option>
+          <% @departments.each do | dept | %>
+            <option value=<%= dept.id %> <%if @team.department_id == dept.id %> selected <% end %>>
+              <%= dept[:dep_name] %>
+            </option>
+          <% end %>
+        </select>
       </td>
     </tr>
     <tr>
@@ -55,7 +43,9 @@
         <br><br>
         <div id="adding_member">
           <% @members.each do |mem| %>
-          <input type="text" name="members[]" value="<%= mem.email %>" size="32" style="width: 200px;"/><br>
+            <% if mem %>
+              <input type="text" name="members[]" value="<%= mem.try(:email) %>" size="32" style="width: 200px;"/><br>
+            <% end %>
           <% end %>
         </div>
       </td>

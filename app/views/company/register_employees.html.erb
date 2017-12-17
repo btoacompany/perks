@@ -6,7 +6,7 @@
     <p>下記、招待リンクをシェアしてください。</p>
     <p class="c_align"><a href="<%= @company[:invite_link] %>"><%= @company[:invite_link] %></a></p><br>
 
-    <h5>CSVで社員を登録する</h5><br>
+    <h3 style="margin-top: 20px">CSVで社員を登録する</h3><br>
     <% if flash[:notice_about_create_user] %>
       <p class="notice" style="color: red"><b><i><%= flash[:notice_about_create_user] %></i></b></p>
     <% end %>
@@ -15,7 +15,12 @@
       <%= f.hidden_field :id %>
       <%= f.submit "送信", class: "btn", style: "width:50px;height:27px; padding: 0 5p" %>
     <% end %>
-    <%= button_to 'CSVフォーマットはこちらからダウンロードできます。', company_employees_export_csv_format_create_user_path(format: 'csv'),class: "csv_download_button" %><br><br>
+    <%= button_to 'CSVフォーマットはこちらからダウンロードできます。', company_employees_export_csv_format_create_user_path(format: 'csv'),class: "csv_download_button", style: "color: blue;" %><br>
+    <p style="margin-top: 10px;">
+      ※CSVファイルの記入方法について
+      <ul><li style="text-decoration: underline;">gender欄には男性なら 1, 女性なら 0 と記入してください</li></ul>
+    </p>
+    <br>
 
     <h3 class="c_align">社員を登録する</h3><br>
     <%= form_tag("/company/employees/register/complete", method: "post", id: "login_form") do %>

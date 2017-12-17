@@ -138,7 +138,6 @@ class User < ActiveRecord::Base
         end
         check_team = Team.find_by(team_name: row_data["team"] , department_id: check_department.id)
         if check_department && check_team
-          check_team.manager_id = user.id if row_data["manager"] === "1"
           check_team.member_ids = check_team.member_ids + "," + user.id.to_s
           check_team.save!
         end
