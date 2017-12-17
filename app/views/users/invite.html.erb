@@ -47,6 +47,25 @@
                   <td class="user_update_table_td">性別（gender）<label><input type="radio" name="gender" value="0" checked />男</label><label><input type="radio" name="gender" value="1" />女</label></td>
                 </tr>
                 <tr>
+                  <td scope="row">会社</td>
+                  <td>
+                    <select class="target_select_department" name="department_id">
+                      <option>選択してください</option>
+                      <% @departments.each do |dep| %>
+                        <option value="<%= dep.id %>"><%= dep.dep_name %></option>
+                      <% end %>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="row">部署</td>
+                  <td>
+                    <select class="target_select_team" name="team_id">
+                      <option>選択してください</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
                   <td class="user_update_table_td">生年月日（birthday）</td>
                   <td>
                     <select name="b_year">
@@ -100,4 +119,23 @@ $(".btn_back").click(function() {
 $(".btn_fb").click(function() {
   window.location = '/auth/facebook';
 });
+
+$(".target_select_department").change(function(){
+  $(".target_select_team").empty();
+  $.ajax({
+    url: "/select_target_department",
+    type: "POST",
+    data: {id : $(this).val()
+  },
+  success: function(data) {
+    $.each(data, function(key, value){
+      $(".target_select_team").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
+    });
+  },
+  error: function(data) {
+    alert("チームが見つかりませんでした");
+  }
+  });
+});
+
 </script>
