@@ -16,7 +16,7 @@
           <table style="margin: 0 auto; text-align: left">
             <tr>
               <td>メールアドレスで検索</td>
-              <td><input type="text" name="email" size="30"></td>
+              <td><input type="text" name="email" class="width-90-percent"></td>
               <td>
                 <button type="submit" name="search_type" value="email" style="margin: 10px 0px;width: 50px;background-color: white;">表示</button>
               </td>
@@ -226,7 +226,7 @@ $('.team_select_submit').click(function(){
 });
 
 $(".target_select_department").change(function(){
-  $(".target_select_team").empty();
+  $(".team_selected_id").empty();
   $.ajax({
     url: "/select_target_department",
     type: "POST",
