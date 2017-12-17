@@ -27,7 +27,7 @@
             <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
               <% if @receiver_ratio[1] == "-" %>
                 <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b></b></span><span style="font-size: 12px; color: #808080"><br><br>翌週から結果を表示します！</span>
-              <% elsif @receiver_ratio[1] > 0 %>
+              <% elsif @receiver_ratio[1] > 100 %>
                 <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも褒められています！</span>
               <% elsif @receiver_ratio[1] == 0 %>
                 <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@receiver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
@@ -41,7 +41,7 @@
             <div class="user_stats" style="text-align: center; padding: 20px 10px 5px 10px;">
               <% if @giver_ratio[1] == "-" %>
                 <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b></b></span><span style="font-size: 12px; color: #808080"><br><br>翌週から結果を表示します！</span>
-              <% elsif @giver_ratio[1] > 0 %>
+              <% elsif @giver_ratio[1] > 100 %>
                 <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="color: red; font-size: 40px; font-weight: 900"><b>↑</b></span><span style="font-size: 12px; color: #808080"><br><br>先週よりも感謝を伝えています！</span>
               <% elsif @giver_ratio[1] == 0 %>
                 <span style="color: #ff8d07; font-size: 40px"><b><%= number_to_percentage(@giver_ratio[1], precision: 0) %></b></span><span style="font-size: 12px; color: #808080"><br><br>先週比アップを狙いましょう！</span>
@@ -418,7 +418,6 @@ $(".give_comments").bind('keypress',function(e) {
   if(e.keyCode == 13) {
     var post_id = ($(this).attr('data-id')); //get attributes of clicked item
     var comments = ($(this).val()); //get attributes of clicked item
-
     postComment(post_id, comments);
   }
 });
@@ -444,7 +443,6 @@ function postComment(post_id, comments) {
 
 $(".btn_like").mouseup(function() {
   var post_id = ($(this).attr('data-id')); //get attributes of clicked item
-
   $.ajax({
     type: "POST",
     url: "/user/give_kudos",
@@ -457,7 +455,6 @@ $(".btn_like").mouseup(function() {
 
 $(".btn_unlike").mouseup(function() {
   var post_id = ($(this).attr('data-id')); //get attributes of clicked item
-
   $.ajax({
     type: "POST",
     url: "/user/give_kudos",
@@ -483,7 +480,7 @@ function getName () {
   <% if @users.present? %>
     <% @users.each do | user | %>
       <% unless user.id == @user.id %> 
-  items["<%= user.id %>"] = "<%= user.lastname %> <%= user.firstname %>";
+        items["<%= user.id %>"] = "<%= user.lastname %> <%= user.firstname %>";
       <% end %>
     <% end %>
   <% end %>

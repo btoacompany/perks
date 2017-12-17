@@ -173,17 +173,22 @@ $('.admin_menu').click(function(){
 $('.article_table').on('click', '.delete_question', function(){
   $(this).parent().parent().remove();
 });
+
+
+var tag_id = 0;
 $(".btn_change_password").click(function() {
   var addedname = $(':text[id="suggested_name"]').val();
-  var element = document.createElement('input');
-  element.setAttribute("name", "tags[]"); 
-  element.setAttribute("value", addedname);
-  element.setAttribute("type", "text");
-  element.setAttribute("size", "100"); 
-  element.setAttribute("style", "display:block;"); 
-  $("#adding_member").append(element);
+  $("#adding_member").append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + tag_id + ">" + addedname + "</span>");
   var target_user_id = user_datas[addedname];
-  $("#adding_member").append($("<input type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
+  $("#adding_member").append($("<input id=tag_"+ tag_id + " type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
   $(':text[id="suggested_name"]').val("");
+  tag_id ++;
 });
+
+$(document).on('click','.tag', function() {
+  this_tag_id = $(this).data("tag_id");
+  $(this).remove();
+  $("#tag_" + this_tag_id).remove();
+});
+
 </script>
