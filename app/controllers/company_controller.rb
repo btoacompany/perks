@@ -410,11 +410,12 @@ class CompanyController < ApplicationController
       flash[:notice_about_create_user] = "社員を追加しました"
 
       # add_team
-      team_id = params[:team_id]
-      team = Team.find(team_id)
-      if team
-        team.member_ids = team.member_ids + "," + @user.id.to_s
-        team.save
+      if params[:team_id].present?
+        team = Team.find(team_id)
+        if team
+          team.member_ids = team.member_ids + "," + @user.id.to_s
+          team.save
+        end
       end
     end
 
