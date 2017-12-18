@@ -42,7 +42,7 @@
             <th scope="row">会社</th>
             <td>
               <select class="target_select_department width-100-percent" name="department_id">
-                <option>選択してください</option>
+                <option value="">選択してください</option>
                 <% @departments.each do |dep| %>
                   <option value="<%= dep.id %>"><%= dep.dep_name %></option>
                 <% end %>
@@ -53,7 +53,7 @@
             <th scope="row">部署</th>
             <td>
               <select class="target_select_team width-100-percent" name="team_id">
-                <option>選択してください</option>
+                <option value="">選択してください</option>
               </select>
             </td>
           </tr>
