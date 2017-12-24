@@ -29,7 +29,13 @@ class User < ActiveRecord::Base
   # validate :check_maneger
 
   def fullname
-    self.lastname + self.firstname
+    if self.lastname.present? && self.firstname.present?
+      self.lastname + self.firstname
+    elsif self.lastname.present? && self.firstname.nil?
+      self.lastname
+    elsif self.lastname.nil? && self.firstname.present?
+      self.firstname  
+    end
   end
 
   def self.koala(auth)
@@ -114,6 +120,7 @@ class User < ActiveRecord::Base
 
   # 社員をCSVファイルで読み込み保存する
   def self.create_users_by_csv(file , current_user , invite_email_flag , count_created_user_by_csv)
+    user_emails = Array.new
     CSV.foreach(file.path , encoding: "Shift_JIS:UTF-8" , headers: true ) do |row_data|
       check_registered_user = User.find_by(email: row_data["email"])
       unless  check_registered_user
@@ -130,6 +137,7 @@ class User < ActiveRecord::Base
         user.birthday = row_data["birthday"] if row_data["birthday"]
         user.img_src = "//btoa-img.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png"
         row_data["gender"] === "1" ? user.gender = 1 : user.gender = 0
+        user_emails << user.email
         user.save!
         count_created_user_by_csv += 1 if user.save
         # add user to team
@@ -147,6 +155,13 @@ class User < ActiveRecord::Base
         end
       end
     end
+    # data = {
+    #   user_emails: user_emails,
+    #   subject: params[:subject],
+    #   description: params[:description]
+    # }
+    # # ReleaseArticleJob.perform_later(data)
+    # ReleaseArticleJob.new.async.perform(data)
     return count_created_user_by_csv
   end
 
