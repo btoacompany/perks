@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
 
   # validate :check_maneger
 
+  def fullname
+    self.lastname + self.firstname
+  end
+
   def self.koala(auth)
     access_token = auth['token']
     facebook = Koala::Facebook::API.new(access_token)

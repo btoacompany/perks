@@ -19,7 +19,19 @@ class Team < ActiveRecord::Base
     self.member_ids	= params[:member_ids] if params[:member_ids].present?
     self.save
   end
-  
+
+  def self.teams(company_id)
+    team_members = Array.new
+    teams = Team.where(company_id: company_id, delete_flag: 0)
+    teams.each do |team|
+      if team.member_ids.present?
+        team_info = { team_id: team.id, members: team.member_ids.split(','), department_id: team.department_id }
+        team_members.push(team_info)
+      end
+    end
+    return team_members
+  end
+
   def delete_record
     self.delete_flag = 1
     self.save
