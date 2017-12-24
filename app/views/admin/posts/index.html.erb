@@ -5,7 +5,7 @@
     <!-- <h3 style="margin: 10px;">メッセージを出力する</h3> -->
 
     <h3 style="margin: 10px;">メッセージ一覧</h3>
-    <table class="tbl_tools" border="1" style="max-width: 800px;">
+    <table class="tbl_tools width-70-percent" border="1">
       <tr>
         <th>日時</th>
         <th>送信者</th>
@@ -14,10 +14,10 @@
       </tr>
       <% @posts.each do |post| %>
         <tr>
-          <td><%= post.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
-          <td><%= post.user.fullname %></td>
-          <td><%= post.receiver.fullname %></td>
-          <td><%= post.description %></td>
+          <td class="width-10-percent"><%= post.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
+          <td class="width-10-percent"><%= post.user.fullname %></td>
+          <td class="width-10-percent"><%= post.receiver.fullname %></td>
+          <td class="width-70-percent"><%= post.description %></td>
         </tr>
       <% end %>
     </table>
