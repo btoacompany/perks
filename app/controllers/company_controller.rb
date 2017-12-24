@@ -210,17 +210,19 @@ class CompanyController < ApplicationController
       @teams = []
       teams.each do |team|
         team_members = []
-        team.member_ids.split(",").each do |id|
-          unless id.to_i == 0
-          team_members << id.to_i
+        if team.member_ids.present?
+          team.member_ids.split(",").each do |id|
+            unless id.to_i == 0
+            team_members << id.to_i
+            end
           end
+          each_team = {
+            :team_id => team.id,
+            :team_name => team.team_name,
+            :members => team_members
+          }
+          @teams << each_team
         end
-        each_team = {
-          :team_id => team.id,
-          :team_name => team.team_name,
-          :members => team_members
-        }
-        @teams << each_team
       end
       # 全社員のid取得
       user_ids = []
@@ -230,10 +232,12 @@ class CompanyController < ApplicationController
       # 何かしらのチームに属してるid取得
       in_team_user_ids = []
       teams.each do |team|
-        in_team_user_ids.push(team.member_ids.split(","))
-        in_team_user_ids.push(team.manager_id)
-        in_team_user_ids.flatten!
-        in_team_user_ids.uniq
+        if team.member_ids.present?
+          in_team_user_ids.push(team.member_ids.split(","))
+          in_team_user_ids.push(team.manager_id)
+          in_team_user_ids.flatten!
+          in_team_user_ids.uniq
+        end
       end
       # 何もチームに属していないid取得
       in_team_user_ids.each do |id|

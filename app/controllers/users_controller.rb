@@ -771,7 +771,7 @@ class UsersController < ApplicationController
   end
 
   def giver_ranking(user)
-    last_week =  Date.today.prev_week.beginning_of_week...Date.today.beginning_of_week
+    last_week = Date.today.prev_week.beginning_of_week...Date.today.beginning_of_week
     this_week = Date.today.beginning_of_week...Date.today.next_week.beginning_of_week
 
     @giver_ratio =[]

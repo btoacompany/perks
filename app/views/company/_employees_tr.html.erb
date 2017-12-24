@@ -1,5 +1,5 @@
 <tr class="item_<%= item[:id] %>">
-  <td style="width: 200px;"><%= "#{item[:lastname]} #{item[:firstname]}" %></td>
+  <td style="width: 200px;"><%= link_to "#{item[:lastname]} #{item[:firstname]}", edit_admin_employee_path(item[:id]), style: "text-decoration: none;" %></td>
   <td style="width: 300px;"><%= item[:email] %></td>
   <td align="center">
     <% if item[:verified] == 0 %>保留 
