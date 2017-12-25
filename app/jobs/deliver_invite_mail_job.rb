@@ -1,4 +1,4 @@
-class CreateUserMailJob < ActiveJob::Base
+class DeliverInviteMailJob < ActiveJob::Base
   queue_as :default
   include SuckerPunch::Job
 
@@ -9,10 +9,9 @@ class CreateUserMailJob < ActiveJob::Base
     elsif Rails.env.development?
       prizy_url = "http://localhost:3000"
     end
+    prizy_url = prizy_url + "/login"
 
-    logger.debug("llll")
-
-    args[0][:users].each do |email|
+    args[0][:users].each do |user|
       begin
         if user.email.match(/^.+@.+$/)
           temp_password = SecureRandom.hex(4)
@@ -21,8 +20,8 @@ class CreateUserMailJob < ActiveJob::Base
             :company_owner  => user.company.owner,
             :email      => user.email,
             :password     => temp_password,
-            :name     => user.lastname + user.firstname,
-            :prizy_url    => prizy_url + "/login",
+            :name     => user.fullname,
+            :prizy_url    => prizy_url,
             :deliver_invite_mail => 2 #processing
           }
 
