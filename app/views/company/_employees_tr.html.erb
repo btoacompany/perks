@@ -1,5 +1,5 @@
 <tr class="item_<%= item[:id] %>">
-  <td style="width: 200px;"><%= link_to "#{item[:lastname]} #{item[:firstname]}", edit_admin_employee_path(item[:id]), style: "text-decoration: none;" %></td>
+  <td style="width: 200px;"><%= "#{item[:lastname]} #{item[:firstname]}" %></td>
   <td style="width: 300px;"><%= item[:email] %></td>
   <td align="center">
     <% if item[:verified] == 0 %>保留 
@@ -13,20 +13,12 @@
     <input type="checkbox" class="chk_admin" data-id="<%= item[:id] %>" value="1" <% if item[:admin] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>
   </td>
   <td align="center">
-    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" mgr-id="non_mgr" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
+    <!-- <button data-id="<%= item[:id] %>" class="btn btn-sm modal-btn btn-primary" type="button"> -->
+    <%= link_to "編集", edit_admin_employee_path(item[:id]), class: "btn" ,style: "text-decoration: none;color:white;padding: 8px;" %>
+    <!-- </button> -->
   </td>
   <td align="center">
-    <button data-id="<%= item[:id] %>" class="btn btn-sm modal-btn btn-primary" type="button">編集</button>
-    <div id="my-modal" title="メールアドレス変更" style="display:none;">
-      <%= form_tag ({controller: :company , action: :update_email}) do %>
-        <div class="modal-header">
-          <h5 class="modal-title" id="modal-label" />
-        </div>
-        <%= text_field :user , :email ,size: 25 , id: "modal-body" , :required => true %>
-        <%= hidden_field_tag :user_id , "" , id: "modal-hidden" %>
-        <%= submit_tag "更新" %>
-      <% end %>
-    </div>
+    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" mgr-id="non_mgr" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
   </td>
   <% end %>
 </tr>

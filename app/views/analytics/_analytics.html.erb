@@ -3,10 +3,7 @@
       <li><%= link_to "利用状況", "/analytics/" %></li>
       <li><%= link_to "ポイント取得状況", "/analytics/receiver" %></li>
       <li><%= link_to "ポイント贈与状況", "/analytics/giver" %></li>
-      <% unless $showoff_hashtag.include?(@id) %>
-      <li><%= link_to "ハッシュタグ (コアバリュー)", "/analytics/hashtag" %></li>
-      <li><%= link_to "ハッシュタグ (トレンド)", "/analytics/hashtag/all" %></li>
-      <% end %>
       <li><%= link_to "社員一覧", "/analytics/users" %></li>
+      <li><%= link_to "メッセージ一覧", admin_posts_path %></li>
     </ul>
   </div>

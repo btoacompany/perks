@@ -35,7 +35,6 @@
 
   <%= csrf_meta_tags %>
 
-
   <script>
    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -67,7 +66,7 @@
 <% if controller.controller_name == "landing"%>
   <%= yield %>
   <%= render "shared/footer"%>
-<% elsif controller.controller_name == "analytics"%>
+<% elsif controller.controller_name == "analytics" %>
   <%= render "shared/header"%>
   <%= yield %>
   <%= render "shared/footer"%>
@@ -81,6 +80,10 @@
     <%= yield %>
     <%= render "shared/footer"%>
     <% end %>
+<% elsif controller.controller_name == "/admin/posts" %>
+  <%= render "shared/header"%>
+  <%= yield %>
+  <%= render "shared/footer"%>
 <% else %>
   <!-- definition of @judgement -->
   <% if controller.controller_name == "users" && controller.action_name == "login" %>

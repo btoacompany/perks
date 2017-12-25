@@ -25,7 +25,7 @@ class Team < ActiveRecord::Base
     teams = Team.where(company_id: company_id, delete_flag: 0)
     teams.each do |team|
       if team.member_ids.present?
-        team_info = { team_id: team.id, members: team.member_ids.split(','), department_id: team.department_id }
+        team_info = { team_id: team.id, name: team.team_name, members: team.member_ids.split(','), department_id: team.department_id }
         team_members.push(team_info)
       end
     end

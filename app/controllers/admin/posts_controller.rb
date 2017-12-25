@@ -3,6 +3,8 @@ class Admin::PostsController < Admin::Base
 
   def index
     @posts = Post.where(company_id: @company.id, delete_flag: 0).order(create_time: :desc).paginate(page: params[:page], per_page: 40)
+    @teams = Team.where(company_id: @company.id)
+    # @teams = Team.teams(@company.id)
   end
 
   def export_all_posts

@@ -198,18 +198,20 @@ class AnalyticsController < ApplicationController
       @teams = []
       teams.each do |team|
         team_members = []
-        team_members << User.find(team.manager_id) if team.manager_id != 0
-        team.member_ids.split(",").each do |id|
-          unless id.to_i == 0
-          team_members << id.to_i
+        if team.member_ids.present?
+          team_members << User.find(team.manager_id) if team.manager_id != 0
+          team.member_ids.split(",").each do |id|
+            unless id.to_i == 0
+            team_members << id.to_i
+            end
           end
+          each_team = {
+            :team_id => team.id,
+            :team_name => team.team_name,
+            :members => team_members
+          }
+          @teams << each_team
         end
-        each_team = {
-          :team_id => team.id,
-          :team_name => team.team_name,
-          :members => team_members
-        }
-        @teams << each_team
       end
       # 全社員のid取得
       user_ids = []
@@ -219,10 +221,12 @@ class AnalyticsController < ApplicationController
       # 何かしらのチームに属してるid取得
       in_team_user_ids = []
       teams.each do |team|
-        in_team_user_ids.push(team.member_ids.split(","))
-        in_team_user_ids.push(team.manager_id)
-        in_team_user_ids.flatten!
-        in_team_user_ids.uniq
+        if team.member_ids.present?
+          in_team_user_ids.push(team.member_ids.split(","))
+          in_team_user_ids.push(team.manager_id)
+          in_team_user_ids.flatten!
+          in_team_user_ids.uniq
+        end
       end
       # 何もチームに属していないid取得
       in_team_user_ids.each do |id|
@@ -583,9 +587,11 @@ class AnalyticsController < ApplicationController
       hash = {}
       each_team = []
       each_team << team.manager_id
-      team.member_ids.split(",").each do |mem|
-        unless mem.to_i == 0
-        each_team << mem.to_i
+      if team.member_ids.present?
+        team.member_ids.split(",").each do |mem|
+          unless mem.to_i == 0
+          each_team << mem.to_i
+          end
         end
       end
       hash[:id] = team.id
@@ -602,10 +608,12 @@ class AnalyticsController < ApplicationController
     # 何かしらのチームに属してるid取得
     in_team_user_ids = []
     @teams.each do |team|
-      in_team_user_ids.push(team.member_ids.split(",").delete("0"))
-      in_team_user_ids.push(team.manager_id)
-      in_team_user_ids.flatten!
-      in_team_user_ids.uniq
+      if team.member_ids.present?
+        in_team_user_ids.push(team.member_ids.split(",").delete("0"))
+        in_team_user_ids.push(team.manager_id)
+        in_team_user_ids.flatten!
+        in_team_user_ids.uniq
+      end
     end
     # 何もチームに属していないid取得
     in_team_user_ids.each do |id|
