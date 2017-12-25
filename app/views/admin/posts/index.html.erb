@@ -1,26 +1,54 @@
-<div id="admin_wrapper">
-  <%= render "/company/admin_subheader" %>
+<div class="analytics_holder">
+  <%= render '/analytics/analytics'%>
 
-  <div id="admin_contents" class="toolbox c_align width-100-percent" style="padding: 20px;">
-    <!-- <h3 style="margin: 10px;">メッセージを出力する</h3> -->
-
-    <h3 style="margin: 10px;">メッセージ一覧</h3>
-    <table class="tbl_tools width-70-percent" border="1">
-      <tr>
-        <th>日時</th>
-        <th>送信者</th>
-        <th>受信者</th>
-        <th>内容</th>
-      </tr>
-      <% @posts.each do |post| %>
+  <div class="analytics_container c_align" style="float: left; width: 80%; background-color: white; margin-bottom: 30px;">
+    <div id="admin_contents" class="analytics_holder toolbox width-100-percent" >
+      <h3 style="margin: 10px;">メッセージ一覧</h3>
+      <table class="tbl_tools width-70-percent" border="1">
         <tr>
-          <td class="width-10-percent"><%= post.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
-          <td class="width-10-percent"><%= post.user.fullname %></td>
-          <td class="width-10-percent"><%= post.receiver.fullname %></td>
-          <td style="max-width: 600px;word-break: break-all;"><%= post.description %></td>
+          <th>日時</th>
+          <th>送信者所属</th>
+          <th>送信者</th>
+          <th>受信者所属</th>
+          <th>受信者</th>
+          <th>内容</th>
         </tr>
-      <% end %>
-    </table>
-    <%= will_paginate @posts, class: "c_align", style: "margin: 20px;font-size: 16px;" %>
+        <% @posts.each do |post| %>
+          <tr>
+            <td class="width-10-percent"><%= post.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
+            <td class="width-10-percent" style="max-width: 200px;word-break: break-all;">
+              <% boolean = false  %>
+              <% @teams.each do |team| %>
+                <% if team[:member_ids].present? && team[:member_ids].split(',').include?(post.receiver.id.to_s) %>
+                  <%= team.department.dep_name + " / " + team[:team_name] %>
+                  <% boolean = true %>
+                <% end %>
+              <% end %>
+              <% if boolean == false %>
+                所属がありません
+              <% end %>
+            </td>
+            <td class="width-10-percent"><%= post.user.fullname %></td>
+            <td class="width-10-percent" style="max-width: 200px;word-break: break-all;">
+              <% boolean = false  %>
+              <% @teams.each do |team| %>
+                <% if team[:member_ids].present? && team[:member_ids].split(',').include?(post.receiver.id.to_s) %>
+                  <%= team.department.dep_name + " / " + team[:team_name] %>
+                  <% boolean = true %>
+                <% end %>
+              <% end %>
+              <% if boolean == false %>
+                所属がありません
+              <% end %>
+            </td>
+            <td class="width-10-percent"><%= post.receiver.fullname %></td>
+            <td style="max-width: 600px;word-break: break-all;"><%= post.description %></td>
+          </tr>
+        <% end %>
+      </table>
+      <%= will_paginate @posts, class: "c_align", style: "margin: 20px;font-size: 16px;" %>
+    </div>
   </div>
 </div>
+
+
