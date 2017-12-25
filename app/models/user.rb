@@ -32,9 +32,9 @@ class User < ActiveRecord::Base
     if self.lastname.present? && self.firstname.present?
       self.lastname + self.firstname
     elsif self.lastname.present? && self.firstname.nil?
-      self.lastname
+      self.try(:lastname)
     elsif self.lastname.nil? && self.firstname.present?
-      self.firstname  
+      self.try(:firstname)
     end
   end
 
