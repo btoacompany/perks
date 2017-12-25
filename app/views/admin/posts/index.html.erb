@@ -39,7 +39,7 @@
                 所属がありません
               <% end %>
             </td>
-            <td class="width-10-percent"><%= post.user %></td>
+
             <td class="width-10-percent" style="max-width: 200px;word-break: break-all;">
               <% boolean = false  %>
               <% @teams.each do |team| %>
@@ -52,7 +52,7 @@
                 所属がありません
               <% end %>
             </td>
-            <td class="width-10-percent"><%= post.receiver %></td>
+
             <td style="max-width: 600px;word-break: break-all;"><%= post.description %></td>
           </tr>
         <% end %>
