@@ -35,10 +35,5 @@
     <% else %>
       <li><%= link_to "バナー", company_banners_path %></li>
     <% end %>
-    <% if params[:controller] == "admin/posts" %>
-      <li class="admin_li_checked"><%= link_to "メッセージ", admin_posts_path %></li>
-    <% else %>
-      <li><%= link_to "メッセージ", admin_posts_path %></li>
-    <% end %>
   </ul>
 </div>
