@@ -1,4 +1,5 @@
 #coding:utf-8
+require 'csv'
 
 class Post < ActiveRecord::Base
   self.table_name = "posts"
@@ -46,22 +47,5 @@ class Post < ActiveRecord::Base
 
   def set_time
     return Time.now.strftime("%Y-%m-%d %H:%M:%S")
-  end
-
-  def self.to_csv
-    CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
-      csv << csv_column_names
-      all.each do |product|
-        csv << product.csv_column_values
-      end
-    end
-  end
-
-  def self.csv_column_names
-    ["日時", "送信者", "受信者", "内容"]
-  end
-
-  def csv_column_values
-    [create_time, user.fullname, receiver.fullname, description]
   end
 end
