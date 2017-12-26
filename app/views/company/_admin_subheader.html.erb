@@ -35,5 +35,10 @@
     <% else %>
       <li><%= link_to "バナー", company_banners_path %></li>
     <% end %>
+    <% if params[:controller] == "admin/contacts" %>
+      <li class="admin_li_checked"><%= link_to "メッセージ", new_admin_contact_path %></li>
+    <% else %>
+      <li><%= link_to "メッセージ", new_admin_contact_path %></li>
+    <% end %>
   </ul>
 </div>

@@ -1,0 +1,47 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+  <div id="admin_contents" class="width-100-percent">
+    <div class="width-60-percent" style="margin: 0 auto;">
+    <h3 class="c_align">メッセージを送信する</h3>
+    <% if flash[:notice] %><p class="c_align notice" style="color: red;margin: 20px;"><b><i><%= flash[:notice] %></i></b></p><% end %>
+    <%= form_tag(admin_contacts_path, method: :post) do %>
+      <table class="mail_form width-60-percent l_align" style="margin: 20px auto 0px;">
+        <tr>
+          <td>差出人</td>
+          <td>
+            <select>
+              <option>support.prizy@btoa-company.com</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>宛先</td>
+          <td>
+            <select>
+              <option>全社員</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>件名</td>
+          <td><input type="text" name="subject" class="width-100-percent" style="height: 35px;border: none;border:none;border-bottom: 1px solid #e5e5e5;font-size: 16px;padding: 7px;" autofocus="on" placeholder="件名を記入してください" required></td>
+        </tr>
+        <tr>
+          <td style="vertical-align:top;">メッセージ</td>
+          <td>
+            <textarea name="description" class="width-100-percent" rows="10" style="border: none;resize: none;border: 1px solid #e5e5e5;font-size: 16px;color:black;padding: 7px;margin-top: 10px;" placeholder="メッセージを記入してください" required></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <div style="float:right;">
+              <input type="submit" name="submit" value="送信" style="text-align: center;">
+            </div>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</div>
