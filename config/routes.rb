@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: 'landing#index'
   namespace :admin do
     resources :employees, shallow: true
+    resources :contacts
     resources :posts, shallow: true do
       collection {post :export_all_posts}
     end

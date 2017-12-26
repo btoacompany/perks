@@ -3594,3 +3594,15 @@ table.admin_table td textarea{
   -ms-flex-wrap:wrap;
   flex-wrap:wrap;
 }
+
+
+table.mail_form {
+  border-collapse:collapse;
+  line-height: 300%;
+}
+table.mail_form tr:not(:last-child) {
+  /*border-bottom: 1px solid #e6e6e6;*/
+}
+
+
+

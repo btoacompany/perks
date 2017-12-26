@@ -21,4 +21,10 @@ class CompanyMailer < ActionMailer::Base
       @description = description
       mail(to: email, subject: @subject)
   end
+
+  def deliver_contact_mail(email, subject, description)
+      @subject = subject
+      @description = description
+      mail(to: email, subject: @subject)
+  end
 end
