@@ -760,9 +760,11 @@ class CompanyController < ApplicationController
       @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
       @departments = Department.where(:company_id => @id, :delete_flag => 0)
       @members = []
-      @team.member_ids.split(",").each do |mem|
-        unless mem.to_i == 0
-          @members << User.find_by(id: mem.to_i, delete_flag: 0)
+      if @team.member_ids.present?
+        @team.member_ids.split(",").each do |mem|
+          unless mem.to_i == 0
+            @members << User.find_by(id: mem.to_i, delete_flag: 0)
+          end
         end
       end
     else
