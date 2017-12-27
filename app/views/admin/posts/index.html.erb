@@ -24,7 +24,18 @@
           <th>受信者</th>
           <th>内容</th>
         </tr>
+        <% @posts.each do |post| %>
+          <% if post.receiver_id.present? && post.receiver_id.include?(",") %>
 
+          <% else %>
+            <tr>
+              <td class="width-10-percent"><%= post.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
+
+
+              <td style="max-width: 600px;word-break: break-all;"><%= post.description %></td>
+            </tr>
+          <% end %>
+        <% end %>
       </table>
       <%= will_paginate @posts, class: "c_align", style: "margin: 20px;font-size: 16px;" %>
     </div>
