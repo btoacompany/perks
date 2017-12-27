@@ -30,15 +30,7 @@
           <% else %>
             <tr>
               <td class="width-10-percent"><%= post.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
-              <td class="width-10-percent">
-                <% @teams.each do |team| %>
-                  <% if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s) %>
-                    <% department = Department.find(team.department_id) %>
-                    <%= department.try(:dep_name) %> / 
-                    <%= team.team_name %>
-                  <% end %>
-                <% end %>
-              </td>
+
               <td class="width-10-percent"><%= post.user.fullname %></td>
               <td>
                 <% @teams.each do |team| %>
