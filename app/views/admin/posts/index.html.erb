@@ -25,7 +25,7 @@
           <th>内容</th>
         </tr>
         <% @posts.each do |post| %>
-          <% if post.receiver_id.include?(",") %>
+          <% if post.receiver_id.present? && post.receiver_id.include?(",") %>
 
           <% else %>
             <tr>
