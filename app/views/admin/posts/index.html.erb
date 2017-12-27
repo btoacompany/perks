@@ -33,20 +33,23 @@
               <td class="width-10-percent">
                 <% @teams.each do |team| %>
                   <% if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s) %>
-                    <% department = Department.find_by(id: team.department_id) %>
-                    <%= department.try(:dep_name) %> / 
+                    <%= team.department.try(:dep_name) %> / 
                     <%= team.team_name %>
                   <% end %>
                 <% end %>
               </td>
               <td class="width-10-percent"><%= "#{post.user.lastname} #{post.user.firstname}" %></td>
               <td>
-                <% @teams.each do |team| %>
-                  <% if team.member_ids.present? && team.member_ids.include?(post.receiver_id.to_s) %>
-                    <% department = Department.find_by(id: team.department_id) %>
-                    <%= department.try(:dep_name) %> / 
-                    <%= team.team_name %>
+                <% if post.receiver_id.present? %>
+                  <% @teams.each do |team| %>
+                    <% if team.member_ids.present? && team.member_ids.include?(post.receiver_id.to_s) %>
+                      <% department = Department.find_by(id: team.department_id) %>
+                      <%= department.try(:dep_name) %> / 
+                      <%= team.team_name %>
+                    <% end %>
                   <% end %>
+                <% else %>
+                  選択されていません
                 <% end %>
               </td>
               <td class="width-10-percent">
