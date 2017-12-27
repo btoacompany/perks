@@ -25,7 +25,7 @@
           <th>内容</th>
         </tr>
         <% @posts.each do |post| %>
-          <% if post.receiver_id.include?(",") %>
+          <% if post.receiver_id.present? && post.receiver_id.include?(",") %>
 
           <% else %>
             <tr>
@@ -39,7 +39,7 @@
                   <% end %>
                 <% end %>
               </td>
-              <td class="width-10-percent"><%= post.user.fullname %></td>
+              <td class="width-10-percent"><%= "#{post.user.lastname} #{post.user.firstname}" %></td>
               <td>
                 <% @teams.each do |team| %>
                   <% if team.member_ids.present? && team.member_ids.include?(post.receiver_id.to_s) %>
