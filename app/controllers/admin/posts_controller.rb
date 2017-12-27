@@ -16,12 +16,46 @@ class Admin::PostsController < Admin::Base
       period = Date.today - 12.months
     end
     @posts = Post.where(company_id: @company.id, delete_flag: 0).where('create_time >= ?', period)
+    @teams = Team.where(company_id: @company.id)
 
-    headers = %w(日時 送信者 受信者 内容)
+    headers = %w(日時 所属 送信者 所属 受信者 内容)
     csv_str = CSV.generate do |csv|
       csv << headers
-        @posts.all.each do |post|
-        csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), post.user.fullname, post.receiver.fullname, post.description]
+      @posts.all.each do |post|
+        if post.receiver_id.include?(",")
+          post.receiver_id.split(",").each do |receiver_id|
+            user_assigned_team = ""
+            receiver_assigned_team = ""
+            receiver_name = ""
+            @teams.each do |team|
+              if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s)
+                department = Department.find(team.department_id)
+                user_assigned_team = department.try(:dep_name) + "/" + team.team_name
+              end
+              if team.member_ids.present? && team.member_ids.include?(receiver_id)
+                department = Department.find_by(id: team.department_id)
+                receiver_assigned_team = "#{department.try(:dep_name)} / #{team.try(:team_name)}"
+                user = User.find(receiver_id.to_i)
+                receiver_name = user.lastname + user.firstname
+              end
+            end
+            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.fullname, receiver_assigned_team, receiver_name, post.description]
+          end
+        else
+          user_assigned_team = ""
+          receiver_assigned_team = ""
+          @teams.each do |team|
+            if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s)
+              department = Department.find(team.department_id)
+              user_assigned_team = department.try(:dep_name) + "/" +team.team_name
+            end
+            if team.member_ids.present? && team.member_ids.include?(post.receiver_id.to_s)
+              department = Department.find(team.department_id)
+              receiver_assigned_team = "#{department.try(:dep_name)} / #{team.try(:team_name)}"
+            end
+          end
+          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.fullname, receiver_assigned_team, post.receiver.fullname, post.description]
+        end
       end
     end
     datetime = Time.now
