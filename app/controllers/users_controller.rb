@@ -637,7 +637,7 @@ class UsersController < ApplicationController
 
 
     # posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
-    posts = Post.where(:delete_flag => 0).where("receiver_id like '%" + @id + "%'").order("update_time desc")
+    posts = Post.where(:delete_flag => 0, company_id: @company.id).where("receiver_id like '%" + @id + "%'").order("update_time desc")
 
     process_posts = process_paging(posts)
 
