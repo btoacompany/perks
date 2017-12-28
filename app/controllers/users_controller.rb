@@ -636,7 +636,9 @@ class UsersController < ApplicationController
     giver_ranking(@user)
 
 
-    posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
+    # posts = Post.where(:receiver_id => @id, :delete_flag => 0).order("update_time desc")
+    posts = Post.where(:delete_flag => 0).where("receiver_id like '%" + @id + "%'").order("update_time desc")
+
     process_posts = process_paging(posts)
 
     @posts = []
