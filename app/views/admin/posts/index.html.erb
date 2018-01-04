@@ -7,7 +7,6 @@
   <div class="analytics_container c_align" style="float: left; width: 80%; background-color: white; margin-bottom: 30px;">
     <div id="admin_contents" class="analytics_holder toolbox width-100-percent" >
       <h3 style="margin: 10px;">メッセージを出力する</h3>
-
       <%= form_tag export_all_posts_admin_posts_path(format: 'csv') do%>
         <select name="period">
           <option value="three_month">直近 3ヶ月分</option>
@@ -18,7 +17,7 @@
       <% end %>
 
       <h3 style="margin: 10px;">メッセージ一覧</h3>
-      <table class="tbl_tools width-80-percent" border="1">
+      <table class="tbl_tools width-90-percent" border="1">
         <tr>
           <th>日時</th>
           <th>所属</th>
@@ -29,7 +28,45 @@
         </tr>
         <% @posts.each do |post| %>
           <% if post.receiver_id.present? && post.receiver_id.include?(",") %>
-
+          <!-- 複数行のパターン -->
+            <% post.receiver_id.split(",").each do |receiver| %>
+              <tr>
+                <td class="width-10-percent"><%= post.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
+                <td class="width-10-percent">
+                  <% belong_team = false %>
+                  <% @teams.each do |team| %>
+                    <% if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s) %>
+                      <%= team.department.try(:dep_name) %> / 
+                      <%= team.team_name %>
+                      <% belong_team = true %>
+                    <% end %>
+                  <% end %>
+                  <% if belong_team == false %>
+                    所属がありません
+                  <% end %>
+                </td>
+                <td class="width-10-percent"><%= "#{post.user.lastname} #{post.user.firstname}" %></td>
+                <td>
+                  <% belong_team = false %>
+                  <% @teams.each do |team| %>
+                    <% if team.member_ids.present? && team.member_ids.include?(post.receiver_id.to_s) %>
+                      <% department = Department.find_by(id: team.department_id) %>
+                      <%= department.try(:dep_name) %> / 
+                      <%= team.team_name %>
+                      <% belong_team = true %>
+                    <% end %>
+                  <% end %>
+                  <% if belong_team == false %>
+                    所属がありません
+                  <% end %>
+                </td>
+                <td class="width-10-percent">
+                  <% user = User.find(receiver.to_i) %>
+                  <%= "#{user.lastname}" + "#{user.firstname}" %>
+                </td>
+                <td style="max-width: 600px;word-break: break-all;"><%= post.description %></td>
+              </tr>
+            <% end %>
           <% else %>
             <tr>
               <td class="width-10-percent"><%= post.create_time.strftime("%Y/%m/%d %H:%M:%S") %></td>
@@ -44,12 +81,17 @@
               <td class="width-10-percent"><%= "#{post.user.lastname} #{post.user.firstname}" %></td>
               <td>
                 <% if post.receiver_id.present? %>
+                  <% belong_team = false %>
                   <% @teams.each do |team| %>
                     <% if team.member_ids.present? && team.member_ids.include?(post.receiver_id.to_s) %>
                       <% department = Department.find_by(id: team.department_id) %>
                       <%= department.try(:dep_name) %> / 
                       <%= team.team_name %>
+                      <% belong_team = true %>
                     <% end %>
+                  <% end %>
+                  <% if belong_team == false %>
+                    所属がありません
                   <% end %>
                 <% else %>
                   選択されていません
