@@ -387,17 +387,23 @@ class ArticlesController < ApplicationController
 
       if params[:images].present?
         params[:images].each do |key, value|
-          src    = value
-          src_ext    = File.extname(src.original_filename)
-          s3  = Aws::S3::Resource.new
-          @last_image = Image.last
-          obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id + 1}_pic#{src_ext}")
-          obj.upload_file src.tempfile, {acl: 'public-read'}
-          @image = Image.create(
-            article_id:   @article.id,
-            img_src:      obj.public_url, 
-            place_number: key.to_i
-          )
+          if value.present? && value.class == Array
+            image = Image.find_by(img_src: value[0])
+            image.update_attribute(:place_number, key.to_i) if image
+          else
+            src    = value
+            src_ext    = File.extname(src.original_filename)
+            s3  = Aws::S3::Resource.new
+            @last_image = Image.last
+            obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id + 1}_pic#{src_ext}")
+            obj.upload_file src.tempfile, {acl: 'public-read'}
+            @image = Image.create(
+              article_id:   @article.id,
+              img_src:      obj.public_url, 
+              place_number: key.to_i
+            )
+
+          end
         end
       end
     end

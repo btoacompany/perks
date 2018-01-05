@@ -87,6 +87,7 @@
 	              <td>
                   <%= link_to "画像を変更・削除する","/company/image/#{item[:id]}/edit" %><br>
                   <%= image_tag item[:image_url], class: "width-30-percent max-height-200 margin-10" %>
+                  <input type="hidden" name="images[<%= @num %>][]" value="<%= item[:image_url] %>" class="width-100-percent">
 	              </td>
 	            <% end %>
 	          </tr>
