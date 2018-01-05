@@ -41,7 +41,7 @@ class UsersController < ApplicationController
       	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
       	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
       	slack.save
-            else
+      else
       	slack.token	    = userinfo["access_token"]
       	slack.webhooks_url  = userinfo["incoming_webhook"]["url"]
       	slack.bot_token	    = userinfo["bot"]["bot_access_token"]
@@ -263,13 +263,13 @@ class UsersController < ApplicationController
     @slack_webhooks = slack[:webhooks_url]
 
     slack_user_info_data = {
-      :user    => params["user_id"],
-      :token   => @slack_token,
+      user:  params["user_id"],
+      token: @slack_token,
     }
 
     slack_user_list_data = {
-      :token	=> @slack_token,
-      :presence => 1,
+      token:    @slack_token,
+      presence: 1,
     }
 
     uri	      = URI.parse("https://slack.com/api/users.info")
@@ -340,23 +340,22 @@ class UsersController < ApplicationController
       	      params[:post_id] = post.id
 
       	      hashtags.each do | tag |
-		    params[:hashtag] = tag 
-		    hashtag = Hashtag.new
-		    hashtag.save_record(params)
+      		    params[:hashtag] = tag 
+      		    hashtag = Hashtag.new
+      		    hashtag.save_record(params)
       	      end
 
-		user.badge += 1 if (user.badge).present?
-		user.save
+          		user.badge += 1 if (user.badge).present?
+          		user.save
 
-              ios_push_notif(receiver.id,
-	      "#{user.firstname}さんから「ホメ」が届きました。", user.badge)
+              ios_push_notif(receiver.id,"#{user.firstname}さんから「ホメ」が届きました。", user.badge)
 
       	      slack_notif = Slack::Notifier.new(@slack_webhooks) 
       	      slack_notif.ping("#{params[:user_name]}さんが#{receiver_name}さんに感謝を伝えました。\n #{receiver_name}さんの頑張りは<a href='https://www.prizy.me'>コチラ</a> から。")
 
       	      flash[:notice] = "#{receiver_name}さんにボーナスを贈りました！"
       	    else
-	      flash[:notice] = "投稿できませんでした。手持ちのポイント数が足りません。 今月は#{user.out_points}ポイント残っています。"
+	            flash[:notice] = "投稿できませんでした。手持ちのポイント数が足りません。 今月は#{user.out_points}ポイント残っています。"
       	    end
       	  else
       	    flash[:notice] = "投稿できませんでした。ユーザーがPrizyに登録していません！\n Prizyへの招待リンクを贈ってあげましょう。\n#{user.company.invite_link}"
