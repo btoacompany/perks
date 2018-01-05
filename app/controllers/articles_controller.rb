@@ -259,7 +259,7 @@ class ArticlesController < ApplicationController
     end
 
     @texts = @article.texts
-    unless @titles.blank?
+    unless @texts.blank?
       @texts.each do |item|
         @data = {
           :data_type => "text",
