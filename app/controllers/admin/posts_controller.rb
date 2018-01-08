@@ -7,6 +7,20 @@ class Admin::PostsController < Admin::Base
     @teams = Team.where(company_id: @company.id)
   end
 
+  def weekly_post_ranking
+    last_week =  Date.today.prev_week.beginning_of_week...Date.today.beginning_of_week
+    @posts = Post.where(company_id: @company.id, delete_flag: 0, create_time: last_week).group(:user_id).order("count_all desc").limit(20).count
+    @teams = Team.where(company_id: @company.id)
+    render "weekly_ranking"
+  end
+
+  def weekly_receive_ranking
+    last_week =  Date.today.prev_week.beginning_of_week...Date.today.beginning_of_week
+    @posts = Post.where(company_id: @company.id, delete_flag: 0, create_time: last_week).group(:receiver_id).order("count_all desc").limit(20).count
+    @teams = Team.where(company_id: @company.id)
+    render "weekly_ranking"
+  end
+
   def export_all_posts
     if params[:period] == "three_month"
       period = Date.today - 3.months
