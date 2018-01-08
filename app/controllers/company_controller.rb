@@ -694,8 +694,10 @@ class CompanyController < ApplicationController
     end
     # @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
     user_ids = []
-    @team.member_ids.split(",").each do |id|
-      user_ids << id.to_i
+    if @team.member_ids.present?
+      @team.member_ids.split(",").each do |id|
+        user_ids << id.to_i
+      end
     end
     users = User.where(:id => user_ids, :company_id => @id, :delete_flag => 0)
     all_users = users.sort_by &:create_time

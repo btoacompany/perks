@@ -1,0 +1,53 @@
+<div class="analytics_holder">
+  <div class="analytics_time_select" >
+    <div class="clearfix"></div>
+  </div>
+  <%= render '/analytics/analytics'%>
+
+  <div class="analytics_container c_align" style="float: left; width: 80%; background-color: white; margin-bottom: 30px;">
+    <div id="admin_contents" class="analytics_holder toolbox width-100-percent" >
+      <% if controller.action_name == "weekly_receive_ranking" %>
+        <h3 style="margin: 10px;">先週の受信数 上位20名</h3>
+      <% else %>
+        <h3 style="margin: 10px;">先週の送信数 上位20名</h3>
+      <% end %>
+      <% if @posts.count > 0 %>
+        <table class="tbl_tools width-90-percent" border="1">
+          <tr>
+            <th>順位</th>
+            <th>所属</th>
+            <th>社員名</th>
+            <% if controller.action_name == "weekly_receive_ranking" %>
+              <th>受信数</th>
+            <% else %>
+              <th>送信数</th>
+            <% end %>
+          </tr>
+          <% @posts.each.with_index(1) do |(id, count),i| %>
+            <tr>
+              <td class="width-10-percent"><%= i %></td>
+              <% user = User.find(id) %>
+              <td class="width-30-percent">
+                <% belong_team = false %>
+                <% @teams.each do |team| %>
+                  <% if team.member_ids.present? && team.member_ids.include?(id.to_s) %>
+                    <%= team.department.try(:dep_name) %> / 
+                    <%= team.team_name %>
+                    <% belong_team = true %>
+                  <% end %>
+                <% end %>
+                <% if belong_team == false %>
+                  所属がありません
+                <% end %>  
+              </td>
+              <td class="width-30-percent"><%= user.lastname + user.firstname %></td>
+              <td class="width-10-percent"><%= count %>件</td>
+            </tr>
+          <% end %>
+        </table>
+      <% else %>
+        <p style="margin: 30px;">投稿がありませんでした</p>
+      <% end %>
+    </div>
+  </div>
+</div>

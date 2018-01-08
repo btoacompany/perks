@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :employees, shallow: true
     resources :contacts
     resources :posts, shallow: true do
+      collection {get :weekly_post_ranking, :weekly_receive_ranking}
       collection {post :export_all_posts}
     end
   end

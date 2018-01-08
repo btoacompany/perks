@@ -1,40 +1,40 @@
 <div id="admin_wrapper">
-<div class="admin_subheader">
-  <ul class="admin_list">
-    <li><%= link_to "会社情報", "/company/details" %></li>
-    <li class="admin_li"><%= link_to "カスタマイズ","/company/customize" %></li>
-    <li class="admin_li_checked"><%= link_to "部署・チーム情報","/company/teams" %></li>
-    <li><%= link_to "社員情報","/company/employees" %></li>
-    <li><%= link_to "ギフト","/company/rewards" %></li>
-    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
-    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
-    <li><%= link_to "Slack連携", "/integration/slack"%></li>
-    <div class="clearfix"></div>
-  </ul>
-</div>
+  <div class="admin_subheader">
+    <ul class="admin_list">
+      <li><%= link_to "会社情報", "/company/details" %></li>
+      <li class="admin_li"><%= link_to "カスタマイズ","/company/customize" %></li>
+      <li class="admin_li_checked"><%= link_to "部署・チーム情報","/company/teams" %></li>
+      <li><%= link_to "社員情報","/company/employees" %></li>
+      <li><%= link_to "ギフト","/company/rewards" %></li>
+      <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+      <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+      <li><%= link_to "Slack連携", "/integration/slack"%></li>
+      <div class="clearfix"></div>
+    </ul>
+  </div>
 
-<div id="admin_contents" class="c_align">
-  <br><br>
-  <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
-  <% unless @team.team_name.blank? %>
-    <p><b><%= @team.team_name %></b>に所属する社員一覧</p><br>
-  <% end %>
-  <div class="toolbox">
-    <% if @users.count == 0 %>
-      <p><i>社員を追加してください</i></p><br>
-    <% else %>
-      <table class="tbl_tools" border="1">
-        <%= render 'employees_th' %>
-  <% @users.each do | item | %>
-    <%= render 'employees_tr', item: item %>
-  <% end %>
-      </table><br>
-      <div class="pagination clearfix">
-        <% if @total_pages > 8 %>
-          <% unless @page_now == 1 %>
-            <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=1" %>">最初</a>
-            <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@previous_page}" %>">前へ</a>
+  <div id="admin_contents" class="c_align">
+    <br><br>
+    <% if flash[:notice] %><p class="c_align notice"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
+    <% unless @team.team_name.blank? %>
+      <p><b><%= @team.team_name %></b>に所属する社員一覧</p><br>
+    <% end %>
+    <div class="toolbox">
+      <% if @users.count == 0 %>
+        <p><i>社員を追加してください</i></p><br>
+      <% else %>
+        <table class="tbl_tools" border="1">
+          <%= render 'employees_th' %>
+          <% @users.each do | item | %>
+            <%= render 'employees_tr', item: item %>
           <% end %>
+        </table><br>
+        <div class="pagination clearfix">
+          <% if @total_pages > 8 %>
+            <% unless @page_now == 1 %>
+              <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=1" %>">最初</a>
+              <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@previous_page}" %>">前へ</a>
+            <% end %>
             <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@page_now}" %>"><%= @page_now %></a>
             <% unless @page_now == @total_pages %>
               <a href="<%= "#{@prizy_url}/company/team/#{@team.id}/show?page=#{@next_page}" %>">次へ</a>
@@ -46,11 +46,9 @@
             <% end %>
           <% end %>
         </div><br>
-        <% end %>
-</div>
-
-
-</div> <!-- contents -->
+      <% end %>
+    </div>
+  </div> <!-- contents -->
 </div> <!-- wrapper -->
 
 

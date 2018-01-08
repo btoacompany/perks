@@ -23,15 +23,17 @@ class Admin::EmployeesController < Admin::Base
           @employee.update_attribute(:email, params[:email])
           @employee.update_attribute(:gender, params[:gender].to_i)
 
-          teams.each do |team|
-            if team.member_ids && team.member_ids.include?(',') && team.member_ids.split(',').include?(@employee.id.to_s)
-              team.member_ids = team.member_ids.split(',').delete(@employee.id.to_s)
-              team.save
-            elsif team.member_ids && team.member_ids.include?(@employee.id.to_s)
-              team.member_ids = nil
-              team.save
+          teams.each do |lastteam|
+            if lastteam.member_ids && lastteam.member_ids.include?(',') && lastteam.member_ids.include?(@employee.id.to_s)
+              test = [params[:id].to_s]
+              lastteam.member_ids = (lastteam.member_ids.split(",") - (test)).join(",")
+            elsif lastteam.member_ids && lastteam.member_ids.include?(@employee.id.to_s)
+              lastteam.member_ids = lastteam.member_ids.delete(@employee.id.to_s)
             end
+            lastteam.save
           end
+          next_team = Team.find(params[:team_id])
+
           if next_team.member_ids.present? && next_team.member_ids.length > 0
             next_team.member_ids = next_team.member_ids + ',' + @employee.id.to_s
           else
