@@ -13,12 +13,11 @@ class AnalyticsController < ApplicationController
       email = session[:email] || cookies[:email]
       user = User.find_by_email(email)
       if user.admin == 1
-	@id = user.company_id
-	@user_id = user.id
+        @id = user.company_id
+        @user_id = user.id
       else
         redirect_to "/user"
       end
-
     else
       logout
     end
@@ -64,12 +63,18 @@ class AnalyticsController < ApplicationController
     end
     @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
     @points_custom = Hash[ @points.sort_by{ |_, v| -v } ]
+    logger.debug("-----")
+    logger.debug(@time_custom)
+    logger.debug(@start_time)
+    logger.debug(@end_time)
+    logger.debug(@hash_custom)
+    logger.debug("-----")
   end
 
   def giver
     @hash = {}
     @points = {}
-    @post_giving = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('user_id').count
+    @post_giving = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('user_id').order("count_all desc").limit(10).count
     @point_giving = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('user_id').sum(:points)
     @users_custom.each do |user|
       if @post_giving[user.id].blank?
@@ -79,7 +84,7 @@ class AnalyticsController < ApplicationController
         @hash[user.id] = @post_giving[user.id]
         @points[user.id] = @point_giving[user.id]
       end
-    end 
+    end
     @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
     @points_custom = Hash[ @points.sort_by{ |_, v| -v } ]
   end
