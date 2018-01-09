@@ -7,20 +7,6 @@ class Admin::PostsController < Admin::Base
     @teams = Team.where(company_id: @company.id)
   end
 
-  def weekly_post_ranking
-    last_week =  Date.today.prev_week.beginning_of_week...Date.today.beginning_of_week
-    @posts = Post.where(company_id: @company.id, delete_flag: 0, create_time: last_week).group(:user_id).order("count_all desc").limit(20).count
-    @teams = Team.where(company_id: @company.id)
-    render "weekly_ranking"
-  end
-
-  def weekly_receive_ranking
-    last_week =  Date.today.prev_week.beginning_of_week...Date.today.beginning_of_week
-    @posts = Post.where(company_id: @company.id, delete_flag: 0, create_time: last_week).group(:receiver_id).order("count_all desc").limit(20).count
-    @teams = Team.where(company_id: @company.id)
-    render "weekly_ranking"
-  end
-
   def export_all_posts
     if params[:period] == "three_month"
       period = Date.today - 3.months
@@ -36,7 +22,7 @@ class Admin::PostsController < Admin::Base
     csv_str = CSV.generate do |csv|
       csv << headers
       @posts.all.each do |post|
-        if post.receiver_id.include?(",")
+        if post.receiver_id.present? && post.receiver_id.include?(",")
           post.receiver_id.split(",").each do |receiver_id|
             user_assigned_team = ""
             receiver_assigned_team = ""
@@ -53,7 +39,7 @@ class Admin::PostsController < Admin::Base
                 receiver_name = user.lastname + user.firstname
               end
             end
-            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.fullname, receiver_assigned_team, receiver_name, post.description]
+            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.lastname + post.user.firstname, receiver_assigned_team, receiver_name, post.description]
           end
         else
           user_assigned_team = ""
@@ -68,7 +54,7 @@ class Admin::PostsController < Admin::Base
               receiver_assigned_team = "#{department.try(:dep_name)} / #{team.try(:team_name)}"
             end
           end
-          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.fullname, receiver_assigned_team, post.receiver.fullname, post.description]
+          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.lastname + post.user.firstname, receiver_assigned_team, post.receiver.lastname + post.receiver.firstname, post.description]
         end
       end
     end
