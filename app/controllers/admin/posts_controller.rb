@@ -36,7 +36,7 @@ class Admin::PostsController < Admin::Base
                 department = Department.find_by(id: team.department_id)
                 receiver_assigned_team = "#{department.try(:dep_name)} / #{team.try(:team_name)}"
                 user = User.find_by(id: receiver_id.to_i)
-                receiver_name = user.try(:lastname) + user.try(:lastname)
+                receiver_name = "#{user.try(:lastname)}" "#{user.try(:lastname)}"
               end
             end
             csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.try(:lastname) + post.user.try(:lastname), receiver_assigned_team, receiver_name, post.description]
