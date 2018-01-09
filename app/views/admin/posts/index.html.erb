@@ -62,7 +62,7 @@
                 </td>
                 <td class="width-10-percent">
                   <% user = User.find_by(id: receiver.to_i) %>
-                  <%= "#{user.lastname}" + "#{user.firstname}" %>
+                  <%= "#{user.try(:lastname)}" + "#{user.try(:firstname)}" %>
                 </td>
                 <td style="max-width: 600px;word-break: break-all;"><%= post.description %></td>
               </tr>
