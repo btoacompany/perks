@@ -35,26 +35,26 @@ class Admin::PostsController < Admin::Base
               if team.member_ids.present? && team.member_ids.include?(receiver_id)
                 department = Department.find_by(id: team.department_id)
                 receiver_assigned_team = "#{department.try(:dep_name)} / #{team.try(:team_name)}"
-                user = User.find(receiver_id.to_i)
-                receiver_name = user.lastname + user.firstname
+                user = User.find_by(id: receiver_id.to_i)
+                receiver_name = user.try(:lastname) + user.try(:lastname)
               end
             end
-            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.lastname + post.user.firstname, receiver_assigned_team, receiver_name, post.description]
+            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.try(:lastname) + post.user.try(:lastname), receiver_assigned_team, receiver_name, post.description]
           end
         else
           user_assigned_team = ""
           receiver_assigned_team = ""
           @teams.each do |team|
             if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s)
-              department = Department.find(team.department_id)
+              department = Department.find_by(id: team.department_id)
               user_assigned_team = department.try(:dep_name) + "/" +team.team_name
             end
             if team.member_ids.present? && team.member_ids.include?(post.receiver_id.to_s)
-              department = Department.find(team.department_id)
+              department = Department.find_by(id: team.department_id)
               receiver_assigned_team = "#{department.try(:dep_name)} / #{team.try(:team_name)}"
             end
           end
-          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.lastname + post.user.firstname, receiver_assigned_team, post.receiver.lastname + post.receiver.firstname, post.description]
+          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.try(:lastname) + post.user.try(:lastname), receiver_assigned_team, post.receiver.try(:lastname) + post.receiver.try(:lastname), post.description]
         end
       end
     end
