@@ -13,41 +13,6 @@
   <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;">
     <div id="top_giver" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
     <div id="top_giver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
-
-    <h3 style="margin: 50px 10px 10px 10px;color: #E0E0E3;"><%= @start_time.strftime("%Y/%m/%d") %>〜<%= @end_time.strftime("%Y/%m/%d") %>の送信数 上位10名</h3>
-    <% if @post_giving.count > 0 %>
-      <table class="tbl_tools width-100-percent" border="1" style="background-color: white;" cellpadding="10">
-        <tr>
-          <th>順位</th>
-          <th>所属</th>
-          <th>社員名</th>
-          <th>送信数</th>
-        </tr>
-        <% @post_giving.each.with_index(1) do |(id, count),i| %>
-          <tr>
-            <td class="width-10-percent"><%= i %></td>
-            <% user = User.find(id) %>
-            <td class="width-30-percent">
-              <% belong_team = false %>
-              <% @teams.each do |team| %>
-                <% if team.member_ids.present? && team.member_ids.include?(id.to_s) %>
-                  <%= team.department.try(:dep_name) %> / 
-                  <%= team.team_name %>
-                  <% belong_team = true %>
-                <% end %>
-              <% end %>
-              <% if belong_team == false %>
-                所属がありません
-              <% end %>  
-            </td>
-            <td class="width-30-percent"><%= user.lastname + user.firstname %></td>
-            <td class="width-10-percent"><%= count %>件</td>
-          </tr>
-        <% end %>
-      </table>
-    <% else %>
-      <p style="margin: 30px;">投稿がありませんでした</p>
-    <% end %>
   </div>
 </div>
 
