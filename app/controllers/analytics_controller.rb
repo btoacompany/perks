@@ -87,6 +87,11 @@ class AnalyticsController < ApplicationController
     end
     @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
     @points_custom = Hash[ @points.sort_by{ |_, v| -v } ]
+
+    logger.debug("------")
+    logger.debug(@hash_custom)
+    logger.debug(@time_custom)
+    logger.debug("------")
   end
 
   def hashtag
