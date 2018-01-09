@@ -22,7 +22,7 @@ class Admin::PostsController < Admin::Base
     csv_str = CSV.generate do |csv|
       csv << headers
       @posts.all.each do |post|
-        if post.receiver_id.present? && post.receiver_id.include?(",")
+        if post.receiver_id.present? && post.receiver_id.include?(",") && post.receiver_id.split(",").count > 0
           post.receiver_id.split(",").each do |receiver_id|
             user_assigned_team = ""
             receiver_assigned_team = ""
