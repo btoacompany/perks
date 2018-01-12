@@ -1,6 +1,5 @@
 class Admin::ContactsController < Admin::Base
   def index
-
   end
 
   def new

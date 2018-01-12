@@ -16,6 +16,10 @@ class Post < ActiveRecord::Base
 
   validates :description , length: {maximum: 250}
 
+  scope :available, -> { where(delete_flag: 0) }
+  scope :of_company, ->(company_id) { where(company_id: company_id) }
+  scope :create_time, -> (period) { where(create_time: period) }
+
   def save_record(params)
     self.company_id	= params[:company_id]
     self.user_id	= params[:user_id]

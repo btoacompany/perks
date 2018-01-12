@@ -29,6 +29,9 @@ class Company < ActiveRecord::Base
   #   1 => "配信しない"
   # }
 
+  scope :available, -> { where(delete_flag: 0) }
+  scope :of_company, ->(company_id) { where(company_id: company_id) }
+
   def save_record(params)
     self.name	      = params[:name]	      if params[:name].present?
     self.owner	      = params[:owner]	      if params[:owner].present?

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :employees, shallow: true
     resources :contacts
+    resources :analyzes
     resources :posts, shallow: true do
       collection {post :export_all_posts}
     end

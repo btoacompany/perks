@@ -11,10 +11,9 @@ class AnalyticsController < ApplicationController
   def init
     if session[:email].present? || cookies[:email].present?
       email = session[:email] || cookies[:email]
-      user = User.find_by_email(email)
-      if user.admin == 1
-        @id = user.company_id
-        @user_id = user.id
+      @user = User.find_by_email(email)
+      if @user.admin == 1
+        @company = Company.find(@user.company_id)
       else
         redirect_to "/user"
       end
@@ -34,16 +33,55 @@ class AnalyticsController < ApplicationController
   end
 
   def overall
-    @hash = {}
-    @points = {}
-    @time_custom.each do |time|
-      @a = time..time.tomorrow
-      @post = Post.where(company_id: @id, create_time: @a, delete_flag: 0).count
-      @point = Post.where(company_id: @id, create_time: @a, delete_flag: 0).sum(:points)
-      @hash[time] = @post
-      @points[time] = @point
+    # @hash = {}
+    # @points = {}
+    # @time_custom.each do |time|
+    #   @a = time..time.tomorrow
+    #   @post = Post.where(company_id: @id, create_time: @a, delete_flag: 0).count
+    #   @point = Post.where(company_id: @id, create_time: @a, delete_flag: 0).sum(:points)
+    #   @hash[time] = @post
+    #   @points[time] = @point
+    # end
+    period = params[:start_time].present? && params[:end_time].present? ? Date.parse(params[:start_time])..Date.parse(params[:end_time]) : Date.today.prev_month..Date.today
+    @posts = Post.of_company(@company.id).available.create_time(period).group('date(create_time)').count
+    @points = Post.of_company(@company.id).available.create_time(period).group('date(create_time)').sum(:points)
+
+    period.each do |date|
+       @posts.store(date, 0) unless @posts.has_key?(date)
+       @points.store(date, 0) unless @points.has_key?(date)
+    end
+    @posts = Hash[ @posts.sort ]
+    @points = Hash[ @points.sort ]
+
+    # team
+    @teams_use_history = Array.new
+    # Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, result: {date: nil, count: 0, point: 0}})}
+    Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, results: Array.new})}
+
+    @date_posts = Post.of_company(@company.id).available.create_time(period).group('date(create_time)', 'user_id').count.inject({}) do |result, (key, value)|
+      product_id, task_id = key
+      result[product_id] ||= {}
+      result[product_id][task_id] = value
+      result
+    end
+    @date_points = Post.of_company(@company.id).available.create_time(period).group('date(create_time)', 'user_id').sum(:points).inject({}) do |result, (key, value)|
+      product_id, task_id = key
+      result[product_id] ||= {}
+      result[product_id][task_id] = value
+      result
+    end
+
+    @date_posts.each do |date, user_count|
+      user_count.each do |user_id, count|
+        @teams_use_history.each do |history|
+          if history[:member_ids].present? && history[:member_ids].include?(user_id.to_s)
+            history[:results].push(date: date, count: count)
+          end
+        end
+      end
     end
   end
+
 
   def index
     @hash = {}
@@ -63,12 +101,6 @@ class AnalyticsController < ApplicationController
     end
     @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
     @points_custom = Hash[ @points.sort_by{ |_, v| -v } ]
-    logger.debug("-----")
-    logger.debug(@time_custom)
-    logger.debug(@start_time)
-    logger.debug(@end_time)
-    logger.debug(@hash_custom)
-    logger.debug("-----")
   end
 
   def giver
@@ -225,7 +257,7 @@ class AnalyticsController < ApplicationController
       end
       # 全社員のid取得
       user_ids = []
-      User.where(company_id: @id, delete_flag: 0).each do |user|
+      User.where(company_id: @company.id, delete_flag: 0).each do |user|
         user_ids << user.id
       end
       # 何かしらのチームに属してるid取得
@@ -286,8 +318,8 @@ class AnalyticsController < ApplicationController
 
   def user
     @userid = params[:id]
-    @user = User.find(@userid)
-    if @user.company_id.to_i == @id.to_i
+    @user = User.find(@user.id)
+    if @user.company_id.to_i == @company.id.to_i
       if @user.firstname.blank? || @user.lastname.blank?
         @user_name = @user.name
       else
@@ -330,7 +362,7 @@ class AnalyticsController < ApplicationController
   def userpoints
     @userid = params[:id]
     @user = User.find(@userid)
-    if @user.company_id.to_i == @id.to_i
+    if @user.company_id.to_i == @company.id.to_i
       if @user.firstname.blank?
         @user_name = @user.name
       else
@@ -386,7 +418,7 @@ class AnalyticsController < ApplicationController
 
   def usergiven
     @userid = params[:id]
-    @user = User.find(@id)
+    @user = User.find(@user.id)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     posts = Post.where(:user_id => @userid, :delete_flag => 0).order("update_time desc")
     limit = 10
@@ -457,7 +489,7 @@ class AnalyticsController < ApplicationController
 
   def userreceived
     @userid = params[:id]
-    @user = User.find(@id)
+    @user = User.find(@user.id)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     posts = Post.where(:receiver_id => @userid, :delete_flag => 0).order("update_time desc")
 
@@ -565,7 +597,7 @@ class AnalyticsController < ApplicationController
   end
 
   def time_definition
-    @company = Company.find(@id)
+    @company = Company.find(@company.id)
     if params[:start_time].blank?
       @start_time = Date.today.prev_month
     else
@@ -588,11 +620,11 @@ class AnalyticsController < ApplicationController
   end 
 
   def basic_info
-    @company = Company.find(@id)
-    @users = User.where(company_id: @id, verified: 1, delete_flag: 0)
-    @users_custom = User.where(company_id: @id, verified: 1, delete_flag: 0)
+    @company = Company.find(@company.id)
+    @users = User.where(company_id: @company.id, verified: 1, delete_flag: 0)
+    @users_custom = User.where(company_id: @company.id, verified: 1, delete_flag: 0)
     @team_lists = []
-    @teams = Team.where(company_id: @id, delete_flag: 0)
+    @teams = Team.where(company_id: @company.id, delete_flag: 0)
     @teams.each do |team|
       hash = {}
       each_team = []
@@ -646,7 +678,7 @@ class AnalyticsController < ApplicationController
   end
 
   def ip_address_limit
-    @company = Company.find(@id)
+    @company = Company.find(@company.id)
     ip = request.remote_ip
     allowed_ips = @company.allowed_ips.split(",") if @company.allowed_ips.present?
     if @company.ip_limit_flag == 1
