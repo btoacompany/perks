@@ -2,9 +2,7 @@ class AnalyticsController < ApplicationController
 
   before_filter :init, :authenticate_user
   before_action :ip_address_limit
-  before_filter :init_url, :validate_user
-  before_action :time_definition, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
-  before_action :basic_info, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
+  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
   before_action :restrict_access_by_smartphone
 
   def init
@@ -21,31 +19,11 @@ class AnalyticsController < ApplicationController
     end
   end
 
-  def logout
-    session[:id] = nil
-    session[:email] = nil
-    cookies.delete :id
-    cookies.delete :email
-    reset_session
-
-    redirect_to '/login'
-  end
-
   def overall
-    # @hash = {}
-    # @points = {}
-    # @time_custom.each do |time|
-    #   @a = time..time.tomorrow
-    #   @post = Post.where(company_id: @id, create_time: @a, delete_flag: 0).count
-    #   @point = Post.where(company_id: @id, create_time: @a, delete_flag: 0).sum(:points)
-    #   @hash[time] = @post
-    #   @points[time] = @point
-    # end
-    period = params[:start_time].present? && params[:end_time].present? ? Date.parse(params[:start_time])..Date.parse(params[:end_time]) : Date.today.prev_month..Date.today
-    @posts = Post.of_company(@company.id).available.create_time(period).group('date(create_time)').count
-    @points = Post.of_company(@company.id).available.create_time(period).group('date(create_time)').sum(:points)
+    @posts = Post.of_company(@company.id).available.create_time(@period).group('date(create_time)').count
+    @points = Post.of_company(@company.id).available.create_time(@period).group('date(create_time)').sum(:points)
 
-    period.each do |date|
+    @period.each do |date|
       @posts.store(date, 0) unless @posts.has_key?(date)
       @points.store(date, 0) unless @points.has_key?(date)
     end
@@ -53,68 +31,60 @@ class AnalyticsController < ApplicationController
     @points = Hash[ @points.sort ]
 
 
-    # team別の結果
-    # team
-    @teams_use_history = Array.new
-    # Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, result: {date: nil, count: 0, point: 0}})}
-    Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, results: Array.new})}
+    # # team別の結果
+    # # team
+    # @teams_use_history = Array.new
+    # # Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, result: {date: nil, count: 0, point: 0}})}
+    # Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, results: Array.new})}
 
-    @date_posts = Post.of_company(@company.id).available.create_time(period).group('date(create_time)', 'user_id').count.inject({}) do |result, (key, value)|
-      product_id, task_id = key
-      result[product_id] ||= {}
-      result[product_id][task_id] = value
-      result
-    end
-    @date_points = Post.of_company(@company.id).available.create_time(period).group('date(create_time)', 'user_id').sum(:points).inject({}) do |result, (key, value)|
-      product_id, task_id = key
-      result[product_id] ||= {}
-      result[product_id][task_id] = value
-      result
-    end
+    # @date_posts = Post.of_company(@company.id).available.create_time(period).group('date(create_time)', 'user_id').count.inject({}) do |result, (key, value)|
+    #   product_id, task_id = key
+    #   result[product_id] ||= {}
+    #   result[product_id][task_id] = value
+    #   result
+    # end
+    # @date_points = Post.of_company(@company.id).available.create_time(period).group('date(create_time)', 'user_id').sum(:points).inject({}) do |result, (key, value)|
+    #   product_id, task_id = key
+    #   result[product_id] ||= {}
+    #   result[product_id][task_id] = value
+    #   result
+    # end
 
-    period.each do |date|
-      @teams_use_history.each do |history|
-        history[:results].push({date: date, count: 0, point: 0})
-      end
-    end
+    # period.each do |date|
+    #   @teams_use_history.each do |history|
+    #     history[:results].push({date: date, count: 0, point: 0})
+    #   end
+    # end
 
-    @date_posts.each do |date, user_count|
-      user_count.each do |user_id, count|
-        @teams_use_history.each do |history|
-          if history[:member_ids].present? && history[:member_ids].include?(user_id.to_s)
-            history[:results].each do |result|
-              result[:count] += count if result[:date] == date
-            end
-          end
-        end
-      end
-    end
+    # @date_posts.each do |date, user_count|
+    #   user_count.each do |user_id, count|
+    #     @teams_use_history.each do |history|
+    #       if history[:member_ids].present? && history[:member_ids].include?(user_id.to_s)
+    #         history[:results].each do |result|
+    #           result[:count] += count if result[:date] == date
+    #         end
+    #       end
+    #     end
+    #   end
+    # end
     # end
   end
 
 
   def index
-    @posts = Post.of_company(@company.id).available.create_time(@period).group('user_id').count
-    @hash_custom = Hash[ @posts.sort_by{ |_, v| -v } ]
+    user_ids = Post.of_company(@company.id).available.group(:user_id).order('count(id) desc').select('user_id, count(id) as count').map{|record| [record.user_id, record.count]}.to_h
+    @posts = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
 
+    user_ids = Post.of_company(@company.id).available.group(:user_id).order('sum(points) desc').select('user_id, sum(points) as sum').map{|record| [record.user_id, record.sum]}.to_h
+    @points = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
   end
 
   def giver
-    @hash = {}
-    @points = {}
-    @post_giving = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('user_id').order("count_all desc").limit(10).count
-    @point_giving = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group('user_id').sum(:points)
-    @users_custom.each do |user|
-      if @post_giving[user.id].blank?
-        @hash[user.id] = 0
-        @points[user.id] = 0
-      else
-        @hash[user.id] = @post_giving[user.id]
-        @points[user.id] = @point_giving[user.id]
-      end
-    end
-    @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
-    @points_custom = Hash[ @points.sort_by{ |_, v| -v } ]
+    user_ids = Post.of_company(@company.id).available.group(:user_id).order('count(id) desc').select('user_id, count(id) as count').map{|record| [record.user_id, record.count]}.to_h
+    @posts = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
+
+    user_ids = Post.of_company(@company.id).available.group(:user_id).order('sum(points) desc').select('user_id, sum(points) as sum').map{|record| [record.user_id, record.sum]}.to_h
+    @points = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
   end
 
   def users
@@ -482,8 +452,10 @@ class AnalyticsController < ApplicationController
     end
   end
 
-  def time_definition
-    @period = params[:start_time].present? && params[:end_time].present? ? Date.parse(params[:start_time])..Date.parse(params[:end_time]) : Date.today.prev_month..Date.today
+  def set_period
+    @start_time = params[:start_time].present? ? Date.parse(params[:start_time]) : Date.today.prev_month
+    @end_time = params[:end_time].present? ? Date.parse(params[:end_time]) : Date.today
+    @period = @start_time..@end_time
   end 
 
   def ip_address_limit

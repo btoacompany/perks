@@ -1,8 +1,8 @@
 <div class="analytics_holder">
   <div class="analytics_time_select" >
-    <%= form_tag({:controller => 'analytics', :action => 'giver'}, remote: true, :class => "analytics_form") do%>
-      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
-      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%= @end_time %> >
+    <%= form_tag({:controller => 'analytics', :action => 'giver'}, :class => "analytics_form") do%>
+      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time.strftime('%Y/%m/%d') %>> ー 
+      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%= @end_time.strftime('%Y/%m/%d') %> >
       <input type="submit" value="適用">
     <% end %>
     <div class="clearfix"></div>
@@ -13,6 +13,23 @@
   <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;">
     <div id="top_giver" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
     <div id="top_giver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+    <p class="width-100-percent" style="font-size: 16px;color: #E0E0E3;font-weight: bold;padding: 5px;background-color: #3a3a3c;">贈ったポイント数ランキング</p>
+    <table class="tbl_tools width-100-percent" border="1" style="background-color: #3a3a3c;color: #E0E0E3;" cellpadding="10px">
+      <tr>
+        <th>No</th>
+        <th>所属</th>
+        <th>社員名</th>
+        <th>贈ったポイント数</th>
+      </tr>
+      <% @points.each.with_index(1) do |(name,point), i| %>
+        <tr>
+          <td><%= i %></td>
+          <td></td>
+          <td><%= name %></td>
+          <td><%= point %></td>
+        </tr>
+      <% end %>
+    </table>
   </div>
 </div>
 
@@ -47,14 +64,8 @@ window.onload = function () {
       type: "bar",
       color: "#ff8d07",
       dataPoints: [
-        <% @hash_custom.first(10).each do |key, value| %>
-        <% @key = User.find(key) %>
-        <% if @key.lastname.present? && @key.firstname.present? %>
-          <% @name = @key.lastname + @key.firstname %>
-        <% else %>
-          <% @name = @key.name %>
-        <% end %>
-        { label: "<%= @name %>",  y: <%= value %>, },
+        <% @posts.first(10).each do |key, value| %>
+        { label: "<%= key %>",  y: <%= value %>, },
         <% end %>
       ]
     }
@@ -91,14 +102,8 @@ window.onload = function () {
       type: "bar",
       color: "#ff8d07",
       dataPoints: [
-        <% @points_custom.first(10).each do |key, value| %>
-        <% @key = User.find(key) %>
-        <% if @key.lastname.present? && @key.firstname.present? %>
-          <% @name = @key.lastname + @key.firstname %>
-        <% else %>
-          <% @name = @key.name %>
-        <% end %>
-        { label: "<%= @name %>",  y: <%= value %>, },
+        <% @points.first(10).each do |key, value| %>
+          { label: "<%= key %>",  y: <%= value %>, },
         <% end %>
       ]
     }

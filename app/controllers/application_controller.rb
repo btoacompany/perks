@@ -96,6 +96,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
+  def logout
+    session[:id] = nil
+    session[:email] = nil
+    cookies.delete :id
+    cookies.delete :email
+    reset_session
+
+    redirect_to '/login'
+  end
+
   def restrict_access_by_smartphone
     user_agent = request.env["HTTP_USER_AGENT"]
     if(user_agent.include?('Mobile') || user_agent.include?('Android'))

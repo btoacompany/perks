@@ -79,7 +79,7 @@
       dataPointWidth: 15,
       data: [              
       {
-        type: "area",
+        type: "line",
         color: "#ff8d07",
         dataPoints: [
           <% @points.each do |key, value| %>
@@ -88,46 +88,6 @@
         ]
       }
       ]
-    });
-    chart.render();
-
-    var chart = new CanvasJS.Chart("teams_use_history", {
-      backgroundColor: "#3a3a3c",
-      animationEnabled: true, 
-      animationDuration: 1000,
-      title:{
-        text: "チーム別利用回数",
-        fontSize: 16,
-        fontColor: "#E0E0E3"
-      },
-      axisX:{
-        labelAutoFit: false, 
-        labelFontSize: 12,
-        labelFontColor: "#E0E0E3", 
-        },
-      axisY:{
-        labelAutoFit: false, 
-        labelFontSize: 12,
-        labelFontColor: "#E0E0E3", 
-        },
-      dataPointMaxWidth: 15,
-      dataPointMinWidth: 15,
-      dataPointWidth: 15,
-      data: [
-        <% @teams_use_history.each do |team| %>
-        {
-          type: "line",
-          color: "#ff8d07",
-          showInLegend: true,
-          name: "<%= team[:name] %>",
-          dataPoints: [
-            <% team[:results].each do |result| %>
-              { label: "<%= result[:date] %>",  y: <%= result[:count] %>,},
-            <% end %>
-          ],
-        },
-        <% end %>
-      ],
     });
     chart.render();
   }
