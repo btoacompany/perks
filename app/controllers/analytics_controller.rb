@@ -5,7 +5,6 @@ class AnalyticsController < ApplicationController
   before_filter :init_url, :validate_user
   before_action :time_definition, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
   before_action :basic_info, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
-  before_filter :analytics_init, only:[:userreceived, :usergiven]
   before_action :restrict_access_by_smartphone
 
   def init
@@ -47,12 +46,14 @@ class AnalyticsController < ApplicationController
     @points = Post.of_company(@company.id).available.create_time(period).group('date(create_time)').sum(:points)
 
     period.each do |date|
-       @posts.store(date, 0) unless @posts.has_key?(date)
-       @points.store(date, 0) unless @points.has_key?(date)
+      @posts.store(date, 0) unless @posts.has_key?(date)
+      @points.store(date, 0) unless @points.has_key?(date)
     end
     @posts = Hash[ @posts.sort ]
     @points = Hash[ @points.sort ]
 
+
+    # team別の結果
     # team
     @teams_use_history = Array.new
     # Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, result: {date: nil, count: 0, point: 0}})}
@@ -71,36 +72,31 @@ class AnalyticsController < ApplicationController
       result
     end
 
+    period.each do |date|
+      @teams_use_history.each do |history|
+        history[:results].push({date: date, count: 0, point: 0})
+      end
+    end
+
     @date_posts.each do |date, user_count|
       user_count.each do |user_id, count|
         @teams_use_history.each do |history|
           if history[:member_ids].present? && history[:member_ids].include?(user_id.to_s)
-            history[:results].push(date: date, count: count)
+            history[:results].each do |result|
+              result[:count] += count if result[:date] == date
+            end
           end
         end
       end
     end
+    # end
   end
 
 
   def index
-    @hash = {}
-    @points = {}
-    @posts = Post.where(company_id: @id, create_time: @time_custom, delete_flag: 0)
-    @users_custom.each do |user|
-      count = 0
-      points = 0
-      @posts.each do |post|
-        if post.receiver_id.include?(user.id.to_s)
-          count = count + 1
-          points = points + post.points
-        end
-      end
-      @hash[user.id] = count
-      @points[user.id] = points
-    end
-    @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
-    @points_custom = Hash[ @points.sort_by{ |_, v| -v } ]
+    @posts = Post.of_company(@company.id).available.create_time(@period).group('user_id').count
+    @hash_custom = Hash[ @posts.sort_by{ |_, v| -v } ]
+
   end
 
   def giver
@@ -119,122 +115,12 @@ class AnalyticsController < ApplicationController
     end
     @hash_custom = Hash[ @hash.sort_by{ |_, v| -v } ]
     @points_custom = Hash[ @points.sort_by{ |_, v| -v } ]
-
-    logger.debug("------")
-    logger.debug(@hash_custom)
-    logger.debug(@time_custom)
-    logger.debug("------")
-  end
-
-  def hashtag
-    @hashtags = @company.hashtags.split(",")
-    @array = {}
-    @hashtags.each do |hashtag|
-      @rankings = Hashtag.where(company_id: @id, hashtag: "##{hashtag}", create_time: @time_custom, delete_flag: 0 ).group(:receiver_id).count
-      @hash = {}
-      @users.each do |user|
-        if @rankings[user.id].blank?
-          @hash[user.name] = 0
-        else
-          @hash[user.name] = @rankings[user.id]
-        end
-      end
-      @array[hashtag] = Hash[ @hash.sort_by{ |_, v| v } ]
-    end
-  end
-
-  def hashtagpoints
-    @hashtags = @company.hashtags.split(",")
-    @array = {}
-    @hashtags.each do |hashtag|
-      @rankings = Hashtag.where(company_id: @id, hashtag: "##{hashtag}", create_time: @time_custom, delete_flag: 0 )
-      array = []
-      @rankings.each do |ranking|
-        array << ranking.post_id
-      end
-      @points = Post.where(id: array).group(:receiver_id).sum(:points)
-
-      @hash = {}
-      @users.each do |user|
-        if @points[user.id].blank?
-          @hash[user.name] = 0
-        else
-          @hash[user.name] = @points[user.id]
-        end
-      end
-      @array[hashtag] = Hash[ @hash.sort_by{ |_, v| v } ]
-    end
-  end
-
-  def allhashtag
-    @num1 = 1
-    @num2 = 1
-    @hashtags = Hashtag.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group(:hashtag).order("count_id desc").limit(10).count(:id)
-    if @hashtags.empty?
-      @hashtags = {}
-      @lists = Hashtag.where(company_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(10).count(:id)
-      @lists.each do |key, value|
-        @hashtags[key] = 0
-      end
-    end
-    @hash = {}
-    @hashtags.each do |hashtag|
-      @ranking = Hashtag.where(company_id: @id, hashtag: hashtag[0], create_time: @time_custom, delete_flag: 0).group(:receiver_id).count
-      @hash[hashtag[0]] = Hash[ @ranking.sort_by{ |_, v| -v } ]
-    end
-  end
-
-  def allhashtagpoints
-    @num1 = 1
-    @num2 = 1
-    @hashtags = Hashtag.where(company_id: @id, create_time: @time_custom, delete_flag: 0).group(:hashtag).order("count_id desc").limit(10).count(:id)
-    @hashtag_points = {}
-    @hashtags.each do |key, value|
-      array = []
-      a = Hashtag.where(hashtag: key,company_id: @id, create_time: @time_custom, delete_flag: 0)
-      a.each do |a|
-        array << a.post_id
-      end
-      @hashtag_points[key] = Post.where(id: array, company_id: @id, create_time: @time_custom, delete_flag: 0).sum(:points)
-    end
-
-    if @hashtags.empty?
-      @hashtags = {}
-      @lists = Hashtag.where(company_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(10).count(:id)
-      @lists.each do |key, value|
-        @hashtags[key] = 0
-      end
-    end
-
-    @hash_points = {}
-    @hashtags.each do |hashtag|
-      arr = []
-      b = Hashtag.where(company_id: @id, hashtag: hashtag[0], create_time: @time_custom, delete_flag: 0)
-      b.each do |b|
-        arr << b.post_id
-      end
-      @ranking = Post.where(id: arr, company_id: @id, create_time: @time_custom, delete_flag: 0).group(:receiver_id).sum(:points)
-      @hash_points[hashtag[0]] = Hash[ @ranking.sort_by{ |_, v| -v } ]
-    end
-  end
-
-  def analytics_init
-    if session[:email].present? || cookies[:email].present?
-      email = session[:email] || cookies[:email]
-      user = User.find_by_email(email)
-      @company_id = user.company_id
-      @confirm_user = User.find(params[:id])
-      if @confirm_user.company_id == @company_id
-      else
-        redirect_to :action => "user"
-      end
-    end
   end
 
   def users
-    @company = Company.find(@id)
-    teams = Team.where(company_id: @id, delete_flag: 0)
-    @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
+    @company = Company.find(@company.id)
+    teams = Team.where(company_id: @company.id, delete_flag: 0)
+    @manager_ids = Team.where(company_id: @company.id, delete_flag: 0).pluck(:manager_id)
     unless teams.empty?
       @team_exist = 0
       @teams = []
@@ -293,7 +179,7 @@ class AnalyticsController < ApplicationController
       @team_exist = 1
     end
 
-    users = User.where(:company_id => @id, :delete_flag => 0)
+    users = User.where(:company_id => @company.id, :delete_flag => 0)
     all_users = users.sort_by &:create_time
     users_count = all_users.count
     limit = 10
@@ -332,11 +218,11 @@ class AnalyticsController < ApplicationController
       else
         @user_gender = "未定"
       end
-      @post_toget = Post.where(receiver_id: @userid, delete_flag: 0)
-      @post_togive = Post.where(user_id: @userid, delete_flag: 0)
+      @post_toget = Post.where(receiver_id: @user.id, delete_flag: 0)
+      @post_togive = Post.where(user_id: @user.id, delete_flag: 0)
       # useage
       @hash = {}
-      @time_custom.each do |time|
+      @period.each do |time|
         @a = time..time.tomorrow
         @posts = Post.where(receiver_id: @userid, create_time: @a, delete_flag: 0).count
         @hash[time] = @posts
@@ -597,85 +483,8 @@ class AnalyticsController < ApplicationController
   end
 
   def time_definition
-    @company = Company.find(@company.id)
-    if params[:start_time].blank?
-      @start_time = Date.today.prev_month
-    else
-      @start_time = params[:start_time]
-      @start_time_valid = @start_time.split("/")
-      unless Date.valid_date?(@start_time_valid[0].to_i, @start_time_valid[1].to_i, @start_time_valid[2].to_i)
-        @start_time = Date.today.prev_month
-      end
-    end
-    if params[:end_time].blank?
-      @end_time = Date.today
-    else
-      @end_time = params[:end_time]
-      @end_time_valid = @end_time.split("/")
-      unless Date.valid_date?(@end_time_valid[0].to_i, @end_time_valid[1].to_i, @end_time_valid[2].to_i)
-        @end_time = Date.today
-      end
-    end
-    @time_custom = @start_time.to_date..@end_time.to_date.tomorrow
+    @period = params[:start_time].present? && params[:end_time].present? ? Date.parse(params[:start_time])..Date.parse(params[:end_time]) : Date.today.prev_month..Date.today
   end 
-
-  def basic_info
-    @company = Company.find(@company.id)
-    @users = User.where(company_id: @company.id, verified: 1, delete_flag: 0)
-    @users_custom = User.where(company_id: @company.id, verified: 1, delete_flag: 0)
-    @team_lists = []
-    @teams = Team.where(company_id: @company.id, delete_flag: 0)
-    @teams.each do |team|
-      hash = {}
-      each_team = []
-      each_team << team.manager_id
-      if team.member_ids.present?
-        team.member_ids.split(",").each do |mem|
-          unless mem.to_i == 0
-          each_team << mem.to_i
-          end
-        end
-      end
-      hash[:id] = team.id
-      hash[:team_name] = team.team_name
-      hash[:members] = each_team
-      @team_lists << hash
-    end
-    # 所属無しメンバー
-    # 全社員のid取得
-    user_ids = []
-    @users.each do |user|
-      user_ids << user.id
-    end
-    # 何かしらのチームに属してるid取得
-    in_team_user_ids = []
-    @teams.each do |team|
-      if team.member_ids.present?
-        in_team_user_ids.push(team.member_ids.split(",").delete("0"))
-        in_team_user_ids.push(team.manager_id)
-        in_team_user_ids.flatten!
-        in_team_user_ids.uniq
-      end
-    end
-    # 何もチームに属していないid取得
-    in_team_user_ids.each do |id|
-      user_ids.delete(id.to_i)
-    end
-    # 何もチームに属していないユーザーの配列
-    @non_team_user_ids = []
-    user_ids.each do |id|
-      unless id == 0
-      @non_team_user_ids << id
-      end
-    end
-    # ハッシュ作成
-    non_team = {
-      :id => 0,
-      :team_name => "所属なし",
-      :members => @non_team_user_ids
-    }
-    @team_lists << non_team
-  end
 
   def ip_address_limit
     @company = Company.find(@company.id)
