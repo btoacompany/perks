@@ -1,6 +1,6 @@
 <div class="analytics_holder">
   <div class="analytics_time_select" >
-    <%= form_tag({:controller => 'analytics', :action => 'overall'}, remote: true, :class => "analytics_form") do%>
+    <%= form_tag({:controller => 'analytics', :action => 'overall'}, :class => "analytics_form") do%>
       期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
       <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
       <input type="submit" value="適用">
@@ -10,90 +10,87 @@
 
   <%= render 'analytics'%>
 
-  <div class="analytics_container">
-    <div id="top_receiver" class="analytics_allhashtag_float" style="min-height: 450px; width: 85%;"></div>
-    <div id="top_receiver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 85%;"></div>
+  <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;">
+    <div id="top_receiver" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+    <div id="top_receiver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+    <!-- <div id="teams_use_history" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div> -->
   </div>
 </div>
 
-
 <script type="text/javascript">
-
-window.onload = function () {
-  var chart = new CanvasJS.Chart("top_receiver", {
-    backgroundColor: "#3a3a3c",
-    animationEnabled: true, 
-    animationDuration: 1000,
-    title:{
-      text: "社内利用回数",
-      fontSize: 16,
-      fontColor: "#E0E0E3"
-    },
-    axisX:{
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("top_receiver", {
+      backgroundColor: "#3a3a3c",
+      animationEnabled: true, 
+      animationDuration: 1000,
+      title:{
+        text: "社内利用回数",
+        fontSize: 16,
+        fontColor: "#E0E0E3"
       },
+      axisX:{
+        labelAutoFit: false, 
+        labelFontSize: 12,
+        labelFontColor: "#E0E0E3", 
+        },
       axisY:{
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
+        labelAutoFit: false, 
+        labelFontSize: 12,
+        labelFontColor: "#E0E0E3", 
       },
-    dataPointMaxWidth: 15,
-    dataPointMinWidth: 15,
-    dataPointWidth: 15,
-    data: [              
-    {
-      // Change type to "doughnut", "line", "splineArea", etc.
-      type: "area",
-      color: "#ff8d07",
-      dataPoints: [
-        <% @hash.each do |key, value| %>
-        { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
-        <% end %>
+      dataPointMaxWidth: 15,
+      dataPointMinWidth: 15,
+      dataPointWidth: 15,
+      data: [              
+      {
+        type: "line",
+        color: "#ff8d07",
+        dataPoints: [
+          <% @posts.each do |key, value| %>
+            { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
+          <% end %>
+        ]
+      }
       ]
-    }
-    ]
-  });
-  chart.render();
+    });
+    chart.render();
 
     var chart = new CanvasJS.Chart("top_receiver_points", {
-    backgroundColor: "#3a3a3c",
-    animationEnabled: true, 
-    animationDuration: 1000,
-    title:{
-      text: "社内流通ポイント数",
-      fontSize: 16,
-      fontColor: "#E0E0E3"
-    },
-    axisX:{
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
+      backgroundColor: "#3a3a3c",
+      animationEnabled: true, 
+      animationDuration: 1000,
+      title:{
+        text: "社内流通ポイント数",
+        fontSize: 16,
+        fontColor: "#E0E0E3"
       },
+      axisX:{
+        labelAutoFit: false, 
+        labelFontSize: 12,
+        labelFontColor: "#E0E0E3", 
+        },
       axisY:{
-      labelAutoFit: false, 
-      labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
-      },
-    dataPointMaxWidth: 15,
-    dataPointMinWidth: 15,
-    dataPointWidth: 15,
-    data: [              
-    {
-      // Change type to "doughnut", "line", "splineArea", etc.
-      type: "area",
-      color: "#ff8d07",
-      dataPoints: [
-        <% @points.each do |key, value| %>
-        { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
-        <% end %>
+        labelAutoFit: false, 
+        labelFontSize: 12,
+        labelFontColor: "#E0E0E3", 
+        },
+      dataPointMaxWidth: 15,
+      dataPointMinWidth: 15,
+      dataPointWidth: 15,
+      data: [              
+      {
+        type: "line",
+        color: "#ff8d07",
+        dataPoints: [
+          <% @points.each do |key, value| %>
+            { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
+          <% end %>
+        ]
+      }
       ]
-    }
-    ]
-  });
-  chart.render();
-}
+    });
+    chart.render();
+  }
 
 $(function() {
   $("#datepicker_start").datepicker();

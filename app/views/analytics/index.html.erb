@@ -1,8 +1,8 @@
 <div class="analytics_holder">
   <div class="analytics_time_select" >
-    <%= form_tag({:controller => 'analytics', :action => 'index'}, remote: true, :class => "analytics_form") do%>
-      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
-      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%= @end_time %> >
+    <%= form_tag({:controller => 'analytics', :action => 'index'}, :class => "analytics_form") do%>
+      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time.strftime('%Y/%m/%d') %>> ー 
+      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%= @end_time.strftime('%Y/%m/%d') %> >
       <input type="submit" value="適用">
     <% end %>
     <div class="clearfix"></div>
@@ -13,6 +13,23 @@
   <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;">
     <div id="top_receiver" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
     <div id="top_receiver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+    <p class="width-100-percent" style="font-size: 16px;color: #E0E0E3;font-weight: bold;padding: 5px;background-color: #3a3a3c;">もらったポイント数ランキング上位20名</p>
+    <table class="tbl_tools width-100-percent" border="1" style="background-color: #3a3a3c;color: #E0E0E3;" cellpadding="10px">
+      <tr>
+        <th>No</th>
+        <th>所属</th>
+        <th>社員名</th>
+        <th>もらったポイント数</th>
+      </tr>
+      <% @point_ranking.first(20).each.with_index(1) do |user, i| %>
+        <tr>
+          <td><%= i %></td>
+          <td><%= user[:team] %></td>
+          <td><%= user[:name] %></td>
+          <td><%= user[:point] %></td>
+        </tr>
+      <% end %>
+    </table>
   </div>
 </div>
 
@@ -24,7 +41,7 @@ window.onload = function () {
     animationEnabled: true, 
     animationDuration: 3000,
     title:{
-      text: "ポイントをもらった回数",
+      text: "ポイントをもらった回数ランキング",
       fontSize: 16,
       fontColor: "#E0E0E3"
     },
@@ -32,7 +49,8 @@ window.onload = function () {
       reversed: true,
       labelAutoFit: false, 
       labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
+      labelFontColor: "#E0E0E3",
+      labelMaxWidth: 100,
       },
       axisY:{
       labelAutoFit: false, 
@@ -48,14 +66,8 @@ window.onload = function () {
       type: "bar",
       color: "#ff8d07",
       dataPoints: [
-        <% @hash_custom.first(10).each do |key, value| %>
-        <% @key = User.find(key) %>
-        <% if @key.lastname.present? && @key.firstname.present? %>
-          <% @name = @key.lastname + @key.firstname %>
-        <% else %>
-          <% @name = @key.name %>
-        <% end %>
-        { label: "<%= @name %>",  y: <%= value %>, },
+        <% @count_ranking.first(10).each do |user| %>
+          { label: "<%= user[:name] %>",  y: <%= user[:count] %>, },
         <% end %>
       ]
     }
@@ -68,7 +80,7 @@ window.onload = function () {
     animationEnabled: true, 
     animationDuration: 3000,
     title:{
-      text: "もらったポイント数",
+      text: "もらったポイント数ランキング",
       fontSize: 16,
       fontColor: "#E0E0E3"
     },
@@ -76,13 +88,14 @@ window.onload = function () {
       reversed: true,
       labelAutoFit: false, 
       labelFontSize: 12,
-      labelFontColor: "#E0E0E3", 
-      },
-      axisY:{
+      labelFontColor: "#E0E0E3",
+      labelMaxWidth: 100,
+    },
+    axisY:{
       labelAutoFit: false, 
       labelFontSize: 12,
       labelFontColor: "#E0E0E3", 
-      },
+    },
     dataPointMaxWidth: 15,
     dataPointMinWidth: 15,
     dataPointWidth: 15,
@@ -92,14 +105,8 @@ window.onload = function () {
       type: "bar",
       color: "#ff8d07",
       dataPoints: [
-        <% @points_custom.first(10).each do |key, value| %>
-        <% @key = User.find(key) %>
-        <% if @key.lastname.present? && @key.firstname.present? %>
-          <% @name = @key.lastname + @key.firstname %>
-        <% else %>
-          <% @name = @key.name %>
-        <% end %>
-        { label: "<%= @name %>",  y: <%= value %>, },
+        <% @point_ranking.first(10).each do |user| %>
+          { label: "<%= user[:name] %>",  y: <%= user[:point] %>, },
         <% end %>
       ]
     }

@@ -7,6 +7,9 @@ class Team < ActiveRecord::Base
   before_update :set_update_time
   belongs_to :department
 
+  scope :of_company, ->(company_id) { where(company_id: company_id) }
+  scope :available, -> { where(delete_flag: 0) }
+
   def save_record(params)
     self.department_id	= params[:department_id].to_i if params[:department_id].present?
     self.team_name	= params[:team_name] if params[:team_name].present?
