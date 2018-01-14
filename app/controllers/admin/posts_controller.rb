@@ -41,7 +41,7 @@ class Admin::PostsController < Admin::Base
                 receiver_name = "#{user.try(:lastname)}" "#{user.try(:lastname)}"
               end
             end
-            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.try(:lastname) + post.user.try(:lastname), receiver_assigned_team, receiver_name, post.description]
+            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, "#{post.user.try(:lastname) post.user.try(:lastname)}", receiver_assigned_team, receiver_name, post.description]
           end
         else
           user_assigned_team = ""
