@@ -70,21 +70,69 @@ class AnalyticsController < ApplicationController
     # end
   end
 
-
   def index
-    user_ids = Post.of_company(@company.id).available.group(:user_id).order('count(id) desc').select('user_id, count(id) as count').map{|record| [record.user_id, record.count]}.to_h
-    @posts = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
+    results = Array.new
+    users = User.of_company(@company.id).available
+    posts = Post.of_company(@company.id).available.create_time(@period)
+    teams = Team.of_company(@company.id)
 
-    user_ids = Post.of_company(@company.id).available.group(:user_id).order('sum(points) desc').select('user_id, sum(points) as sum').map{|record| [record.user_id, record.sum]}.to_h
-    @points = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
+    users.each do |user|
+      count = 0
+      point = 0
+      posts.each do |post|
+        if post.receiver_id.present? && post.receiver_id.include?(user.id.to_s)
+          count = count + 1
+          point = point + post.points
+        end
+      end
+      team = ""
+      teams.each do |t|
+        if t.member_ids.present? && t.member_ids.include?(user.id.to_s)
+          team = "#{t.department.try(:dep_name)} #{t.try(:team_name)}"
+          break
+        end
+        team = "所属がありません" unless team.present?
+      end
+      results.push({user_id: user.id, team: team, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
+    end
+    @count_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
+    @point_ranking = results.sort{|a, b| a[:point] <=> b[:count]}.reverse
   end
 
   def giver
-    user_ids = Post.of_company(@company.id).available.group(:user_id).order('count(id) desc').select('user_id, count(id) as count').map{|record| [record.user_id, record.count]}.to_h
-    @posts = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
+    results = Array.new
+    users = User.of_company(@company.id).available
+    posts = Post.of_company(@company.id).available.create_time(@period)
+    teams = Team.of_company(@company.id)
 
-    user_ids = Post.of_company(@company.id).available.group(:user_id).order('sum(points) desc').select('user_id, sum(points) as sum').map{|record| [record.user_id, record.sum]}.to_h
-    @points = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
+    users.each do |user|
+      count = 0
+      point = 0
+      posts.each do |post|
+        if post.user_id.present? && post.user_id == user.id
+          count = count + 1
+          point = point + post.points
+        end
+      end
+      team = ""
+      teams.each do |t|
+        if t.member_ids.present? && t.member_ids.include?(user.id.to_s)
+          team = "#{t.department.try(:dep_name)} #{t.try(:team_name)}"
+          break
+        end
+        team = "所属がありません" unless team.present?
+      end
+      results.push({user_id: user.id, team: team, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
+    end
+
+    @count_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
+    @point_ranking = results.sort{|a, b| a[:point] <=> b[:count]}.reverse
+
+    # user_ids = Post.of_company(@company.id).available.group(:user_id).order('count(id) desc').select('user_id, count(id) as count').map{|record| [record.user_id, record.count]}.to_h
+    # @posts = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
+
+    # user_ids = Post.of_company(@company.id).available.group(:user_id).order('sum(points) desc').select('user_id, sum(points) as sum').map{|record| [record.user_id, record.sum]}.to_h
+    # @points = User.where(id: user_ids.keys).pluck(:lastname, :firstname).map{|name| "#{name[0]}#{name[1]}"}.zip(user_ids.values).to_h
   end
 
   def users

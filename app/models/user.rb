@@ -28,6 +28,9 @@ class User < ActiveRecord::Base
 
   # validate :check_maneger
 
+  scope :available, -> { where(delete_flag: 0) }
+  scope :of_company, ->(company_id) { where(company_id: company_id) }
+
   def fullname
     if self.lastname.present? && self.firstname.present?
       self.lastname + self.firstname
