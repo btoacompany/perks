@@ -615,7 +615,7 @@ class UsersController < ApplicationController
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
-    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(updated_at: :desc)
+    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(created_at: :desc).limit(5)
 
     @company = Company.find(@user.company_id)
     if $showoff_timeline.include?(@company_id)
@@ -684,7 +684,7 @@ class UsersController < ApplicationController
     @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
     @departments = Department.where(company_id: @company_id, delete_flag: 0).order(sort: :asc)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
-    @user_posted_contents = Article.where(company_id: @company_id, is_published:1, is_casual: 1, is_deleted: 0).order(updated_at: :desc)
+    @user_posted_contents = Article.where(company_id: @company_id, is_published:1, is_casual: 1, is_deleted: 0).order(created_at: :desc).limit(5)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
 
@@ -694,7 +694,7 @@ class UsersController < ApplicationController
     giver_ranking(@user)
 
     # paging
-    articles = Article.where(company_id: @company_id, is_deleted: 0, is_published: 1, is_casual: 0).order(updated_at: :desc)
+    articles = Article.where(company_id: @company_id, is_deleted: 0, is_published: 1, is_casual: 0).order(created_at: :desc)
     process_posts = process_paging_articles(articles)
 
     @articles = []
@@ -713,7 +713,7 @@ class UsersController < ApplicationController
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
-    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1)
+    @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(created_at: :desc).limit(5)
 
     receiver_ranking(@user)
     giver_ranking(@user)

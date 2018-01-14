@@ -771,9 +771,10 @@ $(function() {
   $(".btn_change_password").click(function() {
     var content = $('#target_user_name').val();
     $('#target_user_name').val("");
-    $(".tags .given_to").append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
+    var $selected = $(this).parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
+    $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
     var target_user_id = user_datas[content];
-    $(".tags .given_to").append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
+    $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
   });
 
   <% if $allow_nickname.include?(@user.company_id) %>
