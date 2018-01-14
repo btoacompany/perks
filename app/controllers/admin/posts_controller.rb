@@ -38,10 +38,10 @@ class Admin::PostsController < Admin::Base
               if t.member_ids.present? && t.member_ids.include?(post.receiver_id)
                 receiver_assigned_team = "#{t.department.try(:dep_name)} #{t.try(:team_name)}"
                 user = User.find_by(id: receiver_id.to_i)
-                receiver_name = "#{user.try(:lastname)}" "#{user.try(:lastname)}"
+                receiver_name = "#{user.try(:lastname)}" "#{user.try(:firstname)}"
               end
             end
-            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, "#{post.user.try(:lastname)} #{post.user.try(:lastname)}", receiver_assigned_team, receiver_name, post.description]
+            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, "#{post.user.try(:lastname)} #{post.user.try(:firstname)}", receiver_assigned_team, receiver_name, post.description]
           end
         else
           user_assigned_team = ""
@@ -58,7 +58,7 @@ class Admin::PostsController < Admin::Base
             end
             receiver_assigned_team = "所属がありません" unless receiver_assigned_team.present?
           end
-          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, "#{post.user.try(:lastname)}" "#{post.user.try(:lastname)}", receiver_assigned_team, "#{post.receiver.try(:lastname)}" "#{post.receiver.try(:lastname)}", post.description]
+          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, "#{post.user.try(:lastname)}" "#{post.user.try(:firstname)}", receiver_assigned_team, "#{post.receiver.try(:lastname)}" "#{post.receiver.try(:firstname)}", post.description]
         end
       end
     end
