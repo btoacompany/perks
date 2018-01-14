@@ -58,7 +58,7 @@ class Admin::PostsController < Admin::Base
             end
             receiver_assigned_team = "所属がありません" unless receiver_assigned_team.present?
           end
-          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, post.user.try(:lastname) + post.user.try(:lastname), receiver_assigned_team, post.receiver.try(:lastname) + post.receiver.try(:lastname), post.description]
+          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, "#{post.user.try(:lastname)}" "#{post.user.try(:lastname)}", receiver_assigned_team, "#{post.receiver.try(:lastname)}" "#{post.receiver.try(:lastname)}", post.description]
         end
       end
     end
