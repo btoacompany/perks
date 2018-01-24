@@ -17,14 +17,18 @@ class CompanyMailer < ActionMailer::Base
   end
 
   def release_article(email, subject, description)
-      @subject = subject
-      @description = description
-      mail(to: email, subject: @subject)
+    @subject = subject
+    @description = description
+    mail(to: email, subject: @subject)
   end
 
   def deliver_contact_mail(email, subject, description)
-      @subject = subject
-      @description = description
-      mail(to: email, subject: @subject)
+    @subject = subject
+    @description = description
+    mail(to: email, subject: @subject)
+  end
+
+  def remind_mail(email, subject)
+    mail(to: data[:email], subject: "メッセージを書いてみませんか？")
   end
 end
