@@ -1,0 +1,42 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+  <div id="admin_contents" class="c_align width-100-percent">
+    <div class="float_left width-20-percent" style="text-align: left;padding: 10px 30px;">
+      <%= render "sidebar" %>
+    </div>
+    <div class="float_left width-80-percent" style="text-align: left;padding: 0px 30px;">
+      <h3><%= @team.department.try(:dep_name) %> <%= @team.team_name %>に所属する社員一覧</h3>
+      <div class="toolbox">
+        <% if @users.count == 0 %>
+          <p style="margin-top:10px;"><%= link_to "社員を追加する", edit_admin_team_path(@team.id), style: "text-decoration:none;" %></p><br>
+        <% else %>
+          <table class="tbl_tools width-100-percent" border="1" style="margin-top: 10px;text-align: center;">
+            <tr>
+              <th>名前</th>
+              <th>メールアドレス</th>
+              <th>ステータス</th>
+              <th>社員情報編集</th>
+              <th>アカウント削除</th>
+            </tr>
+            <% @users.each do | item | %>
+              <tr>
+                <td><%= "#{item.try(:lastname)} #{item.try(:firstname)}" %></td>
+                <td><%= item.try(:email) %></td>
+                <td align="center"><%= item.try(:verified) == 0 ? "保留" : "登録済" %></td>
+                <td align="center">
+                  <!-- <button data-id="<%= item[:id] %>" class="btn btn-sm modal-btn btn-primary" type="button"> -->
+                  <%= link_to "編集", edit_admin_employee_path(item[:id]), class: "btn" ,style: "text-decoration: none;color:white;padding: 8px;" %>
+                  <!-- </button> -->
+                </td>
+                <td align="center">
+                  <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" mgr-id="non_mgr" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
