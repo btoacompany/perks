@@ -7,8 +7,8 @@ class Team < ActiveRecord::Base
   before_update :set_update_time
   belongs_to :department
 
-  validations :team_name, presence: true
-  validations :member_ids, presence: true
+  validates :team_name, presence: true
+  validates :member_ids, presence: true
 
   scope :of_company, ->(company_id) { where(company_id: company_id) }
   scope :available, -> { where(delete_flag: 0) }

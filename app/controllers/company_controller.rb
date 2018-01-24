@@ -763,32 +763,32 @@ class CompanyController < ApplicationController
     end
   end
 
-  # def edit_teams_complete
-  #   @team = Team.find(params[:team_id])
-  #   if @team.company_id == @id
-  #     @member_ids = []
-  #     if params[:members].reject(&:blank?).blank?
-  #       redirect_to "/company/teams/edit/#{@team.id}", notice: "少なくとも一人以上の社員を登録してください。"
-  #       return
-  #     end
-  #     members = params[:members].delete_if{|n| n.empty? }
-  #     members.each do |mem|
-  #       user = User.find_by(email: mem, delete_flag: 0)
-  #       if user.present?
-  #         @member_ids << user.id.to_s
-  #       else
-  #         redirect_to "/company/teams/edit/#{@team.id}", notice: "登録できませんでした。メールアドレスが一致しません。"
-  #         return
-  #       end
-  #     end
-  #     @member_ids.uniq!
-  #     params[:member_ids] = @member_ids.join(",")
-  #     @team.save_record(params)
-  #     redirect_to '/company/teams'
-  #   else
-  #     redirect_to '/company/teams'
-  #   end
-  # end
+  def edit_teams_complete
+    @team = Team.find(params[:team_id])
+    if @team.company_id == @id
+      @member_ids = []
+      if params[:members].reject(&:blank?).blank?
+        redirect_to "/company/teams/edit/#{@team.id}", notice: "少なくとも一人以上の社員を登録してください。"
+        return
+      end
+      members = params[:members].delete_if{|n| n.empty? }
+      members.each do |mem|
+        user = User.find_by(email: mem, delete_flag: 0)
+        if user.present?
+          @member_ids << user.id.to_s
+        else
+          redirect_to "/company/teams/edit/#{@team.id}", notice: "登録できませんでした。メールアドレスが一致しません。"
+          return
+        end
+      end
+      @member_ids.uniq!
+      params[:member_ids] = @member_ids.join(",")
+      @team.save_record(params)
+      redirect_to '/company/teams'
+    else
+      redirect_to '/company/teams'
+    end
+  end
 
   # def delete_teams
   #   result =  Team.find(params[:id])

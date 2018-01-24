@@ -1,5 +1,6 @@
 class Admin::TeamsController < Admin::Base
-  before_action :sidebar, only: [:index, :new, :show, :edit]
+  before_action :sidebar, only: [:index, :new, :show, :edit, :update]
+  before_action :display_team, only: [:show, :edit, :update]
 
   def index
   end
@@ -11,47 +12,30 @@ class Admin::TeamsController < Admin::Base
   end
 
   def show
-    @team = Team.find_by(id: params[:id], company_id: @company.id)
-    member_ids = []
-    @team.member_ids.split(",").map { |id| member_ids.push(id.to_i) } if @team.member_ids.present?
-    @members = User.of_company(@company.id).available.where(id: member_ids)
-              .paginate(page: params[:page], per_page: 20)
   end
 
   def edit
-    @team = Team.find_by(id: params[:id], company_id: @company.id)
-    member_ids = Array.new
-    @team.member_ids.split(",").map { |id| member_ids.push(id.to_i) } if @team.member_ids.present?
-    @members = User.of_company(@company.id).available.where(id: member_ids)
-              .paginate(page: params[:page], per_page: 20)
-    @emails = Array.new
-    @emails = @members.map { |member| @emails.push(member.email) }
+    @emails = User.of_company(@company.id).available.pluck(:email)
   end
 
-
-
   def update
-    @team = Team.find_by(id: params[:team_id], company_id: @company.id)
-    # if @team.company_id == @id
-    member_ids = []
-      # if params[:members].reject(&:blank?).blank?
-      #   redirect_to "/company/teams/edit/#{@team.id}", notice: "少なくとも一人以上の社員を登録してください。"
-      #   return
-      # end
-    members = params[:members].delete_if{|n| n.empty? }
+    @emails = User.of_company(@company.id).available.pluck(:email)
+    member_ids = Array.new
+    members = params[:members].delete_if{|n| n.empty?}
     members.each do |mem|
-      user = User.find_by(email: mem, delete_flag: 0)
-      if user.present?
-        member_ids << user.id.to_s
-      else
-        redirect_to "/company/teams/edit/#{@team.id}", notice: "登録できませんでした。メールアドレスが一致しません。"
-        return
-      end
+      user = User.find_by!(email: mem, delete_flag: 0)
+      member_ids << user.id.to_s
     end
-    member_ids.uniq!
-    params[:member_ids] = member_ids.join(",")
-    @team.save_record(params)
-    redirect_to admin_team_path(@team.id)
+    params[:member_ids] = member_ids.uniq.join(",")
+    if @team.save_record(params)
+      redirect_to admin_team_path(@team.id)
+    else
+      flash[:notice] = "登録できませんでした。一人以上メンバーを追加して下さい"
+      render :edit
+    end
+    rescue => e
+      redirect_to edit_admin_team_path(@team.id), notice: "登録できませんでした。メールアドレスが一致しません。"
+      return
   end
 
   def destroy
@@ -60,5 +44,13 @@ class Admin::TeamsController < Admin::Base
   private
   def sidebar 
     @deps = Department.of_company(@company.id).available
+  end
+
+  def display_team
+    @team = Team.find_by(id: params[:id], company_id: @company.id)
+    member_ids = Array.new
+    @team.member_ids.split(",").map { |id| member_ids.push(id.to_i) } if @team.member_ids.present?
+    @members = User.of_company(@company.id).available.where(id: member_ids)
+              .paginate(page: params[:page], per_page: 20)
   end
 end

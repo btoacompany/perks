@@ -7,6 +7,7 @@
     </div>
     <div class="float_left width-80-percent" style="text-align: left;padding: 10px 30px;">
       <h3>チーム編集</h3>
+      <p style="margin: 10px;color: red;"><%= flash[:notice] if flash[:notice] %></p>
       <%= form_tag( "/admin/teams/#{@team.id}", method: "patch") do %>
         <div class="toolbox">
           <table class="admin_table" style="margin: 10px 0px;">
