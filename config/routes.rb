@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :posts, shallow: true do
       collection {post :export_all_posts}
     end
+    resources :teams
   end
 
   get "bad_request" => "top#bad_request"
