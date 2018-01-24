@@ -676,40 +676,40 @@ class CompanyController < ApplicationController
   #   @next_page      = @page_now + 1
   # end
 
-  def team_show
-    @team = Team.find(params[:id])
-    unless @team.company_id == @id
-      redirect_to "/company/teams"
-    end
-    # @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
-    user_ids = []
-    if @team.member_ids.present?
-      @team.member_ids.split(",").each do |id|
-        user_ids << id.to_i
-      end
-    end
-    users = User.where(:id => user_ids, :company_id => @id, :delete_flag => 0)
-    all_users = users.sort_by &:create_time
-    users_count = all_users.count
-    limit = 20
-    page = params[:page] || 1
-    @total_users = users_count
-    @total_pages = (@total_users/limit.to_f).ceil
-    if page.to_i <= 1
-      page    = 1
-      offset  = 0
-    else
-      offset  = (page.to_i * limit) - limit
-    end
-    all_users = all_users[offset, limit]
-    @users     = User.where(id: all_users.map(&:id)).order("id asc")
-    @page_now = params[:page].to_i
-    if @page_now == 0
-      @page_now = 1
-    end
-    @previous_page  = @page_now - 1
-    @next_page      = @page_now + 1
-  end
+  # def team_show
+  #   @team = Team.find(params[:id])
+  #   unless @team.company_id == @id
+  #     redirect_to "/company/teams"
+  #   end
+  #   # @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
+  #   user_ids = []
+  #   if @team.member_ids.present?
+  #     @team.member_ids.split(",").each do |id|
+  #       user_ids << id.to_i
+  #     end
+  #   end
+  #   users = User.where(:id => user_ids, :company_id => @id, :delete_flag => 0)
+  #   all_users = users.sort_by &:create_time
+  #   users_count = all_users.count
+  #   limit = 20
+  #   page = params[:page] || 1
+  #   @total_users = users_count
+  #   @total_pages = (@total_users/limit.to_f).ceil
+  #   if page.to_i <= 1
+  #     page    = 1
+  #     offset  = 0
+  #   else
+  #     offset  = (page.to_i * limit) - limit
+  #   end
+  #   all_users = all_users[offset, limit]
+  #   @users     = User.where(id: all_users.map(&:id)).order("id asc")
+  #   @page_now = params[:page].to_i
+  #   if @page_now == 0
+  #     @page_now = 1
+  #   end
+  #   @previous_page  = @page_now - 1
+  #   @next_page      = @page_now + 1
+  # end
 
   # def add_teams_complete
   #   params[:company_id] = @id
@@ -740,55 +740,55 @@ class CompanyController < ApplicationController
   #   redirect_to '/company/teams', notice: "登録が完了しました。"
   # end
 
-  def edit_teams
-    @users = User.where(company_id: @id, delete_flag: 0)
-    @emails = []
-    @users.each do |user|
-      @emails << user.email
-    end
-    @team = Team.find(params[:team_id])
-    if @team.company_id == @id
-      @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
-      @departments = Department.where(:company_id => @id, :delete_flag => 0)
-      @members = []
-      if @team.member_ids.present?
-        @team.member_ids.split(",").each do |mem|
-          unless mem.to_i == 0
-            @members << User.find_by(id: mem.to_i, delete_flag: 0)
-          end
-        end
-      end
-    else
-      redirect_to '/company/teams'
-    end
-  end
+  # def edit_teams
+  #   @users = User.where(company_id: @id, delete_flag: 0)
+  #   @emails = []
+  #   @users.each do |user|
+  #     @emails << user.email
+  #   end
+  #   @team = Team.find(params[:team_id])
+  #   if @team.company_id == @id
+  #     @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
+  #     @departments = Department.where(:company_id => @id, :delete_flag => 0)
+  #     @members = []
+  #     if @team.member_ids.present?
+  #       @team.member_ids.split(",").each do |mem|
+  #         unless mem.to_i == 0
+  #           @members << User.find_by(id: mem.to_i, delete_flag: 0)
+  #         end
+  #       end
+  #     end
+  #   else
+  #     redirect_to '/company/teams'
+  #   end
+  # end
 
-  def edit_teams_complete
-    @team = Team.find(params[:team_id])
-    if @team.company_id == @id
-      @member_ids = []
-      if params[:members].reject(&:blank?).blank?
-        redirect_to "/company/teams/edit/#{@team.id}", notice: "少なくとも一人以上の社員を登録してください。"
-        return
-      end
-      members = params[:members].delete_if{|n| n.empty? }
-      members.each do |mem|
-        user = User.find_by(email: mem, delete_flag: 0)
-        if user.present?
-          @member_ids << user.id.to_s
-        else
-          redirect_to "/company/teams/edit/#{@team.id}", notice: "登録できませんでした。メールアドレスが一致しません。"
-          return
-        end
-      end
-      @member_ids.uniq!
-      params[:member_ids] = @member_ids.join(",")
-      @team.save_record(params)
-      redirect_to '/company/teams'
-    else
-      redirect_to '/company/teams'
-    end
-  end
+  # def edit_teams_complete
+  #   @team = Team.find(params[:team_id])
+  #   if @team.company_id == @id
+  #     @member_ids = []
+  #     if params[:members].reject(&:blank?).blank?
+  #       redirect_to "/company/teams/edit/#{@team.id}", notice: "少なくとも一人以上の社員を登録してください。"
+  #       return
+  #     end
+  #     members = params[:members].delete_if{|n| n.empty? }
+  #     members.each do |mem|
+  #       user = User.find_by(email: mem, delete_flag: 0)
+  #       if user.present?
+  #         @member_ids << user.id.to_s
+  #       else
+  #         redirect_to "/company/teams/edit/#{@team.id}", notice: "登録できませんでした。メールアドレスが一致しません。"
+  #         return
+  #       end
+  #     end
+  #     @member_ids.uniq!
+  #     params[:member_ids] = @member_ids.join(",")
+  #     @team.save_record(params)
+  #     redirect_to '/company/teams'
+  #   else
+  #     redirect_to '/company/teams'
+  #   end
+  # end
 
   # def delete_teams
   #   result =  Team.find(params[:id])

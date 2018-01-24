@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       collection {post :export_all_posts}
     end
     resources :teams
+    resources :departments
   end
 
   get "bad_request" => "top#bad_request"
