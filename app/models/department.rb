@@ -10,6 +10,8 @@ class Department < ActiveRecord::Base
 
   validates :dep_name , presence: true , length: {maximum: 30}
 
+  scope :of_company, -> (company_id){where(company_id: company_id)}
+  scope :available, -> {where(delete_flag: 0)}
 
   def save_record(params)
     self.dep_name	= params[:dep_name]
