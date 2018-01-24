@@ -1,0 +1,13 @@
+<h3>チーム一覧</h3>
+<div style="line-height:1.7em;overflow-y:scroll;height: 420px;margin-top: 20px;">
+  <ul>
+    <% @deps.each do |dep| %>
+      <li><%= dep.dep_name %></li>
+      <ul>
+        <% dep.teams.each do |team| %>
+          <li><%= link_to team.team_name, admin_team_path(team.id), style: "text-decoration:none;" %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </ul>
+</div>
