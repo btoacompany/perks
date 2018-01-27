@@ -61,7 +61,7 @@ class Admin::TeamsController < Admin::Base
 
   private
   def sidebar 
-    @deps = Department.of_company(@company.id).available
+    @departments = Department.of_company(@company.id).available
   end
 
   def display_team

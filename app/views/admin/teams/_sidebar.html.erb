@@ -1,7 +1,7 @@
 <h3>部署・チーム一覧</h3>
 <div style="line-height:1.7em;overflow-y:scroll;height: 420px;margin-top: 20px;">
   <ul>
-    <% @deps.each do |dep| %>
+    <% @departments.each do |dep| %>
       <li><%= dep.dep_name %></li>
       <ul>
         <% dep.teams.each do |team| %>
