@@ -1,5 +1,5 @@
 class Admin::DepartmentsController < Admin::Base
-  before_action :sidebar, only: [:new, :create, :edit, :update]
+  before_action :sidebar, only: [:new, :create, :edit, :update, :destroy]
 
   def new
     @department = Department.new
@@ -18,11 +18,11 @@ class Admin::DepartmentsController < Admin::Base
   end
 
   def edit
-    @department = Department.find(params[:id])
+    @department = @departments.find(params[:id])
   end
 
   def update
-    @department = Department.find(params[:id])
+    @department = @departments.find(params[:id])
     if @department.update_attribute(:dep_name, params[:dep_name])
       redirect_to admin_teams_path, notice: "部署名を変更しました"
     else
@@ -31,6 +31,9 @@ class Admin::DepartmentsController < Admin::Base
   end
 
   def destroy
+    @department = @departments.find(params[:id])
+    @department.delete_record
+    redirect_to admin_teams_path, notice: "部署名を削除しました"
   end
 
   def sidebar 

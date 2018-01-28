@@ -2,10 +2,10 @@
   <%= render "/company/admin_subheader" %>
 
   <div id="admin_contents" class="c_align width-100-percent">
-    <div class="float_left width-20-percent" style="text-align: left;padding: 10px 30px;">
+    <div class="float_left width-25-percent" style="text-align: left;padding: 10px 30px;">
       <%= render "sidebar" %>
     </div>
-    <div class="float_left width-80-percent" style="padding: 30px 30px; text-align: left;">
+    <div class="float_left width-75-percent" style="padding: 30px 30px; text-align: left;">
       <h3 style="display: inline;"><%= @team.department.try(:dep_name) %> <%= @team.team_name %>に所属する社員一覧</h3>
       <%= link_to "（編集する）", edit_admin_team_path(@team.id), style: "text-decoration:none;" %>
       <div class="toolbox">

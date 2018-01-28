@@ -2,13 +2,14 @@
   <%= render "/company/admin_subheader" %>
 
   <div id="admin_contents" class="c_align width-100-percent">
-    <div class="float_left width-20-percent" style="text-align: left;padding: 10px 30px;">
+    <div class="float_left width-25-percent" style="text-align: left;padding: 10px 30px;">
       <%= render "sidebar" %>
     </div>
-    <div class="float_left width-80-percent" style="text-align: left;padding: 0px 30px;">
+    <div class="float_left width-75-percent" style="text-align: left;padding: 0px 30px;border-left:1px solid black;">
+      <p style="margin: 10px;color: red;"><%= flash[:notice] if flash[:notice] %></p>
       <ul>
-        <li><h3><%= link_to "部署を追加する", new_admin_department_path, style: "text-decoration: none;" %></h3></li>
-        <li><h3><%= link_to "チームを追加する", new_admin_team_path, style: "text-decoration: none;" %></h3></li>
+        <li><%= link_to "部署を追加する", new_admin_department_path, style: "text-decoration: none;" %></li>
+        <li><%= link_to "チームを追加する", new_admin_team_path, style: "text-decoration: none;" %></li>
       </ul>
     </div>
   </div>

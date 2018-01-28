@@ -2,10 +2,10 @@
   <%= render "/company/admin_subheader" %>
 
   <div id="admin_contents" class="c_align width-100-percent">
-    <div class="float_left width-20-percent" style="text-align: left;padding: 10px 30px;">
+    <div class="float_left width-25-percent" style="text-align: left;padding: 10px 30px;">
       <%= render "sidebar" %>
     </div>
-    <div class="float_left width-80-percent" style="text-align: left;padding: 10px 30px;">
+    <div class="float_left width-75-percent" style="text-align: left;padding: 10px 30px;">
       <h3>チーム編集</h3>
       <p style="margin: 10px;color: red;"><%= flash[:notice] if flash[:notice] %></p>
       <%= form_tag( "/admin/teams/#{@team.id}", method: "patch") do %>

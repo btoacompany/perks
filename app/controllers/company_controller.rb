@@ -804,17 +804,17 @@ class CompanyController < ApplicationController
   #   redirect_to '/company/teams'
   # end
 
-  def edit_departments
-    @department = Department.find(params[:id])
-    render :json => {:dep_id => @department.id , :name => @department.dep_name}
-  end
+  # def edit_departments
+  #   @department = Department.find(params[:id])
+  #   render :json => {:dep_id => @department.id , :name => @department.dep_name}
+  # end
 
-  def edit_departments_complete
-    @department = Department.find(params[:dep_id].to_i)
-    @department.dep_name = params[:dep_name]
-    @department.save
-    redirect_to '/company/teams'
-  end
+  # def edit_departments_complete
+  #   @department = Department.find(params[:dep_id].to_i)
+  #   @department.dep_name = params[:dep_name]
+  #   @department.save
+  #   redirect_to '/company/teams'
+  # end
 
   # def delete_departments
   #   result =  Department.find(params[:id])
