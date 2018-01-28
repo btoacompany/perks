@@ -649,32 +649,32 @@ class CompanyController < ApplicationController
     redirect_to '/company/employees'
   end
 
-  # def teams 
-  #   @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
-  #   @departments = Department.where(:company_id => @id, :delete_flag => 0).order(sort: :asc)
-  #   @department = Department.new
-  #   teams = Team.where(:company_id => @id, :delete_flag => 0).order(sort: :asc)
-  #   all_teams = teams.sort_by &:create_time
-  #   teams_count = all_teams.count
-  #   limit = 10
-  #   page = params[:page] || 1
-  #   @total_teams = teams_count
-  #   @total_pages = (@total_teams/limit.to_f).ceil
-  #   if page.to_i <= 1
-  #     page    = 1
-  #     offset  = 0
-  #   else
-  #     offset  = (page.to_i * limit) - limit
-  #   end
-  #   all_teams = all_teams[offset, limit]
-  #   @teams     = Team.where(id: all_teams.map(&:id)).order(sort: :asc)
-  #   @page_now = params[:page].to_i
-  #   if @page_now == 0
-  #     @page_now = 1
-  #   end
-  #   @previous_page  = @page_now - 1
-  #   @next_page      = @page_now + 1
-  # end
+  def teams 
+    @managers = User.where(:company_id => @id, :delete_flag => 0, :manager_flag => 1)
+    @departments = Department.where(:company_id => @id, :delete_flag => 0).order(sort: :asc)
+    @department = Department.new
+    teams = Team.where(:company_id => @id, :delete_flag => 0).order(sort: :asc)
+    all_teams = teams.sort_by &:create_time
+    teams_count = all_teams.count
+    limit = 10
+    page = params[:page] || 1
+    @total_teams = teams_count
+    @total_pages = (@total_teams/limit.to_f).ceil
+    if page.to_i <= 1
+      page    = 1
+      offset  = 0
+    else
+      offset  = (page.to_i * limit) - limit
+    end
+    all_teams = all_teams[offset, limit]
+    @teams     = Team.where(id: all_teams.map(&:id)).order(sort: :asc)
+    @page_now = params[:page].to_i
+    if @page_now == 0
+      @page_now = 1
+    end
+    @previous_page  = @page_now - 1
+    @next_page      = @page_now + 1
+  end
 
   # def team_show
   #   @team = Team.find(params[:id])
@@ -804,17 +804,17 @@ class CompanyController < ApplicationController
   #   redirect_to '/company/teams'
   # end
 
-  # def edit_departments
-  #   @department = Department.find(params[:id])
-  #   render :json => {:dep_id => @department.id , :name => @department.dep_name}
-  # end
+  def edit_departments
+    @department = Department.find(params[:id])
+    render :json => {:dep_id => @department.id , :name => @department.dep_name}
+  end
 
-  # def edit_departments_complete
-  #   @department = Department.find(params[:dep_id].to_i)
-  #   @department.dep_name = params[:dep_name]
-  #   @department.save
-  #   redirect_to '/company/teams'
-  # end
+  def edit_departments_complete
+    @department = Department.find(params[:dep_id].to_i)
+    @department.dep_name = params[:dep_name]
+    @department.save
+    redirect_to '/company/teams'
+  end
 
   # def delete_departments
   #   result =  Department.find(params[:id])

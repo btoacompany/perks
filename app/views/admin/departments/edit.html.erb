@@ -1,0 +1,28 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+  <div id="admin_contents" class="c_align width-100-percent">
+    <div class="float_left width-20-percent" style="text-align: left;padding: 10px 30px;">
+      <%= render "admin/teams/sidebar" %>
+    </div>
+    <div class="float_left width-80-percent" style="text-align: left;padding: 10px 30px;">
+      <h3>新しく部署を編集する</h3>
+      <p style="margin: 10px;color: red;"><%= flash[:notice] if flash[:notice] %></p>
+      <%= form_tag( admin_department_path(@department.id), method: "patch") do %>
+        <div class="toolbox">
+          <table class="admin_table" style="margin: 10px 0px;">
+            <tr>
+              <th>部署名</th>
+              <td>
+                <input type="text" name="dep_name" size="50" maxlength="50" value=<%= @department.dep_name %> required />
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+          <input type="submit" value="送信" class="btn_submit btn btn_bottom" style="width:80px;height:30px;"/>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>
