@@ -6,8 +6,6 @@
     <% else %>登録済 
     <% end %>
   </td>
-  <td><%= item[:in_points] %></td>
-  <td><%= item[:out_points] %></td>
   <% unless controller.controller_name == "company" && controller.action_name == "team_show" %>
   <td align="center">
     <input type="checkbox" class="chk_admin" data-id="<%= item[:id] %>" value="1" <% if item[:admin] == 1 %> checked <% end %> <% if (item[:id] == @user_id) %> disabled readonly <% end %>/>

@@ -1,65 +1,67 @@
 <div id="admin_wrapper">
-<div class="admin_subheader">
-  <ul class="admin_list">
-    <li><%= link_to "会社情報", "/company/details" %></li>
-    <li class="admin_li"><%= link_to "カスタマイズ","/company/customize" %></li>
-    <li class="admin_li_checked"><%= link_to "部署・チーム情報","/company/teams" %></li>
-    <li><%= link_to "社員情報","/company/employees" %></li>
-    <li><%= link_to "ギフト","/company/rewards" %></li>
-    <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
-    <li><%= link_to "特別ボーナス","/company/bonus" %></li>
-    <li><%= link_to "Slack連携", "/integration/slack"%></li>
-    <div class="clearfix"></div>
-  </ul>
-</div>
+  <div class="admin_subheader">
+    <ul class="admin_list">
+      <li><%= link_to "会社情報", "/company/details" %></li>
+      <li class="admin_li"><%= link_to "カスタマイズ","/company/customize" %></li>
+      <li class="admin_li_checked"><%= link_to "部署・チーム情報","/company/teams" %></li>
+      <li><%= link_to "社員情報","/company/employees" %></li>
+      <li><%= link_to "ギフト","/company/rewards" %></li>
+      <li><%= link_to "ギフト申請一覧","/company/rewards/request" %></li>
+      <li><%= link_to "特別ボーナス","/company/bonus" %></li>
+      <li><%= link_to "Slack連携", "/integration/slack"%></li>
+      <div class="clearfix"></div>
+    </ul>
+  </div>
 
-<div id="admin_contents" class="c_align">
-  <h3 align="center">チーム編集</h3><br>
-  <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
-  <%= form_tag( "/company/teams/edit/#{@team.id}/complete", method: "post", id: "new_form", autocomplete: "off" ) do %>
-  <div class="toolbox center">
-  <table class="admin_table">
-      <th>チーム名</th>
-      <td><input type="text" name="team_name" size="50" maxlength="50" required autocomplete="new-email" value="<%= @team.team_name %>" /></td>
-    </tr>
-    <tr>
-      <th>部署名</th>
-      <td align="left">
-        <select id="department_id" name="department_id" style="width: 200px;">
-          <option value=""></option>
-          <% @departments.each do | dept | %>
-            <option value=<%= dept.id %> <%if @team.department_id == dept.id %> selected <% end %>>
-              <%= dept[:dep_name] %>
-            </option>
-          <% end %>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <th>所属社員</th>
-      <td style="text-align: left;">
-        <input type="text" id="suggested_name" name="members[]" value="" size="32" style="width: 200px;"/>    <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
-        <div id="suggest" style="display:none;"></div>
-        <br><br>
-        <div id="adding_member">
-          <% @members.each do |mem| %>
-            <% if mem %>
-              <input type="text" name="members[]" value="<%= mem.try(:email) %>" size="32" style="width: 200px;"/><br>
-            <% end %>
-          <% end %>
-        </div>
-      </td>
-    </tr>
-    </table>
-  </div><br><br>
+  <div id="admin_contents" class="c_align">
+    <h3 align="center">チーム編集</h3><br>
+    <% if flash[:notice] %><p class="c_align notice"><b><i><%= flash[:notice] %></i></b></p><% end %>
+    <%= form_tag( "/company/teams/edit/#{@team.id}/complete", method: "post", id: "new_form", autocomplete: "off" ) do %>
+      <div class="toolbox center">
+        <table class="admin_table">
+          <tr>
+            <th>チーム名</th>
+            <td>
+              <input type="text" name="team_name" size="50" maxlength="50" required autocomplete="new-email" value="<%= @team.team_name %>" />
+            </td>
+          </tr>
+          <tr>
+            <th>部署名</th>
+            <td align="left">
+              <select id="department_id" name="department_id" style="width: 200px;">
+                <option value=""></option>
+                <% @departments.each do | dept | %>
+                  <option value=<%= dept.id %> <%if @team.department_id == dept.id %> selected <% end %>>
+                    <%= dept[:dep_name] %>
+                  </option>
+                <% end %>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>所属社員</th>
+            <td style="text-align: left;">
+              <input type="text" id="suggested_name" name="members[]" value="" size="32" style="width: 200px;"/>    <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+              <div id="suggest" style="display:none;"></div>
+              <br><br>
+              <div id="adding_member">
+                <% @members.each do |mem| %>
+                  <% if mem %>
+                    <input type="text" name="members[]" value="<%= mem.try(:email) %>" size="32" style="width: 200px;"/><br>
+                  <% end %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div><br><br>
   
-  <p align="center">
-    <input type="button" value="戻る" class="btn_back btn btn_bottom" style="width:80px;height:30px"/>
-    <input type="submit" value="送信" class="btn_submit btn btn_bottom" style="width:80px;height:30px;"/>
-  </p>
-  <% end %>
-</div>
-</div> <!-- contents -->
+      <p align="center">
+        <input type="button" value="戻る" class="btn_back btn btn_bottom" style="width:80px;height:30px"/>
+        <input type="submit" value="送信" class="btn_submit btn btn_bottom" style="width:80px;height:30px;"/>
+      </p>
+    <% end %>
+  </div>
 </div> <!-- wrapper -->
 
 <script type="text/javascript">

@@ -1,0 +1,37 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+  <div id="admin_contents" class="c_align width-100-percent">
+    <div class="float_left width-25-percent" style="text-align: left;padding: 10px 30px;">
+      <%= render "sidebar" %>
+    </div>
+    <div class="float_left width-75-percent" style="padding: 30px 30px; text-align: left;">
+      <h3 style="display: inline;"><%= @team.department.try(:dep_name) %> <%= @team.team_name %>に所属する社員一覧</h3>
+      <%= link_to "（編集する）", edit_admin_team_path(@team.id), style: "text-decoration:none;" %>
+      <div class="toolbox">
+        <% if @members.count == 0 %>
+          <p style="margin-top:10px;"><%= link_to "社員を追加する", edit_admin_team_path(@team.id), style: "text-decoration:none;" %></p><br>
+        <% else %>
+          <table class="tbl_tools width-100-percent" border="1" style="margin-top: 10px;text-align: center;">
+            <tr>
+              <th>名前</th>
+              <th>メールアドレス</th>
+              <th>ステータス</th>
+              <th>社員情報編集</th>
+            </tr>
+            <% @members.each do | item | %>
+              <tr>
+                <td class="width-20-percent"><%= "#{item.try(:lastname)} #{item.try(:firstname)}" %></td>
+                <td class="width-20-percent"><%= item.try(:email) %></td>
+                <td class="width-10-percent"><%= item.try(:verified) == 0 ? "保留" : "登録済" %></td>
+                <td class="width-10-percent">
+                  <%= link_to "編集", edit_admin_employee_path(item[:id]), class: "btn" ,style: "text-decoration: none;color:white;padding: 8px;" %>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
