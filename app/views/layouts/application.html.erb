@@ -70,7 +70,7 @@
   <%= render "shared/header"%>
   <%= yield %>
   <%= render "shared/footer"%>
-<% elsif controller.controller_name == "company"%>
+<% elsif controller.controller_name == "company" %>
   <% if controller.controller_name == "company" && controller.action_name == "create" %>
     <%= yield %>
   <% elsif controller.controller_name == "company" && controller.action_name == "create_complete" %>
@@ -79,7 +79,7 @@
     <%= render "shared/header"%>
     <%= yield %>
     <%= render "shared/footer"%>
-    <% end %>
+  <% end %>
 <% elsif controller.controller_name == "/admin/posts" %>
   <%= render "shared/header"%>
   <%= yield %>
@@ -107,7 +107,7 @@
   <% else %>
     <%= render "shared/header"%>
     <%= yield %>
-    <div class="footer_wrapper">
+    <div class="">
       <%= render "shared/footer"%>
     </div>
   <% end %>

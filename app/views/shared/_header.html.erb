@@ -24,7 +24,7 @@
     </div>
   </div> <!-- header -->
 
-<% elsif (request.path.include?("company") && (controller.controller_name == "company" && controller.action_name != "arti")) || (controller.controller_name == "articles" && controller.action_name != "show") || controller.controller_name == "user_posted_contents" || controller.controller_name == "banners" || request.path.include?("admin/contacts") %>
+<% elsif (request.path.include?("company") && (controller.controller_name == "company" && controller.action_name != "arti")) || (controller.controller_name == "articles" && controller.action_name != "show") || controller.controller_name == "user_posted_contents" || controller.controller_name == "banners" || request.path.include?("admin/contacts") || controller.class.parents.include?(Admin) %>
   <div id="admin_header">
     <div class="contents">
       <div class="menu_panel">

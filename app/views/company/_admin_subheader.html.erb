@@ -10,10 +10,10 @@
     <% else %>
       <li><%= link_to "カスタマイズ", company_customize_path %></li>
     <% end %>
-    <% if params[:controller] == "company" && params[:action] == "teams" %>
-      <li class="admin_li_checked"><%= link_to "部署・チーム情報", company_teams_path %></li>
+    <% if params[:controller] == "company" && params[:action] == "teams" || (controller.class.parents.include?(Admin) && params[:controller] == "admin/teams") %>
+      <li class="admin_li_checked"><%= link_to "部署・チーム情報", admin_teams_path %></li>
     <% else %>
-      <li><%= link_to "部署・チーム情報", company_teams_path %></li>
+      <li><%= link_to "部署・チーム情報", admin_teams_path %></li>
     <% end %>
     <% if params[:controller] == "company" && (params[:action] == "employees" || params[:action] == "register_employees" || params[:action] == "add_employees") %>
       <li class="admin_li_checked"><%= link_to "社員情報", company_employees_path %></li>

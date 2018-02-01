@@ -1,0 +1,80 @@
+<div id="admin_wrapper">
+  <%= render "/company/admin_subheader" %>
+
+  <div id="admin_contents" class="c_align width-100-percent">
+    <div class="float_left width-25-percent" style="text-align: left;padding: 10px 30px;">
+      <%= render "sidebar" %>
+    </div>
+    <div class="float_left width-75-percent" style="text-align: left;padding: 10px 30px;">
+      <h3>チーム編集</h3>
+      <p style="margin: 10px;color: red;"><%= flash[:notice] if flash[:notice] %></p>
+      <%= form_tag( "/admin/teams/#{@team.id}", method: "patch") do %>
+        <div class="toolbox">
+          <table class="admin_table" style="margin: 10px 0px;">
+            <tr>
+              <th>チーム名</th>
+              <td>
+                <input type="text" name="team_name" size="50" maxlength="50" required autocomplete="new-email" value="<%= @team.team_name %>" />
+              </td>
+            </tr>
+            <tr>
+              <th>部署名</th>
+              <td align="left">
+                <select id="department_id" name="department_id" style="width: 200px;">
+                  <option value=""></option>
+                  <% @deps.each do | dept | %>
+                    <option value=<%= dept.id %> <%if @team.department_id == dept.id %> selected <% end %>>
+                      <%= dept[:dep_name] %>
+                    </option>
+                  <% end %>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th>所属社員</th>
+              <td>
+                <input type="text" id="suggested_name" name="members[]" value="" size="32" style="width: 200px;"/>    <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+                <div id="suggest" style="display:none;"></div>
+                <div id="adding_member">
+                  <% @members.each do |mem| %>
+                    <input type="text" name="members[]" value="<%= mem.try(:email) %>" size="32" style="width: 200px;"/><br>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+          <input type="submit" value="送信" class="btn_submit btn btn_bottom" style="width:80px;height:30px;"/>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(".btn_change_password").click(function() {
+    var addedname = $(':text[id="suggested_name"]').val();
+    var element = document.createElement('input');
+    element.setAttribute("name", "members[]"); 
+    element.setAttribute("value", addedname);
+    element.setAttribute("type", "text");
+    element.setAttribute("size", "32"); 
+    element.setAttribute("style", "display:block; width: 200px;"); 
+    $("#adding_member").append(element);
+    $(':text[id="suggested_name"]').val("");
+  });
+
+  function startSuggest() {
+    new Suggest.LocalMulti(
+      "suggested_name",    // 入力のエレメントID
+      "suggest", // 補完候補を表示するエリアのID
+      <%= raw @emails %>,
+      {dispMax: 10, interval: 1000, prefix: true}); // オプション
+  }
+
+  window.addEventListener ?
+  window.addEventListener('load', startSuggest, false) :
+  window.attachEvent('onload', startSuggest);
+</script>
