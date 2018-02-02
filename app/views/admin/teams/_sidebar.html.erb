@@ -1,5 +1,5 @@
 <h3>部署・チーム一覧</h3>
-<div style="line-height:1.7em;overflow-y:scroll;height: 420px;margin-top: 20px;">
+<div style="line-height:1.7em;overflow-y:scroll;height: 420px;margin-top: 20px;border-right:1px solid gray;">
   <ul>
     <% @departments.each do |dep| %>
       <li>
@@ -9,7 +9,7 @@
         <%= link_to "削除）", admin_department_path(dep.id), method: :delete, style: "text-decoration:none;", data: {confirm: "当該の部署に属するチームも削除されます。本当に削除しますか？"} %>
       </li>
       <ul>
-        <% dep.teams.each do |team| %>
+        <% dep.teams.of_company(@company.id).each do |team| %>
           <li><%= link_to team.team_name, admin_team_path(team.id), style: "text-decoration:none;" %></li>
         <% end %>
       </ul>

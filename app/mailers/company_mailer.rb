@@ -28,7 +28,7 @@ class CompanyMailer < ActionMailer::Base
     mail(to: email, subject: @subject)
   end
 
-  def remind_mail(email, subject)
+  def recommend_mail(email, subject)
     mail(to: data[:email], subject: "メッセージを書いてみませんか？")
   end
 end

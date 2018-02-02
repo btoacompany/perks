@@ -1,6 +1,6 @@
 class Admin::TeamsController < Admin::Base
   before_action :sidebar, only: [:index, :new, :show, :edit, :update]
-  before_action :display_team, only: [:show, :edit, :update]
+  before_action :display_team, only: [:show, :edit, :update, :destroy]
   before_action :suggestions, only: [:new, :create, :edit, :update]
 
   def index
@@ -57,6 +57,14 @@ class Admin::TeamsController < Admin::Base
   end
 
   def destroy
+    team = @teams.find(params[:id])
+    if team
+      team.destroy
+      redirect_to admin_teams_path, notice: "チームを削除しました"
+    else
+      flash[:notice] = ""
+      render :edit
+    end
   end
 
   private
@@ -65,7 +73,8 @@ class Admin::TeamsController < Admin::Base
   end
 
   def display_team
-    @team = Team.find_by(id: params[:id], company_id: @company.id)
+    @teams = Team.of_company(@company.id).available
+    @team = @teams.find(params[:id])
     member_ids = Array.new
     @team.member_ids.split(",").map { |id| member_ids.push(id.to_i) } if @team.member_ids.present?
     @members = User.of_company(@company.id).available.where(id: member_ids)
