@@ -7,7 +7,9 @@
     </div>
     <div class="float_left width-75-percent" style="padding: 30px 30px; text-align: left;">
       <h3 style="display: inline;"><%= @team.department.try(:dep_name) %> <%= @team.team_name %>に所属する社員一覧</h3>
-      <%= link_to "（編集する）", edit_admin_team_path(@team.id), style: "text-decoration:none;" %>
+      <%= link_to "（編集", edit_admin_team_path(@team.id), style: "text-decoration:none;" %>
+        <span> / </span>
+        <%= link_to "削除）", admin_team_path(@team.id), method: :delete, style: "text-decoration:none;", data: {confirm: "本当に削除しますか？"} %>
       <div class="toolbox">
         <% if @members.count == 0 %>
           <p style="margin-top:10px;"><%= link_to "社員を追加する", edit_admin_team_path(@team.id), style: "text-decoration:none;" %></p><br>

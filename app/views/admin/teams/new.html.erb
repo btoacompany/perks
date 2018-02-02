@@ -21,7 +21,7 @@
               <th>部署名</th>
               <td align="left">
                 <select id="department_id" name="department_id" style="width: 200px;">
-                  <% @deps.each do | dept | %>
+                  <% @departments.each do | dept | %>
                     <option value=<%= dept.id %>>
                       <%= dept[:dep_name] %>
                     </option>

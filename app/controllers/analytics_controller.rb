@@ -2,7 +2,7 @@ class AnalyticsController < ApplicationController
 
   before_filter :init, :authenticate_user
   before_action :ip_address_limit
-  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints]
+  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints, :teams]
   before_action :restrict_access_by_smartphone
 
   def init
@@ -68,6 +68,24 @@ class AnalyticsController < ApplicationController
     #   end
     # end
     # end
+  end
+
+  def teams
+    @departments = Department.where(company_id: @company.id, delete_flag: 0).order(sort: :asc)
+    @teams = Team.of_company(@company.id)
+    if params[:team_id]
+      @team = Team.find(params[:team_id])
+      @posts = Post.of_company(@company.id).available.create_time(@period).where(user_id: @team.member_ids.split(",")).group('date(create_time)').count
+      @points = Post.of_company(@company.id).available.create_time(@period).where(user_id: @team.member_ids.split(",")).group('date(create_time)').sum(:points)
+    end
+    @period.each do |date|
+      @posts.store(date, 0) unless @posts.has_key?(date)
+      @points.store(date, 0) unless @points.has_key?(date)
+    end
+    @posts = Hash[ @posts.sort ]
+    @points = Hash[ @points.sort ]
+    logger.debug(@points)
+    logger.debug(@posts)
   end
 
   def index

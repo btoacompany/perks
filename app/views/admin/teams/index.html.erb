@@ -5,11 +5,11 @@
     <div class="float_left width-25-percent" style="text-align: left;padding: 10px 30px;">
       <%= render "sidebar" %>
     </div>
-    <div class="float_left width-75-percent" style="text-align: left;padding: 0px 30px;border-left:1px solid black;">
+    <div class="float_left width-75-percent" style="text-align: left;padding: 10px 30px;">
       <p style="margin: 10px;color: red;"><%= flash[:notice] if flash[:notice] %></p>
-      <ul>
-        <li><%= link_to "部署を追加する", new_admin_department_path, style: "text-decoration: none;" %></li>
-        <li><%= link_to "チームを追加する", new_admin_team_path, style: "text-decoration: none;" %></li>
+      <ul">
+        <li><%= link_to "部署を追加する", new_admin_department_path, style: "font-weight:bold;font-size: 1.17em;text-decoration:none;line-height: 3em;" %></li>
+        <li><%= link_to "チームを追加する", new_admin_team_path, style: "font-weight:bold;font-size: 1.17em;text-decoration:none;line-height: 3em;" %></li>
       </ul>
     </div>
   </div>

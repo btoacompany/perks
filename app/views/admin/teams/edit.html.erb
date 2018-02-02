@@ -22,7 +22,7 @@
               <td align="left">
                 <select id="department_id" name="department_id" style="width: 200px;">
                   <option value=""></option>
-                  <% @deps.each do | dept | %>
+                  <% @departments.each do | dept | %>
                     <option value=<%= dept.id %> <%if @team.department_id == dept.id %> selected <% end %>>
                       <%= dept[:dep_name] %>
                     </option>

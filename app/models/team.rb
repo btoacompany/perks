@@ -10,8 +10,8 @@ class Team < ActiveRecord::Base
   validates :team_name, presence: true
   validates :member_ids, presence: true
 
-  scope :of_company, ->(company_id) { where(company_id: company_id) }
-  scope :available, -> { where(delete_flag: 0) }
+  scope :of_company, ->(company_id){where(company_id: company_id)}
+  scope :available, -> {where(delete_flag: 0)}
 
   def save_record(params)
     self.department_id	= params[:department_id].to_i if params[:department_id].present?
