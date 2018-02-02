@@ -86,6 +86,47 @@ class AnalyticsController < ApplicationController
     @points = Hash[ @points.sort ]
     logger.debug(@points)
     logger.debug(@posts)
+
+    logger.debug("-----")
+
+
+    results = Array.new
+    users = User.of_company(@company.id).available.where(id: @team.member_ids.split(","))
+    posts = Post.of_company(@company.id).available.create_time(@period)
+    # teams = Team.of_company(@company.id)
+
+    users.each do |user|
+      count = 0
+      point = 0
+      posts.each do |post|
+        if post.receiver_id.present? && post.receiver_id.include?(user.id.to_s)
+          count = count + 1
+          point = point + post.points
+        end
+      end
+      results.push({user_id: user.id, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
+    end
+    @received_point_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
+
+    logger.debug("-----")
+
+    posts = Post.of_company(@company.id).available.create_time(@period).where(user_id: @team.member_ids.split(","))
+
+    users.each do |user|
+      count = 0
+      point = 0
+      posts.each do |post|
+        if post.user_id.present? && post.user_id == user.id
+          count = count + 1
+          point = point + post.points
+        end
+      end
+      results.push({user_id: user.id, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
+    end
+
+    @giver_point_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
+
+
   end
 
   def index
@@ -114,7 +155,7 @@ class AnalyticsController < ApplicationController
       results.push({user_id: user.id, team: team, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
     end
     @count_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
-    @point_ranking = results.sort{|a, b| a[:point] <=> b[:count]}.reverse
+    @point_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
   end
 
   def giver

@@ -10,7 +10,6 @@
 
   <%= render 'analytics'%>
 
-
   <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;">
     <%= form_tag("/analytics/teams", method: :get) do %>
       <div class="toolbox center" >
@@ -52,6 +51,36 @@
     <% end %>
     <div id="top_receiver" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
     <div id="top_receiver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+    <p class="width-100-percent" style="font-size: 16px;color: #E0E0E3;font-weight: bold;padding: 5px;background-color: #3a3a3c;">送信数ランキング</p>
+    <table class="tbl_tools width-100-percent" border="1" style="background-color: #3a3a3c;color: #E0E0E3;" cellpadding="10px">
+      <tr>
+        <th>No</th>
+        <th>社員名</th>
+        <th>送信数</th>
+      </tr>
+      <% @giver_point_ranking.first(20).each.with_index(1) do |user, i| %>
+        <tr>
+          <td><%= i %></td>
+          <td><%= user[:name] %></td>
+          <td><%= user[:count] %></td>
+        </tr>
+      <% end %>
+    </table>
+    <p class="width-100-percent" style="font-size: 16px;color: #E0E0E3;font-weight: bold;padding: 5px;background-color: #3a3a3c;">受信数ランキング</p>
+    <table class="tbl_tools width-100-percent" border="1" style="background-color: #3a3a3c;color: #E0E0E3;" cellpadding="10px">
+      <tr>
+        <th>No</th>
+        <th>社員名</th>
+        <th>受信数</th>
+      </tr>
+      <% @received_point_ranking.first(20).each.with_index(1) do |user, i| %>
+        <tr>
+          <td><%= i %></td>
+          <td><%= user[:name] %></td>
+          <td><%= user[:count] %></td>
+        </tr>
+      <% end %>
+    </table>
   </div>
 </div>
 
