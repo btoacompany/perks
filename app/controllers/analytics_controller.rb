@@ -73,60 +73,54 @@ class AnalyticsController < ApplicationController
   def teams
     @departments = Department.where(company_id: @company.id, delete_flag: 0).order(sort: :asc)
     @teams = Team.of_company(@company.id)
+    # params[:team_id] = 25
     if params[:team_id]
       @team = Team.find(params[:team_id])
       @posts = Post.of_company(@company.id).available.create_time(@period).where(user_id: @team.member_ids.split(",")).group('date(create_time)').count
       @points = Post.of_company(@company.id).available.create_time(@period).where(user_id: @team.member_ids.split(",")).group('date(create_time)').sum(:points)
-    end
-    @period.each do |date|
-      @posts.store(date, 0) unless @posts.has_key?(date)
-      @points.store(date, 0) unless @points.has_key?(date)
-    end
-    @posts = Hash[ @posts.sort ]
-    @points = Hash[ @points.sort ]
-    logger.debug(@points)
-    logger.debug(@posts)
-
-    logger.debug("-----")
-
-
-    results = Array.new
-    users = User.of_company(@company.id).available.where(id: @team.member_ids.split(","))
-    posts = Post.of_company(@company.id).available.create_time(@period)
-    # teams = Team.of_company(@company.id)
-
-    users.each do |user|
-      count = 0
-      point = 0
-      posts.each do |post|
-        if post.receiver_id.present? && post.receiver_id.include?(user.id.to_s)
-          count = count + 1
-          point = point + post.points
-        end
+    # end
+      @period.each do |date|
+        @posts.store(date, 0) unless @posts.has_key?(date)
+        @points.store(date, 0) unless @points.has_key?(date)
       end
-      results.push({user_id: user.id, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
-    end
-    @received_point_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
+      @posts = Hash[@posts.sort]
+      @points = Hash[@points.sort]
 
-    logger.debug("-----")
+      results = Array.new
+      users = User.of_company(@company.id).available.where(id: @team.member_ids.split(","))
+      posts = Post.of_company(@company.id).available.create_time(@period)
+      # teams = Team.of_company(@company.id)
 
-    posts = Post.of_company(@company.id).available.create_time(@period).where(user_id: @team.member_ids.split(","))
-
-    users.each do |user|
-      count = 0
-      point = 0
-      posts.each do |post|
-        if post.user_id.present? && post.user_id == user.id
-          count = count + 1
-          point = point + post.points
+      users.each do |user|
+        count = 0
+        point = 0
+        posts.each do |post|
+          if post.receiver_id.present? && post.receiver_id.include?(user.id.to_s)
+            count = count + 1
+            point = point + post.points
+          end
         end
+        results.push({user_id: user.id, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
       end
-      results.push({user_id: user.id, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
+      @received_point_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
+
+
+      posts = Post.of_company(@company.id).available.create_time(@period).where(user_id: @team.member_ids.split(","))
+
+      users.each do |user|
+        count = 0
+        point = 0
+        posts.each do |post|
+          if post.user_id.present? && post.user_id == user.id
+            count = count + 1
+            point = point + post.points
+          end
+        end
+        results.push({user_id: user.id, name: "#{user.try(:lastname)}#{user.try(:firstname)}", count: count, point: point})
+      end
+      @giver_point_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
+
     end
-
-    @giver_point_ranking = results.sort{|a, b| a[:count] <=> b[:count]}.reverse
-
-
   end
 
   def index

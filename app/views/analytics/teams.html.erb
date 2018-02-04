@@ -1,9 +1,10 @@
 <div class="analytics_holder">
   <div class="analytics_time_select" >
-    <%= form_tag({:controller => 'analytics', :action => 'overall'}, :class => "analytics_form") do%>
+    <%= form_tag("/analytics/teams", method: :get, :class => "analytics_form") do%>
       期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
       <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
       <input type="submit" value="適用">
+      <% if @team.present? %><input type="hidden" name="team_id" value=<%= @team.id %>><% end %>
     <% end %>
     <div class="clearfix"></div>
   </div>
@@ -16,10 +17,10 @@
         <table class="admin_table width-30-percent"  style="border: 0px solid black">
           <tr style="border: 0px solid black">
             <td style="border: 0px solid black">
-              <select class="target_select_department width-100-percent" name="department_id">
+              <select class="target_select_department width-100-percent" name="department_id" style="width: 150px;">
                 <option value="">選択してください</option>
                 <% @departments.each do |dep| %>
-                  <% if @team.department.id == dep.id %>
+                  <% if @team.present? && @team.department.id == dep.id %>
                     <option value="<%= dep.id %>" selected><%= dep.dep_name %></option>
                   <% else %>
                     <option value="<%= dep.id %>"><%= dep.dep_name %></option>
@@ -28,10 +29,10 @@
               </select>
             </td>
             <td style="border: 0px solid black">
-              <select class="target_select_team width-100-percent" name="team_id">
+              <select class="target_select_team width-100-percent" name="team_id" style="width: 150px;">
                 <% if @teams && @teams.count > 0 %>
                   <% @teams.each do |team| %>
-                    <% if @team.id == team.id %>
+                    <% if @team.present? && @team.id == team.id %>
                       <option value="<%= team.id %>" selected><%= team.team_name %></option>
                     <% else %>
                       <option value="<%= team.id %>"><%= team.team_name %></option>
@@ -49,42 +50,46 @@
         </table>
       </div>
     <% end %>
-    <div id="top_receiver" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
-    <div id="top_receiver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
-    <p class="width-100-percent" style="font-size: 16px;color: #E0E0E3;font-weight: bold;padding: 5px;background-color: #3a3a3c;">送信数ランキング</p>
-    <table class="tbl_tools width-100-percent" border="1" style="background-color: #3a3a3c;color: #E0E0E3;" cellpadding="10px">
-      <tr>
-        <th>No</th>
-        <th>社員名</th>
-        <th>送信数</th>
-      </tr>
-      <% @giver_point_ranking.first(20).each.with_index(1) do |user, i| %>
+    <% if @posts.present? && @points.present? && @giver_point_ranking.present? && @received_point_ranking.present? %>
+      <div id="top_receiver" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+      <div id="top_receiver_points" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+      <p class="width-100-percent" style="font-size: 16px;color: #E0E0E3;font-weight: bold;padding: 5px;background-color: #3a3a3c;">送信数ランキング</p>
+      <table class="tbl_tools width-100-percent" border="1" style="background-color: #3a3a3c;color: #E0E0E3;" cellpadding="10px">
         <tr>
-          <td><%= i %></td>
-          <td><%= user[:name] %></td>
-          <td><%= user[:count] %></td>
+          <th>No</th>
+          <th>社員名</th>
+          <th>送信数</th>
         </tr>
-      <% end %>
-    </table>
-    <p class="width-100-percent" style="font-size: 16px;color: #E0E0E3;font-weight: bold;padding: 5px;background-color: #3a3a3c;">受信数ランキング</p>
-    <table class="tbl_tools width-100-percent" border="1" style="background-color: #3a3a3c;color: #E0E0E3;" cellpadding="10px">
-      <tr>
-        <th>No</th>
-        <th>社員名</th>
-        <th>受信数</th>
-      </tr>
-      <% @received_point_ranking.first(20).each.with_index(1) do |user, i| %>
+        <% @giver_point_ranking.first(20).each.with_index(1) do |user, i| %>
+          <tr>
+            <td><%= i %></td>
+            <td><%= user[:name] %></td>
+            <td><%= user[:count] %></td>
+          </tr>
+        <% end %>
+      </table>
+      <p class="width-100-percent" style="font-size: 16px;color: #E0E0E3;font-weight: bold;padding: 5px;background-color: #3a3a3c;">受信数ランキング</p>
+      <table class="tbl_tools width-100-percent" border="1" style="background-color: #3a3a3c;color: #E0E0E3;" cellpadding="10px">
         <tr>
-          <td><%= i %></td>
-          <td><%= user[:name] %></td>
-          <td><%= user[:count] %></td>
+          <th>No</th>
+          <th>社員名</th>
+          <th>受信数</th>
         </tr>
-      <% end %>
-    </table>
+        <% @received_point_ranking.first(20).each.with_index(1) do |user, i| %>
+          <tr>
+            <td><%= i %></td>
+            <td><%= user[:name] %></td>
+            <td><%= user[:count] %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+      <div style="height: 500px;">
+        <p style="color: white;margin-top: 10px;">チームを選択してください</p>
+      </div>
+    <% end %>
   </div>
 </div>
-
-
 
 <script type="text/javascript">
   $(".btn_back").click(function() {
@@ -109,6 +114,7 @@ $(".target_select_department").change(function(){
   });
 });
 
+<% if @posts.present? %>
   window.onload = function () {
     var chart = new CanvasJS.Chart("top_receiver", {
       backgroundColor: "#3a3a3c",
@@ -182,6 +188,7 @@ $(".target_select_department").change(function(){
     });
     chart.render();
   }
+<% end %>
 
 $(function() {
   $("#datepicker_start").datepicker();
