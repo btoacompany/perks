@@ -106,7 +106,7 @@ class AnalyticsController < ApplicationController
 
 
       posts = Post.of_company(@company.id).available.create_time(@period).where(user_id: @team.member_ids.split(","))
-
+      results = Array.new
       users.each do |user|
         count = 0
         point = 0

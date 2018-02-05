@@ -715,14 +715,14 @@ class UsersController < ApplicationController
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(created_at: :desc).limit(5)
 
-    receiver_ranking(@user)
+    receiver_ranking(@user)  
     giver_ranking(@user)
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
     process_posts = process_paging(posts)
 
     @posts = []
     data = {}
-
+    @send_to_user = User.find(params[:user_id]) if params[:user_id].present?
     process_posts.each do | post |
       data = process_post(post)
       @posts << data
