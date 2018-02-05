@@ -1062,4 +1062,42 @@ $(function () {
       source: target_user_names
     });
   });
+
+
+<% if @send_to_user %>
+ $(document).ready(() => {
+   //TODO : Dirty fix, merge with showModal function and call it in many locations
+   var $shade = $('<div></div>');
+    $shade
+      .attr('id', 'shade')
+      .on('click', hideModal);
+    var $modalWin = $('#modalwin');
+    var $window = $(window);
+    var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+    var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+    $modalWin
+      .before($shade)
+      .css({left: posX, top: posY})
+      .removeClass('hide')
+      .addClass('show')
+      .on('click', 'button', function () {
+        hideModal();
+      });
+    function hideModal() {
+      $('#shade').remove();
+      $('#modalwin')
+        .removeClass('show')
+        .addClass('hide');
+      }
+
+     //TODO : create function to add user in model, then call it when binding with button and here
+     let $btn = $(".btn_change_password");
+      var content = '<%= @send_to_user.lastname %>';
+      var $selected = $btn.parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
+      $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
+      var target_user_id = <%= @send_to_user.id %>;
+      $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
+    });
+<% end %>   
+
 </script>
