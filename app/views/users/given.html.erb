@@ -1098,6 +1098,7 @@ $(function () {
       $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
       var target_user_id = <%= @send_to_user.id %>;
       $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
+      console.log("test2");
     });
 <% end %>   
 
