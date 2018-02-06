@@ -1067,8 +1067,8 @@ $(function () {
 <% if @send_to_user %>
  $(document).ready(() => {
     console.log("test");
-   //TODO : Dirty fix, merge with showModal function and call it in many locations
-   var $shade = $('<div></div>');
+  //TODO : Dirty fix, merge with showModal function and call it in many locations
+    var $shade = $('<div></div>');
     $shade
       .attr('id', 'shade')
       .on('click', hideModal);
@@ -1092,7 +1092,7 @@ $(function () {
       }
 
      //TODO : create function to add user in model, then call it when binding with button and here
-     let $btn = $(".btn_change_password");
+    let $btn = $(".btn_change_password");
       var content = '<%= @send_to_user.lastname %>';
       var $selected = $btn.parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
       $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
@@ -1100,6 +1100,8 @@ $(function () {
       $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
       console.log("test2");
     });
+<% else %>
+    console.log("NG");
 <% end %>   
 
 </script>

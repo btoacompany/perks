@@ -722,7 +722,7 @@ class UsersController < ApplicationController
 
     @posts = []
     data = {}
-    @send_to_user = User.find(params[:user_id]) if params[:user_id].present?
+    @send_to_user = User.of_company(@company_id).find(params[:user_id]) if params[:user_id].present?
     process_posts.each do | post |
       data = process_post(post)
       @posts << data
