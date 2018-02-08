@@ -998,13 +998,7 @@ class UsersController < ApplicationController
 
     @user = User.find(@id)
     @departments = Department.of_company(@user.company_id).available
-
-    if @user.birthday?
-      bday = @user.birthday.to_s.split("-")
-      @b_year  = bday[0].to_i
-      @b_month = bday[1].to_i
-      @b_day   = bday[2].to_i
-    end
+    @teams = Team.of_company(@user.company_id).available
   end
 
   def invite
@@ -1109,18 +1103,31 @@ class UsersController < ApplicationController
     verified = 0
 
     unless url.include?("invite")
-      username_exist = User.where(name: params[:name], company_id: @company_id)
-      
+      username_exist = User.where(name: params[:name]).of_company(@company_id).available
+      teams = Team.of_company(@company_id).available
+
       res	= User.find(@id)
       verified	= res.verified
 
-      unless res.name == params[:name]
-      	# if username_exist.present?
-      	#   flash[:notice]      = name_exist 
-      	#   session[:redirect]  = 1
+      teams.each do |lastteam|
+        if lastteam.member_ids && lastteam.member_ids.include?(',') && lastteam.member_ids.include?(res.id.to_s)
+          test = [res.id.to_s]
+          lastteam.member_ids = (lastteam.member_ids.split(",") - (test)).join(",")
+        elsif lastteam.member_ids && lastteam.member_ids.include?(res.id.to_s)
+          lastteam.member_ids = lastteam.member_ids.delete(res.id.to_s)
+        end
+        lastteam.save
+      end
+      next_team = Team.available.of_company(@company_id).find(params[:team_id])
+      if next_team.member_ids.present? && next_team.member_ids.length > 0
+        next_team.member_ids = next_team.member_ids + ',' + res.id.to_s
+      else
+        next_team.member_ids = res.id.to_s
+      end
+      next_team.save
 
-      	#   redirect_to "/update" and return
-        if params[:password].length < 4
+      unless res.name == params[:name]
+        if params[:password].present? && params[:password].length < 4
           flash[:notice]      = password_short 
           session[:redirect]  = 1
 
