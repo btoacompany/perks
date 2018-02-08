@@ -19,7 +19,7 @@
 					<%= form_tag( "/update/complete", method: "post", id: "login_form", multipart: true ) do %>
 					  <div class="toolbox">
 					    <input type="hidden" name="fb_data" value="<%= @fb_data %>"/>
-					    <table class="center tbl_tools">
+					    <table class="center tbl_tools width-80-percent">
 					      <tr>
 									<td class="user_update_table_td">会社名</td>
 									<td><%= @user.company.name %></td>
@@ -28,6 +28,36 @@
 									<td class="user_update_table_td">メールアドレス</td>
 									<td><%= @user.email %></td>
 					      </tr>
+                <tr>
+                  <td class="user_update_table_td">会社</td>
+                  <td>
+                    <select class="target_select_department width-50-percent" name="department_id">
+                      <% @departments.each do |dep| %>
+                        <% if @department && @department.id == dep.id %>
+                          <option value="<%= dep.id %>" selected><%= dep.dep_name %></option>                    
+                        <% else %>
+                          <option value="<%= dep.id %>"><%= dep.dep_name %></option>
+                        <% end %>
+                      <% end %>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="user_update_table_td">部署</td>
+                  <td>
+                    <select class="target_select_team width-50-percent" name="team_id">
+                      <% if @teams && @teams.count > 0 %>
+                        <% @teams.each do |team| %>
+                          <% if team.member_ids.present? && team.member_ids.split(',').include?(@user.id.to_s) %>
+                            <option value="<%= team.id %>" selected=""><%= team.team_name %></option>
+                          <% else %>
+                            <option value="<%= team.id %>"><%= team.team_name %></option>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    </select>
+                  </td>
+                </tr>
 					      <tr>
 									<td class="user_update_table_td">パスワード</td>
 									<td><input type="button" value="パスワード変更" class="btn_change_password"/></td>
@@ -85,5 +115,24 @@ $(".btn_back").click(function() {
 });
 $(".btn_fb").click(function() {
   window.location = '/auth/facebook';
+});
+
+
+$(".target_select_department").change(function(){
+  $(".target_select_team").empty();
+  $.ajax({
+    url: "/select_target_department",
+    type: "POST",
+    data: {id : $(this).val()
+  },
+  success: function(data) {
+    $.each(data, function(key, value){
+      $(".target_select_team").append('<option value="'+ value[0] + '">' + value[1] + '</option>');
+    });
+  },
+  error: function(data) {
+    alert("チームが見つかりませんでした");
+  }
+  });
 });
 </script>
