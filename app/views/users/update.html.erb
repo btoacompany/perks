@@ -28,6 +28,21 @@
 									<td class="user_update_table_td">メールアドレス</td>
 									<td><%= @user.email %></td>
 					      </tr>
+                <tr>
+                  <td class="user_update_table_td">所属</td>
+                  <td>
+                    <select class="target_select_department width-100-percent" name="department_id">
+                      <option value="">選択してください</option>
+                      <% @departments.each do |dep| %>
+                        <% if @department && @department.id == dep.id %>
+                          <option value="<%= dep.id %>" selected><%= dep.dep_name %></option>                    
+                        <% else %>
+                          <option value="<%= dep.id %>"><%= dep.dep_name %></option>
+                        <% end %>
+                      <% end %>
+                    </select>
+                  </td>
+                </tr>
 					      <tr>
 									<td class="user_update_table_td">パスワード</td>
 									<td><input type="button" value="パスワード変更" class="btn_change_password"/></td>

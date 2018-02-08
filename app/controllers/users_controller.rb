@@ -997,6 +997,7 @@ class UsersController < ApplicationController
     update_details
 
     @user = User.find(@id)
+    @departments = Department.of_company(@user.company_id).available
 
     if @user.birthday?
       bday = @user.birthday.to_s.split("-")
