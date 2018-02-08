@@ -410,7 +410,7 @@ class CompanyController < ApplicationController
 
       # add_team
       if params[:team_id].present?
-        team = Team.find(team_id)
+        team = Team.find(params[:team_id])
         if team
           team.member_ids = team.member_ids + "," + @user.id.to_s
           team.save
