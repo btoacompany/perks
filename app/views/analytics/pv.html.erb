@@ -1,0 +1,64 @@
+<div class="analytics_holder">
+  <div class="analytics_time_select" >
+    <%= form_tag({:controller => 'analytics', :action => 'overall'}, :class => "analytics_form") do%>
+      期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
+      <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
+      <input type="submit" value="適用">
+    <% end %>
+    <div class="clearfix"></div>
+  </div>
+
+  <%= render 'analytics'%>
+
+  <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;">
+    <div id="pv" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("pv", {
+      backgroundColor: "#3a3a3c",
+      animationEnabled: true, 
+      animationDuration: 1000,
+      title:{
+        text: "社内利用回数",
+        fontSize: 16,
+        fontColor: "#E0E0E3"
+      },
+      axisX:{
+        labelAutoFit: false, 
+        labelFontSize: 12,
+        labelFontColor: "#E0E0E3", 
+        },
+      axisY:{
+        labelAutoFit: false, 
+        labelFontSize: 12,
+        labelFontColor: "#E0E0E3", 
+      },
+      dataPointMaxWidth: 15,
+      dataPointMinWidth: 15,
+      dataPointWidth: 15,
+      data: [              
+      {
+        type: "line",
+        color: "#ff8d07",
+        dataPoints: [
+          <% @posts.each do |key, value| %>
+            { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
+          <% end %>
+        ]
+      }
+      ]
+    });
+    chart.render();
+  }
+
+$(function() {
+  $("#datepicker_start").datepicker();
+});
+$(function() {
+  $("#datepicker_end").datepicker();
+});
+
+</script>

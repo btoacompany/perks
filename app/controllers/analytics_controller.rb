@@ -1,8 +1,11 @@
+require 'signet'
+require 'google/apis/analytics_v3'
+
 class AnalyticsController < ApplicationController
 
   before_filter :init, :authenticate_user
   before_action :ip_address_limit
-  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints, :teams]
+  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints, :teams, :pv]
   before_action :restrict_access_by_smartphone
 
   def init
@@ -552,6 +555,53 @@ class AnalyticsController < ApplicationController
       return @giver_ratio
     end
   end
+
+  def pv
+    api_key = "AIzaSyCELsI8q3c2S3-GWpBK8tc0TiSONDMxKiI"
+    analytics_pv_url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga%3A126759804&start-date=2018-02-07&end-date=2018-02-12&metrics=ga%3Apageviews&dimensions=ga%3ApagePath&sort=ga%3Apageviews&fields=query(end-date%2Csort%2Cstart-date)%2Crows%2CtotalResults&key=#{api_key}"
+
+    client = GaClient.new
+    client.authorize!
+    puts client.ga_page_view(date: "2018-02-07")
+
+=begin
+    logger.debug ENV['GOOGLE_CLIENT_ID']
+
+    client = Signet::OAuth2::Client.new({
+      client_id: ENV['GOOGLE_CLIENT_ID'],
+      client_secret: ENV['GOOGLE_CLIENT_SECRET'],
+      authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
+      scope: Google::Apis::AnalyticsV3::AUTH_ANALYTICS_READONLY,
+      redirect_uri: url_for(:action => :callback)
+    })
+
+    redirect_to client.authorization_uri.to_s
+=end
+  end
+
+=begin
+  def callback
+    client = Signet::OAuth2::Client.new({
+      client_id: ENV['GOOGLE_CLIENT_ID'],
+      client_secret: ENV['GOOGLE_CLIENT_SECRET'],
+      token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
+      redirect_uri: url_for(:action => :callback),
+      code: params[:code]
+    })
+
+    response = client.fetch_access_token!
+    session[:access_token] = response['access_token']
+    redirect_to url_for(:action => :pv_test)
+  end
+
+  def pv_test
+    client = Signet::OAuth2::Client.new(access_token: session[:access_token])
+    service = Google::Apis::AnalyticsV3::AnalyticsService.new
+    service.authorization = client
+
+    @account_summaries = service.list_account_summaries
+  end
+=end
 
   def set_period
     @start_time = params[:start_time].present? ? Date.parse(params[:start_time]) : Date.today.prev_month

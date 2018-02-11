@@ -137,6 +137,8 @@ Rails.application.routes.draw do
   get 'analytics/user/:id/given' => 'analytics#usergiven'
   get 'analytics/user/:id/received' => 'analytics#userreceived'
   get  'analytics/teams'    => 'analytics#teams'
+  get 'analytics/pv'  => 'analytics#pv'
+  #get 'analytics/callback'  => 'analytics#callback'
 
   # blog
   get '/company/articles' => 'articles#index'
