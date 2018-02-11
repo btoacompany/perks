@@ -30,7 +30,7 @@ class GaClient
     @client.authorization = Signet::OAuth2::Client.new(
       token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
       audience: 'https://accounts.google.com/o/oauth2/token',
-      scope: ['https://www.googleapis.com/auth/analytics.readonly','https://www.googleapis.com/auth/userinfo.profile'],
+      scope: ['https://www.googleapis.com/auth/analytics.readonly','https://www.googleapis.com/auth/anaytics'],
       issuer: 'prizy-553@prizy-access-log-194918.iam.gserviceaccount.com',
       #issuer: 'support.prizy@btoa-company.com',
       signing_key: signing_key
@@ -38,7 +38,7 @@ class GaClient
     @client.authorization.fetch_access_token!
   end
 
-  def client_page_view(date:)
+  def ga_page_view(date:)
     ga_id = 'ga:126759804'
 
     result = @client.execute(
