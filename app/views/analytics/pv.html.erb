@@ -1,6 +1,6 @@
 <div class="analytics_holder">
   <div class="analytics_time_select" >
-    <%= form_tag({:controller => 'analytics', :action => 'overall'}, :class => "analytics_form") do%>
+    <%= form_tag({:controller => 'analytics', :action => 'pv'}, :class => "analytics_form") do%>
       期間： <input type="text" id="datepicker_start" name="start_time" size="15" value=<%= @start_time %>> ー 
       <input type="text" id="datepicker_end" name="end_time" size="15" value= <%=@end_time %> >
       <input type="submit" value="適用">
@@ -44,7 +44,7 @@
         type: "line",
         color: "#ff8d07",
         dataPoints: [
-          <% @posts.each do |key, value| %>
+          <% @results.each do |key, value| %>
             { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
           <% end %>
         ]

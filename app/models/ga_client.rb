@@ -1,5 +1,5 @@
 require 'google/api_client'
-require 'signet'
+#require 'signet'
 
 # Google Analytics Client
 class GaClient
@@ -30,7 +30,7 @@ class GaClient
     @client.authorization = Signet::OAuth2::Client.new(
       token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
       audience: 'https://accounts.google.com/o/oauth2/token',
-      scope: ['https://www.googleapis.com/auth/analytics.readonly','https://www.googleapis.com/auth/anaytics'],
+      scope: 'https://www.googleapis.com/auth/analytics.readonly',
       issuer: 'prizy-553@prizy-access-log-194918.iam.gserviceaccount.com',
       #issuer: 'support.prizy@btoa-company.com',
       signing_key: signing_key
@@ -52,7 +52,8 @@ class GaClient
       }
     )
     body = JSON.parse(result.response.body)
-    date, page_view = body['rows']
+    page_view = body['rows']
+
     page_view
   end
 end
