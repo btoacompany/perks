@@ -2,7 +2,7 @@ class AnalyticsController < ApplicationController
 
   before_filter :init, :authenticate_user
   before_action :ip_address_limit
-  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints, :teams]
+  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints, :teams, :pv]
   before_action :restrict_access_by_smartphone
 
   def init
@@ -551,6 +551,17 @@ class AnalyticsController < ApplicationController
       @giver_ratio << (@this_week_posts.to_f - @last_week_posts.to_f) / @last_week_posts.to_f * 100
       return @giver_ratio
     end
+  end
+
+  def pv
+    @results = Pv.where(company_id: @company.id, track_date: @period).group(:track_date).count
+  end
+
+  def get_ga_pv
+    client = GaClient.new
+    client.authorize!
+    
+    pv_results = client.ga_page_view(date: "2018-02-07")
   end
 
   def set_period
