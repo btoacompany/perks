@@ -33,7 +33,7 @@
                   <td>
                     <select class="target_select_department width-50-percent" name="department_id">
                       <% @departments.each do |dep| %>
-                        <% if @department && @department.id == dep.id %>
+                        <% if @team && @team.department.id == dep.id %>
                           <option value="<%= dep.id %>" selected><%= dep.dep_name %></option>                    
                         <% else %>
                           <option value="<%= dep.id %>"><%= dep.dep_name %></option>
