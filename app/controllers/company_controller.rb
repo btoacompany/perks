@@ -226,7 +226,7 @@ class CompanyController < ApplicationController
       end
       # 全社員のid取得
       user_ids = []
-      User.where(company_id: @id, delete_flag: 0).each do |user|
+      User.of_company(@company.id).available.each do |user|
         user_ids << user.id
       end
       # 何かしらのチームに属してるid取得
@@ -257,7 +257,7 @@ class CompanyController < ApplicationController
       @teams << non_team
       @search_type = params[:search_type]
       if @search_type == "email"
-        @searched_users = User.where("email like '%" + params[:email] + "%'").where(company_id: @company.id)
+        @searched_users = User.where("email like '%" + params[:email] + "%'").of_company(@company.id).available
         @search_content = params[:email]
       elsif @search_type == "teams"
         if params[:team_selected_id] && params[:team_selected_id] != "00"
