@@ -999,6 +999,11 @@ class UsersController < ApplicationController
     @user = User.find(@id)
     @departments = Department.of_company(@user.company_id).available
     @teams = Team.of_company(@user.company_id).available
+    @teams.each do |team|
+      if team.member_ids.present? && team.member_ids.split(",").include?(@user.id.to_s)
+        @team = team
+      end
+    end
   end
 
   def invite
