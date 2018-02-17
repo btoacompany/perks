@@ -558,10 +558,10 @@ class AnalyticsController < ApplicationController
   end
 
   def get_ga_pv
-    client = GaClient.new
-    client.authorize!
+    #client = GaClient.new
+    #client.authorize!
     
-    pv_results = client.ga_page_view(date: "2018-02-07")
+    #pv_results = client.ga_page_view(date: "2018-02-07")
   end
 
   def set_period

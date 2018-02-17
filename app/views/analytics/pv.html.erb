@@ -11,8 +11,12 @@
   <%= render 'analytics'%>
 
   <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;">
+    <span class="no_results" style="font-size:14pt;color:#fff"></span>
     <div id="pv" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
+
   </div>
+
+  
 </div>
 
 <script type="text/javascript">
@@ -51,7 +55,12 @@
       }
       ]
     });
-    chart.render();
+
+    <% unless @results.empty? %>
+      chart.render();
+    <% else %>
+      $(".no_results").html("<br><br><i>明日からアクセス状況を集計します</i>");
+    <% end %>
   }
 
 $(function() {
