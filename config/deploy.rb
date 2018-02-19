@@ -8,8 +8,8 @@ set :rvm_ruby_version, 'ruby-2.2.3' # Edit this if you are using MRI Ruby
 set :rvm_type, :user
 
 # Default branch is :master
-# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, "master"
+# set :branch, "master"
+ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
 set :user, "deploy"
