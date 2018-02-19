@@ -10,4 +10,8 @@ class TopController < ApplicationController
   def internal_server_error
   	raise Exception
   end
+
+  def health_check
+    head :ok
+  end
 end

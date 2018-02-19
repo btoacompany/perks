@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   get "bad_request" => "top#bad_request"
   get "internal_server_error" => "top#internal_server_error"
+  # Legacy ELB health_check endpoint
+  get "health_check" => "top#health_check"
 
   get	'/price'	    => 'landing#price'
   get	'/privacy'	    => 'landing#privacy'
