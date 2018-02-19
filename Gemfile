@@ -34,10 +34,10 @@ gem 'dotenv-rails'
 gem 'figaro'
 gem 'puma'
 group :development do
-  gem 'capistrano'
-  gem 'capistrano3-puma'
-  gem 'capistrano-rails', require: false
-  gem 'capistrano-bundler', require: false
+  gem 'capistrano', '~> 3.10.1'
+  gem 'capistrano3-puma', '~> 3.1.1'
+  gem 'capistrano-rails', '~> 1.3.1', require: false
+  gem 'capistrano-bundler', '~> 1.3.0', require: false
   gem 'capistrano-rvm'
 end
 
