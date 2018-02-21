@@ -386,6 +386,7 @@ class CompanyController < ApplicationController
       b_month = params[:b_month]
       b_day   = params[:b_day]
       @data = {
+        company_id: company.id,
         name: name,
         lastname: params[:lastname],
         firstname: params[:firstname],
@@ -407,6 +408,10 @@ class CompanyController < ApplicationController
             team.save
           end
         end
+        data = {
+          users: [@user]
+        }
+        DeliverInviteMailJob.new.async.perform(data)
         redirect_to "/company/employees/register"
       else
         flash[:notice_about_create_user] = "すでに登録しています"
@@ -414,7 +419,7 @@ class CompanyController < ApplicationController
       end
     end
     rescue => e
-      flash[:error] = "#{e}" unless flash[:notice_about_create_user].present?
+      flash[:error] = "#{e}"
       redirect_to "/company/employees/register"
   end
 

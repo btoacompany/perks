@@ -30,7 +30,7 @@ class DeliverInviteMailJob < ActiveJob::Base
           user_update = User.find(user.id)
           user_update.deliver_invite_mail = 3 #delivered
           user_update.save
-          sum += 1
+          # sum += 1
         else
           next
         end
