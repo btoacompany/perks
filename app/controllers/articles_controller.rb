@@ -332,6 +332,45 @@ class ArticlesController < ApplicationController
       end
     end
 
+    @nametags = @article.tags
+    testdata = {}
+
+    unless @nametags.blank?
+      @nametags.each do |item|
+        place_number = item.place_number.to_i
+        #ignore if place number is 0 (for general tags)
+        if place_number > 0
+          fullname = "#{item.user.lastname + item.user.firstname}"
+
+          if testdata[place_number].present?
+            testdata[place_number][:user_ids] << item.user_id
+            testdata[place_number][:user_fullnames] << fullname
+            testdata[place_number][:ids] << item.id
+          else
+
+            testdata[place_number] = {
+              user_ids: [item.user_id],
+              user_fullnames: [fullname],
+              ids: [item.id]
+            }
+          end
+        end
+      end
+    end
+
+    testdata.each do |key, item|
+      @data = {
+            data_type: "nametag",
+            place_number: key.to_i,
+            user_ids: item[:user_ids] ,
+            user_fullnames: item[:user_fullnames],
+            tag_count: item[:user_ids].count,
+            id: item[:ids]
+      }
+
+      @contents << @data
+    end
+
     @all_contents = @contents.sort{|aa, bb|
       aa[:place_number] <=> bb[:place_number]
     }

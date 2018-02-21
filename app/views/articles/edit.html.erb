@@ -47,8 +47,10 @@
 	            <div id="adding_member" data-count_tag=<%= @article.tags.count %>>
               <% id = 0 %>
                 <% @article.tags.each do |tag| %>
-                  <span class="tag margin-bottom-5 margin-right-5" style="cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-tag_id=<%= id %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
-                  <input type="hidden" id="tag_<%= id %>" name="tag_user_ids[]" value="<%= tag.user.id %>" size="100"/>
+                  <% if tag[:place_number].to_i == 0 %>
+                    <span class="tag margin-bottom-5 margin-right-5" style="cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;" id=<%= "#{tag.user.id}" %> name=<%= "#{tag.user.lastname + tag.user.firstname}" %> data-tag_id=<%= id %> data-user-id=<%= "#{tag.user.id}" %>><%= tag.user.lastname + tag.user.firstname %></span>
+                    <input type="hidden" id="tag_<%= id %>" name="tag_user_ids[]" value="<%= tag.user.id %>" size="100"/>
+                  <% end %>
                   <% id += 1 %>
                 <% end %>
               </div>
@@ -104,7 +106,22 @@
               
               <% elsif item[:data_type] == "nametag" %>
                 <th>登場する社員<br><button type='button' class='delete_question'>削除する</button></th>
-                <td><input name="paragraph_titles[<%= @num %>]" class="width-100-percent" value="<%= item[:title] %>" /></td>
+                <td>
+                  <input type="text" id="suggest_nametag_<%= @num %>" class="suggest_nametag" name="nametag[<%= @num %>][]" size="100" placeholder="社員名を入力してください" autocomplete="on"/>
+                  <input type="button" value="追加" class="btn_change_nametag" data-id="<%= @num %>"/><br>
+                  <div id="adding_nametag_<%= @num %>" data-count_tag=<%= item[:tag_count] %>>
+
+                  <% for i in 0...item[:tag_count] %>
+                    <span class="tag margin-bottom-5 margin-right-5" 
+                      style="cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;" 
+                      id=<%= item[:user_ids][i] %> name=<%= item[:user_fullnames][i] %> data-tag_id=<%= item[:id][i] %> data-user-id=<%= item[:user_ids][i] %>>
+                      <%= item[:user_fullnames][i] %>
+                    </span>
+
+                    <input type="hidden" id="tag_<%= item[:id][i] %>" name="nametag_user_ids[<%= @num %>][]" value="<%= item[:user_ids][i] %>" size="100"/>
+                  <% end %>
+
+                </td>
 	            
               <% end %>
 	          </tr>
@@ -135,7 +152,14 @@ $(function() {
   $( "#suggested_name" ).autocomplete({
     source: target_user_names
   });
+
+  for (var j = 1; j < num; j++) {
+    $( "#suggest_nametag_" + j ).autocomplete({
+      source: user_names
+    });
+  }
 });
+
 
 $('.admin_menu').click(function(){
   num++;
@@ -176,11 +200,13 @@ $('.admin_menu').click(function(){
     title.setAttribute("type", "text");
     title.setAttribute("placeholder", "リンクタイトル");
     title.setAttribute("class", "width-100-percent");
+
     var url = document.createElement('input');
     url.setAttribute("name", "links["+ _num +"][]"); 
     url.setAttribute("type", "text");
     url.setAttribute("placeholder", "リンク先のURL");
     url.setAttribute("class", "width-100-percent");
+
     var _content = $([
       "<tr>",
         "<th>リンク<br><button type='button' class='delete_question'>削除する</button></th>",
@@ -198,11 +224,13 @@ $('.admin_menu').click(function(){
     title.setAttribute("name", "quotations["+ _num +"][]"); 
     title.setAttribute("placeholder", "引用の内容");
     title.setAttribute("class", "width-100-percent height-200");
+
     var url = document.createElement('input');
     url.setAttribute("name", "quotations["+ _num +"][]"); 
     url.setAttribute("type", "text");
     url.setAttribute("placeholder", "引用元ののURL");
     url.setAttribute("class", "width-100-percent");
+
     var _content = $([
       "<tr>",
         "<th>引用<br><button type='button' class='delete_question'>削除する</button></th>",
@@ -221,6 +249,7 @@ $('.admin_menu').click(function(){
     image.setAttribute("multiple", "true");
     image.setAttribute("name", "images["+ _num +"]");
     image.setAttribute("required", "required");
+
     var _content = $([
       "<tr>",
         "<th>画像<br/><button type='button' class='delete_question'>削除する</button></th>",
@@ -238,7 +267,6 @@ $('.admin_menu').click(function(){
   } else if ($(this).hasClass("nametag")) {
     var title = document.createElement('input');
     title.setAttribute("type", "text");
-    
     title.setAttribute("id", "suggest_nametag_"+ _num);
     title.setAttribute("class", "suggest_nametag");
     title.setAttribute("name", "nametag["+ _num +"][]");
@@ -287,6 +315,22 @@ $(".btn_change_password").click(function() {
   var target_user_id = user_datas[addedname];
   $("#adding_member").append($("<input id=tag_"+ tag_id + " type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
   $(':text[id="suggested_name"]').val("");
+  tag_id ++;
+});
+
+//for nametags per title
+var nametag_id = $("#adding_nametag_"+ num).data("count_tag") + 1;
+
+$(".article_table").on("click", ".btn_change_nametag", function(){
+  var dataId = $(this).attr("data-id");
+
+  var addednametag = $(':text[id="suggest_nametag_' + dataId + '"]').val();
+  $("#adding_nametag_"+ dataId).append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + nametag_id + ">" + addednametag + "</span>");
+
+  var target_user_id = user_datas[addednametag];
+  $("#adding_nametag_"+ dataId).append($("<input id=tag_"+ nametag_id + " type='hidden' name='nametag_user_ids[" + dataId + "][]'/>").val(target_user_id));
+
+  $(':text[id="suggest_nametag_' + dataId + '"]').val("");
   tag_id ++;
 });
 

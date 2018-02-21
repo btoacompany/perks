@@ -79,7 +79,6 @@ for (var i=0; i < user_names.length; i++) {
 
 $(function() {
   var target_user_names = $('#suggested_name').data('user');
-
   $( "#suggested_name" ).autocomplete({
     source: target_user_names
   });
@@ -198,18 +197,16 @@ $('.admin_menu').click(function(){
   } else if ($(this).hasClass("nametag")) {
     var title = document.createElement('input');
     title.setAttribute("type", "text");
-    
     title.setAttribute("id", "suggest_nametag_"+ _num);
     title.setAttribute("class", "suggest_nametag");
     title.setAttribute("name", "nametag["+ _num +"][]");
     title.setAttribute("size", "100"); 
     title.setAttribute("placeholder", "社員名を入力してください");
     title.setAttribute("autocomplete", "on");
-    title.setAttribute("data-user", "["+user_names+"]");
-    title.setAttribute("data-user-id", "["+user_ids+"]");
+    //title.setAttribute("data-user", "["+user_names+"]");
+    //title.setAttribute("data-user-id", "["+user_ids+"]");
 
     var button = document.createElement('input');
-    button.setAttribute("name", "nametag["+ _num +"][]");
     button.setAttribute("value", "追加");
     button.setAttribute("type", "button");
     button.setAttribute("class", "btn_change_nametag");
