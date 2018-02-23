@@ -376,39 +376,30 @@ class CompanyController < ApplicationController
   def register_employees_complete
     ActiveRecord::Base.transaction do
       company = Company.find(@id)
-      existing_emails = User.uniq.pluck(:email)
-      @duplicate_emails = []
-      if existing_emails.include?(params[:email])
-        @duplicate_emails << params[:email]
+      if params[:password].present?
+        temp_password = params[:password]
       else
-        if params[:password].present?
-          temp_password = params[:password]
-        else
-          temp_password = SecureRandom.hex(4)
-        end
-        name = params[:email].split("@")[0]
-        b_year  = params[:b_year]
-        b_month = params[:b_month]
-        b_day   = params[:b_day]
-        @data = {
-          :company_id  => @id,
-          :company_name  => company.name,
-          :company_owner=> company.owner,
-          :name    => name,
-          :lastname => params[:lastname],
-          :firstname => params[:firstname],
-          :email  => params[:email],
-          :password  => temp_password,
-          :job_title => params[:job_title],
-          :gender => params[:gender].to_i,
-          :birthday => DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d"),
-          :img_src  => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
-          :prizy_url  => @prizy_url + "/login"
-        }
-        @user = User.new
-        @user.save_record(@data)
+        temp_password = SecureRandom.hex(4)
+      end
+      name = params[:email].split("@")[0]
+      b_year  = params[:b_year]
+      b_month = params[:b_month]
+      b_day   = params[:b_day]
+      @data = {
+        company_id: company.id,
+        name: name,
+        lastname: params[:lastname],
+        firstname: params[:firstname],
+        email: params[:email],
+        password: temp_password,
+        gender: params[:gender].to_i,
+        birthday: DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d"),
+        img_src: "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+        prizy_url: @prizy_url + "/login"
+      }
+      @user = User.new
+      if @user.save_record(@data)
         flash[:notice_about_create_user] = "社員を追加しました"
-
         # add_team
         if params[:team_id].present?
           team = Team.find(params[:team_id])
@@ -417,12 +408,15 @@ class CompanyController < ApplicationController
             team.save
           end
         end
+        data = {
+          users: [@user]
+        }
+        DeliverInviteMailJob.new.async.perform(data)
+        redirect_to "/company/employees/register"
+      else
+        flash[:notice_about_create_user] = "すでに登録しています"
+        redirect_to "/company/employees/register"
       end
-
-      if @duplicate_emails.present?
-        flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。"
-      end
-      redirect_to "/company/employees/register"
     end
     rescue => e
       flash[:error] = "#{e}"

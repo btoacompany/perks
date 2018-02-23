@@ -161,6 +161,7 @@ class User < ActiveRecord::Base
     data = {
       users: users
     }
+    # 社員登録後メール配信
     DeliverInviteMailJob.new.async.perform(data)
     return count_created_user_by_csv
   end
