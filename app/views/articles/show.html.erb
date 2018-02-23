@@ -149,6 +149,23 @@
                         <div>
                           <%= image_tag item[:img_src], class: "article_image", class: "width-70-percent margin-top-10" %>
                         </div>
+                      <% elsif item[:data_type] == "nametag" %>
+                        <div>
+                          <% if item[:tag_count] > 0 %>
+                            <div class="">
+                              <div class="article_tags clearfix">
+                                <div class="margin-top-10">
+
+                                  <% for i in 0...item[:tag_count] %>
+                                    <span class="margin-bottom-5 margin-right-5 name_tag pc_view show-message" id=<%= "#{item[:user_ids][i]}" %> name=<%= "#{item[:user_fullnames][i]}" %> data-user-id=<%= "#{item[:user_ids][i]}" %>><%= item[:user_fullnames][i] %></span>
+                                    <span class="margin-bottom-5 margin-right-5 name_tag sp_view show-message-sp" id=<%= "#{item[:user_ids][i]}" %> name=<%= "#{item[:user_fullnames][i]}" %> data-user-id=<%= "#{item[:user_ids][i]}" %>><%= item[:user_fullnames][i] %></span>
+                                    <p class="fukidashi">クリックしてメッセージを贈る</p>
+                                  <% end %>
+                                </div>
+                              </div>
+                            </div>
+                          <% end %>
+                        </div>
                       <% end %>
                     <% end %>
                     <div class="kudos margin-top-20">

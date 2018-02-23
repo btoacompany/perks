@@ -110,7 +110,23 @@ class ArticlesController < ApplicationController
 	      	)
 	      end
 	    end
+
+      if params[:nametag_user_ids].present?
+        params[:nametag_user_ids].each do |key, nametags|
+          nametags.uniq.each do | id |
+            user = User.find(id)
+            if user
+              Tag.create(
+                article_id: @article.id,
+                user_id: user.id,
+                place_number: key.to_i,
+                )
+            end
+          end
+        end
+      end
     end
+
     if @article.is_casual == 0
       redirect_to company_articles_path, notice: "記事を作成しました。"
     else
@@ -126,13 +142,15 @@ class ArticlesController < ApplicationController
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
     @user_posted_contents = Article.where(company_id: @company.id, is_casual: 1, is_deleted: 0, is_published: 1)
-	  if @article
+	  
+    if @article
       @banner = Banner.find_by(company_id: @company.id, is_deleted: 0)
       impressionist(@article, nil, :unique => [:session_hash])
 	    @tags = @article.tags
 	    # @first_pic = Image.find_by(article_id: @article.id)
 	    @contents = []
 	    @titles = @article.titles
+
 	    unless @titles.blank?
 	      @titles.each do |item|
 	        @data = {
@@ -193,6 +211,46 @@ class ArticlesController < ApplicationController
 	        @contents << @data
 	      end
 	    end
+
+      @nametags = @article.tags
+      testdata = {}
+
+      unless @nametags.blank?
+        @nametags.each do |item|
+          place_number = item.place_number.to_i
+          #ignore if place number is 0 (for general tags)
+          if place_number > 0
+            fullname = "#{item.user.lastname + item.user.firstname}"
+
+            if testdata[place_number].present?
+              testdata[place_number][:user_ids] << item.user_id
+              testdata[place_number][:user_fullnames] << fullname
+              testdata[place_number][:ids] << item.id
+            else
+
+              testdata[place_number] = {
+                user_ids: [item.user_id],
+                user_fullnames: [fullname],
+                ids: [item.id]
+              }
+            end
+          end
+        end
+      end
+
+      testdata.each do |key, item|
+        @data = {
+              data_type: "nametag",
+              place_number: key.to_i,
+              user_ids: item[:user_ids] ,
+              user_fullnames: item[:user_fullnames],
+              tag_count: item[:user_ids].count,
+              id: item[:ids]
+        }
+
+        @contents << @data
+      end
+
 	    @all_contents = @contents.sort{|aa, bb| aa[:place_number] <=> bb[:place_number]}
 
 	    @title = "#{@article.title}"
@@ -234,13 +292,17 @@ class ArticlesController < ApplicationController
 
   def edit
     @user = User.find(@user_id)
+
     if @user.admin == 0
       redirect_to :root
     end
+
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
     @num = 1
     @article = Article.find(params[:id])
+
     logger.debug(@article.tags.count)
+
     @article.tags.each do |tag|
       logger.debug(tag)
     end
@@ -307,6 +369,45 @@ class ArticlesController < ApplicationController
         }
         @contents << @data
       end
+    end
+
+    @nametags = @article.tags
+    testdata = {}
+
+    unless @nametags.blank?
+      @nametags.each do |item|
+        place_number = item.place_number.to_i
+        #ignore if place number is 0 (for general tags)
+        if place_number > 0
+          fullname = "#{item.user.lastname + item.user.firstname}"
+
+          if testdata[place_number].present?
+            testdata[place_number][:user_ids] << item.user_id
+            testdata[place_number][:user_fullnames] << fullname
+            testdata[place_number][:ids] << item.id
+          else
+
+            testdata[place_number] = {
+              user_ids: [item.user_id],
+              user_fullnames: [fullname],
+              ids: [item.id]
+            }
+          end
+        end
+      end
+    end
+
+    testdata.each do |key, item|
+      @data = {
+            data_type: "nametag",
+            place_number: key.to_i,
+            user_ids: item[:user_ids] ,
+            user_fullnames: item[:user_fullnames],
+            tag_count: item[:user_ids].count,
+            id: item[:ids]
+      }
+
+      @contents << @data
     end
 
     @all_contents = @contents.sort{|aa, bb|
@@ -406,7 +507,24 @@ class ArticlesController < ApplicationController
           end
         end
       end
+
+      if params[:nametag_user_ids].present?
+        params[:nametag_user_ids].each do |key, nametags|
+          nametags.uniq.each do | id |
+            user = User.find(id)
+            if user
+              Tag.create(
+                article_id: @article.id,
+                user_id: user.id,
+                place_number: key.to_i,
+                )
+            end
+          end
+        end
+      end
+
     end
+
     redirect_to company_articles_path, notice: "記事を作成しました。"
     rescue => e
     redirect_to company_articles_path, notice: "失敗しました。"

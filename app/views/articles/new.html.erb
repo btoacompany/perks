@@ -7,8 +7,10 @@
       <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
       <%= link_to "+ 社員からの投稿を見る", company_user_posted_contents_path, {class: "a_btncmn radius5 width-250"} %>
     </div>
+
     <div class="margin-top-10">
     <h3 class="margin-bottom-10">記事を作成する</h3>
+
     <%= form_tag(company_article_create_path, method: "post", :multipart => true) do %>
       <table class="article_table horizontal width-80-percent">
         <tr>
@@ -18,23 +20,28 @@
             <input type="radio" name="is_casual" value="1">カジュアル記事
           </td>
         </tr>
+
         <tr>
           <th class="width-20-percent">タイトル</th>
           <td><input name="title" class="width-100-percent"></td>
         </tr>
+
         <tr>
           <th>ディスクリプション</th>
           <td><textarea name="description" class="min-height-200 width-100-percent"></textarea></td>
         </tr>
+
         <tr>
           <th>記事に登場する社員</th>
           <td style="display: block;">
             <input type="text" id="suggested_name" name="tags[]" size="100" placeholder="社員名を入力してください" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>"/>
             <input type="button" value="追加" class="btn_change_password"/>
+
             <div id="suggest" style="display:none;"></div>
             <div id="adding_member"></div>
           </td>
         </tr>
+
         <tr>
           <th>メニュー</th>
           <td>
@@ -43,13 +50,18 @@
               <li class="text admin_menu c_align float_left margin-right-10">テキスト</li>
               <li class="link admin_menu c_align float_left margin-right-10">リンク</li>
               <li class="quotation admin_menu c_align float_left margin-right-10">引用</li>
-              <li class="image admin_menu c_align float_left">画像</li>
+              <li class="image admin_menu c_align float_left margin-right-10">画像</li>
+              <li class="nametag admin_menu c_align float_left">登場する社員</li>
             </ul>
           </td>
         </tr>
+
       </table>
+
       <input class="c_align submit-btn" type="submit" value="作成する">
+
     <% end %>
+
     </div>
   </div>
 </div>
@@ -57,23 +69,26 @@
 <script type="text/javascript">
 var num = 0;
 
-  var user_datas = new Array();
-  var user_names = $('#suggested_name').data('user');
-  var user_ids = $('#suggested_name').data('user-id');
-  for (var i=0; i < user_names.length; i++) {
-    user_datas[user_names[i]] = user_ids[i];
-  };
+var user_datas = new Array();
+var user_names = $('#suggested_name').data('user');
+var user_ids = $('#suggested_name').data('user-id');
 
-  $(function() {
-    var target_user_names = $('#suggested_name').data('user');
-    $( "#suggested_name" ).autocomplete({
-      source: target_user_names
-    });
+for (var i=0; i < user_names.length; i++) {
+  user_datas[user_names[i]] = user_ids[i];
+};
+
+$(function() {
+  var target_user_names = $('#suggested_name').data('user');
+  $( "#suggested_name" ).autocomplete({
+    source: target_user_names
   });
+
+});
 
 $('.admin_menu').click(function(){
   num++;
   var _num = String(num);
+
   if ($(this).hasClass("title")) {
     var element = document.createElement('input');
     element.setAttribute("name", "paragraph_titles["+ _num +"]"); 
@@ -94,12 +109,14 @@ $('.admin_menu').click(function(){
     element.setAttribute("name", "texts["+ _num +"]"); 
     element.setAttribute("type", "text");
     element.setAttribute("class", "width-100-percent height-200");
+
     var _content = $([
       "<tr>",
         "<th>テキスト<br><button type='button' class='delete_question'>削除する</button></th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(element);
     $(".insert_element").removeClass("insert_element");
@@ -110,17 +127,20 @@ $('.admin_menu').click(function(){
     title.setAttribute("type", "text");
     title.setAttribute("placeholder", "リンクタイトル");
     title.setAttribute("class", "width-100-percent");
+
     var url = document.createElement('input');
     url.setAttribute("name", "links["+ _num +"][]"); 
     url.setAttribute("type", "text");
     url.setAttribute("placeholder", "リンク先のURL");
     url.setAttribute("class", "width-100-percent");
+
     var _content = $([
       "<tr>",
         "<th>リンク<br><button type='button' class='delete_question'>削除する</button></th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(title);
     $(".insert_element").append('<br>');
@@ -132,34 +152,40 @@ $('.admin_menu').click(function(){
     title.setAttribute("name", "quotations["+ _num +"][]"); 
     title.setAttribute("placeholder", "引用の内容");
     title.setAttribute("class", "width-100-percent height-200");
+
     var url = document.createElement('input');
     url.setAttribute("name", "quotations["+ _num +"][]"); 
     url.setAttribute("type", "text");
     url.setAttribute("placeholder", "引用元ののURL");
     url.setAttribute("class", "width-100-percent");
+
     var _content = $([
       "<tr>",
         "<th>引用<br><button type='button' class='delete_question'>削除する</button></th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(title);
     $(".insert_element").append('<br>');
     $(".insert_element").append(url);
     $(".insert_element").removeClass("insert_element");
-  } else {
+
+  } else if ($(this).hasClass("image")) {
     var image = document.createElement('input');
     image.setAttribute("type", "file");
     image.setAttribute("multiple", "true");
     image.setAttribute("name", "images["+ _num +"]");
     image.setAttribute("required", "required");
+
     var _content = $([
       "<tr>",
         "<th>画像<br/>横サイズのみ固定の300pxになります<br/><button type='button' class='delete_question'>削除する</button></th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(image);
     $(".insert_element").append('<br>');
@@ -167,21 +193,73 @@ $('.admin_menu').click(function(){
     $(".insert_element").append('<br>');
     $(".insert_element").append(url);
     $(".insert_element").removeClass("insert_element");
+
+  } else if ($(this).hasClass("nametag")) {
+    var title = document.createElement('input');
+    title.setAttribute("type", "text");
+    title.setAttribute("id", "suggest_nametag_"+ _num);
+    title.setAttribute("class", "suggest_nametag");
+    title.setAttribute("name", "nametag["+ _num +"][]");
+    title.setAttribute("size", "100"); 
+    title.setAttribute("placeholder", "社員名を入力してください");
+    title.setAttribute("autocomplete", "on");
+    //title.setAttribute("data-user", "["+user_names+"]");
+    //title.setAttribute("data-user-id", "["+user_ids+"]");
+
+    var button = document.createElement('input');
+    button.setAttribute("value", "追加");
+    button.setAttribute("type", "button");
+    button.setAttribute("class", "btn_change_nametag");
+    button.setAttribute("data-id", num);
+
+    var _content = $([
+      "<tr>",
+        "<th>登場する社員<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<td class='insert_element'>",
+        "</td>",
+      "</tr>"].join(""));
+    $(".article_table").append(_content);
+    $(".insert_element").append(title);
+    $(".insert_element").append('<br>');
+    $(".insert_element").append(button);
+    $(".insert_element").append('<div id="adding_nametag_'+ num +'"></div>');
+    $(".insert_element").removeClass("insert_element");
+
+    for (var i = 0; i < num; i++) {
+      $( "#suggest_nametag_" + num ).autocomplete({
+        source: user_names
+      });
+    }
   }
 });
 
-$('.article_table').on('click', '.delete_question', function(){
-  $(this).parent().parent().remove();
-});
-
-
+//for general tags
 var tag_id = 0;
+
 $(".btn_change_password").click(function() {
   var addedname = $(':text[id="suggested_name"]').val();
   $("#adding_member").append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + tag_id + ">" + addedname + "</span>");
+
   var target_user_id = user_datas[addedname];
   $("#adding_member").append($("<input id=tag_"+ tag_id + " type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
+
   $(':text[id="suggested_name"]').val("");
+  tag_id ++;
+});
+
+//for nametags per title
+var nametag_id = 0;
+
+$(".article_table").on("click", ".btn_change_nametag", function(){
+  var dataId = $(this).attr("data-id");
+
+  var addednametag = $(':text[id="suggest_nametag_' + dataId + '"]').val();
+  $("#adding_nametag_"+ dataId).append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + nametag_id + ">" + addednametag + "</span>");
+
+  var target_user_id = user_datas[addednametag];
+  $("#adding_nametag_"+ dataId).append($("<input id=tag_"+ nametag_id + " type='hidden' name='nametag_user_ids[" + dataId + "][]'/>").val(target_user_id));
+
+  $(':text[id="suggest_nametag_' + dataId + '"]').val("");
   tag_id ++;
 });
 
@@ -190,5 +268,10 @@ $(document).on('click','.tag', function() {
   $(this).remove();
   $("#tag_" + this_tag_id).remove();
 });
+
+$('.article_table').on('click', '.delete_question', function(){
+  $(this).parent().parent().remove();
+});
+
 
 </script>
