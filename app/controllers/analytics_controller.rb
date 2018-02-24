@@ -2,7 +2,7 @@ class AnalyticsController < ApplicationController
 
   before_filter :init, :authenticate_user
   before_action :ip_address_limit
-  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints, :teams, :pv]
+  before_action :set_period, only:[:overall, :index, :giver, :hashtag, :hashtagpoints, :allhashtag, :allhashtagpoints, :user, :userpoints, :teams, :pv, :userpoints]
   before_action :restrict_access_by_smartphone
 
   def init
@@ -278,7 +278,7 @@ class AnalyticsController < ApplicationController
     @user = User.find(@user.id)
     if @user.company_id.to_i == @company.id.to_i
       if @user.firstname.blank? || @user.lastname.blank?
-        @user_name = @user.name
+        @user_name = @user.try(:name)
       else
         @user_name = @user.lastname + @user.firstname
       end
@@ -289,8 +289,8 @@ class AnalyticsController < ApplicationController
       else
         @user_gender = "未定"
       end
-      @post_toget = Post.where(receiver_id: @user.id, delete_flag: 0)
-      @post_togive = Post.where(user_id: @user.id, delete_flag: 0)
+      @post_toget = Post.available.where(receiver_id: @user.id)
+      @post_togive = Post.available.where(user_id: @user.id)
       # useage
       @hash = {}
       @period.each do |time|
@@ -336,7 +336,7 @@ class AnalyticsController < ApplicationController
       @post_togive = Post.where(user_id: @userid, delete_flag: 0)
       # useage
       @hash = {}
-      @time_custom.each do |time|
+      @period.each do |time|
         @a = time..time.tomorrow
         @posts = Post.where(receiver_id: @userid, create_time: @a, delete_flag: 0).sum(:points)
         @hash[time] = @posts
