@@ -25,19 +25,31 @@
 <td class="container" bgcolor="#FFFFFF">
 
 <div class="content">
-<table>
-<tr>
-<td>
 <h3>こんにちは！<%= @user[:receiver] %>さん</h3>
-<p class="lead">あなたにメッセージが届きました。<br>
-いますぐ<a href="<%= @user[:prizy_url] %>">コチラ</a>からチェックしてみましょう！</p>
-
-引き続きPrizyをよろしくお願いいたします。<br><br>Prizy運営事務局
-</p>
-<!-- Callout Panel -->
+<br/>
+<p class="lead">あなた宛に「所属部署名」の<%= @user[:sender] %>さんから<br/>
+「メッセージ」が届いています！<br/>
+<br/>
+届いたメッセージ：<br/>
+<br/>
+『<%= @user[:description].truncate(10) %>』<br/>
+<br/>
+このメッセージの続きはPrizyで見ることができます。
+<br/>
+　　　★メッセージの続きはこちら★
 <p style="padding:15px;background-color:#ECF8FF;margin-bottom:15px;">
   褒める文化形成プラットフォーム <a href="http://prizy.me/">Prizy &raquo;</a>
 </p>
+<br/>
+<br/>
+あなたも、この機会に日ごろの感謝を伝えてみませんか？ <br/>
+<br/>
+<br/>
+以下のURLをクリックするとメッセージを贈ることができます。<br/>
+URL:  https://www.prizy.me/profile/articles<br/>
+</p>
+<!-- Callout Panel -->
+
 </td>
 </tr>
 </table>

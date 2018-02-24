@@ -450,10 +450,12 @@ class UsersController < ApplicationController
 
     	      unless params[:type] == "comment"
 	            UserMailer.receive_points_email({
-          	    receiver:   receiver.name, 
+                sender: "#{@user.try(:lastname)}" "#{@user.try(:firstname)}",
+                receiver: "#{receiver.try(:lastname)}" "#{receiver.try(:firstname)}" , 
             	  email:	    receiver.email,
         	      giver:	    @user.name,
         	      points:	    params[:points],
+                description: params[:description],
           	    prizy_url:  @prizy_url + "/user"
               }).deliver_later
 	          end
@@ -723,7 +725,7 @@ class UsersController < ApplicationController
     @posts = []
     data = {}
     @send_to_user = User.of_company(@company_id).find(params[:user_id]) if params[:user_id].present?
-    process_posts.each do | post |
+    process_posts.each do |post|
       data = process_post(post)
       @posts << data
     end
@@ -1252,7 +1254,8 @@ class UsersController < ApplicationController
       	receiver.save
 
       	UserMailer.receive_points_email({
-      	  receiver: receiver.name, 
+      	  sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
+          receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
       	  email: receiver.email,
       	  giver: @user.name,
       	  points: points,
