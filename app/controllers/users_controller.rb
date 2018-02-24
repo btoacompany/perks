@@ -573,7 +573,7 @@ class UsersController < ApplicationController
   end
 
   def select_target_department
-    @teams = Team.where(company_id: @company_id, delete_flag: 0, department_id: params[:id]).order(sort: :asc)
+    @teams = Team.of_company(@company_id).available.where(department_id: params[:id]).order(sort: :asc)
     @targets = []
     @teams.each do |team|
       @targets << [team.id, team.team_name]
