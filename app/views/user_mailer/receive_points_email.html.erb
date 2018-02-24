@@ -27,7 +27,7 @@
 <div class="content">
 <h3>こんにちは！<%= @user[:receiver] %>さん</h3>
 <br/>
-<p class="lead">あなた宛に「所属部署名」の<%= @user[:sender] %>さんから<br/>
+<p class="lead">あなた宛に「<%= @user[:sender_belonging] %>」の『<%= @user[:sender] %>』さんから<br/>
 「メッセージ」が届いています！<br/>
 <br/>
 届いたメッセージ：<br/>

@@ -389,6 +389,9 @@ class UsersController < ApplicationController
     @company = Company.find(@company_id)
     @users  = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user   = User.find(@id)
+    @teams = Team.of_company(@company_id).available
+    belonging = nil
+    @teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(@user.id.to_s) }
     error   = 0
 
     if @company.point_fixed_flag == 0
@@ -451,6 +454,7 @@ class UsersController < ApplicationController
     	      unless params[:type] == "comment"
 	            UserMailer.receive_points_email({
                 sender: "#{@user.try(:lastname)}" "#{@user.try(:firstname)}",
+                sender_belonging: "#{belonging.try(:team_name)}",
                 receiver: "#{receiver.try(:lastname)}" "#{receiver.try(:firstname)}" , 
             	  email:	    receiver.email,
         	      giver:	    @user.name,
