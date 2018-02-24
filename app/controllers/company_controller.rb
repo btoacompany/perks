@@ -376,11 +376,9 @@ class CompanyController < ApplicationController
   def register_employees_complete
     ActiveRecord::Base.transaction do
       company = Company.find(@id)
-      if params[:password].present?
-        temp_password = params[:password]
-      else
-        temp_password = SecureRandom.hex(4)
-      end
+      temp_password = SecureRandom.hex(4)
+      salt = BCrypt::Engine.generate_salt
+
       name = params[:email].split("@")[0]
       b_year  = params[:b_year]
       b_month = params[:b_month]
@@ -391,7 +389,8 @@ class CompanyController < ApplicationController
         lastname: params[:lastname],
         firstname: params[:firstname],
         email: params[:email],
-        password: temp_password,
+        salt: salt,
+        password: BCrypt::Engine.hash_secret(temp_password, salt),
         gender: params[:gender].to_i,
         birthday: DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d"),
         img_src: "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
