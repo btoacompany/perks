@@ -50,10 +50,10 @@ class User < ActiveRecord::Base
   def self.autocomplete_suggestions(company_id)
     @user_ids = Array.new
     @user_fullnames = Array.new
-    users = User.where(company_id: company_id)
+    users = User.of_company(company_id).available
     users.each do |user|
       if user.lastname && user.firstname
-        fullname = user.lastname + user.firstname
+        fullname = "#{user.try(:lastname)}" "#{user.try(:firstname)}"
         @user_ids.push(user.id)
         @user_fullnames.push(fullname)
       end
