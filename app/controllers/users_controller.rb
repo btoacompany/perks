@@ -602,7 +602,7 @@ class UsersController < ApplicationController
 
     @team.member_ids.split(",").each do |id|
       @user = User.available.find(id.to_i)
-      unless @user.nil?
+      unless @user.nil? 
         if @user.lastname.nil? || @user.firstname.nil?
           @user_name = @user.name
         else
