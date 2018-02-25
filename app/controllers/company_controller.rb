@@ -202,8 +202,8 @@ class CompanyController < ApplicationController
 
   def employees
     @company = Company.find(@id)
-    teams = Team.where(company_id: @id, delete_flag: 0).order(sort: :asc)
-    @departments = Department.where(company_id: @id, delete_flag: 0).order(sort: :asc)
+    teams = Team.of_company(@id).available.order(sort: :asc)
+    @departments = Department.of_company(@id).available.order(sort: :asc)
     # @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
     unless teams.empty?
       @team_exist = 0
@@ -262,9 +262,9 @@ class CompanyController < ApplicationController
       elsif @search_type == "teams"
         if params[:team_selected_id] && params[:team_selected_id] != "00"
           @team_selected_id = params[:team_selected_id].to_i
-          @selected_team = Team.find(@team_selected_id)
-          @selected_department = Department.find(@selected_team.try(:department_id))
-          @selected_department_child_teams = Team.where(department_id: @selected_department.id, delete_flag: 0)
+          @selected_team = Team.available.of_company(@company.id).find(@team_selected_id)
+          @selected_department = Department.available.of_company(@company.id).find(@selected_team.try(:department_id))
+          @selected_department_child_teams = Team.of_company(@company.id).available.where(department_id: @selected_department.id)
         end
       end
     else
@@ -285,7 +285,7 @@ class CompanyController < ApplicationController
       offset  = (page.to_i * limit) - limit
     end
     all_users = all_users[offset, limit]
-    @users     = User.where(id: all_users.map(&:id)).order("id asc")
+    @users     = User.available.of_company(@company.id).where(id: all_users.map(&:id)).order("id asc")
     @page_now = params[:page].to_i
     if @page_now == 0
       @page_now = 1
@@ -297,7 +297,7 @@ class CompanyController < ApplicationController
   def register_employees
     @user = User.new
     @department = Department.new
-    @departments = Department.where(company_id: @id, delete_flag: 0).order(sort: :asc)
+    @departments = Department.available.of_company(@id).order(sort: :asc)
     @years = Util.years
     @b_year   = 0
     @b_month  = 0
