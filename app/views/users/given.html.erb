@@ -640,7 +640,7 @@ $(function() {
       $(".this_select").removeClass("this_select");
     },
     error: function(data) {
-      alert("errror");
+      alert("部署がありません");
       $(".this_select").removeClass("this_select");
     }
     });
@@ -664,7 +664,7 @@ $(function() {
       $(".this_select").removeClass("this_select");
     },
     error: function(data) {
-      alert("errror");
+      alert("所属する社員がいません");
       $(".this_select").removeClass("this_select");
     }
     });
@@ -698,8 +698,6 @@ $(function() {
     var target_user_id = user_datas[content];
     $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
   });
-
-
 
   <% if $allow_nickname.include?(@user.company_id) %>
   $(function() {
@@ -1135,11 +1133,10 @@ $(function () {
       $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
       var target_user_id = <%= @send_to_user.id %>;
       $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
-      console.log("test2");
     });
   <% end %>
 <% else %>
-    console.log("NG");
+  console.log("NG");
 <% end %>   
 
 </script>

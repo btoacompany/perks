@@ -616,8 +616,8 @@ class UsersController < ApplicationController
 
   def profile
     @user = User.find(@id)
-    @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
-    @departments = Department.where(company_id: @company_id, delete_flag: 0).order(sort: :asc)
+    @users    = User.available.of_company(@company_id)
+    @departments = Department.available.of_company(@company_id).order(sort: :asc)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
@@ -721,7 +721,7 @@ class UsersController < ApplicationController
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(created_at: :desc).limit(5)
 
-    receiver_ranking(@user)  
+    receiver_ranking(@user)
     giver_ranking(@user)
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
     process_posts = process_paging(posts)
