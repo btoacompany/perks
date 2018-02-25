@@ -589,7 +589,7 @@ class UsersController < ApplicationController
     @team = Team.find(params[:id])
     @targets = []
     unless @team.manager_id == 0
-      @manager = User.available.find(@team.manager_id)
+      @manager = User.find_by(id: @team.manager_id, delete_flag: 0)
       unless @manger.nil? 
         if @manager.lastname.nil? || @manager.firstname.nil?
           @manager_name = @manager.name
@@ -601,8 +601,8 @@ class UsersController < ApplicationController
     end
 
     @team.member_ids.split(",").each do |id|
-      @user = User.available.find(id.to_i)
-      unless @user.nil? 
+      @user = User.find_by(id: id.to_i, delete_flag: 0)
+      unless @user.nil?
         if @user.lastname.nil? || @user.firstname.nil?
           @user_name = @user.name
         else
