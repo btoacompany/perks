@@ -380,10 +380,6 @@ class UsersController < ApplicationController
     new_posts = params[:new_post]
     nickname_id = params[:nickname_id].to_i if params[:nickname_id]
 
-    logger.debug("----")
-    logger.debug(params[:new_post])
-    logger.debug("--")
-
     new_posts.each do |post|
       parse_points(post, nickname_id)
     end
