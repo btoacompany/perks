@@ -232,6 +232,7 @@
               <div class="clearfix">
                 <p style="float: left;">贈り主：
                   <select class="select_giver_user new_post_select" name="nickname_id">
+                    <option>選択してください</option>
                     <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
                     <% if $allow_nickname.include?(@current_user.company_id) %>
                       <% $nicknames.each do |key, value| %>
@@ -350,6 +351,7 @@
                 <div class="clearfix">
                   <p style="float: left;">贈り主: 
                     <select class="select_giver_user new_post_select_sp" name="nickname_id" style="border: #cccccc 1px solid;">
+                      <option>選択してください</option>
                       <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
                       <% if $allow_nickname.include?(@current_user.company_id) %>
                         <% $nicknames.each do |key, value| %>
