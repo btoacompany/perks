@@ -28,3 +28,4 @@ users.each do |user|
   # CompanyMailer.recommend_mail(data).deliver_now
   sleep(0.5)
 end
+

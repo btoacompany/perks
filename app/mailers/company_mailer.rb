@@ -32,3 +32,4 @@ class CompanyMailer < ActionMailer::Base
     mail(to: data[:email], subject: "【Prizy】今週の勝手にレコメンド")
   end
 end
+
