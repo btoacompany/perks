@@ -29,6 +29,6 @@ class CompanyMailer < ActionMailer::Base
   end
 
   def recommend_mail(email, subject)
-    mail(to: data[:email], subject: "メッセージを書いてみませんか？")
+    mail(to: data[:email], subject: "【Prizy】今週の勝手にレコメンド")
   end
 end

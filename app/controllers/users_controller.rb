@@ -378,14 +378,16 @@ class UsersController < ApplicationController
 
   def give_points
     new_posts = params[:new_post]
+    nickname_id = params[:nickname_id].to_i if params[:nickname_id]
 
     new_posts.each do |post|
-      parse_points(post)
+      parse_points(post, nickname_id)
     end
     redirect_page("users", "given")
   end
 
-  def parse_points(params)
+  def parse_points(params, nickname_id)
+    params[:nickname_id] = nickname_id if nickname_id
     @company = Company.find(@company_id)
     @users  = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user   = User.find(@id)
@@ -455,6 +457,7 @@ class UsersController < ApplicationController
 	            UserMailer.receive_points_email({
                 sender: "#{@user.try(:lastname)}" "#{@user.try(:firstname)}",
                 sender_belonging: "#{belonging.try(:team_name)}",
+                nickname_id: params[:nickname_id], 
                 receiver: "#{receiver.try(:lastname)}" "#{receiver.try(:firstname)}" , 
             	  email:	    receiver.email,
         	      giver:	    @user.name,
