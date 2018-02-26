@@ -71,6 +71,7 @@ class User < ActiveRecord::Base
     self.name	      = params[:name]	      if params[:name].present?
     self.email	      = params[:email]	      if params[:email].present?
     self.company_id   = params[:company_id]   if params[:company_id].present?
+    self.nickname_id  = params[:nickname_id]  if params[:nickname_id].present?
     self.firstname    = params[:firstname]    if params[:firstname].present?
     self.lastname     = params[:lastname]     if params[:lastname].present?
     self.birthday     = params[:birthday]     if params[:birthday].present?
