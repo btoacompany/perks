@@ -132,6 +132,8 @@ class ArticlesController < ApplicationController
     else
       redirect_to company_casual_articles_path, notice: "記事を作成しました。"
     end
+    # rescue => e
+    # redirect_to company_articles_path, notice: "失敗しました。"
   end
 
   def show
