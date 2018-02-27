@@ -66,12 +66,51 @@
   </div>
 </div>
 
+
 <script type="text/javascript">
 var num = 0;
 
 var user_datas = new Array();
 var user_names = $('#suggested_name').data('user');
 var user_ids = $('#suggested_name').data('user-id');
+
+$('.article_table').on('click', '.btn_up', function(){
+  num--;
+
+  console.log("---up---");
+  var current = $(this).parent().parent();
+  var place_number = $(this).parent().next().children().attr("data-id");
+  var detail_elem = $(this).parent().next().children();
+  var label = $(this).parent().next().children().attr("data-name");
+
+  detail_elem.attr("name", label + "[" + num + "]");
+  detail_elem.attr("data-id", num);
+
+  console.log(num);
+  console.log(place_number);
+  console.log(label);
+
+  current.prev().before(current);
+});
+
+$('.article_table').on('click', '.btn_down', function(){
+  num++;
+
+  console.log("---down---");
+  var current = $(this).parent().parent();
+  var detail_elem = $(this).parent().next().children();
+  var place_number = $(this).parent().next().children().attr("data-id");
+  var label = $(this).parent().next().children().attr("data-name");
+
+  detail_elem.attr("name", label + "[" + num + "]");
+  detail_elem.attr("data-id", num);
+
+  console.log(num);
+  console.log(place_number);
+  console.log(label);
+
+  current.next().after(current);
+});
 
 for (var i=0; i < user_names.length; i++) {
   user_datas[user_names[i]] = user_ids[i];
@@ -94,9 +133,16 @@ $('.admin_menu').click(function(){
     element.setAttribute("name", "paragraph_titles["+ _num +"]"); 
     element.setAttribute("type", "text");
     element.setAttribute("class", "width-100-percent");
+    element.setAttribute("data-id",  _num);
+    element.setAttribute("data-name", "paragraph_titles");
+
     var _content = $([
       "<tr>",
-        "<th>見出し<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<th>見出し<br>",
+        "<button type='button' class='delete_question'>削除する</button><br>",
+        "<button type='button' class='btn_up'>↑</button><br>",
+        "<button type='button' class='btn_down'>↓</button><br>",
+        "</th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
@@ -109,10 +155,16 @@ $('.admin_menu').click(function(){
     element.setAttribute("name", "texts["+ _num +"]"); 
     element.setAttribute("type", "text");
     element.setAttribute("class", "width-100-percent height-200");
+    element.setAttribute("data-id",  _num);
+    element.setAttribute("data-name", "texts");
 
     var _content = $([
       "<tr>",
-        "<th>テキスト<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<th>テキスト<br>",
+        "<button type='button' class='delete_question'>削除する</button><br>",
+        "<button type='button' class='btn_up'>↑</button><br>",
+        "<button type='button' class='btn_down'>↓</button><br>",
+        "</th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
