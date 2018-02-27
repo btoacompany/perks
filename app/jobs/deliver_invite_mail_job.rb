@@ -24,13 +24,16 @@ class DeliverInviteMailJob < ActiveJob::Base
             :prizy_url    => prizy_url,
             :deliver_invite_mail => 2 #processing
           }
+          user.salt = BCrypt::Engine.generate_salt
+          user.password = BCrypt::Engine.hash_secret(data[:password], user.salt)
+          user.save
 
           UserMailer.verify_account(data).deliver_now
           sleep(0.5)
           user_update = User.find(user.id)
           user_update.deliver_invite_mail = 3 #delivered
           user_update.save
-          sum += 1
+          # sum += 1
         else
           next
         end

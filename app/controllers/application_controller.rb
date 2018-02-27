@@ -13,10 +13,10 @@ class ApplicationController < ActionController::Base
   $showoff_ranking  = all_company_ids
   $showoff_hashtag  = all_company_ids
   $ban_edit_name    = all_company_ids
-  $allow_nickname   = [3, 32]
+  $allow_nickname   = [1, 3, 32, 14]
   $use_select       = all_company_ids
   $no_manager       = all_company_ids
-  $use_timeline     = [14,115,27]
+  $use_timeline     = [14, 115, 27]
 
   $nicknames = {
     1 => "同僚さん",

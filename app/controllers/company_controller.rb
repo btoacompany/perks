@@ -202,8 +202,8 @@ class CompanyController < ApplicationController
 
   def employees
     @company = Company.find(@id)
-    teams = Team.where(company_id: @id, delete_flag: 0).order(sort: :asc)
-    @departments = Department.where(company_id: @id, delete_flag: 0).order(sort: :asc)
+    teams = Team.of_company(@id).available.order(sort: :asc)
+    @departments = Department.of_company(@id).available.order(sort: :asc)
     # @manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
     unless teams.empty?
       @team_exist = 0
@@ -262,9 +262,9 @@ class CompanyController < ApplicationController
       elsif @search_type == "teams"
         if params[:team_selected_id] && params[:team_selected_id] != "00"
           @team_selected_id = params[:team_selected_id].to_i
-          @selected_team = Team.find(@team_selected_id)
-          @selected_department = Department.find(@selected_team.try(:department_id))
-          @selected_department_child_teams = Team.where(department_id: @selected_department.id, delete_flag: 0)
+          @selected_team = Team.available.of_company(@company.id).find(@team_selected_id)
+          @selected_department = Department.available.of_company(@company.id).find(@selected_team.try(:department_id))
+          @selected_department_child_teams = Team.of_company(@company.id).available.where(department_id: @selected_department.id)
         end
       end
     else
@@ -285,7 +285,7 @@ class CompanyController < ApplicationController
       offset  = (page.to_i * limit) - limit
     end
     all_users = all_users[offset, limit]
-    @users     = User.where(id: all_users.map(&:id)).order("id asc")
+    @users     = User.available.of_company(@company.id).where(id: all_users.map(&:id)).order("id asc")
     @page_now = params[:page].to_i
     if @page_now == 0
       @page_now = 1
@@ -297,7 +297,7 @@ class CompanyController < ApplicationController
   def register_employees
     @user = User.new
     @department = Department.new
-    @departments = Department.where(company_id: @id, delete_flag: 0).order(sort: :asc)
+    @departments = Department.available.of_company(@id).order(sort: :asc)
     @years = Util.years
     @b_year   = 0
     @b_month  = 0
@@ -376,39 +376,29 @@ class CompanyController < ApplicationController
   def register_employees_complete
     ActiveRecord::Base.transaction do
       company = Company.find(@id)
-      existing_emails = User.uniq.pluck(:email)
-      @duplicate_emails = []
-      if existing_emails.include?(params[:email])
-        @duplicate_emails << params[:email]
-      else
-        if params[:password].present?
-          temp_password = params[:password]
-        else
-          temp_password = SecureRandom.hex(4)
-        end
-        name = params[:email].split("@")[0]
-        b_year  = params[:b_year]
-        b_month = params[:b_month]
-        b_day   = params[:b_day]
-        @data = {
-          :company_id  => @id,
-          :company_name  => company.name,
-          :company_owner=> company.owner,
-          :name    => name,
-          :lastname => params[:lastname],
-          :firstname => params[:firstname],
-          :email  => params[:email],
-          :password  => temp_password,
-          :job_title => params[:job_title],
-          :gender => params[:gender].to_i,
-          :birthday => DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d"),
-          :img_src  => "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
-          :prizy_url  => @prizy_url + "/login"
-        }
-        @user = User.new
-        @user.save_record(@data)
-        flash[:notice_about_create_user] = "社員を追加しました"
+      temp_password = SecureRandom.hex(4)
+      salt = BCrypt::Engine.generate_salt
 
+      name = params[:email].split("@")[0]
+      b_year  = params[:b_year]
+      b_month = params[:b_month]
+      b_day   = params[:b_day]
+      @data = {
+        company_id: company.id,
+        name: name,
+        lastname: params[:lastname],
+        firstname: params[:firstname],
+        email: params[:email],
+        salt: salt,
+        password: BCrypt::Engine.hash_secret(temp_password, salt),
+        gender: params[:gender].to_i,
+        birthday: DateTime.parse("#{b_year}-#{b_month}-#{b_day}").strftime("%Y-%m-%d"),
+        img_src: "https://#{@s3_bucket}.s3-ap-northeast-1.amazonaws.com/common/noimg_pc.png",
+        prizy_url: @prizy_url + "/login"
+      }
+      @user = User.new
+      if @user.save_record(@data)
+        flash[:notice_about_create_user] = "社員を追加しました"
         # add_team
         if params[:team_id].present?
           team = Team.find(params[:team_id])
@@ -417,12 +407,15 @@ class CompanyController < ApplicationController
             team.save
           end
         end
+        data = {
+          users: [@user]
+        }
+        DeliverInviteMailJob.new.async.perform(data)
+        redirect_to "/company/employees/register"
+      else
+        flash[:notice_about_create_user] = "すでに登録しています"
+        redirect_to "/company/employees/register"
       end
-
-      if @duplicate_emails.present?
-        flash[:notice] = "#{@duplicate_emails.join(", ")} はすでに登録されています。"
-      end
-      redirect_to "/company/employees/register"
     end
     rescue => e
       flash[:error] = "#{e}"

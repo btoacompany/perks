@@ -50,10 +50,10 @@ class User < ActiveRecord::Base
   def self.autocomplete_suggestions(company_id)
     @user_ids = Array.new
     @user_fullnames = Array.new
-    users = User.where(company_id: company_id)
+    users = User.of_company(company_id).available
     users.each do |user|
       if user.lastname && user.firstname
-        fullname = user.lastname + user.firstname
+        fullname = "#{user.try(:lastname)}" "#{user.try(:firstname)}"
         @user_ids.push(user.id)
         @user_fullnames.push(fullname)
       end
@@ -71,6 +71,7 @@ class User < ActiveRecord::Base
     self.name	      = params[:name]	      if params[:name].present?
     self.email	      = params[:email]	      if params[:email].present?
     self.company_id   = params[:company_id]   if params[:company_id].present?
+    self.nickname_id  = params[:nickname_id]  if params[:nickname_id].present?
     self.firstname    = params[:firstname]    if params[:firstname].present?
     self.lastname     = params[:lastname]     if params[:lastname].present?
     self.birthday     = params[:birthday]     if params[:birthday].present?
@@ -161,6 +162,7 @@ class User < ActiveRecord::Base
     data = {
       users: users
     }
+    # 社員登録後メール配信
     DeliverInviteMailJob.new.async.perform(data)
     return count_created_user_by_csv
   end

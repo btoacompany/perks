@@ -378,17 +378,22 @@ class UsersController < ApplicationController
 
   def give_points
     new_posts = params[:new_post]
+    nickname_id = params[:nickname_id].to_i if params[:nickname_id]
 
     new_posts.each do |post|
-      parse_points(post)
+      parse_points(post, nickname_id)
     end
     redirect_page("users", "given")
   end
 
-  def parse_points(params)
+  def parse_points(params, nickname_id)
+    params[:nickname_id] = nickname_id if nickname_id
     @company = Company.find(@company_id)
     @users  = User.where(:company_id => @company_id, :delete_flag => 0) 
     @user   = User.find(@id)
+    @teams = Team.of_company(@company_id).available
+    belonging = nil
+    @teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(@user.id.to_s) }
     error   = 0
 
     if @company.point_fixed_flag == 0
@@ -450,10 +455,14 @@ class UsersController < ApplicationController
 
     	      unless params[:type] == "comment"
 	            UserMailer.receive_points_email({
-          	    receiver:   receiver.name, 
+                sender: "#{@user.try(:lastname)}" "#{@user.try(:firstname)}",
+                sender_belonging: "#{belonging.try(:team_name)}",
+                nickname_id: params[:nickname_id], 
+                receiver: "#{receiver.try(:lastname)}" "#{receiver.try(:firstname)}" , 
             	  email:	    receiver.email,
         	      giver:	    @user.name,
         	      points:	    params[:points],
+                description: params[:description],
           	    prizy_url:  @prizy_url + "/user"
               }).deliver_later
 	          end
@@ -571,7 +580,7 @@ class UsersController < ApplicationController
   end
 
   def select_target_department
-    @teams = Team.where(company_id: @company_id, delete_flag: 0, department_id: params[:id]).order(sort: :asc)
+    @teams = Team.of_company(@company_id).available.where(department_id: params[:id]).order(sort: :asc)
     @targets = []
     @teams.each do |team|
       @targets << [team.id, team.team_name]
@@ -583,7 +592,7 @@ class UsersController < ApplicationController
     @team = Team.find(params[:id])
     @targets = []
     unless @team.manager_id == 0
-      @manager = User.find(@team.manager_id)
+      @manager = User.find_by(id: @team.manager_id, delete_flag: 0)
       unless @manger.nil? 
         if @manager.lastname.nil? || @manager.firstname.nil?
           @manager_name = @manager.name
@@ -595,7 +604,7 @@ class UsersController < ApplicationController
     end
 
     @team.member_ids.split(",").each do |id|
-      @user = User.find(id.to_i)
+      @user = User.find_by(id: id.to_i, delete_flag: 0)
       unless @user.nil?
         if @user.lastname.nil? || @user.firstname.nil?
           @user_name = @user.name
@@ -610,8 +619,8 @@ class UsersController < ApplicationController
 
   def profile
     @user = User.find(@id)
-    @users    = User.where(:company_id => @company_id, :delete_flag => 0) 
-    @departments = Department.where(company_id: @company_id, delete_flag: 0).order(sort: :asc)
+    @users    = User.available.of_company(@company_id)
+    @departments = Department.available.of_company(@company_id).order(sort: :asc)
     @banner = Banner.find_by(company_id: @company_id, is_deleted: 0)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
@@ -715,7 +724,7 @@ class UsersController < ApplicationController
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(created_at: :desc).limit(5)
 
-    receiver_ranking(@user)  
+    receiver_ranking(@user)
     giver_ranking(@user)
     posts = Post.where(:user_id => @id, :delete_flag => 0).order("update_time desc")
     process_posts = process_paging(posts)
@@ -723,7 +732,7 @@ class UsersController < ApplicationController
     @posts = []
     data = {}
     @send_to_user = User.of_company(@company_id).find(params[:user_id]) if params[:user_id].present?
-    process_posts.each do | post |
+    process_posts.each do |post|
       data = process_post(post)
       @posts << data
     end
@@ -1252,7 +1261,8 @@ class UsersController < ApplicationController
       	receiver.save
 
       	UserMailer.receive_points_email({
-      	  receiver: receiver.name, 
+      	  sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
+          receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
       	  email: receiver.email,
       	  giver: @user.name,
       	  points: points,
