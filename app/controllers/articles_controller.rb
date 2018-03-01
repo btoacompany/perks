@@ -77,10 +77,10 @@ class ArticlesController < ApplicationController
       if params[:quotations].present?
         params[:quotations].each do |key, value|
           @quotation = Quotation.create(
-            article_id:    @article.id,
-            quotation:     value[0],
-            quotation_url: value[1],
-            place_number:  key.to_i,
+            article_id:     @article.id,
+            content:        value[0],
+            url:            value[1],
+            place_number:   key.to_i,
           )
         end
       end
