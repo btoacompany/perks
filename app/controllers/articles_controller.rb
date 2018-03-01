@@ -136,7 +136,7 @@ class ArticlesController < ApplicationController
       end
     end
     rescue => e
-    redirect_to company_articles_path, notice: "失敗しました。"
+    redirect_to company_article_new_path, notice: "記事の作成に失敗2"
   end
 
   def show
