@@ -464,11 +464,12 @@ class CompanyController < ApplicationController
   end
 
   def delete_employees 
+    previous_page = request.referrer
     result = User.find(params[:id])
     manager_ids = Team.where(company_id: @id, delete_flag: 0).pluck(:manager_id)
     unless manager_ids.include?(result.id)
       result.delete_record
-      redirect_to "/company/employees"
+      redirect_to previous_page
     end
   end
 

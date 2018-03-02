@@ -16,7 +16,7 @@
     <!-- </button> -->
   </td>
   <td align="center">
-    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" mgr-id="non_mgr" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
+    <input type="button" class="btn delete_item" data-id="<%= item[:id] %>" value="削除" <% if (item[:id] == @user_id) %> disabled readonly style="background-color:#fff;color:#a4a4a4"<% end %>/>
   </td>
   <% end %>
 </tr>

@@ -41,99 +41,103 @@ class ArticlesController < ApplicationController
         is_casual: params[:is_casual]
       	)
 
-      if params[:tag_user_ids].present?
-        params[:tag_user_ids].uniq.each do |id|
-          user = User.find(id)
-          if user
-            Tag.create(
-              article_id: @article.id,
-              user_id: user.id
-              )
-          end
-        end
-      end
-
-      if params[:texts].present?
-        params[:texts].each do |key, value|
-          @text = Text.create(
-            article_id:   @article.id,
-            content:      value,
-            place_number: key.to_i,
-          )
-        end
-      end
-
-      if params[:links].present?
-        params[:links].each do |key, value|
-          @link = Link.create(
-            article_id:   @article.id,
-            content:     value[0],
-            url:          value[1],
-            place_number: key.to_i,
-          )
-        end
-      end
-
-      if params[:quotations].present?
-        params[:quotations].each do |key, value|
-          @quotation = Quotation.create(
-            article_id:     @article.id,
-            content:        value[0],
-            url:            value[1],
-            place_number:   key.to_i,
-          )
-        end
-      end
-
-      if params[:paragraph_titles].present?
-        params[:paragraph_titles].each do |key, value|
-          @title = Title.create(
-            article_id:   @article.id,
-            content:      value,
-            place_number: key.to_i,
-          )
-        end
-      end
-
-      if params[:images].present?
-	      params[:images].each do |key, value|
-	      	src	  = value
-	      	src_ext	  = File.extname(src.original_filename)
-	      	s3  = Aws::S3::Resource.new
-          @last_image = Image.last
-	      	obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id + 1}_pic#{src_ext}")
-	      	obj.upload_file src.tempfile, {acl: 'public-read'}
-	      	@image = Image.create(
-	      		article_id:   @article.id,
-	      	  img_src:      obj.public_url, 
-	          place_number: key.to_i
-	      	)
-	      end
-	    end
-
-      if params[:nametag_user_ids].present?
-        params[:nametag_user_ids].each do |key, nametags|
-          nametags.uniq.each do | id |
+      if @article.valid?
+        if params[:tag_user_ids].present?
+          params[:tag_user_ids].uniq.each do |id|
             user = User.find(id)
             if user
               Tag.create(
                 article_id: @article.id,
-                user_id: user.id,
-                place_number: key.to_i,
+                user_id: user.id
                 )
             end
           end
         end
+
+        if params[:texts].present?
+          params[:texts].each do |key, value|
+            @text = Text.create(
+              article_id:   @article.id,
+              content:      value,
+              place_number: key.to_i,
+            )
+          end
+        end
+
+        if params[:links].present?
+          params[:links].each do |key, value|
+            @link = Link.create(
+              article_id:   @article.id,
+              content:     value[0],
+              url:          value[1],
+              place_number: key.to_i,
+            )
+          end
+        end
+
+        if params[:quotations].present?
+          params[:quotations].each do |key, value|
+            @quotation = Quotation.create(
+              article_id:     @article.id,
+              content:        value[0],
+              url:            value[1],
+              place_number:   key.to_i,
+            )
+          end
+        end
+
+        if params[:paragraph_titles].present?
+          params[:paragraph_titles].each do |key, value|
+            @title = Title.create(
+              article_id:   @article.id,
+              content:      value,
+              place_number: key.to_i,
+            )
+          end
+        end
+
+        if params[:images].present?
+  	      params[:images].each do |key, value|
+  	      	src	  = value
+  	      	src_ext	  = File.extname(src.original_filename)
+  	      	s3  = Aws::S3::Resource.new
+            @last_image = Image.last
+  	      	obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id + 1}_pic#{src_ext}")
+  	      	obj.upload_file src.tempfile, {acl: 'public-read'}
+  	      	@image = Image.create(
+  	      		article_id:   @article.id,
+  	      	  img_src:      obj.public_url, 
+  	          place_number: key.to_i
+  	      	)
+  	      end
+  	    end
+
+        if params[:nametag_user_ids].present?
+          params[:nametag_user_ids].each do |key, nametags|
+            nametags.uniq.each do | id |
+              user = User.find(id)
+              if user
+                Tag.create(
+                  article_id: @article.id,
+                  user_id: user.id,
+                  place_number: key.to_i,
+                  )
+              end
+            end
+          end
+        end
+        if @article.is_casual == 0
+          redirect_to company_articles_path, notice: "記事を作成しました。"
+        else
+          redirect_to company_casual_articles_path, notice: "記事を作成しました。"
+        end
+      else
+        error_message = @article.errors.full_messages[0] if @article.errors.full_messages
+        redirect_to company_article_new_path, notice: "#{error_message}"
       end
     end
-
-    if @article.is_casual == 0
-      redirect_to company_articles_path, notice: "記事を作成しました。"
-    else
-      redirect_to company_casual_articles_path, notice: "記事を作成しました。"
-    end
-    # rescue => e
-    # redirect_to company_articles_path, notice: "失敗しました。"
+    rescue => e
+    redirect_to company_articles_path, notice: "失敗しました。"
   end
 
   def show
@@ -426,108 +430,110 @@ class ArticlesController < ApplicationController
       @article.is_casual   = params[:is_casual]
       @article.save
 
-      # ArticleTag.where(article_id: @article.id).destroy_all
-      Title.where(article_id: @article.id).destroy_all
-      Text.where(article_id: @article.id).destroy_all
-      Link.where(article_id: @article.id).destroy_all
-      Quotation.where(article_id: @article.id).destroy_all
-      # Image.where(article_id: @article.id).destroy_all
-      Tag.where(article_id: @article.id).destroy_all
+      if @article.valid?
+        Title.where(article_id: @article.id).destroy_all
+        Text.where(article_id: @article.id).destroy_all
+        Link.where(article_id: @article.id).destroy_all
+        Quotation.where(article_id: @article.id).destroy_all
+        Tag.where(article_id: @article.id).destroy_all
 
-      if params[:paragraph_titles].present?
-        params[:paragraph_titles].each do |key, value|
-          @title = Title.create(
-            article_id:   @article.id,
-            content:      value,
-            place_number: key.to_i,
-          )
-        end
-      end
-
-      if params[:tag_user_ids].present?
-        params[:tag_user_ids].uniq.each do |id|
-          user = User.find(id)
-          if user
-            Tag.create(
-              article_id: @article.id,
-              user_id: user.id
-              )
-          end
-        end
-      end
-
-      if params[:texts].present?
-        params[:texts].each do |key, value|
-          @text = Text.create(
-            article_id:   @article.id,
-            content:      value,
-            place_number: key.to_i,
-          )
-        end
-      end
-
-      if params[:links].present?
-        params[:links].each do |key, value|
-          @link = Link.create(
-            article_id:   @article.id,
-            content:     value[0],
-            url:          value[1],
-            place_number: key.to_i,
-          )
-        end
-      end
-
-      if params[:quotations].present?
-        params[:quotations].each do |key, value|
-          @quotation = Quotation.create(
-            article_id:    @article.id,
-            content:     value[0],
-            url: value[1],
-            place_number:  key.to_i,
-          )
-        end
-      end
-
-      if params[:images].present?
-        params[:images].each do |key, value|
-          if value.present? && value.class == Array
-            image = Image.find_by(img_src: value[0])
-            image.update_attribute(:place_number, key.to_i) if image
-          else
-            src    = value
-            src_ext    = File.extname(src.original_filename)
-            s3  = Aws::S3::Resource.new
-            @last_image = Image.last
-            obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id + 1}_pic#{src_ext}")
-            obj.upload_file src.tempfile, {acl: 'public-read'}
-            @image = Image.create(
+        if params[:paragraph_titles].present?
+          params[:paragraph_titles].each do |key, value|
+            @title = Title.create(
               article_id:   @article.id,
-              img_src:      obj.public_url, 
-              place_number: key.to_i
+              content:      value,
+              place_number: key.to_i,
             )
-
           end
         end
-      end
 
-      if params[:nametag_user_ids].present?
-        params[:nametag_user_ids].each do |key, nametags|
-          nametags.uniq.each do | id |
+        if params[:tag_user_ids].present?
+          params[:tag_user_ids].uniq.each do |id|
             user = User.find(id)
             if user
               Tag.create(
                 article_id: @article.id,
-                user_id: user.id,
-                place_number: key.to_i,
+                user_id: user.id
                 )
             end
           end
         end
-      end
 
+        if params[:texts].present?
+          params[:texts].each do |key, value|
+            @text = Text.create(
+              article_id:   @article.id,
+              content:      value,
+              place_number: key.to_i,
+            )
+          end
+        end
+
+        if params[:links].present?
+          params[:links].each do |key, value|
+            @link = Link.create(
+              article_id:   @article.id,
+              content:     value[0],
+              url:          value[1],
+              place_number: key.to_i,
+            )
+          end
+        end
+
+        if params[:quotations].present?
+          params[:quotations].each do |key, value|
+            @quotation = Quotation.create(
+              article_id:    @article.id,
+              content:     value[0],
+              url: value[1],
+              place_number:  key.to_i,
+            )
+          end
+        end
+
+        if params[:images].present?
+          params[:images].each do |key, value|
+            if value.present? && value.class == Array
+              image = Image.find_by(img_src: value[0])
+              image.update_attribute(:place_number, key.to_i) if image
+            else
+              src    = value
+              src_ext    = File.extname(src.original_filename)
+              s3  = Aws::S3::Resource.new
+              @last_image = Image.last
+              obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id + 1}_pic#{src_ext}")
+              obj.upload_file src.tempfile, {acl: 'public-read'}
+              @image = Image.create(
+                article_id:   @article.id,
+                img_src:      obj.public_url, 
+                place_number: key.to_i
+              )
+
+            end
+          end
+        end
+
+        if params[:nametag_user_ids].present?
+          params[:nametag_user_ids].each do |key, nametags|
+            nametags.uniq.each do | id |
+              user = User.find(id)
+              if user
+                Tag.create(
+                  article_id: @article.id,
+                  user_id: user.id,
+                  place_number: key.to_i,
+                  )
+              end
+            end
+          end
+        end
+        redirect_to company_articles_path, notice: "記事を更新しました。"
+      else
+        error_message = @article.errors.full_messages[0] if @article.errors.full_messages
+        redirect_to "/company/article/#{@article.id}/edit", notice: "#{error_message}"
+      end
     end
 
-    redirect_to company_articles_path, notice: "記事を作成しました。"
     rescue => e
     redirect_to company_articles_path, notice: "失敗しました。"
   end

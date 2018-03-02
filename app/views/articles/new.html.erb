@@ -10,7 +10,7 @@
 
     <div class="margin-top-10">
     <h3 class="margin-bottom-10">記事を作成する</h3>
-
+    <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
     <%= form_tag(company_article_create_path, method: "post", :multipart => true) do %>
       <table class="article_table horizontal width-80-percent">
         <tr>
@@ -23,12 +23,12 @@
 
         <tr>
           <th class="width-20-percent">タイトル</th>
-          <td><input name="title" class="width-100-percent"></td>
+          <td><input name="title" class="width-100-percent" required></td>
         </tr>
 
         <tr>
           <th>ディスクリプション</th>
-          <td><textarea name="description" class="min-height-200 width-100-percent"></textarea></td>
+          <td><textarea name="description" class="min-height-200 width-100-percent" required></textarea></td>
         </tr>
 
         <tr>

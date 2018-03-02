@@ -12,6 +12,7 @@
  
     <div class="margin-top-10">
 	    <h3 class="margin-bottom-10">記事を編集する</h3>
+      <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
 	    <%= form_tag( "/company/article/#{@article.id}/update", method: "post", :multipart => true) do %>
 	      <table class="article_table horizontal width-80-percent">
 	        <tr>
@@ -29,12 +30,12 @@
 
 	        <tr>
             <th class="width-20-percent">タイトル</th>
-	          <td><input name="title" class="width-100-percent" value="<%= @article.title %>"></td>
+	          <td><input name="title" class="width-100-percent" value="<%= @article.title %>" required></td>
 	        </tr>
 
 	        <tr>
 	          <th>ディスクリプション</th>
-	          <td><textarea name="description" class="min-height-200 width-100-percent"><%= @article.description %></textarea></td>
+	          <td><textarea name="description" class="min-height-200 width-100-percent"><%= @article.description %></textarea required></td>
 	        </tr>
 
 	        <tr>
