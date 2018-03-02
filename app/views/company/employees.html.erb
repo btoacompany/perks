@@ -150,73 +150,11 @@ $('.chk_admin').change(function() {
   }
 });
 
-$('.chk_manager').change(function() {
-  var _id = ($(this).attr('data-id')); //get attributes of clicked item
-
-  if ($(this).is(":checked")) {
-    if (confirm("マネージャーにしますか？")) {
-      $.post("/company/employees/make_manager", { 'id': _id }); //send post request
-    } else {
-      $(this).prop("checked", false);
-      return false; //do nothing
-    }
-  } else {
-    if (confirm("本当にマネージャーから外しますか？")) {
-      $.post("/company/employees/make_non_manager", { 'id': _id }); //send post request
-    } else {
-      $(this).prop("checked", true);
-      return false; //do nothing
-    }
-  }
-});
-
-$('.delete_item').click(function() {
-  var _id = ($(this).attr('data-id'));
-  var mgr_check = ($(this).attr('mgr-id'));
-  //get attributes of clicked item
-
-  if (mgr_check == "mgr") {
-    alert("チームのマネージャーのため、削除できませんでした。マネージャーを変更後に削除してください。");
-  } else {
-  if (confirm("本当に削除しますか？")) {
-    $.post("/company/employees/delete", { 'id': _id }); //send post request
-    $(".item_" + _id).remove(); //remove item upon deletion
-  }
-  return false; //do nothing
-  }
-});
-
 $('.setting_color').css('color','gray');
 
 $(document).ready(function () {
   $("#tab-container").easytabs();
 });
-
-$(".edit_email").click(function() {
-  window.location = "/company/employees/edit_email";
-});
-
-$("#open-sample-dialog").on("click", function(){
-  $("#sample-dialog").dialog();
-});
-
-// update email
-$(document).on('click','.modal-btn', function() {
-  $.ajax({ type: 'GET',
-    url: '/company/employees/edit_email',
-    data: {
-    id: $(this).attr('data-id')
-  },
-  success: function(data) {
-    $('#modal-label').append(data['name'] + "さんのメールアドレスを変更しますか。");
-    $('#modal-body').val(data['email']);
-    $('#modal-hidden').val(data['id']);
-    $('#my-modal').dialog();
-  },
-  error: function(data) {
-    alert('error');
-    }});
-  });
 
 $('.team_select_submit').click(function(){
   input = $("#team_selected_id").val();
