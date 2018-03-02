@@ -1,0 +1,4 @@
+service_account_email: *****@****.iam.gserviceaccount.com #サービスアカウントのID（アドレス）
+profileID: '000000000' #アナリティクスのビューID
+key_file: ./client_secrets.p12 # サービスアカウントのキー
+key_secret: notasecret # サービスアカウントのキーのパスワード（何もしていなければ'notasecret'でOK）
