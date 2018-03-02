@@ -1,4 +1,6 @@
 class Admin::EmployeesController < Admin::Base
+  before_action :get_previous_page, only: :edit
+
   def edit
     @employee = User.find_by(id: params[:id], company_id: @company.id)
     @departments = Department.where(company_id: @company.id, delete_flag: 0).order(sort: :asc)
@@ -27,10 +29,11 @@ class Admin::EmployeesController < Admin::Base
             if lastteam.member_ids && lastteam.member_ids.include?(',') && lastteam.member_ids.include?(@employee.id.to_s)
               test = [params[:id].to_s]
               lastteam.member_ids = (lastteam.member_ids.split(",") - (test)).join(",")
+              lastteam.save
             elsif lastteam.member_ids && lastteam.member_ids.include?(@employee.id.to_s)
               lastteam.member_ids = lastteam.member_ids.delete(@employee.id.to_s)
+              lastteam.save
             end
-            lastteam.save
           end
           next_team = Team.find(params[:team_id])
 
@@ -44,7 +47,7 @@ class Admin::EmployeesController < Admin::Base
             redirect_to company_employees_path
           else
             flash[:error] = "社員情報の編集に失敗しました"
-            edit_admin_employee_path(@employee.id)
+            redirect_to edit_admin_employee_path(@employee.id)
           end
         end
       else
@@ -55,5 +58,10 @@ class Admin::EmployeesController < Admin::Base
     rescue => e
       flash[:error] = "#{e}"
       redirect_to edit_admin_employee_path(@employee.id)
+  end
+
+  private
+  def get_previous_page
+    @previous_page = request.referrer
   end
 end
