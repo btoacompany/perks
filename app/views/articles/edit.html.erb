@@ -72,69 +72,102 @@
 	          </td>
 	        </tr>
 
+          <tr class="stop_move" style="display:none"><td></td></tr>
+
 	        <% @all_contents.each do |item| %>
-	          <tr>
-	            <% if item[:data_type] == "title" %>
-	              <th>タイトル<br><button type='button' class='delete_question'>削除する</button></th>
-	              <td><input name="paragraph_titles[<%= @num %>]" class="width-100-percent" value="<%= item[:title] %>" /></td>
-	            
+            <tr>
+              <% if item[:data_type] == "title" %>
+                <th>
+                  タイトル<br>
+                  <button type='button' class='delete_question'>削除する</button><br>
+                  <button type='button' class='btn_up'>↑</button><br>
+                  <button type='button' class='btn_down'>↓</button><br>
+                </th>
+                <td><input name="paragraph_titles[<%= @num %>]" data-id="<%= @num %>" data-name="paragraph_titles" class="param width-100-percent" value="<%= item[:title] %>" /></td>
+              
               <% elsif item[:data_type] == "text" %>
-	              <th>テキスト<br><button type='button' class='delete_question'>削除する</button></th>
-	              <td><textarea name="texts[<%= @num %>]" class="width-100-percent height-200"><%= item[:text] %></textarea></td>
-	            
+                <th>
+                  テキスト<br>
+                  <button type='button' class='delete_question'>削除する</button><br>
+                  <button type='button' class='btn_up'>↑</button><br>
+                  <button type='button' class='btn_down'>↓</button><br>
+                </th>
+                <td><textarea name="texts[<%= @num %>]" data-id="<%= @num %>" data-name="texts" class="param width-100-percent height-200"><%= item[:text] %></textarea></td>
+              
               <% elsif item[:data_type] == "link" %>
-	              <th>リンク<br><button type='button' class='delete_question'>削除する</button></th>
-	              <td>
-	                <input name="links[<%= @num %>][]" value="<%= item[:link_title] %>" class="width-100-percent"><br>
-	                <input name="links[<%= @num %>][]" value="<%= item[:link_url] %>" class="width-100-percent">
-	              </td>
-	            
+                <th>
+                  リンク<br>
+                  <button type='button' class='delete_question'>削除する</button><br>
+                  <button type='button' class='btn_up'>↑</button><br>
+                  <button type='button' class='btn_down'>↓</button><br>
+                </th>
+                <td>
+                  <input name="links[<%= @num %>][]" value="<%= item[:link_title] %>" data-id="<%= @num %>" data-name="links" class="param width-100-percent"><br>
+                  <input name="links[<%= @num %>][]" value="<%= item[:link_url] %>" data-id="<%= @num %>" data-name="links" class="param width-100-percent">
+                </td>
+              
               <% elsif item[:data_type] == "quotation" %>
-	              <th>引用<br><button type='button' class='delete_question'>削除する</button></th>
-	              <td>
-	                <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_title] %>" class="width-100-percent"><br>
-	                <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_url] %>" class="width-100-percent">
-	              </td>
-	            
+                <th>
+                  引用<br>
+                  <button type='button' class='delete_question'>削除する</button><br>
+                  <button type='button' class='btn_up'>↑</button><br>
+                  <button type='button' class='btn_down'>↓</button><br>
+                </th>
+                <td>
+                  <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_title] %>" data-id="<%= @num %>" data-name="quotations" class="param width-100-percent"><br>
+                  <input name="quotations[<%= @num %>][]" value="<%= item[:quotation_url] %>" data-id="<%= @num %>" data-name="quotations" class="param width-100-percent">
+                </td>
+              
               <% elsif item[:data_type] == "image" %>
-	              <th>画像</th>
-	              <td>
+                <th>
+                  画像<br>
+                  <button type='button' class='delete_question'>削除する</button><br>
+                  <button type='button' class='btn_up'>↑</button><br>
+                  <button type='button' class='btn_down'>↓</button><br>
+                </th>
+                <td>
                   <%= link_to "画像を変更・削除する","/company/image/#{item[:id]}/edit" %><br>
                   <%= image_tag item[:image_url], class: "width-30-percent max-height-200 margin-10" %>
-                  <input type="hidden" name="images[<%= @num %>][]" value="<%= item[:image_url] %>" class="width-100-percent">
-	              </td>
+                  <input type="hidden" name="images[<%= @num %>][]" value="<%= item[:image_url] %>" data-id="<%= @num %>" data-name="images" class="param width-100-percent">
+                </td>
               
               <% elsif item[:data_type] == "nametag" %>
-                <th>登場する社員<br><button type='button' class='delete_question'>削除する</button></th>
+                <th>
+                  登場する社員<br>
+                  <button type='button' class='delete_question'>削除する</button><br>
+                  <button type='button' class='btn_up'>↑</button><br>
+                  <button type='button' class='btn_down'>↓</button><br>
+                </th>
+
                 <td>
-                  <input type="text" id="suggest_nametag_<%= @num %>" class="suggest_nametag" name="nametag[<%= @num %>][]" size="100" placeholder="社員名を入力してください" autocomplete="on"/>
+                  <input type="text" id="suggest_nametag_<%= @num %>" data-sug-name="suggest_nametag" data-id="<%= @num %>" data-name="nametag" class="param suggest_nametag" name="nametag[<%= @num %>][]" size="100" placeholder="社員名を入力してください" autocomplete="on"/>
                   <input type="button" value="追加" class="btn_change_nametag" data-id="<%= @num %>"/><br>
-                  <div id="adding_nametag_<%= @num %>" data-count_tag=<%= item[:tag_count] %>>
+
+                  <div data-name="adding_nametag" class="add_nametag" id="adding_nametag_<%= @num %>" data-count_tag="<%= item[:tag_count] %>"></div>
 
                   <% for i in 0...item[:tag_count] %>
                     <span class="tag margin-bottom-5 margin-right-5" 
                       style="cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;" 
-                      id=<%= item[:user_ids][i] %> name=<%= item[:user_fullnames][i] %> data-tag_id=<%= item[:id][i] %> data-user-id=<%= item[:user_ids][i] %>>
+                      id="<%= item[:user_ids][i] %>" name="<%= item[:user_fullnames][i] %>" 
+                      data-tag_id="<%= item[:id][i] %>" data-user-id="<%= item[:user_ids][i] %>">
                       <%= item[:user_fullnames][i] %>
                     </span>
 
-                    <input type="hidden" id="tag_<%= item[:id][i] %>" name="nametag_user_ids[<%= @num %>][]" value="<%= item[:user_ids][i] %>" size="100"/>
+                    <input type="hidden" id="tag_<%= item[:id][i] %>" data-name="nametag_user_ids" name="nametag_user_ids[<%= @num %>][]" value="<%= item[:user_ids][i] %>" size="100"/>
                   <% end %>
-
                 </td>
-	            
               <% end %>
-	          </tr>
-	          
+            </tr>
+            
             <% @num = @num + 1 %>
-	        <% end %>
-	      </table>
+          <% end %>
+        </table>
 
         <input class="c_align submit-btn" type="submit" value="編集する">
 
-	    <% end %>
-	  </div>
-	</div>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -143,6 +176,7 @@ var num = <%= @num %>;
 var user_datas = new Array();
 var user_names = $('#suggested_name').data('user');
 var user_ids = $('#suggested_name').data('user-id');
+
 for (var i=0; i < user_names.length; i++) {
   user_datas[user_names[i]] = user_ids[i];
 };
@@ -160,6 +194,98 @@ $(function() {
   }
 });
 
+function moveItem(thisItem, direction) {
+  //tr item to be moved
+  var item = thisItem.parent().parent();
+  var multi_arr_names = ["links","quotations","nametag"];
+
+  var current_elem;
+  var current_place;
+  var current_label;
+  var current_name;
+  var next_elem;
+  var next_place;
+  var next_label;
+  var next_name
+
+  var is_stop;
+  var temp;
+  var hasName;
+
+  //get current element properties
+  current_elem  = thisItem.parent().next().children(".param");
+
+  //set variables if button up or down
+  if (direction=="up") {
+    is_stop   = item.prev().hasClass("stop_move"); 
+    next_elem = item.prev().children().next().children(".param");
+  } 
+  else if (direction=="down") { 
+    is_stop   = item.is(":last-child"); 
+    next_elem = item.next().children().next().children(".param");
+  }
+
+  if (is_stop==false) {
+    //properties of next and current item
+    current_place = current_elem.attr("data-id");
+    current_label = current_elem.attr("data-name");
+    next_place = next_elem.attr("data-id");
+    next_label = next_elem.attr("data-name");
+
+    //for sinlge or multi-dimensional name attribute of the element
+    //setting properties of next and current item
+    next_name = next_label + "[" + current_place + "]";
+    if($.inArray(next_label, multi_arr_names) != -1) {
+      next_name = next_label + "[" + current_place + "][]";
+
+      if(next_label=="nametag") {
+        moveNametag(next_elem,current_place);
+      }
+    }
+
+    current_name = current_label + "[" + next_place + "]";
+    if($.inArray(current_label, multi_arr_names) != -1) {   
+      current_name = current_label + "[" + next_place + "][]";
+
+      if(current_label=="nametag") {
+        moveNametag(current_elem,next_place);
+      }
+    }
+
+    next_elem.attr("name", next_name);
+    next_elem.attr("data-id", current_place);
+
+    current_elem.attr("name", current_name);
+    current_elem.attr("data-id", next_place);
+
+    //move up or down action
+    if      (direction=="up")   { item.prev().before(item); } 
+    else if (direction=="down") { item.next().after(item); }
+  }
+}
+
+function moveNametag(elem, place) {
+  var temp_var;
+
+  temp_var = elem.attr("data-sug-name");
+  elem.attr("id", temp_var + "_" + place);
+
+  temp_var = elem.siblings(".add_nametag").attr("data-name");
+  elem.siblings(".add_nametag").attr("id", temp_var + "_" + place);
+
+  elem.siblings(".btn_change_nametag").attr("data-id",place);
+
+  temp_var = elem.siblings(".add_nametag").children("input").attr("data-name");
+  elem.siblings(".add_nametag").children("input").attr("name", temp_var + "[" + place + "][]");
+}
+
+$('.article_table').on('click', '.btn_up', function(){
+  moveItem($(this),"up");
+});
+
+$('.article_table').on('click', '.btn_down', function(){
+  moveItem($(this),"down");
+});
 
 $('.admin_menu').click(function(){
   num++;
@@ -168,13 +294,21 @@ $('.admin_menu').click(function(){
     var element = document.createElement('input');
     element.setAttribute("name", "paragraph_titles["+ _num +"]"); 
     element.setAttribute("type", "text");
-    element.setAttribute("class", "width-100-percent");
+    element.setAttribute("class", "param width-100-percent");
+    element.setAttribute("data-id",  _num);
+    element.setAttribute("data-name", "paragraph_titles");
+
     var _content = $([
       "<tr>",
-        "<th>見出し<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<th>見出し<br>",
+        "<button type='button' class='delete_question'>削除する</button><br>",
+        "<button type='button' class='btn_up'>↑</button><br>",
+        "<button type='button' class='btn_down'>↓</button><br>",
+        "</th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(element);
     $(".insert_element").removeClass("insert_element");
@@ -183,13 +317,21 @@ $('.admin_menu').click(function(){
     var element = document.createElement('textarea');
     element.setAttribute("name", "texts["+ _num +"]"); 
     element.setAttribute("type", "text");
-    element.setAttribute("class", "width-100-percent height-200");
+    element.setAttribute("class", "param width-100-percent height-200");
+    element.setAttribute("data-id",  _num);
+    element.setAttribute("data-name", "texts");
+
     var _content = $([
       "<tr>",
-        "<th>テキスト<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<th>テキスト<br>",
+        "<button type='button' class='delete_question'>削除する</button><br>",
+        "<button type='button' class='btn_up'>↑</button><br>",
+        "<button type='button' class='btn_down'>↓</button><br>",
+        "</th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(element);
     $(".insert_element").removeClass("insert_element");
@@ -199,20 +341,29 @@ $('.admin_menu').click(function(){
     title.setAttribute("name", "links["+ _num +"][]"); 
     title.setAttribute("type", "text");
     title.setAttribute("placeholder", "リンクタイトル");
-    title.setAttribute("class", "width-100-percent");
+    title.setAttribute("class", "param width-100-percent");
+    title.setAttribute("data-id",  _num);
+    title.setAttribute("data-name", "links");
 
     var url = document.createElement('input');
     url.setAttribute("name", "links["+ _num +"][]"); 
     url.setAttribute("type", "text");
     url.setAttribute("placeholder", "リンク先のURL");
-    url.setAttribute("class", "width-100-percent");
+    url.setAttribute("class", "param width-100-percent");
+    url.setAttribute("data-id",  _num);
+    url.setAttribute("data-name", "links");
 
     var _content = $([
       "<tr>",
-        "<th>リンク<br><button type='button' class='delete_question'>削除する</button></th>",
-        "<td class='insert_element'>",
-        "</td>",
-      "</tr>"].join(""));
+          "<th>リンク<br>",
+          "<button type='button' class='delete_question'>削除する</button><br>",
+          "<button type='button' class='btn_up'>↑</button><br>",
+          "<button type='button' class='btn_down'>↓</button><br>",
+          "</th>",
+          "<td class='insert_element'>",
+          "</td>",
+        "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(title);
     $(".insert_element").append('<br>');
@@ -223,20 +374,29 @@ $('.admin_menu').click(function(){
     var title = document.createElement('textarea');
     title.setAttribute("name", "quotations["+ _num +"][]"); 
     title.setAttribute("placeholder", "引用の内容");
-    title.setAttribute("class", "width-100-percent height-200");
+    title.setAttribute("class", "param width-100-percent height-200");
+    title.setAttribute("data-id",  _num);
+    title.setAttribute("data-name", "quotations");
 
     var url = document.createElement('input');
     url.setAttribute("name", "quotations["+ _num +"][]"); 
     url.setAttribute("type", "text");
     url.setAttribute("placeholder", "引用元ののURL");
-    url.setAttribute("class", "width-100-percent");
+    url.setAttribute("class", "param width-100-percent");
+    url.setAttribute("data-id",  _num);
+    url.setAttribute("data-name", "quotations");
 
     var _content = $([
       "<tr>",
-        "<th>引用<br><button type='button' class='delete_question'>削除する</button></th>",
-        "<td class='insert_element'>",
-        "</td>",
-      "</tr>"].join(""));
+          "<th>引用<br>",
+          "<button type='button' class='delete_question'>削除する</button><br>",
+          "<button type='button' class='btn_up'>↑</button><br>",
+          "<button type='button' class='btn_down'>↓</button><br>",
+          "</th>",
+          "<td class='insert_element'>",
+          "</td>",
+        "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(title);
     $(".insert_element").append('<br>');
@@ -249,13 +409,21 @@ $('.admin_menu').click(function(){
     image.setAttribute("multiple", "true");
     image.setAttribute("name", "images["+ _num +"]");
     image.setAttribute("required", "required");
+    image.setAttribute("class", "param");
+    image.setAttribute("data-id",  _num);
+    image.setAttribute("data-name", "images");
 
     var _content = $([
       "<tr>",
-        "<th>画像<br/><button type='button' class='delete_question'>削除する</button></th>",
-        "<td class='insert_element'>",
-        "</td>",
-      "</tr>"].join(""));
+          "<th>画像<br>",
+          "<button type='button' class='delete_question'>削除する</button><br>",
+          "<button type='button' class='btn_up'>↑</button><br>",
+          "<button type='button' class='btn_down'>↓</button><br>",
+          "</th>",
+          "<td class='insert_element'>",
+          "</td>",
+        "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(image);
     $(".insert_element").append('<br>');
@@ -268,16 +436,17 @@ $('.admin_menu').click(function(){
     var title = document.createElement('input');
     title.setAttribute("type", "text");
     title.setAttribute("id", "suggest_nametag_"+ _num);
-    title.setAttribute("class", "suggest_nametag");
+    title.setAttribute("class", "param suggest_nametag");
     title.setAttribute("name", "nametag["+ _num +"][]");
     title.setAttribute("size", "100"); 
     title.setAttribute("placeholder", "社員名を入力してください");
     title.setAttribute("autocomplete", "on");
-    title.setAttribute("data-user", "["+user_names+"]");
-    title.setAttribute("data-user-id", "["+user_ids+"]");
+    title.setAttribute("data-id",  _num);
+    title.setAttribute("data-sug-name", "suggest_nametag");
+    title.setAttribute("data-name", "nametag");
 
     var button = document.createElement('input');
-    button.setAttribute("name", "nametag["+ _num +"][]");
+    //button.setAttribute("name", "nametag["+ _num +"][]");
     button.setAttribute("value", "追加");
     button.setAttribute("type", "button");
     button.setAttribute("class", "btn_change_nametag");
@@ -285,15 +454,20 @@ $('.admin_menu').click(function(){
 
     var _content = $([
       "<tr>",
-        "<th>登場する社員<br><button type='button' class='delete_question'>削除する</button></th>",
-        "<td class='insert_element'>",
-        "</td>",
-      "</tr>"].join(""));
+          "<th>登場する社員<br>",
+          "<button type='button' class='delete_question'>削除する</button><br>",
+          "<button type='button' class='btn_up'>↑</button><br>",
+          "<button type='button' class='btn_down'>↓</button><br>",
+          "</th>",
+          "<td class='insert_element'>",
+          "</td>",
+        "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(title);
     $(".insert_element").append('<br>');
     $(".insert_element").append(button);
-    $(".insert_element").append('<div id="adding_nametag_'+ num +'"></div>');
+    $(".insert_element").append('<div data-name="adding_nametag" class="add_nametag" id="adding_nametag_'+ num +'"></div>');
     $(".insert_element").removeClass("insert_element");
 
     for (var i = 0; i < num; i++) {
@@ -304,14 +478,11 @@ $('.admin_menu').click(function(){
   }
 });
 
-$('.article_table').on('click', '.delete_question', function(){
-  $(this).parent().parent().remove();
-});
-
 var tag_id = $("#adding_member").data("count_tag") + 1;
 $(".btn_change_password").click(function() {
   var addedname = $(':text[id="suggested_name"]').val();
   $("#adding_member").append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + tag_id + ">" + addedname + "</span>");
+  
   var target_user_id = user_datas[addedname];
   $("#adding_member").append($("<input id=tag_"+ tag_id + " type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
   $(':text[id="suggested_name"]').val("");
@@ -320,7 +491,6 @@ $(".btn_change_password").click(function() {
 
 //for nametags per title
 var nametag_id = $("#adding_nametag_"+ num).data("count_tag") + 1;
-
 $(".article_table").on("click", ".btn_change_nametag", function(){
   var dataId = $(this).attr("data-id");
 
@@ -328,8 +498,7 @@ $(".article_table").on("click", ".btn_change_nametag", function(){
   $("#adding_nametag_"+ dataId).append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + nametag_id + ">" + addednametag + "</span>");
 
   var target_user_id = user_datas[addednametag];
-  $("#adding_nametag_"+ dataId).append($("<input id=tag_"+ nametag_id + " type='hidden' name='nametag_user_ids[" + dataId + "][]'/>").val(target_user_id));
-
+  $("#adding_nametag_"+ dataId).append($("<input id=tag_"+ nametag_id + " type='hidden' name='nametag_user_ids[" + dataId + "][]' data-name='nametag_user_ids'/>").val(target_user_id));
   $(':text[id="suggest_nametag_' + dataId + '"]').val("");
   tag_id ++;
 });
@@ -338,6 +507,10 @@ $(document).on('click','.tag', function() {
   this_tag_id = $(this).data("tag_id");
   $(this).remove();
   $("#tag_" + this_tag_id).remove();
+});
+
+$('.article_table').on('click', '.delete_question', function(){
+  $(this).parent().parent().remove();
 });
 
 </script>

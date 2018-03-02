@@ -56,6 +56,8 @@
           </td>
         </tr>
 
+        <tr class="stop_move" style="display:none"><td></td></tr>
+
       </table>
 
       <input class="c_align submit-btn" type="submit" value="作成する">
@@ -65,6 +67,7 @@
     </div>
   </div>
 </div>
+
 
 <script type="text/javascript">
 var num = 0;
@@ -78,11 +81,103 @@ for (var i=0; i < user_names.length; i++) {
 };
 
 $(function() {
-  var target_user_names = $('#suggested_name').data('user');
+  var target_user_names = user_names;
   $( "#suggested_name" ).autocomplete({
     source: target_user_names
   });
+});
 
+function moveItem(thisItem, direction) {
+  //tr item to be moved
+  var item = thisItem.parent().parent();
+  var multi_arr_names = ["links","quotations","nametag"];
+
+  var current_elem;
+  var current_place;
+  var current_label;
+  var current_name;
+  var next_elem;
+  var next_place;
+  var next_label;
+  var next_name
+
+  var is_stop;
+  var temp;
+  var hasName;
+
+  //get current element properties
+  current_elem  = thisItem.parent().next().children(".param");
+
+  //set variables if button up or down
+  if (direction=="up") {
+    is_stop   = item.prev().hasClass("stop_move"); 
+    next_elem = item.prev().children().next().children(".param");
+  } 
+  else if (direction=="down") { 
+    is_stop   = item.is(":last-child"); 
+    next_elem = item.next().children().next().children(".param");
+  }
+
+  if (is_stop==false) {
+    //properties of next and current item
+    current_place = current_elem.attr("data-id");
+    current_label = current_elem.attr("data-name");
+    next_place = next_elem.attr("data-id");
+    next_label = next_elem.attr("data-name");
+
+    //for sinlge or multi-dimensional name attribute of the element
+    //setting properties of next and current item
+    next_name = next_label + "[" + current_place + "]";
+    if($.inArray(next_label, multi_arr_names) != -1) {
+      next_name = next_label + "[" + current_place + "][]";
+
+      if(next_label=="nametag") {
+        moveNametag(next_elem,current_place);
+      }
+    }
+
+    current_name = current_label + "[" + next_place + "]";
+    if($.inArray(current_label, multi_arr_names) != -1) {   
+      current_name = current_label + "[" + next_place + "][]";
+
+      if(current_label=="nametag") {
+        moveNametag(current_elem,next_place);
+      }
+    }
+
+    next_elem.attr("name", next_name);
+    next_elem.attr("data-id", current_place);
+
+    current_elem.attr("name", current_name);
+    current_elem.attr("data-id", next_place);
+
+    //move up or down action
+    if      (direction=="up")   { item.prev().before(item); } 
+    else if (direction=="down") { item.next().after(item); }
+  }
+}
+
+function moveNametag(elem, place) {
+  var temp_var;
+
+  temp_var = elem.attr("data-sug-name");
+  elem.attr("id", temp_var + "_" + place);
+
+  temp_var = elem.siblings(".add_nametag").attr("data-name");
+  elem.siblings(".add_nametag").attr("id", temp_var + "_" + place);
+
+  elem.siblings(".btn_change_nametag").attr("data-id",place);
+
+  temp_var = elem.siblings(".add_nametag").children("input").attr("data-name");
+  elem.siblings(".add_nametag").children("input").attr("name", temp_var + "[" + place + "][]");
+}
+
+$('.article_table').on('click', '.btn_up', function(){
+  moveItem($(this),"up");
+});
+
+$('.article_table').on('click', '.btn_down', function(){
+  moveItem($(this),"down");
 });
 
 $('.admin_menu').click(function(){
@@ -93,13 +188,21 @@ $('.admin_menu').click(function(){
     var element = document.createElement('input');
     element.setAttribute("name", "paragraph_titles["+ _num +"]"); 
     element.setAttribute("type", "text");
-    element.setAttribute("class", "width-100-percent");
+    element.setAttribute("class", "param width-100-percent");
+    element.setAttribute("data-id",  _num);
+    element.setAttribute("data-name", "paragraph_titles");
+
     var _content = $([
       "<tr>",
-        "<th>見出し<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<th>見出し<br>",
+        "<button type='button' class='delete_question'>削除する</button><br>",
+        "<button type='button' class='btn_up'>↑</button><br>",
+        "<button type='button' class='btn_down'>↓</button><br>",
+        "</th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(element);
     $(".insert_element").removeClass("insert_element");
@@ -108,11 +211,17 @@ $('.admin_menu').click(function(){
     var element = document.createElement('textarea');
     element.setAttribute("name", "texts["+ _num +"]"); 
     element.setAttribute("type", "text");
-    element.setAttribute("class", "width-100-percent height-200");
+    element.setAttribute("class", "param width-100-percent height-200");
+    element.setAttribute("data-id",  _num);
+    element.setAttribute("data-name", "texts");
 
     var _content = $([
       "<tr>",
-        "<th>テキスト<br><button type='button' class='delete_question'>削除する</button></th>",
+        "<th>テキスト<br>",
+        "<button type='button' class='delete_question'>削除する</button><br>",
+        "<button type='button' class='btn_up'>↑</button><br>",
+        "<button type='button' class='btn_down'>↓</button><br>",
+        "</th>",
         "<td class='insert_element'>",
         "</td>",
       "</tr>"].join(""));
@@ -126,20 +235,28 @@ $('.admin_menu').click(function(){
     title.setAttribute("name", "links["+ _num +"][]"); 
     title.setAttribute("type", "text");
     title.setAttribute("placeholder", "リンクタイトル");
-    title.setAttribute("class", "width-100-percent");
+    title.setAttribute("class", "param width-100-percent");
+    title.setAttribute("data-id",  _num);
+    title.setAttribute("data-name", "links");
 
     var url = document.createElement('input');
     url.setAttribute("name", "links["+ _num +"][]"); 
     url.setAttribute("type", "text");
     url.setAttribute("placeholder", "リンク先のURL");
-    url.setAttribute("class", "width-100-percent");
+    url.setAttribute("class", "param width-100-percent");
+    url.setAttribute("data-id",  _num);
+    url.setAttribute("data-name", "links");
 
     var _content = $([
       "<tr>",
-        "<th>リンク<br><button type='button' class='delete_question'>削除する</button></th>",
-        "<td class='insert_element'>",
-        "</td>",
-      "</tr>"].join(""));
+          "<th>リンク<br>",
+          "<button type='button' class='delete_question'>削除する</button><br>",
+          "<button type='button' class='btn_up'>↑</button><br>",
+          "<button type='button' class='btn_down'>↓</button><br>",
+          "</th>",
+          "<td class='insert_element'>",
+          "</td>",
+        "</tr>"].join(""));
 
     $(".article_table").append(_content);
     $(".insert_element").append(title);
@@ -151,20 +268,28 @@ $('.admin_menu').click(function(){
     var title = document.createElement('textarea');
     title.setAttribute("name", "quotations["+ _num +"][]"); 
     title.setAttribute("placeholder", "引用の内容");
-    title.setAttribute("class", "width-100-percent height-200");
+    title.setAttribute("class", "param width-100-percent height-200");
+    title.setAttribute("data-id",  _num);
+    title.setAttribute("data-name", "quotations");
 
     var url = document.createElement('input');
     url.setAttribute("name", "quotations["+ _num +"][]"); 
     url.setAttribute("type", "text");
     url.setAttribute("placeholder", "引用元ののURL");
-    url.setAttribute("class", "width-100-percent");
+    url.setAttribute("class", "param width-100-percent");
+    url.setAttribute("data-id",  _num);
+    url.setAttribute("data-name", "quotations");
 
     var _content = $([
       "<tr>",
-        "<th>引用<br><button type='button' class='delete_question'>削除する</button></th>",
-        "<td class='insert_element'>",
-        "</td>",
-      "</tr>"].join(""));
+          "<th>引用<br>",
+          "<button type='button' class='delete_question'>削除する</button><br>",
+          "<button type='button' class='btn_up'>↑</button><br>",
+          "<button type='button' class='btn_down'>↓</button><br>",
+          "</th>",
+          "<td class='insert_element'>",
+          "</td>",
+        "</tr>"].join(""));
 
     $(".article_table").append(_content);
     $(".insert_element").append(title);
@@ -178,13 +303,20 @@ $('.admin_menu').click(function(){
     image.setAttribute("multiple", "true");
     image.setAttribute("name", "images["+ _num +"]");
     image.setAttribute("required", "required");
+    image.setAttribute("class", "param");
+    image.setAttribute("data-id",  _num);
+    image.setAttribute("data-name", "images");
 
     var _content = $([
       "<tr>",
-        "<th>画像<br/>横サイズのみ固定の300pxになります<br/><button type='button' class='delete_question'>削除する</button></th>",
-        "<td class='insert_element'>",
-        "</td>",
-      "</tr>"].join(""));
+          "<th>画像<br>",
+          "<button type='button' class='delete_question'>削除する</button><br>",
+          "<button type='button' class='btn_up'>↑</button><br>",
+          "<button type='button' class='btn_down'>↓</button><br>",
+          "</th>",
+          "<td class='insert_element'>",
+          "</td>",
+        "</tr>"].join(""));
 
     $(".article_table").append(_content);
     $(".insert_element").append(image);
@@ -198,13 +330,14 @@ $('.admin_menu').click(function(){
     var title = document.createElement('input');
     title.setAttribute("type", "text");
     title.setAttribute("id", "suggest_nametag_"+ _num);
-    title.setAttribute("class", "suggest_nametag");
+    title.setAttribute("class", "param suggest_nametag");
     title.setAttribute("name", "nametag["+ _num +"][]");
     title.setAttribute("size", "100"); 
     title.setAttribute("placeholder", "社員名を入力してください");
     title.setAttribute("autocomplete", "on");
-    //title.setAttribute("data-user", "["+user_names+"]");
-    //title.setAttribute("data-user-id", "["+user_ids+"]");
+    title.setAttribute("data-id",  _num);
+    title.setAttribute("data-sug-name", "suggest_nametag");
+    title.setAttribute("data-name", "nametag");
 
     var button = document.createElement('input');
     button.setAttribute("value", "追加");
@@ -214,17 +347,22 @@ $('.admin_menu').click(function(){
 
     var _content = $([
       "<tr>",
-        "<th>登場する社員<br><button type='button' class='delete_question'>削除する</button></th>",
-        "<td class='insert_element'>",
-        "</td>",
-      "</tr>"].join(""));
+          "<th>登場する社員<br>",
+          "<button type='button' class='delete_question'>削除する</button><br>",
+          "<button type='button' class='btn_up'>↑</button><br>",
+          "<button type='button' class='btn_down'>↓</button><br>",
+          "</th>",
+          "<td class='insert_element'>",
+          "</td>",
+        "</tr>"].join(""));
+
     $(".article_table").append(_content);
     $(".insert_element").append(title);
     $(".insert_element").append('<br>');
     $(".insert_element").append(button);
-    $(".insert_element").append('<div id="adding_nametag_'+ num +'"></div>');
+    $(".insert_element").append('<div data-name="adding_nametag" class="add_nametag" id="adding_nametag_'+ num +'"></div>');
     $(".insert_element").removeClass("insert_element");
-
+    
     for (var i = 0; i < num; i++) {
       $( "#suggest_nametag_" + num ).autocomplete({
         source: user_names
@@ -235,32 +373,28 @@ $('.admin_menu').click(function(){
 
 //for general tags
 var tag_id = 0;
-
 $(".btn_change_password").click(function() {
   var addedname = $(':text[id="suggested_name"]').val();
   $("#adding_member").append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + tag_id + ">" + addedname + "</span>");
 
   var target_user_id = user_datas[addedname];
   $("#adding_member").append($("<input id=tag_"+ tag_id + " type='hidden' name='tag_user_ids[]'/>").val(target_user_id));
-
   $(':text[id="suggested_name"]').val("");
   tag_id ++;
 });
 
 //for nametags per title
-var nametag_id = 0;
-
 $(".article_table").on("click", ".btn_change_nametag", function(){
   var dataId = $(this).attr("data-id");
-
+  
   var addednametag = $(':text[id="suggest_nametag_' + dataId + '"]').val();
-  $("#adding_nametag_"+ dataId).append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + nametag_id + ">" + addednametag + "</span>");
+  $("#adding_nametag_"+ dataId).append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;'>" + addednametag + "</span>");
 
   var target_user_id = user_datas[addednametag];
-  $("#adding_nametag_"+ dataId).append($("<input id=tag_"+ nametag_id + " type='hidden' name='nametag_user_ids[" + dataId + "][]'/>").val(target_user_id));
-
+  $("#adding_nametag_"+ dataId).append($("<input id=tag_"+ tag_id + " type='hidden' name='nametag_user_ids[" + dataId + "][]' data-name='nametag_user_ids'/>").val(target_user_id));
   $(':text[id="suggest_nametag_' + dataId + '"]').val("");
-  tag_id ++;
+
+  tag_id++;
 });
 
 $(document).on('click','.tag', function() {
@@ -272,6 +406,4 @@ $(document).on('click','.tag', function() {
 $('.article_table').on('click', '.delete_question', function(){
   $(this).parent().parent().remove();
 });
-
-
 </script>
