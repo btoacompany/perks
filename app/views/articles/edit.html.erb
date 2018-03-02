@@ -143,7 +143,7 @@
                   <input type="text" id="suggest_nametag_<%= @num %>" data-sug-name="suggest_nametag" data-id="<%= @num %>" data-name="nametag" class="param suggest_nametag" name="nametag[<%= @num %>][]" size="100" placeholder="社員名を入力してください" autocomplete="on"/>
                   <input type="button" value="追加" class="btn_change_nametag" data-id="<%= @num %>"/><br>
 
-                  <div data-name="adding_nametag" class="add_nametag" id="adding_nametag_<%= @num %>" data-count_tag="<%= item[:tag_count] %>"></div>
+                  <div data-name="adding_nametag" class="add_nametag" id="adding_nametag_<%= @num %>" data-count_tag="<%= item[:tag_count] %>">
 
                   <% for i in 0...item[:tag_count] %>
                     <span class="tag margin-bottom-5 margin-right-5" 
@@ -155,6 +155,7 @@
 
                     <input type="hidden" id="tag_<%= item[:id][i] %>" data-name="nametag_user_ids" name="nametag_user_ids[<%= @num %>][]" value="<%= item[:user_ids][i] %>" size="100"/>
                   <% end %>
+                  </div>
                 </td>
               <% end %>
             </tr>
@@ -197,7 +198,7 @@ $(function() {
 function moveItem(thisItem, direction) {
   //tr item to be moved
   var item = thisItem.parent().parent();
-  var multi_arr_names = ["links","quotations","nametag"];
+  var multi_arr_names = ["links","quotations","nametag","images"];
 
   var current_elem;
   var current_place;
@@ -276,6 +277,7 @@ function moveNametag(elem, place) {
   elem.siblings(".btn_change_nametag").attr("data-id",place);
 
   temp_var = elem.siblings(".add_nametag").children("input").attr("data-name");
+  console.log(temp_var);
   elem.siblings(".add_nametag").children("input").attr("name", temp_var + "[" + place + "][]");
 }
 
@@ -290,6 +292,7 @@ $('.article_table').on('click', '.btn_down', function(){
 $('.admin_menu').click(function(){
   num++;
   var _num = String(num);
+
   if ($(this).hasClass("title")) {
     var element = document.createElement('input');
     element.setAttribute("name", "paragraph_titles["+ _num +"]"); 
@@ -490,17 +493,19 @@ $(".btn_change_password").click(function() {
 });
 
 //for nametags per title
-var nametag_id = $("#adding_nametag_"+ num).data("count_tag") + 1;
+//var nametag_id = $("#adding_nametag_"+ num).data("count_tag") + 1;
+
 $(".article_table").on("click", ".btn_change_nametag", function(){
   var dataId = $(this).attr("data-id");
 
   var addednametag = $(':text[id="suggest_nametag_' + dataId + '"]').val();
-  $("#adding_nametag_"+ dataId).append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + nametag_id + ">" + addednametag + "</span>");
+  $("#adding_nametag_"+ dataId).append("<span class='tag margin-bottom-5 margin-right-5' style='cursor: pointer;font-size: 10px;padding: 3px;border-radius: 3px;border: 1px solid #ff8d07;' data-tag_id=" + tag_id + ">" + addednametag + "</span>");
 
   var target_user_id = user_datas[addednametag];
-  $("#adding_nametag_"+ dataId).append($("<input id=tag_"+ nametag_id + " type='hidden' name='nametag_user_ids[" + dataId + "][]' data-name='nametag_user_ids'/>").val(target_user_id));
+  $("#adding_nametag_"+ dataId).append($("<input id=tag_"+ tag_id + " type='hidden' name='nametag_user_ids[" + dataId + "][]' data-name='nametag_user_ids'/>").val(target_user_id));
   $(':text[id="suggest_nametag_' + dataId + '"]').val("");
-  tag_id ++;
+
+  tag_id++;
 });
 
 $(document).on('click','.tag', function() {
