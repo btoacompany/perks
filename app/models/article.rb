@@ -12,6 +12,6 @@ class Article < ActiveRecord::Base
   has_many :users, through: :article_likes
   has_many :images
 
-  validates :title, length: {maximum: 240}
-  validates :description, length: {maximum: 240}
+  validates :title, length: {maximum: 250}
+  validates :description, length: {maximum: 250}
 end

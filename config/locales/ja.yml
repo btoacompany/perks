@@ -1,0 +1,8 @@
+ja:
+  activerecord:
+    models:
+      article: 記事
+    attributes:
+      article:
+        title: タイトル
+        description: ディスクリプション
