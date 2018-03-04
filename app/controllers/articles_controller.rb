@@ -3,13 +3,23 @@ class ArticlesController < ApplicationController
   before_filter :init_url, :authenticate_user
   before_action :init
 
-  def batch_test
-    @user = User.find(1)
-    data = {
-      email: @user.email
-    }
+  class << self
+    def send_each(user)
+      @user = user
+      data = {
+        email: Rails.env.production? ? @user.email : "naoto.udagawa1230@gmail.com"
+      }
 
-    UserMailer.test_mail(data).deliver_now
+      UserMailer.test_mail(data).deliver_now
+    end
+
+    def batch
+      # @users = [Us]
+      # @users.each do |user|
+      #   send_each(user)
+      #   sleep 1
+      # end
+    end
   end
 
   def init

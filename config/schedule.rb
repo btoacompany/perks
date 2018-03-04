@@ -24,6 +24,6 @@ end
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.minutes do
-  runner "ArticlesController.batch_test"
-end
+# every 1.minutes do
+  # runner "ArticlesController.batch"
+# end
