@@ -3,6 +3,15 @@ class ArticlesController < ApplicationController
   before_filter :init_url, :authenticate_user
   before_action :init
 
+  def batch_test
+    @user = User.find(1)
+    data = {
+      email: @user.email
+    }
+
+    TestMailer.test_mail(data).deliver_now
+  end
+
   def init
     if session[:id].present? || cookies[:id].present?
       @id = session[:id] || cookies[:id]
