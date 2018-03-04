@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
       email: @user.email
     }
 
-    TestMailer.test_mail(data).deliver_now
+    UserMailer.test_mail(data).deliver_now
   end
 
   def init
