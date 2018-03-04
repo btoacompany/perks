@@ -1,7 +1,6 @@
+@user = User.find(1)
 data = {
- name: "test_#{Time.now.to_i}",
- email: "test_#{Time.now.to_i}@email.com",
+  email: @user.email
 }
 
-t = Test.new
-t.save_record(data)
+TestMailer.test_mail(data).deliver_now
