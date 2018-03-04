@@ -5,20 +5,77 @@ class ArticlesController < ApplicationController
 
   class << self
     def send_each(user)
-      @user = user
+      logger.debug(user.company_id)
+      teams = Team.of_company(user.company_id).available
+      # 所属
+      logger.debug(teams.count)
+      puts("aa")
+      belonging = nil
+      teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(user.id.to_s) }
+      logger.debug("--")
+      if belonging
+        member_ids = belonging.member_ids.split(",") - [user.id]
+        if member_ids.count >= 2
+          two_targets_from_team = member_ids.sample(2)
+          logger.debug(two_targets_from_team)
+          logger.debug("||")
+        else
+          teams = Team.where(department_id: belonging.department_id).available
+          department_members = Array.new
+          teams.each do |team|
+            if team.member_ids.present?
+              team.member_ids.split(",").each do |id|
+                department_members.push(id)
+              end
+            end
+          end
+          two_targets_from_team = department_members.sample(2)
+          logger.debug(two_targets_from_team)
+          logger.debug("||")
+        end
+      end
+
+      articles = Article.of_company(user.company_id).available
+      target_from_article = Tag.where(article_id: articles).where.not(user_id: user.id).where.not(user_id: two_targets_from_team).pluck(:user_id).sample(1)
+        
+      # targets = {team: user, ...}
+      targets = Hash.new
+      if belonging
+        target_users = two_targets_from_team + target_from_article
+      else
+        target_users = target_from_article
+      end
+      logger.debug(target_users)
+      target_users = User.available.of_company(user.company_id).where(id: target_users)
+
+      logger.debug("~~~")
+      logger.debug(target_users.count)
+      logger.debug("~~")
+      target_users.each do |user|
+        belonging = nil
+        teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(user.id.to_s) }
+        targets.store(belonging, user)
+      end
+
       data = {
-        email: Rails.env.production? ? @user.email : "naoto.udagawa1230@gmail.com"
+        user: user,
+        email: Rails.env.production? ? user.email : "naoto.udagawa1230@gmail.com",
+        target: targets
       }
 
-      UserMailer.test_mail(data).deliver_now
+      logger.debug(data[:target].count)
+      logger.debug(target_users.count)
+      logger.debug(data[:target])
+      CompanyMailer.recommend_mail(data).deliver_now
     end
 
     def batch
-      # @users = [Us]
-      # @users.each do |user|
-      #   send_each(user)
-      #   sleep 1
-      # end
+      # @users = User.available.of_company(1)
+      @users = [User.find(270)]
+      @users.each do |user|
+        send_each(user)
+        sleep 1
+      end
     end
   end
 
