@@ -25,5 +25,5 @@ end
 # Learn more: http://github.com/javan/whenever
 
 every 1.minutes do
-  runner "TestMailer.test_mail"
+  runner "ArticlesController.batch_test"
 end
