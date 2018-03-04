@@ -60,6 +60,27 @@ class Admin::EmployeesController < Admin::Base
       redirect_to edit_admin_employee_path(@employee.id)
   end
 
+  def export_csv_file
+    @users = User.available.of_company(@company.id)
+    @teams = Team.available.of_company(@company.id)
+    headers = %w(名前 email 会社名 部署名)
+    csv_str = CSV.generate do |csv|
+      csv << headers
+      @users.each do |user|
+        belonging = nil
+        @teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(user.id.to_s) }
+        if belonging
+          csv << ["#{user.try(:lastname)} #{user.try(:firstname)}", "#{user.try(:email)}", "#{belonging.department.try(:dep_name)}", "#{belonging.try(:team_name)}"]
+        else
+          csv << ["#{user.try(:lastname)} #{user.try(:firstname)}", "#{user.try(:email)}", "所属がありません", "所属がありません"]
+        end
+      end
+    end
+    datetime = Time.now
+    format_datetime = datetime.strftime('%Y_%m_%d_%H%M')
+    send_data csv_str, filename: "#{format_datetime}" + "社員一覧" , type: 'text/csv;'
+  end
+
   private
   def get_previous_page
     @previous_page = request.referrer
