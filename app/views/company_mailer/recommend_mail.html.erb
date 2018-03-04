@@ -27,7 +27,7 @@
 <table>
 <tr>
 <td>
-<h3>こんにちは！<%= username %>さん</h3>
+<h3>こんにちは！<%= @data[:user].try(:lastname) %>さん</h3>
 <br/>
 <p>
 ★身近過ぎて忘れていた「ありがとう」 をもう一度
@@ -42,47 +42,20 @@
 今週は、こちらのみなさんにメッセージを贈ってみては<br/>
 いかがでしょうか。<br/>
 <br/>
+<% @data[:target].each do |team, user| %>
 ＋＋＋＋＋＋<br/>
-セプテーニ・ホールディングス 人事総務部総務課<br/>
-馬野 雅和さん<br/>
-<br/>
-セプテーニ・ホールディングス　 人事総務部総務課<br/>
-川崎 ひとみさん<br/>
-<br/>
-セプテーニ・ホールディングス　採用企画部<br/>
-江崎 修平さん<br/>
+<% if team %>
+<%= "#{team.team_name}" %><br/>
+<% end %>
+<%= link_to "#{user.try(:lastname)}#{user.try(:firstname)}", "https://www.prizy.me/profile/given?user_id=#{user.id}" %><br/>
+<% end %>
 ＋＋＋＋＋＋<br/>
 <br/>
 今週も、ステキな1週間になりますように！<br/>
 <br/>
 ----------------------------- <br/>
 Prizy事務局<br/>
-柴田・江崎・馬野<br/>
 -----------------------------<br/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<p class="lead"><%= @company[:username] %>さんから、ポイントの交換が申請されました。</p>
-
-<p>いますぐ<a href="<%= @company[:prizy_url] %>">コチラ</a>から承認作業を行ってください。<br>(承認作業はすぐ終わります。)<br><br>
-
-引き続きPrizyをよろしくお願いいたします。<br><br>Prizy運営事務局
-</p>
-<!-- Callout Panel -->
-<p style="padding:15px;background-color:#ECF8FF;margin-bottom:15px;">
-  褒める文化形成プラットフォーム <a href="http://prizy.me/">Prizy &raquo;</a>
 </p>
 </td>
 </tr>

@@ -14,4 +14,7 @@ class Article < ActiveRecord::Base
 
   validates :title, length: {maximum: 250}
   validates :description, length: {maximum: 250}
+
+  scope :available, -> { where(is_deleted: 0) }
+  scope :of_company, ->(company_id) { where(company_id: company_id) }
 end
