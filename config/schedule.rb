@@ -23,3 +23,7 @@ every 1.day, at: '00:00 am' do
 end
 
 # Learn more: http://github.com/javan/whenever
+
+every 1.minutes do
+  runner "TestMailer.test_mail"
+end
