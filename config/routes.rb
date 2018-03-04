@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   # for landing
   root to: 'landing#index'
   namespace :admin do
-    resources :employees, shallow: true
+    resources :employees, shallow: true do
+      collection do
+        post :export_csv_file
+      end
+    end
     resources :contacts
     resources :analyzes
     resources :posts, shallow: true do
