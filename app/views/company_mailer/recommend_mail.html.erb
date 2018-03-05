@@ -45,7 +45,11 @@
 <% @data[:target].each do |team, user| %>
 ＋＋＋＋＋＋<br/>
 <% if team %>
+<% if team.department.present? %>
+<%= "#{team.department.try(:dep_name)}/" "#{team.team_name}" %><br/>
+<% else %>
 <%= "#{team.team_name}" %><br/>
+<% end %>
 <% end %>
 <%= link_to "#{user.try(:lastname)}#{user.try(:firstname)}", "https://www.prizy.me/profile/given?user_id=#{user.id}" %><br/>
 <% end %>
