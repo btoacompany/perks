@@ -70,7 +70,7 @@ class ArticlesController < ApplicationController
     end
 
     def batch
-      @users = User.available.of_company(32)
+      @users = User.available.of_company(1)
       # @users = [User.find(270)]
       @users.each do |user|
         send_each(user)
