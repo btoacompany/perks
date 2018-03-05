@@ -16,6 +16,11 @@
 # every 4.days do
 #   runner "AnotherModel.prune_old_records"
 # end
+require File.expand_path(File.dirname(__FILE__) + '/environment')
+
+# TODO: temporary fix, need time to investigate
+job_type :runner, "cd :path && RAILS_ENV=#{@environment} bin/rails runner -e :environment ':task' :output"
+
 set :output, 'log/whenever.log'
 
 every 1.day, at: '00:00 am' do
@@ -27,4 +32,3 @@ end
 every :monday, :at => '1:25 pm' do
   runner "ArticlesController.batch"
 end
-  
