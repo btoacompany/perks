@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
       teams = Team.of_company(user.company_id).available
       # 所属
       logger.debug(teams.count)
-      puts("aa")
+      puts("aab")
       belonging = nil
       teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(user.id.to_s) }
       logger.debug("--")
