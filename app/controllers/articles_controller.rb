@@ -35,7 +35,7 @@ class ArticlesController < ApplicationController
         end
       end
 
-      articles = Article.of_company(user.company_id).available
+      articles = Article.of_company(user.company_id).available.pluck(:id)
       target_from_article = Tag.where(article_id: articles).where.not(user_id: user.id).where.not(user_id: two_targets_from_team).pluck(:user_id).sample(1)
         
       # targets = {team: user, ...}
@@ -70,8 +70,8 @@ class ArticlesController < ApplicationController
     end
 
     def batch
-      # @users = User.available.of_company(1)
-      @users = [User.find(270)]
+      @users = User.available.of_company(32)
+      # @users = [User.find(270)]
       @users.each do |user|
         send_each(user)
         sleep 1
