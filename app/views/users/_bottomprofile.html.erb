@@ -9,7 +9,9 @@
                 <%= @random_messages.sample %>
               </div>
               <div style="display: inline;float: right;text-align: right;color: white;">
-                <span class="delete_post" data-post_id="<%= post[:id] %>" data-before_controller="<%= controller.controller_name %>" data-before_action="<%= controller.action_name %>">×</span>
+                <% if @user.id == post[:user_id] || post[:receiver_id].include?(@user.id.to_s) %>
+                  <span class="delete_post" data-post_id="<%= post[:id] %>" data-before_controller="<%= controller.controller_name %>" data-before_action="<%= controller.action_name %>">×</span>
+                <% end %>
               </div>
             </div>
           </div>
