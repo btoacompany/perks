@@ -4,12 +4,8 @@
       <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
         <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
         <div class="mypage row">
+          <%= render partial: 'banner', locals: {banner: @banner} %>
           <!-- render 'topprofile' -->
-          <% if @banner %>
-            <%= image_tag @banner.img_src ,class: "width-100-percent", style: "max-height: 360px;" %>
-          <% else %>
-            <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent"/>
-          <% end %>
           <div class="clearfix margin-top-10 width-100-percent">
             <div class="rightbox col-4" >
               <div class="title"> 今まで取得したポイント数</div>
