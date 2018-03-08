@@ -5,7 +5,7 @@
       <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
       <div class="mypage row">
         <% if @banner %>
-          <%= image_tag @banner.img_src , class: "width-100-percent"%>
+          <%= image_tag @banner.img_src ,class: "width-100-percent", style: "max-height: 360px;" %>
         <% else %>
           <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
         <% end %>
