@@ -10,6 +10,9 @@
               </div>
               <div style="display: inline;float: right;text-align: right;color: white;">
                 <% if @user.id == post[:user_id] || post[:receiver_id].include?(@user.id.to_s) %>
+                  <span class="edit_post" data-post_id="<%= post[:id] %>">
+                    <i class="fas fa-pencil-alt"></i>
+                  </span>
                   <span class="delete_post" data-post_id="<%= post[:id] %>" data-before_controller="<%= controller.controller_name %>" data-before_action="<%= controller.action_name %>">
                     <i class="fas fa-trash-alt"></i>
                   </span>
@@ -67,12 +70,48 @@
         <span class="description sp_view font-size-13half" style="word-break:break-all;line-height: 1.6em;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
       </div>
     </div><br>
+    <!-- edit message -->
+    <div id="editmessage" class="modalwin hide">
+      <a herf="#" class="modal-close"></a>
+      <h1>メッセージを編集する</h1>
+      <div class="modalwin-contents">
+        <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
+          <div class="description">
+            <p class="destination">To: <%= post[:full_user_name] %>
+            </p>
+            <p>
+              <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" value=<%= post[:description] %> placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
+            </p>
+          </div>
+          <p align="right"><input type="submit" value="更新する"/></p>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="editmessage-sp" class="modalwin-sp hide">
+      <a herf="#" class="modal-close"></a>
+      <h1>メッセージを編集する</h1>
+      <div class="modalwin-sp-contents">
+        <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
+          <div class="description">
+            <p class="destination">To:
+            </p>
+            <p>
+              <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput width-100-percent" required align="center" rows="5" style="font-size: 14px; padding: 8px;border: 1px solid gray" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
+            </p>
+          </div>
+          <p align="right"><input type="submit" value="更新する"/></p>
+        <% end %>
+      </div>
+    </div>
+    <!-- end edit message -->
   <% end %> <!-- posts -->
 <% else %>
   <div class="each_article clearfix">
     <p>メッセージがありません</p>
   </div>
 <% end %>
+
 
 <script type="text/javascript">
 $('.delete_post').click(function() {
@@ -86,4 +125,66 @@ $('.delete_post').click(function() {
   }
   return false; //do nothing
 });
+
+// show_modal
+$(function () {
+  // モーダルウィンドウを開く
+  function showModal(event) {
+    event.preventDefault();
+    var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#editmessage');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        });
+      }
+    function hideModal() {
+      $('#shade').remove();
+      $('#editmessage')
+        .removeClass('show')
+        .addClass('hide');
+      }
+      $('.edit_post').on('click', showModal);
+    }());
+
+// show_modal
+$(function () {
+  // モーダルウィンドウを開く
+  function showModal(event) {
+    event.preventDefault();
+    var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#editmessage-sp');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        });
+      }
+    function hideModal() {
+      $('#shade').remove();
+      $('#editmessage-sp')
+        .removeClass('show')
+        .addClass('hide');
+      }
+      $('.edit_post-sp').on('click', showModal);
+    }());
 </script>
