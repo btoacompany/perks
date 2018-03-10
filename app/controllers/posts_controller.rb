@@ -15,8 +15,11 @@ class PostsController < ApplicationController
 
   def update
     post = Post.of_company(@company.id).available.find(params[:post_id])
-    if post
-      post.update_attributes(description: params[:description])
+    post.update_attributes(description: params[:description])
+    if post.valid?
+      flash[:edit_results] = "メッセージを更新しました"
+    else
+      flash[:edit_results] = post.errors.full_messages[0]
     end
     redirect_to request.referer
   end

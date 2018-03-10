@@ -881,7 +881,6 @@ class UsersController < ApplicationController
     # if post.receiver_id.include?(",")
     #   post.receiver_id = post.receiver_id.delete(",")
     # end
-    users = User.of_company(@company_id).available
 
     data = {
       id:		  post.id,
@@ -901,12 +900,8 @@ class UsersController < ApplicationController
       kudos:		  kudos,
       create_time:	  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
     }
-    logger.debug("~~~~")
-    logger.debug(data[:full_user_name])
-    logger.debug("===")
 
     receiver_ids = []
-
     if post.receiver_id.present?
       receiver_ids = post.receiver_id.split(",")
       receiver_ids.each do | r |
@@ -914,7 +909,7 @@ class UsersController < ApplicationController
           receiver_info = User.find(r)
           data[:receiver_id]  << r
           data[:receiver_name]  << receiver_info.name
-          data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
+          data[:full_receiver_name] << "#{receiver_info.lastname}#{receiver_info.firstname}"
         end
       end
     end

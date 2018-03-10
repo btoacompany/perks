@@ -2,6 +2,7 @@
   <div id="wrapper">
     <div id="contents">
       <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
+      <%= render partial: 'edit_results', locals: {edit_results: flash[:edit_results]} %>
       <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
       <div class="mypage row">
         <%= render partial: 'banner', locals: {banner: @banner} %>

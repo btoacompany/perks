@@ -10,7 +10,7 @@
               </div>
               <div style="display: inline;float: right;text-align: right;color: white;">
                 <% if @user.id == post[:user_id] %>
-                  <span class="edit_post" data-post_id=<%= post[:id] %> data-post_username=<%= post[:full_user_name] %> data-post_description=<%= post[:description] %>>
+                  <span class="edit_post" data-post_id=<%= post[:id] %> data-post_username=<%= post[:full_user_name] %> data-post_description=<%= post[:description] %> data-post_full_receiver_name=<%= post[:full_receiver_name].join(",") %>>
                     <i class="fas fa-pencil-alt"></i>
                   </span>
                 <% end %>
@@ -76,14 +76,14 @@
     <!-- edit message -->
     <div id="editmessage" class="modalwin hide" name=<%= post[:id] %>>
       <a herf="#" class="modal-close"></a>
-      <h1>メッセージを編集する</h1>
+      <h1>メッセージを更新する</h1>
       <div class="modalwin-contents">
         <%= form_tag(post_path(post[:id]), method: "PATCH", id: "login_form" ) do %>
           <div class="description">
-            <p class="destination">To: <%= post[:full_user_name] %>
-            </p>
+            <p class="destination"></p>
+            <p class="edit_receiver"></p>
             <p>
-              <textarea autofocus="autofocus" class="editmessage_description" name="description" id=<%= post[:id] %> required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;border: 1px solid gray;"></textarea>
+              <textarea autofocus="autofocus" class="editmessage_description" name="description" id=<%= post[:id] %> required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;border: 1px solid gray;"><%= post[:description] %></textarea>
             </p>
             <input type="hidden" value=<%= post[:id] %>>
           </div>
@@ -164,16 +164,20 @@ $(function () {
 
     $('.edit_post').on('click', function(){
       $('.destination').empty("");
+      $('.edit_receiver').empty("");
+      // $('.editmessage_description').val("");
       $('.description #article_user').remove();
       var post_id =  $(this).data("post_id");
       var name =  $(this).data("post_username");
-      var discription = $(this).data("post_description");
+      var description = $(this).data("post_description");
+      var receiver = $(this).data("post_full_receiver_name")
 
       // $(".description textarea").attr("placeholder",id);
     $(".destination").append("From: " + name);
     $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='post_id' data-id='" + post_id + "'/>").val(post_id));
       // $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
-    $(".editmessage_description").text(discription);
+    $(".edit_receiver").append("To: " + receiver);
+    $(".editmessage_description").text(description);
     });
 
 

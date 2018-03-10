@@ -2,7 +2,10 @@ ja:
   activerecord:
     models:
       article: 記事
+      post: メッセージ
     attributes:
       article:
         title: タイトル
         description: ディスクリプション
+      post:
+        description: メッセージ
