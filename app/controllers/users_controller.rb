@@ -881,13 +881,14 @@ class UsersController < ApplicationController
     # if post.receiver_id.include?(",")
     #   post.receiver_id = post.receiver_id.delete(",")
     # end
+    users = User.of_company(@company_id).available
 
     data = {
       id:		  post.id,
       user_id:		  post.user_id,
       nickname: $nicknames[post.nickname_id],
       user_name:	  post.user.name,
-      full_user_name:	  "#{post.user.lastname} #{post.user.firstname}",
+      full_user_name:	  "#{post.user.lastname}#{post.user.firstname}",
       receiver_id:	  [],
       receiver_name:	  [],
       full_receiver_name: [],
@@ -900,6 +901,9 @@ class UsersController < ApplicationController
       kudos:		  kudos,
       create_time:	  post.create_time.strftime("%Y/%m/%d %H:%M:%S")
     }
+    logger.debug("~~~~")
+    logger.debug(data[:full_user_name])
+    logger.debug("===")
 
     receiver_ids = []
 
