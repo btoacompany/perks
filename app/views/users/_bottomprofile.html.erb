@@ -83,7 +83,7 @@
             <p class="destination"></p>
             <p class="edit_receiver"></p>
             <p>
-              <textarea autofocus="autofocus" class="editmessage_description" name="description" id=<%= post[:id] %> required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;border: 1px solid gray;"><%= post[:description] %></textarea>
+              <textarea autofocus="autofocus" class="editmessage_description" name="description" id=<%= post[:id] %> required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;border: 1px solid gray;"></textarea>
             </p>
             <input type="hidden" value=<%= post[:id] %>>
           </div>
@@ -165,7 +165,6 @@ $(function () {
     $('.edit_post').on('click', function(){
       $('.destination').empty("");
       $('.edit_receiver').empty("");
-      // $('.editmessage_description').val("");
       $('.description #article_user').remove();
       var post_id =  $(this).data("post_id");
       var name =  $(this).data("post_username");
