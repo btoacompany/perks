@@ -230,6 +230,9 @@ h1,h2,h3,h4,h5,h6,p,img,a {
 .article_table ul{
   list-style-type:none;
 }
+.article_table th{
+  width: 300px;
+}
 .submit-btn{
   margin-top: 20px;
   width: 200px;

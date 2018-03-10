@@ -172,18 +172,26 @@ class ArticlesController < ApplicationController
           end
         end
 
+        
         if params[:images].present?
   	      params[:images].each do |key, value|
+            is_eye_catch = 0
+            if params[:is_eye_catch] == key
+              is_eye_catch=1
+            end
+
   	      	src	  = value
   	      	src_ext	  = File.extname(src.original_filename)
   	      	s3  = Aws::S3::Resource.new
             @last_image = Image.last
   	      	obj = s3 .bucket(@s3_bucket).object("article/article_#{@last_image.id + 1}_pic#{src_ext}")
   	      	obj.upload_file src.tempfile, {acl: 'public-read'}
+
   	      	@image = Image.create(
   	      		article_id:   @article.id,
   	      	  img_src:      obj.public_url, 
-  	          place_number: key.to_i
+  	          place_number: key.to_i,
+              is_eye_catch:  is_eye_catch
   	      	)
   	      end
   	    end
@@ -447,7 +455,8 @@ class ArticlesController < ApplicationController
           data_type: "image",
           place_number: item.place_number.to_i,
           image_url: item.img_src ,
-          id: item.id
+          id: item.id,
+          is_eye_catch: item.is_eye_catch.to_i
         }
         @contents << @data
       end
@@ -569,9 +578,15 @@ class ArticlesController < ApplicationController
 
         if params[:images].present?
           params[:images].each do |key, value|
+            is_eye_catch = 0
+            if params[:is_eye_catch].to_i == key.to_i
+              is_eye_catch=1
+            end
+
             if value.present? && value.class == Array
               image = Image.find_by(img_src: value[0])
               image.update_attribute(:place_number, key.to_i) if image
+              image.update_attribute(:is_eye_catch, is_eye_catch.to_i) if image
             else
               src    = value
               src_ext    = File.extname(src.original_filename)
@@ -582,7 +597,8 @@ class ArticlesController < ApplicationController
               @image = Image.create(
                 article_id:   @article.id,
                 img_src:      obj.public_url, 
-                place_number: key.to_i
+                place_number: key.to_i,
+                is_eye_catch: is_eye_catch.to_i
               )
 
             end
