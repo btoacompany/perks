@@ -887,7 +887,7 @@ class UsersController < ApplicationController
       user_id:		  post.user_id,
       nickname: $nicknames[post.nickname_id],
       user_name:	  post.user.name,
-      full_user_name:	  "#{post.user.lastname} #{post.user.firstname}",
+      full_user_name:	  "#{post.user.lastname}#{post.user.firstname}",
       receiver_id:	  [],
       receiver_name:	  [],
       full_receiver_name: [],
@@ -902,7 +902,6 @@ class UsersController < ApplicationController
     }
 
     receiver_ids = []
-
     if post.receiver_id.present?
       receiver_ids = post.receiver_id.split(",")
       receiver_ids.each do | r |
@@ -910,7 +909,7 @@ class UsersController < ApplicationController
           receiver_info = User.find(r)
           data[:receiver_id]  << r
           data[:receiver_name]  << receiver_info.name
-          data[:full_receiver_name] << "#{receiver_info.lastname} #{receiver_info.firstname}"
+          data[:full_receiver_name] << "#{receiver_info.lastname}#{receiver_info.firstname}"
         end
       end
     end
@@ -1309,10 +1308,10 @@ class UsersController < ApplicationController
 
   def delete_post
     post_id = params[:post_id]
-    post      = Post.where(id: post_id).update_all(delete_flag: 1)
-    comments  = Comment.where(post_id: post_id).update_all(delete_flag: 1)
-    kudos     = Kudos.where(post_id: post_id).update_all(delete_flag: 1)
-    hashtags  = Hashtag.where(post_id: post_id).update_all(delete_flag: 1)
+    post      = Post.where(id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
+    comments  = Comment.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
+    kudos     = Kudos.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
+    hashtags  = Hashtag.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
 
     redirect_page(params[:before_controller], params[:before_action])
   end

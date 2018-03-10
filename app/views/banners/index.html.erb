@@ -4,7 +4,8 @@
 	<div id="admin_contents" class="c_align">
 	  <h3>新しくバナーを設定する</h3>
 	  <p class="margin-top-5">※縦横比は1:3を推奨しています</p>
-	  <p class="margin-top-5">※画像サイズは1Mバイト以下に設定してください</p>
+    <p class="margin-top-5">※画像サイズは1Mバイト以下に設定してください</p>
+    <p class="margin-top-5">※縦の長さは最大360pxまでです</p>
 	  <div class="margin-10">
       <%= form_tag(company_banner_create_path, method: "post", :multipart => true) do %>
         <input type="file" name="banner" %>
