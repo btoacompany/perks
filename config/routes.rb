@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     resources :departments
   end
 
+  resources :posts, only: :update
+
   get "bad_request" => "top#bad_request"
   get "internal_server_error" => "top#internal_server_error"
   # Legacy ELB health_check endpoint
