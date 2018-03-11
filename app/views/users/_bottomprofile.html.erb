@@ -17,7 +17,7 @@
                     <i class="fas fa-pencil-alt"></i>
                   </span>
                 <% end %>
-                <% if @user.id == post[:user_id] || post[:receiver_id].include?(@user.id.to_s) %>
+                <% if @user.id == post[:user_id] || (post[:receiver_id].include?(@user.id.to_s) && post[:receiver_id].count < 2) %>
                   <span class="delete_post" data-post_id="<%= post[:id] %>" data-before_controller="<%= controller.controller_name %>" data-before_action="<%= controller.action_name %>">
                     <i class="fas fa-trash-alt"></i>
                   </span>
