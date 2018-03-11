@@ -122,6 +122,7 @@
               <% elsif item[:data_type] == "image" %>
                 <th>
                   画像<br>
+                  <label><input type="radio" class="eyecatch" name="is_eye_catch" value="<%= @num %>" <% if item[:is_eye_catch]==1 %>checked<% end %>/>アイキャッチにする</label><br>
                   <button type='button' class='delete_question'>削除する</button><br>
                   <button type='button' class='btn_up'>↑</button><br>
                   <button type='button' class='btn_down'>↓</button><br>
@@ -208,7 +209,10 @@ function moveItem(thisItem, direction) {
   var next_elem;
   var next_place;
   var next_label;
-  var next_name
+  var next_name;
+
+  var current_th;
+  var next_th;
 
   var is_stop;
   var temp;
@@ -216,15 +220,18 @@ function moveItem(thisItem, direction) {
 
   //get current element properties
   current_elem  = thisItem.parent().next().children(".param");
+  current_th = thisItem.parent();
 
   //set variables if button up or down
   if (direction=="up") {
     is_stop   = item.prev().hasClass("stop_move"); 
     next_elem = item.prev().children().next().children(".param");
+    next_th = item.prev().children("th");
   } 
   else if (direction=="down") { 
     is_stop   = item.is(":last-child"); 
     next_elem = item.next().children().next().children(".param");
+    next_th = item.next().children("th");
   }
 
   if (is_stop==false) {
@@ -245,6 +252,10 @@ function moveItem(thisItem, direction) {
       }
     }
 
+    if (next_label=="images") {
+      next_th.children("label").children().val(current_place);
+    }
+
     current_name = current_label + "[" + next_place + "]";
     if($.inArray(current_label, multi_arr_names) != -1) {   
       current_name = current_label + "[" + next_place + "][]";
@@ -252,6 +263,10 @@ function moveItem(thisItem, direction) {
       if(current_label=="nametag") {
         moveNametag(current_elem,next_place);
       }
+    }
+
+    if (current_label=="images") {
+      current_th.children("label").children().val(next_place);
     }
 
     next_elem.attr("name", next_name);
@@ -420,6 +435,7 @@ $('.admin_menu').click(function(){
     var _content = $([
       "<tr>",
           "<th>画像<br>",
+          "<label><input type='radio' class='eyecatch' name='is_eye_catch' value='"+_num+"' />アイキャッチにする</label><br>",
           "<button type='button' class='delete_question'>削除する</button><br>",
           "<button type='button' class='btn_up'>↑</button><br>",
           "<button type='button' class='btn_down'>↓</button><br>",

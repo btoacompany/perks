@@ -707,11 +707,21 @@ class UsersController < ApplicationController
     process_posts = process_paging_articles(articles)
 
     @articles = []
+    @first_images = {}
     data = {}
 
     process_posts.each do | post |
+      image = post.images.order("is_eye_catch desc, place_number asc").first
+
+      @first_images[post.id] = ""
+
+      if image.present?
+        @first_images[post.id] = image[:img_src]
+      end
+
       @articles << post
     end
+
   end
 
   def given

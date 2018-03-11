@@ -105,7 +105,7 @@
 							          </p>
 							        <% end %>
 					            <% if article.images.present? %>
-					              <%= image_tag article.images.first.img_src, class: "width-100-percent", style: "max-height: 160px;" %>
+					              <%= image_tag @first_images[article.id], class: "width-100-percent", style: "max-height: 160px;" %>
 					            <% else %>
 				                <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" style="height: 150px;" />
 					            <% end %>
