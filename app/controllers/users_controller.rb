@@ -1308,7 +1308,7 @@ class UsersController < ApplicationController
 
   def delete_post
     post_id = params[:post_id]
-    post      = Post.where(id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
+    post      = Post.where("(user_id = ?) OR (receiver_id = ?)", @id, @id).find(post_id).update_attributes(delete_flag: 1)
     # comments  = Comment.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
     # kudos     = Kudos.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
     # hashtags  = Hashtag.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
