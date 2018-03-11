@@ -1313,6 +1313,7 @@ class UsersController < ApplicationController
     # kudos     = Kudos.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
     # hashtags  = Hashtag.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
 
+    @error_messages = post.errors.full_messages
     redirect_page(params[:before_controller], params[:before_action])
   end
 
