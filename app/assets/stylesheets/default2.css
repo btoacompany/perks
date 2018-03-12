@@ -2746,6 +2746,10 @@ table.admin_table td textarea{
   .blog_sidebar{
     display: none;
   }
+
+  .each_article {
+    width: 100%;
+  }
   .each_article_left{
     width: 25%;
     height: 200px;
