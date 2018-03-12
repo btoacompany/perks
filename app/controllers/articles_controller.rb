@@ -233,6 +233,13 @@ class ArticlesController < ApplicationController
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
     @user_posted_contents = Article.where(company_id: @company.id, is_casual: 1, is_deleted: 0, is_published: 1)
 	  
+    user_posts = @user_posted_contents
+    @first_images = {}
+    
+    user_posts.each do | post |
+      set_first_image(post)
+    end 
+
     if @article
       @banner = Banner.find_by(company_id: @company.id, is_deleted: 0)
       impressionist(@article, nil, :unique => [:session_hash])
@@ -809,5 +816,14 @@ class ArticlesController < ApplicationController
 
     flash[:notice] = "メール配信が完了しました"
     redirect_to company_articles_path
+  end
+
+  def set_first_image(post)
+    image = post.images.order("is_eye_catch desc, place_number asc").first
+      
+    @first_images[post.id] = ""
+    if image.present?
+      @first_images[post.id] = image[:img_src]
+    end
   end
 end

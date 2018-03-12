@@ -659,6 +659,14 @@ class UsersController < ApplicationController
       data = process_post(post)
       @posts << data
     end
+
+    user_posts = @user_posted_contents
+    @first_images = {}
+    
+    user_posts.each do | post |
+      set_first_image(post)
+    end 
+
   end
 
   def timeline
@@ -675,7 +683,6 @@ class UsersController < ApplicationController
     receiver_ranking(@user)
     giver_ranking(@user)
 
-
     posts = Post.where(company_id: @company_id ,delete_flag: 0).order("update_time desc")
     process_posts = process_paging(posts)
 
@@ -686,6 +693,13 @@ class UsersController < ApplicationController
       data = process_post(post)
       @posts << data
     end
+
+    user_posts = @user_posted_contents
+    @first_images = {}
+    
+    user_posts.each do | post |
+      set_first_image(post)
+    end 
   end
 
   def articles
@@ -704,24 +718,20 @@ class UsersController < ApplicationController
 
     # paging
     articles = Article.where(company_id: @company_id, is_deleted: 0, is_published: 1, is_casual: 0).order(created_at: :desc)
-    process_posts = process_paging_articles(articles)
-
+    process_posts = process_paging_articles(articles)    
     @articles = []
+
     @first_images = {}
-    data = {}
 
     process_posts.each do | post |
-      image = post.images.order("is_eye_catch desc, place_number asc").first
-
-      @first_images[post.id] = ""
-
-      if image.present?
-        @first_images[post.id] = image[:img_src]
-      end
-
+      set_first_image(post)
       @articles << post
     end
 
+    user_posts = @user_posted_contents
+    user_posts.each do | post |
+      set_first_image(post)
+    end 
   end
 
   def given
@@ -749,6 +759,22 @@ class UsersController < ApplicationController
     # top_givers = Post.where(user_id: @id, delete_flag: 0).group(:receiver_id).order("count_all desc").limit(5).count
     # process_top_givers(top_givers)
     # @top_hashtags = Hashtag.where(user_id: @id, delete_flag: 0).group(:hashtag).order("count_id desc").limit(7).count("id")
+
+    user_posts = @user_posted_contents
+    @first_images = {}
+    
+    user_posts.each do | post |
+      set_first_image(post)
+    end 
+  end
+
+  def set_first_image(post)
+    image = post.images.order("is_eye_catch desc, place_number asc").first
+      
+    @first_images[post.id] = ""
+    if image.present?
+      @first_images[post.id] = image[:img_src]
+    end
   end
 
   def get_team_users
