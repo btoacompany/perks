@@ -75,8 +75,42 @@
 	      </span><br>
         <span class="description pc_view" style="word-break:break-all;"><%= simple_format raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
         <span class="description sp_view font-size-13half" style="word-break:break-all;line-height: 1.6em;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
+      
+      <br><hr>
+
+      <div class="kudos">
+        <% kudo_style="" %>
+        <% if post[:user_id] == @user.id %> 
+          <% kudo_style='style=opacity:0.4;pointer-events:none' %>
+        <% end %>
+
+        <% if post[:kudos].find { |item| item[:user_id] == @user.id } %>
+          <a data-id="<%= post[:id] %>" class="a_btn btn_unlike" <%= kudo_style %>><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
+        <% else %>
+          <a data-id="<%= post[:id] %>" class="a_btn btn_like" <%= kudo_style %>><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
+        <% end %>
+
+        <span class="kudos_count"><%= post[:kudos].count %>件</span>
+
+        <div class="tooltip">
+          <a class="user_kudos">
+            <% if post[:kudos].present? %>
+              <% post[:kudos].each_with_index do | kudo, i | %>
+                <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
+                <% unless i == post[:kudos].count-1 %>,<% end %>
+                <% break if i >= 1 %>
+              <% end %>...
+            <% end %>
+          </a>
+          <span class="tooltiptext">
+            <% post[:kudos].each do | kudo | %>
+              <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
+            <% end %>
+          </span>
+        </div>
+
       </div>
-    </div><br>
+    </div>
 
     <!-- edit message -->
     <div id="editmessage" class="modalwin hide" name=<%= post[:id] %>>
@@ -233,5 +267,32 @@ $(function () {
       // $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
     $(".edit_receiver").append("To: " + receiver);
     $(".editmessage_description").val(description);
-    });
+});
+
+$(".btn_like").mouseup(function() {
+  var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  $.ajax({
+    type: "POST",
+    url: "/profile/give_kudos",
+    data: { 'post_id': post_id, 'kudos': 1 },
+    success: function(data) {
+      window.location.reload(); 
+    }
+  });
+});
+
+$(".btn_unlike").mouseup(function() {
+  var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  $.ajax({
+    type: "POST",
+    url: "/profile/give_kudos",
+    data: { 'post_id': post_id, 'kudos': 0 },
+    success: function(data) {
+      window.location.reload(); 
+    }
+  });
+});
+
 </script>

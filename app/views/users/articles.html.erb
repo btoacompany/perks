@@ -97,7 +97,7 @@
 				    <div class="blog_article_index pc_view">
 				      <% if @articles.count > 0 %>
 					      <% @articles.each do |article| %>
-					        <div class="each_article clearfix" style="position: relative;">
+					        <div class="each_article clearfix" style="position:relative;">
 					          <div class="each_article_left icon width-30-percent" style="float: left;">
 						          <% if article.is_new == 1 %>
 							          <p class="badge">
@@ -127,6 +127,36 @@
 					          </div>
                     <p class="date color-black footer" style="text-align: right;"><%= article.updated_at.strftime("%Y.%m.%d") %></p>
 					        </div>
+
+                  <div class="kudos" style="margin-top:-20px">
+                    <% if article.article_likes.select { |like| like.user_id == @user.id && like.is_liked == 1 }.count > 0 %>
+                      <a data-id="<%= article.id %>" class="a_btn btn_unlike" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
+                    <% else %>
+                      <a data-id="<%= article.id %>" class="a_btn btn_like" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
+                    <% end %>
+
+                    <% article_likes = article.article_likes.where(is_liked: 1) %>
+                    <span class="kudos_count"><%= article_likes.count %>件</span>
+
+                    <div class="tooltip">
+                      <a class="user_kudos">
+                        <% if article_likes.present? %>
+                          <% article_likes.each_with_index do | like, i | %>
+                            <%= "#{like.user.lastname} #{like.user.firstname}" %>
+                            <% unless i == article_likes.count-1 %>,<% end %>
+                            <% break if i >= 1 %>
+                          <% end %>...
+                        <% end %>
+                      </a>
+                      <span class="tooltiptext">
+                        <% article_likes.each do | like | %>
+                          <%= "#{like.user.lastname} #{like.user.firstname}" %>
+                        <% end %>
+                      </span>
+                    </div>
+                  </div>
+
+                  <br><hr class="light">
 					      <% end %>
 					    <% else %>
 					      <div class="each_article clearfix">
@@ -177,6 +207,36 @@
                       <% end %>
                     </div>
                   </div>
+
+                  <div class="kudos" style="margin-top:-5px">
+                    <% if article.article_likes.select { |like| like.user_id == @user.id && like.is_liked == 1 }.count > 0 %>
+                      <a data-id="<%= article.id %>" class="a_btn btn_unlike" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
+                    <% else %>
+                      <a data-id="<%= article.id %>" class="a_btn btn_like" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
+                    <% end %>
+
+                    <% article_likes = article.article_likes.where(is_liked: 1) %>
+                    <span class="kudos_count"><%= article_likes.count %>件</span>
+
+                    <div class="tooltip">
+                      <a class="user_kudos">
+                        <% if article_likes.present? %>
+                          <% article_likes.each_with_index do | like, i | %>
+                            <%= "#{like.user.lastname} #{like.user.firstname}" %>
+                            <% unless i == article_likes.count-1 %>,<% end %>
+                            <% break if i >= 1 %>
+                          <% end %>...
+                        <% end %>
+                      </a>
+                      <span class="tooltiptext">
+                        <% article_likes.each do | like | %>
+                          <%= "#{like.user.lastname} #{like.user.firstname}" %>
+                        <% end %>
+                      </span>
+                    </div>
+                  </div>
+
+                  <br><hr class="light">
                 <% end %>
               <% else %>
                 <div class="each_article clearfix">
@@ -565,7 +625,7 @@ $(".btn_like").mouseup(function() {
 
   $.ajax({
     type: "POST",
-    url: "/user/give_kudos",
+    url: "/company/article/like",
     data: { 'post_id': post_id, 'kudos': 1 },
     success: function(data) {
       window.location.reload(); 
@@ -578,7 +638,7 @@ $(".btn_unlike").mouseup(function() {
 
   $.ajax({
     type: "POST",
-    url: "/user/give_kudos",
+    url: "/company/article/like",
     data: { 'post_id': post_id, 'kudos': 0 },
     success: function(data) {
       window.location.reload(); 
@@ -1257,7 +1317,9 @@ $(function () {
       $('#modalwin_sp')
         .removeClass('show')
         .addClass('hide');
-      }
-      $('.show-modal-sp').on('click', showModal);
-    }());
+    }
+    $('.show-modal-sp').on('click', showModal);
+}());
+
+
 </script>
