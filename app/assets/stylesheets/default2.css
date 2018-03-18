@@ -1114,8 +1114,7 @@ hr.style-two {
 
 #postsbox .kudos .user_kudos {
   color: #2e9afe;
-  cursor: hand;
-  cursor: pointer;
+  cursor: default;
   text-decoration: none;
   font-weight: normal;
 }
@@ -2500,6 +2499,38 @@ table.admin_table td textarea{
   background-image: -ms-linear-gradient(left, #1d72ae, #02b9ae);
   background-image: -o-linear-gradient(left, #1d72ae, #02b9ae);
 }*/
+
+hr.light {
+  margin: 10px 7px;
+  border: 1px solid #e6e6e6;
+}
+
+.blog_article_index .kudos {
+  padding: 10px 10px;
+}
+
+.blog_article_index .kudos .a_btn {
+  float: left;
+}
+
+.blog_article_index .kudos_count {
+  display: inline-block;
+  float: left;
+  margin: 3px 7px;
+}
+
+.blog_article_index .kudos .user_kudos {
+  color: #2e9afe;
+  cursor: default;
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.blog_article_index .tooltip {
+  display: inline-block;
+  float: left;
+  margin: 3px;
+}
 
 .each_article_sidebar:hover{
   opacity: 0.7;

@@ -163,14 +163,35 @@
                         </div>
                       <% end %>
                     <% end %>
+
                     <div class="kudos margin-top-20">
-                      <% if @article.article_likes.select { |like| like.user_id == @user_id && like.is_liked == 1 }.count > 0 %>
+                      <% if @article.article_likes.select { |like| like.user_id == @user.id && like.is_liked == 1 }.count > 0 %>
                         <a data-id="<%= @article.id %>" class="a_btn btn_unlike" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
                       <% else %>
                         <a data-id="<%= @article.id %>" class="a_btn btn_like" style="cursor: pointer;"><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
                       <% end %>
-                      <span class="kudos_count"><%= @article.article_likes.where(is_liked: 1).count %>件</span>
+
+                      <% article_likes = @article.article_likes.where(is_liked: 1) %>
+                      <span class="kudos_count"><%= article_likes.count %>件</span>
+
+                      <div class="tooltip">
+                        <a class="user_kudos">
+                          <% if article_likes.present? %>
+                            <% article_likes.each_with_index do | like, i | %>
+                              <%= "#{like.user.lastname} #{like.user.firstname}" %>
+                              <% unless i == article_likes.count-1 %>,<% end %>
+                              <% break if i >= 1 %>
+                            <% end %>...
+                          <% end %>
+                        </a>
+                        <span class="tooltiptext">
+                          <% article_likes.each do | like | %>
+                            <%= "#{like.user.lastname} #{like.user.firstname}" %>
+                          <% end %>
+                        </span>
+                      </div>
                     </div>
+
                     <% if @article.tags.count > 0 %>
                       <div class="article_tag_wrapper">
                         <div class="article_tags clearfix">

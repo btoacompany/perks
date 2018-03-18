@@ -107,10 +107,12 @@ Rails.application.routes.draw do
   post	'/user/give_bonus'	    => 'users#give_bonus'
   post	'/user/delete_post'	    => 'users#delete_post'
   post	'/user/delete_comment'	    => 'users#delete_comment'
+
   get	'/profile'		    => 'users#profile'
   get  '/profile/given'      => 'users#given'
   get  '/profile/timeline'      => 'users#timeline'
   get '/profile/articles'      => 'users#articles'
+  post '/profile/give_kudos'      => 'users#give_kudos'
 
   # get	'/rewards'		    => 'users#rewards'
   # post	'/rewards/request'	    => 'users#rewards_request'

@@ -710,7 +710,7 @@ class UsersController < ApplicationController
     @user_posted_contents = Article.where(company_id: @company_id, is_published:1, is_casual: 1, is_deleted: 0).order(created_at: :desc).limit(5)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
-
+0
     @company = Company.find(@user.company_id)
     # weekly_ranking
     receiver_ranking(@user)
@@ -1346,7 +1346,7 @@ class UsersController < ApplicationController
     post_id = params[:post_id]
     post      = Post.where(id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
     # comments  = Comment.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
-    # kudos     = Kudos.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
+    kudos     = Kudos.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
     # hashtags  = Hashtag.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
 
     redirect_page(params[:before_controller], params[:before_action])
