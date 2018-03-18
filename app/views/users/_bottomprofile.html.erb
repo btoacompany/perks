@@ -76,39 +76,39 @@
         <span class="description pc_view" style="word-break:break-all;"><%= simple_format raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
         <span class="description sp_view font-size-13half" style="word-break:break-all;line-height: 1.6em;"><%= raw post[:description].gsub(/\@[^\s|  ]+/,"").gsub(/\+[^\s|  ]+/,"").gsub(/\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
       
-      <hr style="margin: 20px 2px 5px 2px">
+        <hr style="margin: 20px 2px 5px 2px">
 
-      <div class="kudos" style="margin: 0px -7px 10px -7px;">
-        <% kudo_style="" %>
-        <% if post[:user_id] == @user.id %> 
-          <% kudo_style='style=opacity:0.4;pointer-events:none' %>
-        <% end %>
+        <div class="kudos" style="margin: 0px -7px 0px -7px;">
+          <% kudo_style="" %>
+          <% if post[:user_id] == @user.id %> 
+            <% kudo_style='style=opacity:0.4;pointer-events:none' %>
+          <% end %>
 
-        <% if post[:kudos].find { |item| item[:user_id] == @user.id } %>
-          <a data-id="<%= post[:id] %>" class="a_btn btn_unlike" <%= kudo_style %>><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
-        <% else %>
-          <a data-id="<%= post[:id] %>" class="a_btn btn_like" <%= kudo_style %>><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
-        <% end %>
+          <% if post[:kudos].find { |item| item[:user_id] == @user.id } %>
+            <a data-id="<%= post[:id] %>" class="a_btn btn_unlike" <%= kudo_style %>><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_on.png"/></a>
+          <% else %>
+            <a data-id="<%= post[:id] %>" class="a_btn btn_like" <%= kudo_style %>><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/btn_iine_off.png"/></a>
+          <% end %>
 
-        <span class="kudos_count"><%= post[:kudos].count %>件</span>
+          <span class="kudos_count"><%= post[:kudos].count %>件</span>
 
-        <div class="tooltip">
-          <a class="user_kudos">
-            <% if post[:kudos].present? %>
-              <% post[:kudos].each_with_index do | kudo, i | %>
+          <div class="tooltip">
+            <a class="user_kudos">
+              <% if post[:kudos].present? %>
+                <% post[:kudos].each_with_index do | kudo, i | %>
+                  <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
+                  <% unless i == post[:kudos].count-1 %>,<% end %>
+                  <% break if i >= 1 %>
+                <% end %>...
+              <% end %>
+            </a>
+            <span class="tooltiptext">
+              <% post[:kudos].each do | kudo | %>
                 <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
-                <% unless i == post[:kudos].count-1 %>,<% end %>
-                <% break if i >= 1 %>
-              <% end %>...
-            <% end %>
-          </a>
-          <span class="tooltiptext">
-            <% post[:kudos].each do | kudo | %>
-              <%= "#{kudo.user.lastname} #{kudo.user.firstname}" %>
-            <% end %>
-          </span>
+              <% end %>
+            </span>
+          </div>
         </div>
-
       </div>
     </div>
 
@@ -149,7 +149,7 @@
           <p align="right"><input type="submit" value="更新する"/></p>
         <% end %>
       </div>
-    </div>
+    </div><br>
     <!-- end edit message -->
   <% end %> <!-- posts -->
 <% else %>
