@@ -7,12 +7,14 @@ class TrackingController < ApplicationController
 	    if session[:email].present? || cookies[:email].present?
 	      	email = session[:email] || cookies[:email]
 	      	@user = User.find_by_email(email)
-
+	      	@company = Company.find(@user.company_id)
+=begin
 	      	if @user.admin == 1
 	        	@company = Company.find(@user.company_id)
 	      	else
 	        	redirect_to "/user"
 	      	end
+=end
 	    else
 	      	logout
 	    end
