@@ -108,6 +108,49 @@
               <% end %>
             </span>
           </div>
+
+          <br><br>
+
+          <div class="comments">
+            <div class="comment_entry_<%= post[:id] %>">
+              <% post[:comments].each do | comment | %>
+                <div class="comment_entry comment_<%= comment.id %>">
+                  <div class="user_comment_img">
+                    <img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
+                  </div>
+                  <div class="user_comments">
+                    <span class="user" style="font-weight:normal;">@
+                      <% if $allow_nickname.include?(@user.company_id) %>
+                        <% if comment.user.id == post[:user_id] %>
+                          <%= post[:nickname] %>
+                        <% else %>
+                          <%= "#{comment.user.lastname} #{comment.user.firstname}" %>
+                        <% end %>
+                      <% else %>
+                        <%= "#{comment.user.lastname} #{comment.user.firstname}" %>
+                      <% end %>
+                    </span>
+
+                    <span class="comment"><%= raw comment.comments.gsub(/\+[^\s|  ]+|\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %></span>
+                    <% if comment.user_id == @user.id || post[:receiver_id].include?(@user.id) %>
+                      <div class="r_float">
+                        <div class="editnav dropdown">
+                          <input type="button" class="dropbtn" value="▽" style="float:right">
+                          <div class="dropdown-content">
+                            <a><input type="button" class="del del_comment" data-id="<%= comment.id %>" value="削除"/></a>
+                          </div>
+                        </div><br>
+                      </div>
+                    <% end %>  
+                  </div>
+
+                  <br>
+                </div>  
+              <% end %>
+            </div>
+            <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="コメントする" autocomplete="off"/>
+            <p align="right"><input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/></p>
+          </div>
         </div>
       </div>
     </div>
@@ -293,6 +336,43 @@ $(".btn_unlike").mouseup(function() {
       window.location.reload(); 
     }
   });
+});
+
+$(".give_comments").bind('keypress',function(e) {
+  if(e.keyCode == 13) {
+    var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+    var comments = ($(this).val()); //get attributes of clicked item
+    postComment(post_id, comments);
+  }
+});
+
+$(".btn_comment").click(function() {
+  var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+  var comments = $(".post_comment_"+post_id).val(); 
+
+  postComment(post_id, comments);
+});
+
+function postComment(post_id, comments) {
+  $.ajax({
+    type: "POST",
+    url: "/profile/give_comments",
+    data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page') },
+    success: function(data) {
+      $(this).val("");
+      window.location.reload(); 
+    }
+  });
+}
+
+$('.del_comment').click(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if (confirm("本当にこのコメントを削除しますか？")) {
+    $.post("/profile/delete_comment", { 'comment_id': _id }); //send post request
+    $(".comment_" + _id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
 });
 
 </script>
