@@ -135,10 +135,15 @@
                     <% if comment.user_id == @user.id || post[:receiver_id].include?(@user.id) %>
                       <div class="r_float">
                         <div class="editnav dropdown">
+                          <span class="del_comment" data-id="<%= comment.id %>" data-before_controller="<%= controller.controller_name %>" data-before_action="<%= controller.action_name %>">
+                            <i class="fas fa-trash-alt"></i>
+                          </span>
+                          <!--
                           <input type="button" class="dropbtn" value="▽" style="float:right">
                           <div class="dropdown-content">
                             <a><input type="button" class="del del_comment" data-id="<%= comment.id %>" value="削除"/></a>
                           </div>
+                          -->
                         </div><br>
                       </div>
                     <% end %>  
@@ -365,12 +370,25 @@ function postComment(post_id, comments) {
   });
 }
 
+/*
 $('.del_comment').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
 
   if (confirm("本当にこのコメントを削除しますか？")) {
     $.post("/profile/delete_comment", { 'comment_id': _id }); //send post request
     $(".comment_" + _id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
+});
+*/
+$('.del_comment').click(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+  var before_controller = ($(this).attr('data-before_controller'));
+  var before_action = ($(this).attr('data-before_action'));
+
+  if (confirm("本当にこのコメントを削除しますか？")) {
+    $.post("/profile/delete_comment", { 'comment_id': _id, 'before_controller': before_controller, 'before_action': before_action}); //send post request
+    $(".comment_" + _id).remove();
   }
   return false; //do nothing
 });

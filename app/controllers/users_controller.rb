@@ -521,7 +521,7 @@ class UsersController < ApplicationController
       sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
       receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
       email: receiver.try(:email),
-      giver: @user.try(:firstname),
+      giver: @user.try(:name),
       #points: points,
       prizy_url: @prizy_url + "/profile"
     }).deliver_later
