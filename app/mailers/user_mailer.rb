@@ -35,4 +35,9 @@ class UserMailer < ApplicationMailer
     @user = data 
     mail(to: @user[:email], subject: "【Prizy】これはテストです")
   end
+
+  def receive_comments_email(data)
+    @user = data 
+    mail(to: @user[:email], subject: "【お知らせ】コメントが届いています")
+  end
 end

@@ -501,18 +501,31 @@ class UsersController < ApplicationController
       user.save
     end
 
-    receiver_id = Post.find(res.post_id).receiver_id
+    post = Post.find(res.post_id)
+    receiver_id = post.receiver_id
+    receiver = User.find(receiver_id)
     params[:receiver_id]  = receiver_id.split(",")
     params[:description]  = params["comments"]
-
 
     params[:points]    = params["comments"].scan(/\+[^\s|　]+/).first
     params[:type]	  = "comment"
     
-    if params[:points].present?
-      parse_points(params)
-    end
-    
+    #if params[:points].present?
+    #  parse_points(params)
+    #end
+
+    post.update_time = Time.now
+    post.save
+
+    UserMailer.receive_comments_email({
+      sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
+      receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
+      email: receiver.try(:email),
+      giver: @user.try(:firstname),
+      #points: points,
+      prizy_url: @prizy_url + "/profile"
+    }).deliver_later
+
     #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
 
     # redirect_to "/user"
