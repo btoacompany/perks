@@ -1,6 +1,5 @@
 <div id="admin_wrapper">
   <%= render "/company/admin_subheader" %>
-
 	<div id="admin_contents" class="c_align">
 	  <h3>ブログ</h3>
 	  <div class="margin-10">
@@ -8,7 +7,6 @@
 	    <%= link_to "+ カジュアル記事一覧", company_casual_articles_path, {class: "a_btncmn radius5 width-250"} %>
 	    <%= link_to "+ 社員からの投稿を見る", company_user_posted_contents_path, {class: "a_btncmn radius5 width-250"} %>
 	  </div>
-
 	  <% if @articles.count == 0 %>
 	    <h3>ニュース記事が作成されていません</h3>
 	  <% else %>
@@ -50,7 +48,7 @@
 				  	    <% end %>
 				  	  </td>
 				  	  <td class="width-8-percent"><%= link_to "編集", "/company/article/#{article.id}/edit" %></td>
-				  	  <td class="width-8-percent"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
+				  	  <td class="width-8-percent"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post, data: {confirm: "選択した記事「#{article.title}」を削除しますか?"} %></td>
 				  	  <td class="width-8-percent show-modal" id=<%= "https://www.prizy.me/company/article/#{article.id}" %> value=<%= "#{article.title}" %>><%= link_to "メール送信", "#{article.id}" %></td>
 				  	</tr>
 			  	<% end %>
@@ -116,7 +114,5 @@
           $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
 			});
       // title.setAttribute("placeholder", "リンクタイトル");
-
-
     }());
 </script>
