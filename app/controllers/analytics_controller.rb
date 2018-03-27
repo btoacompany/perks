@@ -554,7 +554,8 @@ class AnalyticsController < ApplicationController
   end
 
   def pv
-    @results = Pv.where(company_id: @company.id, track_date: @period).group(:track_date).count
+    @results = Pv.of_company(@company.id).where(track_date: @period).group(:track_date).count
+    @uu_results = Pv.of_company(@company.id).where(track_date: @period).group(:track_date).distinct.count(:user_id)
   end
 
   def get_ga_pv

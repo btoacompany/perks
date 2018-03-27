@@ -8,10 +8,9 @@
     <div class="clearfix"></div>
   </div>
   <%= render 'analytics'%>
-  <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;">
+  <div class="analytics_container c_align" style="float: left; width: 80%; background-color: #6c6c70; margin-bottom: 30px;padding: 10px;background-color: #3a3a3c;">
     <span class="no_results" style="font-size:14pt;color:#fff"></span>
     <div id="pv" class="analytics_allhashtag_float" style="min-height: 450px; width: 100%;"></div>
-
   </div>
 </div>
 
@@ -30,33 +29,77 @@
         labelAutoFit: false, 
         labelFontSize: 12,
         labelFontColor: "#E0E0E3", 
-        },
+      },
       axisY:{
+        title: "ユニークユーザー数",
+        titleFontSize: 20,
+        titleFontColor: "white",
+        labelAutoFit: false,
+        labelFontSize: 12,
+        labelFontColor: "#E0E0E3",
+      },
+      axisY2: {
+        title: "PV数",
+        titleFontSize: 20,
+        titleFontColor: "white",
         labelAutoFit: false, 
         labelFontSize: 12,
-        labelFontColor: "#E0E0E3", 
+        labelFontColor: "#E0E0E3",
+      },
+      legend : {
+        fontColor: "white",
+        cursor:"pointer",
+        itemclick: toogleDataSeries
+      },
+      toolTip: {
+        shared: true
       },
       dataPointMaxWidth: 15,
       dataPointMinWidth: 15,
       dataPointWidth: 15,
-      data: [              
+      data: [
+      {
+        type: "line",
+        name: "ユニークユーザー数",
+        showInLegend: true,
+        color: "#DAA520",
+        yValueFormatString: "# PV",
+        dataPoints: [
+          <% @uu_results.each do |key, value| %>
+            { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
+          <% end %>
+        ]
+      },
       {
         type: "line",
         color: "#ff8d07",
+        name: "PV数",
+        showInLegend: true,
+        axisYType: "secondary",
+        yValueFormatString: "# PV",
         dataPoints: [
           <% @results.each do |key, value| %>
             { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
           <% end %>
         ]
-      }
+      },
       ]
     });
-
     <% unless @results.empty? %>
       chart.render();
     <% else %>
       $(".no_results").html("<br><br><i>明日からアクセス状況を集計します</i>");
     <% end %>
+
+function toogleDataSeries(e){
+  if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+    e.dataSeries.visible = false;
+  } else{
+    e.dataSeries.visible = true;
+  }
+  chart.render();
+}
+
   }
 
 $(function() {
