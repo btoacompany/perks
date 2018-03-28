@@ -409,8 +409,8 @@ class UsersController < ApplicationController
       if params[:receiver_id].include?(@id)
 	      flash[:notice] = "自分にポイントを贈ることはできません。"
 	      error = 1
-      elsif params[:description].length > 250
-        flash[:notice] = "メッセージは250文字以下にしてください"
+      elsif params[:description].length > 1024
+        flash[:notice] = "メッセージは1024文字以下にしてください"
         error = 1
       end
 
