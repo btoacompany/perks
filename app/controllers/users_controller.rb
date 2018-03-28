@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   before_filter :init, :authenticate_user, :except => [:login, :login_complete, :logout, :invite, :invite_complete, :give_points_slack, :give_points_slack_response, :forgot_password, :forgot_password_submit, :fb_auth]
   before_filter :init_url
   before_action :timeline_message, :only => [:index, :profile, :given, :timeline]
+  before_action :belonging_team, :only => [:index, :profile, :given, :timeline, :articles]
 
   def init
     if session[:id].present? || cookies[:id].present?
@@ -710,7 +711,6 @@ class UsersController < ApplicationController
     @user_posted_contents = Article.where(company_id: @company_id, is_published:1, is_casual: 1, is_deleted: 0).order(created_at: :desc).limit(5)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
-0
     @company = Company.find(@user.company_id)
     # weekly_ranking
     receiver_ranking(@user)
@@ -921,12 +921,14 @@ class UsersController < ApplicationController
     data = {
       id:		  post.id,
       user_id:		  post.user_id,
+      belonging_team: "#{@belonging_team[post.user_id].try(:department).try(:dep_name)} / #{@belonging_team[post.user_id].try(:team_name)} ",
       nickname: $nicknames[post.nickname_id],
       user_name:	  post.user.name,
       full_user_name:	  "#{post.user.lastname}#{post.user.firstname}",
       receiver_id:	  [],
       receiver_name:	  [],
       full_receiver_name: [],
+      receiver_belonging_user_team: [],
       # receiver_img:	  post.receiver.img_src,
       user_img:		  post.user.img_src,
       points:		  post.points,
@@ -946,6 +948,7 @@ class UsersController < ApplicationController
           data[:receiver_id]  << r
           data[:receiver_name]  << receiver_info.name
           data[:full_receiver_name] << "#{receiver_info.lastname}#{receiver_info.firstname}"
+          # data[:receiver_belonging_user_team] << "#{@belonging_team[post.user_id].try(:department).try(:dep_name)} / #{@belonging_team[post.user_id].try(:team_name)} #{receiver_info.lastname}#{receiver_info.firstname}"
         end
       end
     end
