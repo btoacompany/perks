@@ -491,45 +491,50 @@ class UsersController < ApplicationController
     params[:company_id] = @company_id
     params[:user_id]	= @id
 
-    res = Comment.new
-    res.save_record(params)
-
-    user = User.find(@id)
-
-    if user.badge.present?
-      user.badge += 1
-      user.save
-    end
-
-    post = Post.find(res.post_id)
-    receiver_id = post.receiver_id
-    receiver = User.find(receiver_id)
-    params[:receiver_id]  = receiver_id.split(",")
     params[:description]  = params["comments"]
-
     params[:points]    = params["comments"].scan(/\+[^\s|　]+/).first
-    params[:type]	  = "comment"
-    
-    #if params[:points].present?
-    #  parse_points(params)
-    #end
+    params[:type]   = "comment"
 
-    post.update_time = Time.now
-    post.save
+    if params[:description].length > 250
+      flash[:notice] = "コメントは250文字以内です"
+    else
+      res = Comment.new
+      res.save_record(params)
 
-    UserMailer.receive_comments_email({
-      sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
-      receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
-      email: receiver.try(:email),
-      giver: @user.try(:name),
-      #points: points,
-      prizy_url: @prizy_url + "/profile"
-    }).deliver_later
+      user = User.find(@id)
 
-    #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
+      if user.badge.present?
+        user.badge += 1
+        user.save
+      end
 
-    # redirect_to "/user"
-    redirect_page("users", "index")
+      post = Post.find(res.post_id)
+      receiver_id = post.receiver_id
+      receiver = User.find(receiver_id)
+      params[:receiver_id]  = receiver_id.split(",")
+      
+      #if params[:points].present?
+      #  parse_points(params)
+      #end
+
+      post.update_time = Time.now
+      post.save
+
+      #UserMailer.receive_comments_email({
+      #  sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
+      #  receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
+      #  email: receiver.try(:email),
+      #  giver: @user.try(:name),
+      #  #points: points,
+      #  prizy_url: @prizy_url + "/profile"
+      #}).deliver_later
+
+      #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
+
+      # redirect_to "/user"
+
+      redirect_page("users", "index")
+    end
   end
 
   def give_kudos

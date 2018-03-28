@@ -188,11 +188,21 @@ table.horizontal td{
   #postsbox .comments .user_comments {
     margin-top: 2px;
     float: left;
-    width: 84%;
+    width: 90%;
   }
 
   #postsbox .comments .user_comments .dropbtn {
     margin-top:-3px;
+  }
+
+  #postsbox .comments .cmt_right {
+    float: right;
+    margin-right:0;
+  }
+
+  #postsbox .comments .cmt_left {
+    float: left;
+    width: 91%;
   }
 
   body {
@@ -536,10 +546,20 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
   }
 
   #postsbox .comments .user_comments {
-  margin-top: 2px;
-  float: left;
-  width: 93%;
-}
+    margin-top: 2px;
+    float: left;
+    width: 93%;
+  }
+
+  #postsbox .comments .cmt_right {
+    float: right;
+    margin-right:0;
+  }
+
+  #postsbox .comments .cmt_left {
+    float: left;
+    width: 95%;
+  }
 }
 
 /* --- ITEM DETAILS PAGE --- */
