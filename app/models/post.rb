@@ -14,7 +14,7 @@ class Post < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
 
-  validates :description , length: {maximum: 250}
+  validates :description , length: {maximum: 1024}
 
   scope :available, -> { where(delete_flag: 0) }
   scope :of_company, ->(company_id) { where(company_id: company_id) }
