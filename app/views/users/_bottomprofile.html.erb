@@ -144,12 +144,12 @@ aaaaaaaa<% if flash[:notice].present? %><span><%= flash[:notice] %></span><% end
             </div>  
           <% end %>
         </div>
-        <% if post[:receiver_id].include?(@user.id) || post[:user_id] == @user.id %>
+        <%# if post[:receiver_id].include?(@user.id) || post[:user_id] == @user.id %>
           <div>
             <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="コメントする (250文字以内)" autocomplete="off" maxlength="250"/>
             <p align="right"><input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/></p>
           </div>
-        <% end %>
+        <%# end %>
       </div>
     </div>
 
@@ -372,13 +372,16 @@ function postComment(post_id, comments, _this) {
   }
 }
 
-$(".give_comments").keydown(function(){
-  if ($(this).val().length > 250) {
-    $(this).css("border","2px solid red");
-  } else {
-    $(this).css("border","");
-  }
-})
+$(function() {
+  $(".give_comments").keypress(function(){
+    if ($(this).val().length > 250) {
+      $(this).css("border","2px solid red");
+    } else {
+      $(this).css("border","");
+    }
+  });
+});
+
 
 $('.del_comment').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item
