@@ -1,8 +1,9 @@
 <div class="time_line_wrapper">
   <div id="wrapper">
     <div id="contents">
-      <% if flash[:result] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:result] %></i></b></p><% end %>
-      <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
+      <% if flash[:status] != "false" %>
+        <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
+      <% end %>
       <%= render partial: 'edit_results', locals: {edit_results: flash[:edit_results]} %>
         <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
         <div class="mypage row">
@@ -190,6 +191,10 @@
   <a herf="#" class="modal-close"></a>
   <h1>メッセージを贈る</h1>
   <div class="modalwin-contents">
+    <% if flash[:status] == "false" %>
+      <% if flash[:result] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:result] %></i></b></p><% end %>
+      <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
+    <% end %>
     <%= form_tag( "/user/give_points", method: "post", id: "login_form" ) do %>
       <div class="pointsbox" id="pointsbox" style="padding: 10px;">
         <div id="new_posts">
@@ -250,7 +255,7 @@
           <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
           <div id="suggest" style="display:none;"></div>
           <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。" 
-          <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled></textarea><br>
+          <% if @company.point_fixed_flag == 0 %> data-step="5" <% else %> data-step="4" <% end %> disabled><% if @description.present? %><%= @description %><% end %></textarea><br>
         </div><br>
         <div class="clearfix" style="width: 100%;">
           <div class="tags" style="float:left">
@@ -296,6 +301,10 @@
   <a herf="#" class="modal-close"></a>
   <h1>メッセージを贈る</h1>
   <div class="modalwin-sp-contents">
+    <% if flash[:status] == "false" %>
+      <% if flash[:result] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:result] %></i></b></p><% end %>
+      <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
+    <% end %>
     <%= form_tag( "/user/give_points", method: "post" ) do %>
       <div class="pointsbox" id="pointsbox" style="padding: 10px;">
         <div id="new_posts">
@@ -356,7 +365,7 @@
               <span id="suggested_name_span" style="display: none;">To: </span>
               <input type="text" id="suggested_name" value="" style="display:none"/><input id="send_suggested_name" type="button" value="追加" class="email_added" style="display:none; margin-bottom: 5px"/>
               <div id="suggest" style="display:none;"></div>
-              <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput width-100-percent" required align="center" rows="3" style="font-size: 14px; padding: 8px;border: 1px solid gray;" placeholder="メッセージを入力してください。"></textarea><br>
+              <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput width-100-percent" required align="center" rows="3" style="font-size: 14px; padding: 8px;border: 1px solid gray;" placeholder="メッセージを入力してください。"><% if @description.present? %><%= @description %><% end %></textarea><br>
             </div><br>
             <div class="clearfix" style="width: 100%;">
               <div class="tags" style="float:left">
@@ -1101,7 +1110,6 @@ $(function () {
   <% else %>
 
   $(document).ready(() => {
-    console.log("test");
     //TODO : Dirty fix, merge with showModal function and call it in many locations
     var $shade = $('<div></div>');
     $shade
@@ -1137,6 +1145,57 @@ $(function () {
   <% end %>
 <% else %>
   console.log("NG");
-<% end %>   
+<% end %> 
 
+
+<% if flash[:status] == "false"%>
+  <% if ((request.env["HTTP_USER_AGENT"].include?('Mobile') || request.env["HTTP_USER_AGENT"].include?('Android'))) %>
+    var $shade = $('<div></div>');
+    $shade
+      .attr('id', 'shade')
+      .on('click', hideModal);
+    var $modalWin = $('#modalwin_sp');
+    var $window = $(window);
+    var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+    var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+    $modalWin
+      .before($shade)
+      .css({left: posX, top: posY})
+      .removeClass('hide')
+      .addClass('show')
+      .on('click', 'button', function () {
+        hideModal();
+      });
+    function hideModal() {
+      $('#shade').remove();
+      $('#modalwin_sp')
+        .removeClass('show')
+        .addClass('hide');
+      }
+  <% else %>
+    //TODO : Dirty fix, merge with showModal function and call it in many locations
+    var $shade = $('<div></div>');
+    $shade
+      .attr('id', 'shade')
+      .on('click', hideModal);
+    var $modalWin = $('#modalwin');
+    var $window = $(window);
+    var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+    var posY = ($window.height() - $modalWin.outerHeight()) / 6;
+    $modalWin
+      .before($shade)
+      .css({left: posX, top: posY})
+      .removeClass('hide')
+      .addClass('show')
+      .on('click', 'button', function () {
+        hideModal();
+      });
+    function hideModal() {
+      $('#shade').remove();
+      $('#modalwin')
+        .removeClass('show')
+        .addClass('hide');
+      }
+  <% end %>
+<% end %>
 </script>
