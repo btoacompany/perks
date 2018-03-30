@@ -1,6 +1,7 @@
 <div class="time_line_wrapper">
   <div id="wrapper">
     <div id="contents">
+      <% if flash[:result] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:result] %></i></b></p><% end %>
       <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= flash[:notice] %></i></b></p><% end %>
         <div style="text-align:center"><b><i><span class="notice"></span></i></b></div><br>
         <div class="mypage row">
