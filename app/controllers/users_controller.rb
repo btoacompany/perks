@@ -412,6 +412,9 @@ class UsersController < ApplicationController
       elsif params[:description].length > 1024
         flash[:notice] = "メッセージは1024文字以下にしてください"
         error = 1
+      elsif params[:receiver_id].uniq.include?("")
+        flash[:notice] = "「名前からメッセージを贈る相手を探す」場合は、社員名をクリックしてから「追加」ボタンを押してください"
+        error = 1
       end
 
       if error == 0
