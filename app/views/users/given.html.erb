@@ -200,7 +200,7 @@
         <div id="new_posts">
           <p style="font-size: 15px;"><b>・名前からメッセージを贈る相手を探す</b><br/>
             <input type="text" id="target_user_name" size="40" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>" style="border: #cccccc 1px solid;padding: 2px;">
-            <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/>
+            <!-- <input type="button" value="追加" class="btn_change_password" style="width: 50px;"/> -->
           </p>
           <div id="new_post" class="new_post display_hidden" name="new_post" style="margin-bottom:20px;">
             <p align="center">
@@ -310,7 +310,7 @@
         <div id="new_posts">
           <p style="font-size: 13px;"><b>・名前からメッセージを贈る相手を探す</b><br/>
             <input type="text" id="target_user_name_sp" class="width-60-percent" autocomplete="on" data-user="<%= @user_fullnames %>" data-user-id="<%= @user_ids %>" style="border: #cccccc 1px solid;padding: 2px;">
-            <input type="button" value="追加" class="btn_change_password_sp" style="width: 50px;border: #cccccc;"/>
+            <!-- <input type="button" value="追加" class="btn_change_password_sp" style="width: 50px;border: #cccccc;"/> -->
           </p>
           <div id="new_post" class="new_post" name="new_post">
             <p align="center">
@@ -690,24 +690,6 @@ $(function() {
   });
 });
 
-  $(".btn_change_password").click(function() {
-    var content = $('#target_user_name').val();
-    $('#target_user_name').val("");
-    var $selected = $(this).parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
-    $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
-    var target_user_id = user_datas[content];
-    $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
-  });
-
-  $(".btn_change_password_sp").click(function() {
-    var content = $('#target_user_name_sp').val();
-    $('#target_user_name_sp').val("");
-    var $selected = $(this).parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
-    $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
-    var target_user_id = user_datas[content];
-    $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
-  });
-
   <% if $allow_nickname.include?(@user.company_id) %>
   $(function() {
     $(".pointsbox").on("change",".select_giver_user", function(){
@@ -994,12 +976,22 @@ $("#new_posts").on("click", ".dropbtn", function() {
     $(".taginput").focus();
   });
 });
+
   $(function() {
     var target_user_name_sp = $('#target_user_name_sp').data('user');
     $( "#target_user_name_sp" ).autocomplete({
-      source: target_user_name_sp
+      source: target_user_name_sp,
+      select: function(e, ui) {
+        var $selected = $(this).parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
+        $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + ui.item.value + "'/>").val(ui.item.value));
+        var target_user_id = user_datas[ui.item.value];
+        $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
+        this.value = "";
+        return false;
+      }
     });
   });
+
 // show_modal
 $(function () {
   // モーダルウィンドウを開く
@@ -1068,15 +1060,15 @@ $(function () {
     $( "#target_user_name" ).autocomplete({
       source: target_user_names,
       select: function(e, ui) {
-        console.log(ui.item.value);
         var $selected = $(this).parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
         $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + ui.item.value + "'/>").val(ui.item.value));
         var target_user_id = user_datas[ui.item.value];
         $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
+        this.value = "";
+        return false;
       }
     });
   });
-
 
 <% if @send_to_user %>
   <% if ((request.env["HTTP_USER_AGENT"].include?('Mobile') || request.env["HTTP_USER_AGENT"].include?('Android'))) %>
