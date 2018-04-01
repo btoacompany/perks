@@ -1066,7 +1066,14 @@ $(function () {
   $(function() {
     var target_user_names = $('#target_user_name').data('user');
     $( "#target_user_name" ).autocomplete({
-      source: target_user_names
+      source: target_user_names,
+      select: function(e, ui) {
+        console.log(ui.item.value);
+        var $selected = $(this).parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
+        $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + ui.item.value + "'/>").val(ui.item.value));
+        var target_user_id = user_datas[ui.item.value];
+        $selected.append($("<input type='hidden' class='receiver-selected given_user' name='new_post[]receiver_id[]'/>").val(target_user_id));
+      }
     });
   });
 
