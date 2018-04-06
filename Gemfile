@@ -80,3 +80,4 @@ gem "sentry-raven"
 #gem 'google-api-client', '~> 0.9', require: 'google/apis/analytics_v3'
 #gem 'omniauth-google-oauth2'
 #gem 'signet'
+gem 'kaminari'
