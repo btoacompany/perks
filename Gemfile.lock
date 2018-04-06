@@ -120,6 +120,18 @@ GEM
     json (1.8.3)
     json_pure (1.8.3)
     jwt (1.5.4)
+    kaminari (1.0.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.0.1)
+      kaminari-activerecord (= 1.0.1)
+      kaminari-core (= 1.0.1)
+    kaminari-actionview (1.0.1)
+      actionview
+      kaminari-core (= 1.0.1)
+    kaminari-activerecord (1.0.1)
+      activerecord
+      kaminari-core (= 1.0.1)
+    kaminari-core (1.0.1)
     koala (1.10.1)
       addressable
       faraday
@@ -283,6 +295,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
+  kaminari
   koala (~> 1.10.0rc)
   mysql2 (~> 0.3.21)
   omniauth-facebook (~> 1.4.1)
