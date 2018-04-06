@@ -37,7 +37,9 @@
           </tr>
         <% end %>
       </table>
-      <%= will_paginate @posts, class: "c_align", style: "margin: 20px;font-size: 16px;" %>
+      <div class="c_align" style="margin: 20px;font-size: 16px; padding: 0 auto;">
+        <%= paginate @messages %>
+      </div>
     </div>
   </div>
 </div>
