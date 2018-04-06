@@ -384,7 +384,7 @@ class UsersController < ApplicationController
     new_posts.each do |post|
       parse_points(post, nickname_id)
     end
-    redirect_page("users", "given")
+    redirect_to controller: "users", action: "given", description: @description
   end
 
   def parse_points(params, nickname_id)
@@ -408,10 +408,20 @@ class UsersController < ApplicationController
 
     if (params[:receiver_id].present?)
       if params[:receiver_id].include?(@id)
+        flash[:status] = "false"
 	      flash[:notice] = "自分にポイントを贈ることはできません。"
+        @description = params[:description]
 	      error = 1
-      elsif params[:description].length > 250
-        flash[:notice] = "メッセージは250文字以下にしてください"
+      elsif params[:description].length > 1024
+        flash[:status] = "false"
+        flash[:notice] = "メッセージは1024文字以下にしてください"
+        @description = params[:description]
+        error = 1
+      elsif params[:receiver_id].uniq.include?("")
+        flash[:status] = "false"
+        flash[:result] = "送信に失敗しました。"
+        flash[:notice] = "「名前からメッセージを贈る相手を探す」場合は、社員名をクリックしてから「追加」ボタンを押してください"
+        @description = params[:description]
         error = 1
       end
 
@@ -477,10 +487,17 @@ class UsersController < ApplicationController
   	        # ios_push_notif(receiver.id, "#{@user.firstname}さんから「ホメ」が届きました。", @user.badge)
 	        end
         else
+          flash[:status] = "false"
           flash[:notice] = "ポイントが足りません"
+          @description = params[:description]
         end
+      else
+        flash[:status] = "false"
+        @description = params[:description]
       end
     else
+      flash[:status] = "false"
+      @description = params[:description]
       flash[:notice] = "送信に失敗しました。送信相手を選択してください。"
     end
     # rescue => e
@@ -711,6 +728,7 @@ class UsersController < ApplicationController
     @user_posted_contents = Article.where(company_id: @company_id, is_published:1, is_casual: 1, is_deleted: 0).order(created_at: :desc).limit(5)
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
+
     @company = Company.find(@user.company_id)
     # weekly_ranking
     receiver_ranking(@user)
@@ -743,6 +761,8 @@ class UsersController < ApplicationController
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company_id)
     @total_receive_message = Post.where(company_id: @company_id, delete_flag: 0, receiver_id: @user.id).count
     @user_posted_contents = Article.where(company_id: @company_id, is_casual: 1, is_deleted: 0, is_published: 1).order(created_at: :desc).limit(5)
+
+    @description = params[:description] if params[:description]
 
     receiver_ranking(@user)
     giver_ranking(@user)
