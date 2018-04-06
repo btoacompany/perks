@@ -84,11 +84,9 @@ class ApplicationController < ActionController::Base
 
   def current_user
     user_id = session[:id] || cookies[:id]
-
     if user_id 
       @current_user||= User.find(user_id)
     end
-
     if @current_user
       @current_user
     else
@@ -96,6 +94,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def belonging_team
+    # user_id asc
+    # {user1 => team1, user2 => team2, user3 => team3}
+    @belonging_team = Hash.new
+    teams = Team.of_company(@current_user.company_id).available
+    users = User.of_company(@current_user.company_id).available
+    users.each do |user|
+      teams.each do |team|
+        @belonging_team.store(user.id, team) if team.member_ids.present? && team.member_ids.split(",").include?(user.id.to_s)
+      end
+    end
+    return @belonging_team
+  end
 
   def logout
     session[:id] = nil
