@@ -20,54 +20,17 @@ class AnalyticsController < ApplicationController
   end
 
   def overall
-    @posts = Post.of_company(@company.id).available.create_time(@period).group('date(create_time)').count
-    @points = Post.of_company(@company.id).available.create_time(@period).group('date(create_time)').sum(:points)
-
+    @post_data = Post.of_company(@company.id).available.create_time(@period)
+    @posts = Hash.new
+    @post_data.each do |post|
+      post.receiver_id.split(",").each do |receiver|
+        @posts.has_key?(post.create_time.strftime("%m/%d")) ? @posts[post.create_time.strftime("%m/%d")] += 1 : @posts.store(post.create_time.strftime("%m/%d"), 1)
+      end
+    end
     @period.each do |date|
-      @posts.store(date, 0) unless @posts.has_key?(date)
-      @points.store(date, 0) unless @points.has_key?(date)
+      @posts.store(date.strftime("%m/%d"), 0) unless @posts.has_key?(date.strftime("%m/%d"))
     end
     @posts = Hash[ @posts.sort ]
-    @points = Hash[ @points.sort ]
-
-
-    # # team別の結果
-    # # team
-    # @teams_use_history = Array.new
-    # # Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, result: {date: nil, count: 0, point: 0}})}
-    # Team.of_company(@company.id).available.map { |team| @teams_use_history.push({name: team.team_name, member_ids: team.member_ids, results: Array.new})}
-
-    # @date_posts = Post.of_company(@company.id).available.create_time(period).group('date(create_time)', 'user_id').count.inject({}) do |result, (key, value)|
-    #   product_id, task_id = key
-    #   result[product_id] ||= {}
-    #   result[product_id][task_id] = value
-    #   result
-    # end
-    # @date_points = Post.of_company(@company.id).available.create_time(period).group('date(create_time)', 'user_id').sum(:points).inject({}) do |result, (key, value)|
-    #   product_id, task_id = key
-    #   result[product_id] ||= {}
-    #   result[product_id][task_id] = value
-    #   result
-    # end
-
-    # period.each do |date|
-    #   @teams_use_history.each do |history|
-    #     history[:results].push({date: date, count: 0, point: 0})
-    #   end
-    # end
-
-    # @date_posts.each do |date, user_count|
-    #   user_count.each do |user_id, count|
-    #     @teams_use_history.each do |history|
-    #       if history[:member_ids].present? && history[:member_ids].include?(user_id.to_s)
-    #         history[:results].each do |result|
-    #           result[:count] += count if result[:date] == date
-    #         end
-    #       end
-    #     end
-    #   end
-    # end
-    # end
   end
 
   def teams
