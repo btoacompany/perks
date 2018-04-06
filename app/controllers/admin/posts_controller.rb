@@ -3,26 +3,26 @@ class Admin::PostsController < Admin::Base
   require 'nkf'
 
   def index
-    @posts = Post.where(company_id: @company.id, delete_flag: 0).order(create_time: :desc).paginate(page: params[:page], per_page: 40)
-    @teams = Team.where(company_id: @company.id)
+    posts = Post.of_company(@company.id).available.order(create_time: :desc)
+    teams = Team.of_company(@company.id).available
     @messages = Array.new
-    @posts.each do |post|
+    posts.each do |post|
       post.receiver_id.split(",").each do |receiver|
         message = Hash.new
         message.store(:date, post.create_time.strftime("%Y%m/%d %H:%M:%S"))
         belonging = nil
-        @teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s) }
-        message.store(:sender_team, "#{belonging.department.dep_name}/#{belonging.team_name}")
+        teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s) }
+        message.store(:sender_team, "#{belonging.try(:department).try(:dep_name)}/#{belonging.try(:team_name)}")
         message.store(:sender, post.user.fullname)
-        @teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.include?(post.receiver_id) }
-        message.store(:receiver_team, "#{belonging.department.dep_name}/#{belonging.team_name}")
+        teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.include?(post.receiver_id) }
+        message.store(:receiver_team, "#{belonging.try(:department).try(:dep_name)}/#{belonging.try(:team_name)}")
         receiver = User.find(receiver.to_i)
         message.store(:receiver, receiver.fullname)
         message.store(:description, post.description)
         @messages.push(message)
       end
     end
-    Kaminari.paginate_array(@messages).page(params[:page]).per(4)
+    @messages = Kaminari.paginate_array(@messages).page(params[:page]).per(40)
   end
 
   def export_all_posts
@@ -33,50 +33,22 @@ class Admin::PostsController < Admin::Base
     elsif params[:period] == "twelve_month"
       period = Date.today - 12.months
     end
-    @posts = Post.where(company_id: @company.id, delete_flag: 0).where('create_time >= ?', period)
-    teams = Team.where(company_id: @company.id)
+    posts = Post.of_company(@company.id).available.where('create_time >= ?', period)
+    teams = Team.of_company(@company.id).available
+    users = Hash.new
+    User.of_company(@company.id).available.map { |user| users.store(user.id, user) }
 
     headers = %w(日時 所属 送信者 所属 受信者 内容)
     csv_str = CSV.generate do |csv|
       csv << headers
-      @posts.all.each do |post|
-        if post.receiver_id.present? && post.receiver_id.include?(",") && post.receiver_id.split(",").count > 0
-          post.receiver_id.split(",").each do |receiver_id|
-            user_assigned_team = ""
-            receiver_assigned_team = ""
-            receiver_name = ""
-
-
-            teams.each do |t|
-              if t.member_ids.present? && t.member_ids.include?(post.user.id.to_s)
-                user_assigned_team = "#{t.department.try(:dep_name)} #{t.try(:team_name)}"
-                break
-              end
-              user_assigned_team = "所属がありません" unless user_assigned_team.present?
-              if t.member_ids.present? && t.member_ids.include?(post.receiver_id)
-                receiver_assigned_team = "#{t.department.try(:dep_name)} #{t.try(:team_name)}"
-                user = User.find_by(id: receiver_id.to_i)
-                receiver_name = "#{user.try(:lastname)}" "#{user.try(:firstname)}"
-              end
-            end
-            csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, "#{post.user.try(:lastname)} #{post.user.try(:firstname)}", receiver_assigned_team, receiver_name, post.description]
-          end
-        else
-          user_assigned_team = ""
-          receiver_assigned_team = ""
-          teams.each do |t|
-            if t.member_ids.present? && t.member_ids.include?(post.user.id.to_s)
-              user_assigned_team = "#{t.department.try(:dep_name)} #{t.try(:team_name)}"
-              break
-            end
-            user_assigned_team = "所属がありません" unless user_assigned_team.present?
-            if t.member_ids.present? && t.member_ids.include?(post.receiver_id.to_s)
-              receiver_assigned_team = "#{t.department.try(:dep_name)} #{t.try(:team_name)}"
-              break
-            end
-            receiver_assigned_team = "所属がありません" unless receiver_assigned_team.present?
-          end
-          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), user_assigned_team, "#{post.user.try(:lastname)}" "#{post.user.try(:firstname)}", receiver_assigned_team, "#{post.receiver.try(:lastname)}" "#{post.receiver.try(:firstname)}", post.description]
+      posts.each do |post|
+        post.receiver_id.split(",").each do |id|
+          sender_belonging = nil
+          receiver_belonging = nil
+          teams.map { |team| sender_belonging = team if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s) }
+          teams.map { |team| receiver_belonging = team if team.member_ids.present? && team.member_ids.include?(post.receiver_id) }
+          receiver = users[id.to_i]
+          csv << [post.create_time.strftime("%Y/%m/%d %H:%M:%S"), "#{sender_belonging.try(:department).try(:dep_name)}/#{sender_belonging.try(:team_name)}", post.user.fullname, "#{receiver_belonging.try(:department).try(:dep_name)}/#{receiver_belonging.try(:team_name)}", receiver.try(:fullname), post.description]
         end
       end
     end
