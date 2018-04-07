@@ -5,9 +5,11 @@ class Admin::PostsController < Admin::Base
   def index
     posts = Post.of_company(@company.id).available.order(create_time: :desc)
     teams = Team.of_company(@company.id).available
+    users = Hash.new
+    User.of_company(@company.id).available.map { |user| users.store(user.id, user) }
     @messages = Array.new
     posts.each do |post|
-      post.receiver_id.split(",").each do |receiver|
+      post.receiver_id.split(",").each do |id|
         message = Hash.new
         message.store(:date, post.create_time.strftime("%Y%m/%d %H:%M:%S"))
         belonging = nil
@@ -16,8 +18,8 @@ class Admin::PostsController < Admin::Base
         message.store(:sender, post.user.fullname)
         teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.include?(post.receiver_id) }
         message.store(:receiver_team, "#{belonging.try(:department).try(:dep_name)}/#{belonging.try(:team_name)}")
-        receiver = User.find(receiver.to_i)
-        message.store(:receiver, receiver.fullname)
+        receiver = users[id.to_i]
+        message.store(:receiver, receiver.try(:fullname))
         message.store(:description, post.description)
         @messages.push(message)
       end
