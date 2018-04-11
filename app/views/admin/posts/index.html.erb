@@ -6,14 +6,26 @@
   <div class="analytics_container c_align" style="float: left; width: 80%; background-color: white; margin-bottom: 30px;">
     <div id="admin_contents" class="analytics_holder toolbox width-100-percent" >
       <h3 style="margin: 10px;">メッセージを出力する</h3>
-      <%= form_tag export_all_posts_admin_posts_path(format: 'csv') do%>
-        <select name="period">
-          <option value="three_month">直近 3ヶ月分</option>
-          <option value="six_month">直近 6ヶ月分</option>
-          <option value="twelve_month">直近 1年分</option>
-        </select>
-        <input type="submit" value="出力">
-      <% end %>
+      <div class="clearfix">
+        <div class="float_left">
+          <%= form_tag export_all_posts_admin_posts_path(format: 'csv') do%>
+            <select name="period">
+              <option value="three_month">直近 3ヶ月分</option>
+              <option value="six_month">直近 6ヶ月分</option>
+              <option value="twelve_month">直近 1年分</option>
+            </select>
+            <input type="submit" value="出力">
+          <% end %>
+        </div>
+        <% if @company.id == 1 %>
+          <div class="float_left">
+            <%= form_tag export_for_analyze_admin_posts_path(format: 'csv') do%>
+              <input type="submit" value="Test">
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
       <h3 style="margin: 10px;">メッセージ一覧</h3>
       <table class="tbl_tools width-90-percent" border="1">
         <tr>
