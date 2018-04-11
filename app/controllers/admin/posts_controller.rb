@@ -61,8 +61,10 @@ class Admin::PostsController < Admin::Base
 
   def export_for_analyze
     today = Date.today
-    start_date = today.prev_month.beginning_of_month
-    end_date = today.prev_month.end_of_month
+    start_date = today.months_ago(2).beginning_of_month
+    end_date = today.beginning_of_month
+    logger.debug(start_date)
+    logger.debug(end_date)
     posts = Post.of_company(32).available.where("create_time between ? and ?", start_date, end_date)
     result_hash = Hash.new
     user_ids = User.of_company(32).available.pluck(:id)
@@ -73,11 +75,10 @@ class Admin::PostsController < Admin::Base
     end
     posts.each do |post|
       post.receiver_id.split(",").each do |id|
-        result_hash[post.user_id][id.to_i] += 1 if id.present?
+        result_hash[post.user_id][id.to_i] += 1 if id
       end
     end
     headers = user_ids.unshift("")
-    logger.debug(headers)
     csv_str = CSV.generate do |csv|
       csv << headers
       result_hash.each do |key, value|
