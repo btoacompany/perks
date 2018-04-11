@@ -58,4 +58,34 @@ class Admin::PostsController < Admin::Base
     format_datetime = datetime.strftime('%Y_%m_%d_%H%M')
     send_data csv_str, filename: "#{format_datetime}" + "メッセージ一覧" , type: 'text/csv;'
   end
+
+  def export_for_analyze
+    today = Date.today
+    start_date = today.prev_month.beginning_of_month
+    end_date = today.prev_month.end_of_month
+    posts = Post.of_company(32).available.where("create_time between ? and ?", start_date, end_date)
+    result_hash = Hash.new
+    user_ids = User.of_company(32).available.pluck(:id)
+    user_ids.each do |user_id|
+      store_message_counts = Hash.new
+      user_ids.map { |user_id| store_message_counts.store(user_id, 0) }
+      result_hash.store(user_id, store_message_counts)
+    end
+    posts.each do |post|
+      post.receiver_id.split(",").each do |id|
+        result_hash[post.user_id][id.to_i] += 1
+      end
+    end
+    headers = user_ids.unshift("")
+    logger.debug(headers)
+    csv_str = CSV.generate do |csv|
+      csv << headers
+      result_hash.each do |key, value|
+        csv << value.values.unshift(key)
+      end
+    end
+    datetime = Time.now
+    format_datetime = datetime.strftime('%Y_%m_%d_%H%M')
+    send_data csv_str, filename: "#{format_datetime}" + "PrizyDataSet" , type: 'text/csv;'
+  end
 end
