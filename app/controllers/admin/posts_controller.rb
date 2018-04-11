@@ -73,7 +73,7 @@ class Admin::PostsController < Admin::Base
     end
     posts.each do |post|
       post.receiver_id.split(",").each do |id|
-        result_hash[post.user_id][id.to_i] += 1
+        result_hash[post.user_id][id.to_i] += 1 if id.present?
       end
     end
     headers = user_ids.unshift("")
