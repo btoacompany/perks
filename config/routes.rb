@@ -10,7 +10,10 @@ Rails.application.routes.draw do
     resources :contacts
     resources :analyzes
     resources :posts, shallow: true do
-      collection {post :export_all_posts}
+      collection do
+        post :export_all_posts
+        post :export_for_analyze
+      end
     end
     resources :teams
     resources :departments
