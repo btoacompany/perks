@@ -65,7 +65,7 @@ class Admin::PostsController < Admin::Base
     end_date = today.beginning_of_month
     posts = Post.of_company(32).available.where("create_time between ? and ?", start_date, end_date)
     result_hash = Hash.new
-    user_ids = User.of_company(32).available.pluck(:id)
+    user_ids = User.of_company(32).pluck(:id)
     user_ids.each do |user_id|
       store_message_counts = Hash.new
       user_ids.map { |user_id| store_message_counts.store(user_id, 0) }
