@@ -32,8 +32,7 @@ class UserMailer < ApplicationMailer
     mail(to: "info@btoa-company.com", subject: "【Prizy】Redeem Reward")
   end
 
-  def test_mail(data)
-    @user = data 
-    mail(to: @user[:email], subject: "【Prizy】これはテストです")
+  def test_mail
+    mail(to: "naoto.udagawa1230@gmail.com", subject: "【Prizy】テストが終わりました")
   end
 end
