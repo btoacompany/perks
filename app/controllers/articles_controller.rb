@@ -51,11 +51,12 @@ class ArticlesController < ApplicationController
         target: targets
       }
       # CompanyMailer.recommend_mail(data).deliver_now
-      UserMailer.test_mail
+      puts data.inspect
+      UserMailer.test_mail.deliver_now
     end
 
     def batch
-      @users = User.available.of_company(32)
+      @users = User.available.of_company(32).limit(2)
       @users.each do |user|
         send_each(user)
         sleep 1
