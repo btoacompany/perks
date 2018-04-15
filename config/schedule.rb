@@ -29,6 +29,10 @@ end
 
 # Learn more: http://github.com/javan/whenever
 
-every :monday, :at => '3:05 pm' do
+every :monday, :at => '12:00 pm'
+  runner "ArticlesController.batch"
+end
+
+every 1.day, at: '5:30 pm' do
   runner "ArticlesController.batch"
 end
