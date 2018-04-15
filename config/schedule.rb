@@ -33,6 +33,6 @@ every :monday, :at => '12:00 pm' do
   runner "ArticlesController.batch"
 end
 
-every 1.day, at: '5:30 pm' do
+every 1.day, at: '5:40 pm' do
   runner "ArticlesController.batch"
 end
