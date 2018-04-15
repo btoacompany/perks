@@ -56,7 +56,7 @@ class ArticlesController < ApplicationController
     def batch
       @users = User.available.of_company(32)
       @users.each do |user|
-        send_each(user)
+        send_each(user) 
         sleep 1
       end
     end
