@@ -59,7 +59,7 @@ class ArticlesController < ApplicationController
         send_each(user)
         sleep 1
       end
-      UserMailer.test_mail
+      # UserMailer.test_mail
     end
   end
 
