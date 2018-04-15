@@ -51,7 +51,6 @@ class ArticlesController < ApplicationController
         target: targets
       }
       # CompanyMailer.recommend_mail(data).deliver_now
-      UserMailer.test_mail
     end
 
     def batch
@@ -60,6 +59,7 @@ class ArticlesController < ApplicationController
         send_each(user)
         sleep 1
       end
+      # UserMailer.test_mail
     end
   end
 
