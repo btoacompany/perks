@@ -50,7 +50,7 @@ class ArticlesController < ApplicationController
         email: Rails.env.production? ? user.email : "naoto.udagawa1230@gmail.com",
         target: targets
       }
-      # CompanyMailer.recommend_mail(data).deliver_now
+      CompanyMailer.recommend_mail(data).deliver_now
     end
 
     def batch
