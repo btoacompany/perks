@@ -1,3 +1,4 @@
+<% if flash[:notice].present? %><span><%= flash[:notice] %></span><% end %>
 <% if @posts.count > 0 %>
   <% @posts.each do | post | %>
     <div id="postsbox" class="post_<%= post[:id] %>">
@@ -109,6 +110,46 @@
             </span>
           </div>
         </div>
+      </div>
+      <div class="comments">
+        <div class="comment_entry_<%= post[:id] %>">
+          <% post[:comments].each do | comment | %>
+            <div class="comment_entry comment_<%= comment.id %>">
+              <div class="user_comment_img" style="float:left">
+                <img src="<%= comment.user.img_src %>" width="25px" height="25px" class="radius20" />
+              </div>
+              <div class="user_comments">
+                <div class="cmt_left" >
+                  <span class="user" style="font-weight:normal;">@
+                    <% if $allow_nickname.include?(@user.company_id) && post[:nickname].present? %><%= post[:nickname] %><% else %><%= post[:full_user_name] %><% end %>
+                  </span>
+                  <span class="comment">
+                    <%= raw comment.comments.gsub(/\+[^\s|  ]+|\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %>
+                  </span>
+                </div>
+                <div class="cmt_right" >
+                  <% if comment.user_id == @user.id || post[:receiver_id].include?(@user.id) %>
+                    <div class="r_float">
+                      <div class="editnav dropdown">
+                        <span class="del_comment" data-id="<%= comment.id %>" data-before_controller="<%= controller.controller_name %>" data-before_action="<%= controller.action_name %>">
+                          <i class="fas fa-trash-alt"></i>
+                        </span>
+                      </div><br>
+                    </div>
+                  <% end %> 
+                </div>
+              </div>
+
+              <br>
+            </div>  
+          <% end %>
+        </div>
+        <%# if post[:receiver_id].include?(@user.id) || post[:user_id] == @user.id %>
+          <div>
+            <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="コメントする (250文字以内)" autocomplete="off" maxlength="250"/>
+            <p align="right"><input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/></p>
+          </div>
+        <%# end %>
       </div>
     </div>
 
@@ -293,6 +334,65 @@ $(".btn_unlike").mouseup(function() {
       window.location.reload(); 
     }
   });
+});
+
+$(".give_comments").bind('keypress',function(e) {
+  if(e.keyCode == 13) {
+    var _this = $(this).parent().children(".give_comments").first();
+    var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+    var comments = ($(this).val()); //get attributes of clicked item
+    postComment(post_id, comments, _this);
+  }
+});
+
+$(".btn_comment").click(function() {
+  var _this = $(this).parent().children(".give_comments");
+  var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+  var comments = $(".post_comment_"+post_id).val(); 
+
+  postComment(post_id, comments, _this);
+});
+
+function postComment(post_id, comments, _this) {
+  var obj = _this.val();
+
+  if (obj.length > 250) {
+    alert("コメントは250文字以内です");
+    return false;
+  } else {
+    $.ajax({
+      type: "POST",
+      url: "/profile/give_comments",
+      data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page') },
+      success: function(data) {
+        $(this).val("");
+        window.location.reload(); 
+      }
+    });
+  }
+}
+
+$(function() {
+  $(".give_comments").keypress(function(){
+    if ($(this).val().length > 250) {
+      $(this).css("border","2px solid red");
+    } else {
+      $(this).css("border","");
+    }
+  });
+});
+
+
+$('.del_comment').click(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+  var before_controller = ($(this).attr('data-before_controller'));
+  var before_action = ($(this).attr('data-before_action'));
+
+  if (confirm("本当にこのコメントを削除しますか？")) {
+    $.post("/profile/delete_comment", { 'comment_id': _id, 'before_controller': before_controller, 'before_action': before_action}); //send post request
+    $(".comment_" + _id).remove();
+  }
+  return false; //do nothing
 });
 
 </script>

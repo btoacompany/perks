@@ -428,6 +428,7 @@ $.urlParam = function(name){
   }
 }
 
+/*
 $(".give_comments").bind('keypress',function(e) {
   if(e.keyCode == 13) {
     var post_id = ($(this).attr('data-id')); //get attributes of clicked item
@@ -456,7 +457,17 @@ function postComment(post_id, comments) {
   });
 }
 
-/*
+$('.del_comment').click(function() {
+  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+
+  if (confirm("本当にこのコメントを削除しますか？")) {
+    $.post("/user/delete_comment", { 'comment_id': _id }); //send post request
+    $(".comment_" + _id).remove(); //remove item upon deletion
+  }
+  return false; //do nothing
+});
+
+
 $(".btn_like").mouseup(function() {
   var post_id = ($(this).attr('data-id')); //get attributes of clicked item
 
@@ -541,15 +552,7 @@ function timeSince(time) {
   }
   return Math.floor(seconds) + "秒前";
 }
-$('.del_comment').click(function() {
-  var _id = ($(this).attr('data-id')); //get attributes of clicked item
 
-  if (confirm("本当にこのコメントを削除しますか？")) {
-    $.post("/user/delete_comment", { 'comment_id': _id }); //send post request
-    $(".comment_" + _id).remove(); //remove item upon deletion
-  }
-  return false; //do nothing
-});
 
 $('.del_post').click(function() {
   var _id = ($(this).attr('data-id')); //get attributes of clicked item

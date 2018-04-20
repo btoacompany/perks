@@ -174,7 +174,7 @@ table.horizontal td{
 
   #postsbox .comments input.btn_comment{
     text-align: center;
-    width: 17%;
+    width: 23%;
     display: initial;
     visibility: visible;
   }
@@ -182,6 +182,27 @@ table.horizontal td{
   #postsbox .comments .user_comment_img img {
     float: left;
     margin-left: 0px;
+    margin-bottom: 8px;
+  }
+
+  #postsbox .comments .user_comments {
+    margin-top: 2px;
+    float: left;
+    width: 90%;
+  }
+
+  #postsbox .comments .user_comments .dropbtn {
+    margin-top:-3px;
+  }
+
+  #postsbox .comments .cmt_right {
+    float: right;
+    margin-right:0;
+  }
+
+  #postsbox .comments .cmt_left {
+    float: left;
+    width: 91%;
   }
 
   body {
@@ -522,6 +543,22 @@ border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px
 
   #postsbox .comments {
     padding: 10px 10px;
+  }
+
+  #postsbox .comments .user_comments {
+    margin-top: 2px;
+    float: left;
+    width: 93%;
+  }
+
+  #postsbox .comments .cmt_right {
+    float: right;
+    margin-right:0;
+  }
+
+  #postsbox .comments .cmt_left {
+    float: left;
+    width: 95%;
   }
 }
 
@@ -1078,12 +1115,6 @@ hr.style-two {
 
 #postsbox .comments .user_comment_img img {
   float: left;
-}
-
-#postsbox .comments .user_comments {
-  margin-top: 2px;
-  float: left;
-  width: 80%;
 }
 
 #postsbox .comments .give_comments {

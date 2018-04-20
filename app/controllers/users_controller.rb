@@ -509,32 +509,50 @@ class UsersController < ApplicationController
     params[:company_id] = @company_id
     params[:user_id]	= @id
 
-    res = Comment.new
-    res.save_record(params)
-
-    user = User.find(@id)
-
-    if user.badge.present?
-      user.badge += 1
-      user.save
-    end
-
-    receiver_id = Post.find(res.post_id).receiver_id
-    params[:receiver_id]  = receiver_id.split(",")
     params[:description]  = params["comments"]
-
-
     params[:points]    = params["comments"].scan(/\+[^\s|　]+/).first
-    params[:type]	  = "comment"
-    
-    if params[:points].present?
-      parse_points(params)
-    end
-    
-    ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
+    params[:type]   = "comment"
 
-    # redirect_to "/user"
-    redirect_page("users", "index")
+    if params[:description].length > 250
+      flash[:notice] = "コメントは250文字以内です"
+    else
+      res = Comment.new
+      res.save_record(params)
+
+      user = User.find(@id)
+
+      if user.badge.present?
+        user.badge += 1
+        user.save
+      end
+
+      post = Post.find(res.post_id)
+      receiver_id = post.receiver_id
+      receiver = User.find(receiver_id)
+      params[:receiver_id]  = receiver_id.split(",")
+      
+      #if params[:points].present?
+      #  parse_points(params)
+      #end
+
+      post.update_time = Time.now
+      post.save
+
+      #UserMailer.receive_comments_email({
+      #  sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
+      #  receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
+      #  email: receiver.try(:email),
+      #  giver: @user.try(:name),
+      #  #points: points,
+      #  prizy_url: @prizy_url + "/profile"
+      #}).deliver_later
+
+      #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
+
+      # redirect_to "/user"
+
+      redirect_page("users", "index")
+    end
   end
 
   def give_kudos
@@ -1368,7 +1386,7 @@ class UsersController < ApplicationController
   def delete_post
     post_id = params[:post_id]
     post      = Post.where(id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
-    # comments  = Comment.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
+    comments  = Comment.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
     kudos     = Kudos.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
     # hashtags  = Hashtag.where(post_id: post_id).where("(user_id = ?) OR (receiver_id = ?)", @id, @id).update_all(delete_flag: 1)
 

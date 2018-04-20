@@ -1,0 +1,64 @@
+<!-- HEADER -->
+<table class="head-wrap" bgcolor="#FFFFFF">
+  <tr>
+    <td></td>
+    <td class="header container" >
+
+      <div class="content">
+        <table bgcolor="#FFFFFF">
+          <tr>
+            <td><img src="https://s3-ap-northeast-1.amazonaws.com/btoa-img/common/logo_200x50.png"/></td>
+          </tr>
+        </table>
+      </div>
+    </td>
+    <td></td>
+  </tr>
+</table><!-- /HEADER -->
+
+
+<!-- BODY -->
+<table class="body-wrap">
+  <tr>
+    <td></td>
+    <td class="container" bgcolor="#FFFFFF">
+
+<div class="content">
+<h3>こんにちは！<%= @user[:receiver] %>さん</h3>
+<br/>
+<% if @user[:nickname_id] == 0 %>
+<p class="lead">あなた宛に「<%= @user[:sender_belonging] %>」の『<%= @user[:sender] %>』さんから<br/>
+<% else %>
+<p class="lead">あなた宛に『<%= $nicknames[@user[:nickname_id]] %>』さんから<br/>
+<% end %>
+「コメント」が届いています！<br/>
+<br/>
+届いたコメント：<br/>
+<br/>
+『<%= @user[:description].truncate(10) %>』<br/>
+<br/>
+このコメントの続きはPrizyで見ることができます。
+<br/>
+　　　★コメントの続きはこちら★<br/>
+　　　https://www.prizy.me/
+</p>
+<br/>
+<br/>
+あなたも、この機会に日ごろの感謝を伝えてみませんか？ <br/>
+<br/>
+<br/>
+クリックするとコメントを贈ることができます。<br/>
+<p style="padding:15px;background-color:#ECF8FF;margin-bottom:15px;">
+  褒める文化形成プラットフォーム <a href="https://www.prizy.me/profile/">Prizy &raquo;</a>
+</p>
+<!-- Callout Panel -->
+
+</td>
+</tr>
+</table>
+</div><!-- /content -->
+		
+</td>
+<td></td>
+</tr>
+</table><!-- /BODY -->
