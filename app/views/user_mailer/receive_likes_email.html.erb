@@ -31,15 +31,10 @@
 <% else %>
 <p class="lead">『<%= $nicknames[@user[:nickname_id]] %>』さんから<br/>
 <% end %>
-あなたのメッセージに「コメント」がつきました！<br/>
+あなたのメッセージに、『ありがとう』のスタンプがつきました。<br/>
+
 <br/>
-届いたコメント：<br/>
-<br/>
-『<%= @user[:description].truncate(10) %>...』<br/>
-<br/>
-このコメントの続きはPrizyで見ることができます。
-<br/>
-　　　★メッセージの続きはこちら★<br/>
+　　　★コメントの続きはこちら★<br/>
 　　　https://www.prizy.me/
 </p>
 <br/>

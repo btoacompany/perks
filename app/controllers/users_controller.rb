@@ -526,26 +526,17 @@ class UsersController < ApplicationController
         user.save
       end
 
-      post = Post.find(res.post_id)
-      receiver_id = post.receiver_id
-      receiver = User.find(receiver_id)
-      params[:receiver_id]  = receiver_id.split(",")
-      
-      #if params[:points].present?
-      #  parse_points(params)
-      #end
+      #send email to the one who wrote the message
+      #somebody commented on the post
+      receiver = User.find(res.user_id)
+      send_emails("comments",receiver,params[:description])
 
-      post.update_time = Time.now
-      post.save
-
-      #UserMailer.receive_comments_email({
-      #  sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
-      #  receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
-      #  email: receiver.try(:email),
-      #  giver: @user.try(:name),
-      #  #points: points,
-      #  prizy_url: @prizy_url + "/profile"
-      #}).deliver_later
+      commenter_ids = Post.distinct(:user_id).where(id: res.post_id).where.not(user_id: @id)
+      commenter_ids.each do | commenter_id |
+        #send email to the ones who commented on the message
+        receiver = User.find(commenter_id)
+        send_emails("comments2",receiver,params[:description])
+      end
 
       #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
 
@@ -566,9 +557,44 @@ class UsersController < ApplicationController
     else
       res = Kudos.new
       res.save_record(params)
+
+      #send email to the one who wrote the message that 
+      #somebody liked the post
+      receiver = User.find(res.user_id)
+      send_emails("likes",receiver,params[:description])
     end
+
     # redirect_to "/user"
     redirect_page("users", "index")
+  end
+
+  def send_emails(type, receiver, description)
+    belonging = nil
+    nickname_id = params[:nickname_id].to_i if params[:nickname_id]
+    @company = Company.find(@company_id)
+    @user   = User.find(@id)
+    @teams = Team.of_company(@company_id).available
+    @teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(@user.id.to_s) }
+
+    data = {
+      sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
+      sender_belonging: "#{belonging.try(:team_name)}",
+      nickname_id: nickname_id,
+      receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
+      email: receiver.try(:email),
+      giver: @user.try(:name),
+      description: description,
+      prizy_url: @prizy_url + "/profile"
+    }
+
+    if type == "comments"
+      UserMailer.receive_comments_email(data).deliver_later
+    elsif type == "likes"
+      UserMailer.receive_likes_email(data).deliver_later
+    elsif type == "comments2"
+      UserMailer.comment_on_comment_email(data).deliver_later
+    end
+
   end
 
   def ios_push_notif(id, message, badge)
