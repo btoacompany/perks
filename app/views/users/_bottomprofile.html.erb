@@ -120,7 +120,10 @@
               <div class="user_comments">
                 <div class="cmt_left" >
                   <span class="user" style="font-weight:normal;">@
+                    <!--
                     <% if $allow_nickname.include?(@user.company_id) && post[:nickname].present? %><%= post[:nickname] %><% else %><%= post[:full_user_name] %><% end %>
+                    -->
+                    <%= "#{comment.user.lastname} #{comment.user.firstname}" %>
                   </span>
                   <span class="comment">
                     <%= raw comment.comments.gsub(/\+[^\s|  ]+|\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %>
@@ -340,12 +343,13 @@ $(".give_comments").bind('keypress',function(e) {
     var _this = $(this).parent().children(".give_comments").first();
     var post_id = ($(this).attr('data-id')); //get attributes of clicked item
     var comments = ($(this).val()); //get attributes of clicked item
+
     postComment(post_id, comments, _this);
   }
 });
 
 $(".btn_comment").click(function() {
-  var _this = $(this).parent().children(".give_comments");
+  var _this = $(this).parent().parent().children(".give_comments").first();
   var post_id = ($(this).attr('data-id')); //get attributes of clicked item
   var comments = $(".post_comment_"+post_id).val(); 
 
