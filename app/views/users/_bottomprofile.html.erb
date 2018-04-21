@@ -1,4 +1,3 @@
-<% if flash[:notice].present? %><span><%= flash[:notice] %></span><% end %>
 <% if @posts.count > 0 %>
   <% @posts.each do | post | %>
     <div id="postsbox" class="post_<%= post[:id] %>">
