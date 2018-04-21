@@ -13,7 +13,7 @@ class UserMailer < ApplicationMailer
 
   def receive_points_email(data)
     @user = data 
-    mail(to: @user[:email], subject: "【お知らせ】感謝のメッセージが届いています")
+    mail(to: @user[:email], subject: "【プライジー♪】#{@user[:sender]}さんより感謝のメッセージが届いています")
     # mail(from: "SepteniPrizy運営事務局 <support.prizy@btoa-company.com>", to: @user[:email], subject: "【お知らせ】感謝のメッセージが届いています")
   end
 
@@ -35,9 +35,19 @@ class UserMailer < ApplicationMailer
   def test_mail
     mail(to: "naoto.udagawa1230@gmail.com", subject: "【Prizy】テストが終わりました")
   end
-
+  
   def receive_comments_email(data)
     @user = data 
-    mail(to: @user[:email], subject: "【お知らせ】コメントが届いています")
+    mail(to: @user[:email], subject: "【プライジー♪】あなたのメッセージに「コメント」がつきました")
+  end
+
+  def receive_likes_email(data)
+    @user = data 
+    mail(to: @user[:email], subject: "【プライジー♪】あなたの投稿に『ありがとう』のスタンプがつきました")
+  end
+
+  def comment_on_comment_email(data)
+    @user = data 
+    mail(to: @user[:email], subject: "【プライジー♪】あなたのコメントに「コメント」がつきました")
   end
 end
