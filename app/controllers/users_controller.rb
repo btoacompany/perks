@@ -528,18 +528,18 @@ class UsersController < ApplicationController
 
       #send email to the one who wrote the message
       #somebody commented on the post
-      receiver = User.find(res.user_id)
+      receiver_id = Post.find(params[:post_id]).user_id
+      receiver = User.find(receiver_id)
       send_emails("comments",receiver,params[:description])
 
-      commenter_ids = Post.distinct(:user_id).where(id: res.post_id).where.not(user_id: @id)
-      commenter_ids.each do | commenter_id |
+      commenters = Post.distinct(:user_id).where(id: res.post_id).where.not(user_id: @id)
+      commenters.each do | commenter |
         #send email to the ones who commented on the message
-        receiver = User.find(commenter_id)
+        receiver = User.find(commenter.user_id)
         send_emails("comments2",receiver,params[:description])
       end
 
       #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
-
       # redirect_to "/user"
 
       redirect_page("users", "index")
@@ -560,7 +560,8 @@ class UsersController < ApplicationController
 
       #send email to the one who wrote the message that 
       #somebody liked the post
-      receiver = User.find(res.user_id)
+      receiver_id = Post.find(params[:post_id]).user_id
+      receiver = User.find(receiver_id)
       send_emails("likes",receiver,params[:description])
     end
 
@@ -570,17 +571,17 @@ class UsersController < ApplicationController
 
   def send_emails(type, receiver, description)
     belonging = nil
-    nickname_id = params[:nickname_id].to_i if params[:nickname_id]
+    nickname_id = Post.find(params[:post_id]).nickname_id.to_i
     @company = Company.find(@company_id)
     @user   = User.find(@id)
     @teams = Team.of_company(@company_id).available
     @teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(@user.id.to_s) }
 
     data = {
-      sender: "#{@user.try(:firstname)}" "#{@user.try(:lastname)}",
+      sender: "#{@user.try(:lastname)}" "#{@user.try(:firstname)}",
       sender_belonging: "#{belonging.try(:team_name)}",
       nickname_id: nickname_id,
-      receiver: "#{receiver.try(:firstname)}" "#{receiver.try(:lastname)}" , 
+      receiver: "#{receiver.try(:lastname)}" "#{receiver.try(:firstname)}" , 
       email: receiver.try(:email),
       giver: @user.try(:name),
       description: description,
