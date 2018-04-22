@@ -528,9 +528,22 @@ class UsersController < ApplicationController
 
       #send email to the one who wrote the message
       #somebody commented on the post
-      receiver_id = Post.find(params[:post_id]).user_id
-      receiver = User.find(receiver_id)
-      send_emails("comments",receiver,params[:description])
+      receiver_ids = []
+      post_user_id = Post.find(params[:post_id]).user_id
+      post_receiver_ids = Post.find(params[:post_id]).receiver_id
+      post_receiver_ids = post_receiver_ids.split(",") if post_receiver_ids.present?
+
+      receiver_ids << post_user_id
+      post_receiver_ids.each do | post_receiver_id |
+        receiver_ids << post_receiver_id.to_i
+      end
+
+      receiver_ids.each do |receiver_id|
+        if receiver_id != @id.to_i
+          receiver = User.find(receiver_id)
+          send_emails("comments",receiver,params[:description])
+        end
+      end
 
       commenters = Post.distinct(:user_id).where(id: res.post_id).where.not(user_id: @id)
       commenters.each do | commenter |
@@ -540,7 +553,6 @@ class UsersController < ApplicationController
       end
 
       #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
-      # redirect_to "/user"
 
       redirect_page("users", "index")
     end
@@ -558,11 +570,22 @@ class UsersController < ApplicationController
       res = Kudos.new
       res.save_record(params)
 
-      #send email to the one who wrote the message that 
-      #somebody liked the post
-      receiver_id = Post.find(params[:post_id]).user_id
-      receiver = User.find(receiver_id)
-      send_emails("likes",receiver,params[:description])
+      receiver_ids = []
+      post_user_id = Post.find(params[:post_id]).user_id
+      post_receiver_ids = Post.find(params[:post_id]).receiver_id
+      post_receiver_ids = post_receiver_ids.split(",") if post_receiver_ids.present?
+
+      receiver_ids << post_user_id
+      post_receiver_ids.each do | post_receiver_id |
+        receiver_ids << post_receiver_id.to_i
+      end
+
+      receiver_ids.each do |receiver_id|
+        if receiver_id != @id.to_i
+          receiver = User.find(receiver_id)
+          send_emails("likes",receiver,params[:description])
+        end
+      end
     end
 
     # redirect_to "/user"
