@@ -120,9 +120,6 @@
               <div class="user_comments">
                 <div class="cmt_left" >
                   <span class="user" style="font-weight:normal;">@
-                    <!--
-                    <% if $allow_nickname.include?(@user.company_id) && post[:nickname].present? %><%= post[:nickname] %><% else %><%= post[:full_user_name] %><% end %>
-                    -->
                     <%= "#{comment.user.lastname} #{comment.user.firstname}" %>
                   </span>
                   <span class="comment">

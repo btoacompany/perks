@@ -13,8 +13,11 @@ class UserMailer < ApplicationMailer
 
   def receive_points_email(data)
     @user = data 
-    mail(to: @user[:email], subject: "【プライジー♪】#{@user[:sender]}さんより感謝のメッセージが届いています")
-    # mail(from: "SepteniPrizy運営事務局 <support.prizy@btoa-company.com>", to: @user[:email], subject: "【お知らせ】感謝のメッセージが届いています")
+    if @user[:nickname_id] == 0
+      mail(to: @user[:email], subject: "【プライジー♪】#{@user[:sender]}さんより感謝のメッセージが届いています")
+    else
+      mail(to: @user[:email], subject: "【プライジー♪】#{$nicknames[@user[:nickname_id]]}さんより感謝のメッセージが届いています")
+    end
   end
 
   def reset_password(data)
