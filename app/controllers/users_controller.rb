@@ -1009,7 +1009,7 @@ class UsersController < ApplicationController
     data = {
       id:		  post.id,
       user_id:		  post.user_id,
-      belonging_team: "#{@belonging_team[post.user_id].try(:department).try(:dep_name)} / #{@belonging_team[post.user_id].try(:team_name)} ",
+      belonging_team: "#{@belonging_team[post.user_id].try(:department).try(:dep_name)}  #{@belonging_team[post.user_id].try(:team_name)} ",
       nickname: $nicknames[post.nickname_id],
       user_name:	  post.user.name,
       full_user_name:	  "#{post.user.lastname}#{post.user.firstname}",
