@@ -1101,7 +1101,7 @@ $(function () {
       }
 
      //TODO : create function to add user in model, then call it when binding with button and here
-    let $btn = $(".btn_change_password_sp");
+    let $btn = $("#target_user_name_sp");
       var content = '<%= @send_to_user.lastname %>';
       var $selected = $btn.parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
       $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
@@ -1137,7 +1137,7 @@ $(function () {
       }
 
      //TODO : create function to add user in model, then call it when binding with button and here
-    let $btn = $(".btn_change_password");
+    let $btn = $("#target_user_name");
       var content = '<%= @send_to_user.lastname %>';
       var $selected = $btn.parent().siblings('.new_post').not(".display_hidden").find(".tags .given_to");
       $selected.append($("<input type='button' class='btn radius5 given_user' style='font-size:11px;' data-id='" + content + "'/>").val(content));
