@@ -26,10 +26,10 @@
 <div class="content">
 <h3>こんにちは！<%= @user[:receiver] %>さん</h3>
 <br/>
-<% if @user[:nickname_id] == 0 %>
-<p class="lead">「<%= @user[:sender_belonging] %>」の『<%= @user[:sender] %>』さんから<br/>
-<% else %>
+<% if @user[:post_sender_id] || @user[:sender_id] && @user[:nickname_id] != 0 %>
 <p class="lead">『<%= $nicknames[@user[:nickname_id]] %>』さんから<br/>
+<% else %>
+<p class="lead">「<%= @user[:sender_belonging] %>」の『<%= @user[:sender] %>』さんから<br/>
 <% end %>
 あなたのコメントに返信がきました。<br/>
 <br/>

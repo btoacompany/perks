@@ -548,8 +548,10 @@ class UsersController < ApplicationController
       commenters = Post.distinct(:user_id).where(id: res.post_id).where.not(user_id: @id)
       commenters.each do | commenter |
         #send email to the ones who commented on the message
-        receiver = User.find(commenter.user_id)
-        send_emails("comments2",receiver,params[:description])
+        unless receiver_ids.split(",").include?(commenter)
+          receiver = User.find(commenter.user_id)
+          send_emails("comments2",receiver,params[:description])
+        end
       end
 
       #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
@@ -594,16 +596,18 @@ class UsersController < ApplicationController
 
   def send_emails(type, receiver, description)
     belonging = nil
-    nickname_id = Post.find(params[:post_id]).nickname_id.to_i
+    post = Post.find(params[:post_id])
     @company = Company.find(@company_id)
     @user   = User.find(@id)
     @teams = Team.of_company(@company_id).available
     @teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(@user.id.to_s) }
 
     data = {
+      post_sender_id: post.user_id,
+      sender_id: @user.id,
       sender: "#{@user.try(:lastname)}" "#{@user.try(:firstname)}",
       sender_belonging: "#{belonging.try(:team_name)}",
-      nickname_id: nickname_id,
+      nickname_id: post.nickname_id.to_i,
       receiver: "#{receiver.try(:lastname)}" "#{receiver.try(:firstname)}" , 
       email: receiver.try(:email),
       giver: @user.try(:name),
