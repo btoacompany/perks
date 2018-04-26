@@ -542,7 +542,7 @@ class AnalyticsController < ApplicationController
   def set_period
     @start_time = params[:start_time].present? ? Date.parse(params[:start_time]) : Date.today.prev_month
     @end_time = params[:end_time].present? ? Date.parse(params[:end_time]) : Date.today
-    @period = @start_time..@end_time
+    @period = @start_time...(@end_time + 1)
   end 
 
   def ip_address_limit
