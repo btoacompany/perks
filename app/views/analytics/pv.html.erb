@@ -63,7 +63,7 @@
         name: "ユニークユーザー数",
         showInLegend: true,
         color: "#DAA520",
-        yValueFormatString: "# PV",
+        yValueFormatString: "# UU",
         dataPoints: [
           <% @uu_results.each do |key, value| %>
             { label: "<%= key.strftime("%m/%d") %>",  y: <%= value %>, },
