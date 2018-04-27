@@ -32,7 +32,10 @@
         labelFontColor: "#E0E0E3", 
         },
       axisY:{
-        labelAutoFit: false, 
+        title: "メッセージ数",
+        titleFontSize: 20,
+        titleFontColor: "white",
+        labelAutoFit: false,
         labelFontSize: 12,
         labelFontColor: "#E0E0E3", 
       },
@@ -46,6 +49,7 @@
       },
       legend : {
         fontColor: "white",
+        cursor:"pointer",
       },
       toolTip: {
         shared: true
@@ -59,19 +63,18 @@
         name: "メッセージ数",
         showInLegend: true,
         color: "#DAA520",
-        yValueFormatString: "# 通",
         dataPoints: [
           <% @posts.each do |key, value| %>
             { label: "<%= key %>",  y: <%= value %>, },
           <% end %>
         ]
-      },{
+      },
+      {
         type: "line",
         color: "#ff8d07",
         name: "コメント数",
         showInLegend: true,
         axisYType: "secondary",
-        yValueFormatString: "# 通",
         dataPoints: [
           <% @comments.each do |key, value| %>
             { label: "<%= key %>",  y: <%= value %>, },
@@ -82,6 +85,7 @@
     });
     chart.render();
   }
+
 
 $(function() {
   $("#datepicker_start").datepicker();
