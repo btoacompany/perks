@@ -548,10 +548,10 @@ class UsersController < ApplicationController
       commenters = Post.distinct(:user_id).where(id: res.post_id).where.not(user_id: @id)
       commenters.each do | commenter |
         #send email to the ones who commented on the message
-        # unless receiver_ids.split(",").include?(commenter)
+        unless receiver_ids.split(",").include?(commenter)
           receiver = User.find(commenter.user_id)
           send_emails("comments2",receiver,params[:description])
-        # end
+        end
       end
 
       #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
