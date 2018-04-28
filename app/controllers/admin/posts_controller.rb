@@ -11,7 +11,7 @@ class Admin::PostsController < Admin::Base
     posts.each do |post|
       post.receiver_id.split(",").each do |id|
         message = Hash.new
-        message.store(:date, post.create_time.strftime("%Y%m/%d %H:%M:%S"))
+        message.store(:date, post.create_time.strftime("%Y/%m/%d %H:%M:%S"))
         belonging = nil
         teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.include?(post.user_id.to_s) }
         message.store(:sender_team, "#{belonging.try(:department).try(:dep_name)}/#{belonging.try(:team_name)}")
@@ -21,6 +21,7 @@ class Admin::PostsController < Admin::Base
         receiver = users[id.to_i]
         message.store(:receiver, receiver.try(:fullname))
         message.store(:description, post.description)
+        message.store(:comments, post.comments)
         @messages.push(message)
       end
     end
