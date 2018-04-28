@@ -18,3 +18,8 @@
 
 # Ignore application configuration
 /config/application.yml
+/public
+.DS_Store
+doc/
+.byebug_history
+vendor/bundler/
