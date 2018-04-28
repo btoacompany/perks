@@ -35,15 +35,26 @@
           <th>所属</th>
           <th>受信者</th>
           <th>内容</th>
+          <th>コメント</th>
         </tr>
         <% @messages.each do |message| %>
           <tr>
-            <td class="width-10-percent"><%= message[:date] %></td>
-            <td class="width-10-percent"><%= message[:sender_team] %></td>
-            <td class="width-10-percent"><%= message[:sender] %></td>
-            <td class="width-10-percent"><%= message[:receiver_team] %></td>
-            <td class="width-10-percent"><%= message[:receiver] %></td>
+            <td class="width-8-percent" style="word-break: break-all;"><%= message[:date] %></td>
+            <td class="width-10-percent" style="word-break: break-all;"><%= message[:sender_team] %></td>
+            <td class="width-10-percent" style="word-break: break-all;"><%= message[:sender] %></td>
+            <td class="width-10-percent" style="word-break: break-all;"><%= message[:receiver_team] %></td>
+            <td class="width-10-percent" style="word-break: break-all;"><%= message[:receiver] %></td>
             <td style="max-width: 600px;word-break: break-all;"><%= message[:description] %></td>
+            <td class="width-20-percent" style="text-align: left;word-break: break-all;">
+              <% if message[:comments].present? %>
+                <% message[:comments].each do |comment| %>
+                  【<%= comment.user.lastname + comment.user.firstname %>】
+                  <%= comment.comments %><br/>
+                <% end %>
+              <% else %>
+                <span>-</span>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </table>
