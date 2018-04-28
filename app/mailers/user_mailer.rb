@@ -41,7 +41,7 @@ class UserMailer < ApplicationMailer
   
   def receive_comments_email(data)
     @user = data 
-    mail(to: @user[:email], subject: "【プライジー♪】あなたのメッセージに返信がきました")
+    mail(to: @user[:email], subject: "【プライジー♪】あなたのメッセージにコメントが届きました")
   end
 
   def receive_likes_email(data)

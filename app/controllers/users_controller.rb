@@ -504,7 +504,7 @@ class UsersController < ApplicationController
     # flash[:notice] = "#{e}"
   end
 
-  def give_comments 
+  def give_comments
     @company = Company.find(@company_id)
     params[:company_id] = @company_id
     params[:user_id]	= @id
@@ -543,15 +543,6 @@ class UsersController < ApplicationController
           receiver = User.find(receiver_id)
           send_emails("comments",receiver,params[:description])
         end
-      end
-
-      commenters = Post.distinct(:user_id).where(id: res.post_id).where.not(user_id: @id)
-      commenters.each do | commenter |
-        #send email to the ones who commented on the message
-        # unless receiver_ids.split(",").include?(commenter)
-          receiver = User.find(commenter.user_id)
-          send_emails("comments2",receiver,params[:description])
-        # end
       end
 
       #ios_push_notif(params[:receiver_id], "#{user.firstname}さんがコメントしました。", user.badge)
