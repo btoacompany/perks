@@ -610,7 +610,12 @@ class ArticlesController < ApplicationController
             end
           end
         end
-        redirect_to company_articles_path, notice: "記事を更新しました。"
+
+        if params[:is_casual].to_i == 1
+          redirect_to company_casual_articles_path, notice: "記事を更新しました。"
+        else
+          redirect_to company_articles_path, notice: "記事を更新しました。"
+        end
       else
         error_message = @article.errors.full_messages[0] if @article.errors.full_messages
         redirect_to "/company/article/#{@article.id}/edit", notice: "#{error_message}"
