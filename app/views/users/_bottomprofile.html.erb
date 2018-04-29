@@ -139,7 +139,7 @@
                         </span>
                       </div><br>
                     </div>
-                  <% end %> 
+                  <% end %>
                 </div>
               </div>
 
@@ -149,7 +149,7 @@
         </div>
         <%# if post[:receiver_id].include?(@user.id) || post[:user_id] == @user.id %>
           <div>
-            <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="コメントする (250文字以内)" autocomplete="off" maxlength="250"/>
+            <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="Enterキーでコメント返信 （250文字以内）" autocomplete="off" maxlength="250"/>
             <p align="right"><input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/></p>
           </div>
         <%# end %>

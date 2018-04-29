@@ -30,7 +30,18 @@ class AnalyticsController < ApplicationController
     @period.each do |date|
       @posts.store(date.strftime("%m/%d"), 0) unless @posts.has_key?(date.strftime("%m/%d"))
     end
+
+    @comment_data = Comment.of_company(@company.id).available.create_time(@period)
+    @comments = Hash.new
+    @comment_data.each do |comment|
+      @comments.has_key?(comment.create_time.strftime("%m/%d")) ? @comments[comment.create_time.strftime("%m/%d")] += 1 : @comments.store(comment.create_time.strftime("%m/%d"), 1)
+    end
+    @period.each do |date|
+      @comments.store(date.strftime("%m/%d"), 0) unless @comments.has_key?(date.strftime("%m/%d"))
+    end
+
     @posts = Hash[ @posts.sort ]
+    @comments = Hash[ @comments.sort ]
   end
 
   def teams
@@ -531,7 +542,7 @@ class AnalyticsController < ApplicationController
   def set_period
     @start_time = params[:start_time].present? ? Date.parse(params[:start_time]) : Date.today.prev_month
     @end_time = params[:end_time].present? ? Date.parse(params[:end_time]) : Date.today
-    @period = @start_time..@end_time
+    @period = @start_time...(@end_time + 1)
   end 
 
   def ip_address_limit

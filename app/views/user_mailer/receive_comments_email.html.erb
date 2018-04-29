@@ -26,12 +26,12 @@
 <div class="content">
 <h3>こんにちは！<%= @user[:receiver] %>さん</h3>
 <br/>
-<% if @user[:nickname_id] == 0 %>
-<p class="lead">「<%= @user[:sender_belonging] %>」の『<%= @user[:sender] %>』さんから<br/>
-<% else %>
+<% if @user[:post_sender_id] || @user[:sender_id] && @user[:nickname_id] != 0 %>
 <p class="lead">『<%= $nicknames[@user[:nickname_id]] %>』さんから<br/>
+<% else %>
+<p class="lead">「<%= @user[:sender_belonging] %>」の『<%= @user[:sender] %>』さんから<br/>
 <% end %>
-あなたのメッセージに「コメント」がつきました！<br/>
+あなたのメッセージに返信がきました。<br/>
 <br/>
 届いたコメント：<br/>
 <br/>
@@ -40,17 +40,21 @@
 このコメントの続きはPrizyで見ることができます。
 <br/><br/>
 　　　★メッセージの続きはこちら★<br/>
-　　　https://www.prizy.me/
+
+
+<% if @user[:post_sender_id] == @user[:sender_id] %> 
+　　 https://www.prizy.me/
+<% else %>
+     https://www.prizy.me/profile/given
+<% end %>
 </p>
 <br/>
 『ありがとう』はこころのビタミン。<br/>
 この機会に、日ごろの感謝の気持ちを伝えてみませんか？ <br/>
 <br/>
 <br/>
-クリックするとコメントを贈ることができます。<br/>
-<p style="padding:15px;background-color:#ECF8FF;margin-bottom:15px;">
-  褒める文化形成プラットフォーム <a href="https://www.prizy.me/profile/">Prizy &raquo;</a>
-</p>
+クリックするとさらにコメントを贈ることができます。<br/>
+プライジーより
 <!-- Callout Panel -->
 
 </td>

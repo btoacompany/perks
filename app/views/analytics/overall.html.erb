@@ -22,7 +22,7 @@
       animationEnabled: true, 
       animationDuration: 1000,
       title:{
-        text: "社内利用回数",
+        text: "メッセージ数",
         fontSize: 16,
         fontColor: "#E0E0E3"
       },
@@ -32,9 +32,27 @@
         labelFontColor: "#E0E0E3", 
         },
       axisY:{
-        labelAutoFit: false, 
+        title: "メッセージ数",
+        titleFontSize: 20,
+        titleFontColor: "white",
+        labelAutoFit: false,
         labelFontSize: 12,
         labelFontColor: "#E0E0E3", 
+      },
+      axisY2: {
+        title: "コメント数",
+        titleFontSize: 20,
+        titleFontColor: "white",
+        labelAutoFit: false, 
+        labelFontSize: 12,
+        labelFontColor: "#E0E0E3",
+      },
+      legend : {
+        fontColor: "white",
+        cursor:"pointer",
+      },
+      toolTip: {
+        shared: true
       },
       dataPointMaxWidth: 15,
       dataPointMinWidth: 15,
@@ -42,17 +60,32 @@
       data: [              
       {
         type: "line",
-        color: "#ff8d07",
+        name: "メッセージ数",
+        showInLegend: true,
+        color: "#DAA520",
         dataPoints: [
           <% @posts.each do |key, value| %>
             { label: "<%= key %>",  y: <%= value %>, },
           <% end %>
         ]
-      }
+      },
+      {
+        type: "line",
+        color: "#ff8d07",
+        name: "コメント数",
+        showInLegend: true,
+        axisYType: "secondary",
+        dataPoints: [
+          <% @comments.each do |key, value| %>
+            { label: "<%= key %>",  y: <%= value %>, },
+          <% end %>
+        ]
+      },
       ]
     });
     chart.render();
   }
+
 
 $(function() {
   $("#datepicker_start").datepicker();
