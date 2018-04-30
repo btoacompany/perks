@@ -12,6 +12,7 @@
 	  <% if @articles.count == 0 %>
 	    <h3>カジュアル記事が作成されていません</h3>
 	  <% else %>
+	  	  <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
 		  <h3 class="margin-bottom-10">作成したカジュアル記事一覧</h3>
 		  <p>現在の公開記事数: <%= @articles.where(is_published: 1).count %>記事</p>
 		  <div style="margin: 10px auto 0px;">
@@ -23,6 +24,7 @@
 			  	  <th scope="row width-8-percent">いいね数</th>
 			  	  <th scope="row width-8-percent">PV数</th>
 			  	  <th scope="row width-8-percent">公開/未公開</th>
+			  	  <th scope="row width-8-percent">編集</th>
 			  	  <th scope="row width-8-percent">削除</th>
 			  	  <th scope="row width-8-percent">メール送信</th>
 			  	</tr>
@@ -39,6 +41,7 @@
 				  	      <%= link_to "公開済み", "/company/article/#{article.id}/publish", {method: :post, title: "非公開にする", data: { :confirm => "選択した記事を非公開にしますか？"}} %>
 				  	    <% end %>
 				  	  </td>
+				  	  <td class="width-8-percent"><%= link_to "編集", "/company/article/#{article.id}/edit" %></td>
 				  	  <td class="width-8-percent"><%= link_to "削除", "/company/article/#{article.id}/destory", method: :post %></td>
 				  	  <td class="width-8-percent show-modal" id=<%= Rails.root.to_s + "/company/article/#{article.id}" %> value=<%= "#{article.title}" %>><%= link_to "メール送信", "#{article.id}" %></td>
 				  	</tr>
