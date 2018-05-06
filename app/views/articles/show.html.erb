@@ -273,6 +273,35 @@
   </div>
 </div>
 
+<div id="modalmessage2" class="modalwin hide">
+  <a herf="#" class="modal-close"></a>
+  <h1>メッセージを贈る</h1>
+  <div class="modalwin-contents">
+    <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
+      <div class="description">
+        <p class="destination">To:
+        </p>
+        <p style="float: left;">贈り主：
+          <select class="select_giver_user new_post_select" name="new_post[]nickname_id">
+            <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
+            <% if $allow_nickname.include?(@current_user.company_id) %>
+              <% $nicknames.each do |key, value| %>
+                <option value="<%= key %>"><%= value %></option>
+              <% end %>
+            <% else %>
+              <option value="4">匿名希望さん</option>
+            <% end %>
+          </select>
+        </p>
+        <p>
+          <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
+        </p>
+      </div>
+      <p align="right"><input type="submit" value="送信する"/></p>
+    <% end %>
+  </div>
+</div>
+
 
 <div id="modal_user_post" class="modalwin hide">
   <a herf="#" class="modal-close"></a>
@@ -502,6 +531,35 @@
   </div>
 </div>
 
+<div id="modalmessage-sp2" class="modalwin-sp hide">
+  <a herf="#" class="modal-close"></a>
+  <h1>メッセージを贈る</h1>
+  <div class="modalwin-sp-contents">
+    <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
+      <div class="description">
+        <p class="destination">To:
+        </p>
+        <p style="float: left;">贈り主：
+          <select class="select_giver_user new_post_select" name="new_post[]nickname_id">
+            <option>選択してください</option>
+            <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
+            <% if $allow_nickname.include?(@current_user.company_id) %>
+              <% $nicknames.each do |key, value| %>
+                <option value="<%= key %>"><%= value %></option>
+              <% end %>
+            <% else %>
+              <option value="4">匿名希望さん</option>
+            <% end %>
+          </select>
+        </p>
+        <p>
+          <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput width-100-percent" required align="center" rows="5" style="font-size: 14px; padding: 8px;border: 1px solid gray" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
+        </p>
+      </div>
+      <p align="right"><input type="submit" value="送信する"/></p>
+    <% end %>
+  </div>
+</div>
 
 
 <script type="text/javascript">
@@ -1141,9 +1199,9 @@ $(window).on("scroll", function(e) {
       var $modalname = '';
 
       if (winwidth <= 650) {
-          $modalname = $('#modalmessage-sp');
+          $modalname = $('#modalmessage-sp2');
       } else {
-          $modalname = $('#modalmessage');
+          $modalname = $('#modalmessage2');
       }
 
       var $modalWin = $($modalname);
@@ -1172,9 +1230,9 @@ $(window).on("scroll", function(e) {
       var $modalname = '';
 
       if (winwidth <= 650) {
-          $modalname = $('#modalmessage-sp');
+          $modalname = $('#modalmessage-sp2');
       } else {
-          $modalname = $('#modalmessage');
+          $modalname = $('#modalmessage2');
       }
 
       $('#shade').remove();
@@ -1182,7 +1240,7 @@ $(window).on("scroll", function(e) {
         .removeClass('show')
         .addClass('hide');
 
-      //$($modalname).remove();
+      $($modalname).remove();
     }
 
     //$('.show-message').on('click', showModal);
