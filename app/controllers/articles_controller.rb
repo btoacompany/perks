@@ -333,9 +333,18 @@ class ArticlesController < ApplicationController
           member_ids = belonging.member_ids.split(",") - [user.id.to_s]
           if member_ids.present?
             team_members = tagged_user_ids & member_ids
-            
-            @receiver_id = team_members.sample
-            receiver = User.find(@receiver_id)
+
+            if team_members.present?
+              if team_members > 1
+                @receiver_id = team_members.sample
+              else
+                @receiver_id = team_members[0]
+              end
+            end
+
+            if @receiver_id
+              receiver = User.find(@receiver_id)
+            end
 
             if receiver.present?
               @receiver_name = receiver.name
