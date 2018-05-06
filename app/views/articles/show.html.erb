@@ -1160,18 +1160,8 @@ $(window).on("scroll", function(e) {
         .removeClass('show')
         .addClass('hide');
     }
-});
 
-
-$(window).on("scroll", function(e) {
-    var scrollHeight = $(document).height();
-    var scrollPosition = $(window).height() + $(window).scrollTop();
-    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-      <% if @receiver_id.present? %>
-        showModal(e);
-      <% end %>
-    }
-
+    // モーダルウィンドウを開く
     function showModal(event) {
       event.preventDefault();
       var $shade = $('<div></div>');
@@ -1199,15 +1189,13 @@ $(window).on("scroll", function(e) {
       $(".destination").append("To: " + name);
       $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
     }
-
     function hideModal() {
       $('#shade').remove();
       $('#modalmessage-sp')
         .removeClass('show')
         .addClass('hide');
-      }
+    }
 });
-
 
 // show_modal
 $(function () {

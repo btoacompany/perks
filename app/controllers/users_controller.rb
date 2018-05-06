@@ -512,9 +512,11 @@ class UsersController < ApplicationController
     params[:user_id]	= @id
 
     #params[:description]  = simple_format(params["comments"])
-    params[:description]  = params["comments"]
+    params[:description]  = params["comments"].gsub(/\n/, '<br>')
     params[:points]    = params["comments"].scan(/\+[^\s|　]+/).first
     params[:type]   = "comment"
+
+    params["comments"]  = params["comments"].gsub(/\n/, '<br>')
 
     if params[:description].length > 250
       flash[:notice] = "コメントは250文字以内です"
