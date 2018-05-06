@@ -153,7 +153,7 @@
             <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="Enterキーでコメント返信 （250文字以内）" autocomplete="off" maxlength="250"/>
             -->
             
-            <textarea name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>"  placeholder="Enterキーでコメント返信 （250文字以内）" style="resize:none;max-height:35px" maxlength="250"/></textarea>
+            <textarea name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>"  placeholder="Enterキーでコメント返信 （250文字以内）, Shift+Enterで改行する" style="resize:none;height:60px;" rows="1" maxlength="250"/></textarea>
             <p align="right"><input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/></p>
           </div>
         <%# end %>
@@ -385,6 +385,7 @@ function postComment(post_id, comments, _this) {
 }
 
 $(function() {
+  $(".give_comments").autosize();
   $(".give_comments").keypress(function(){
     if ($(this).val().length > 250) {
       $(this).css("border","2px solid red");

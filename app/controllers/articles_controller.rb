@@ -331,25 +331,16 @@ class ArticlesController < ApplicationController
         
         if belonging
           member_ids = belonging.member_ids.split(",") - [user.id.to_s]
-
-          logger.debug "--------"
-          logger.debug member_ids
-          logger.debug tagged_user_ids
-          logger.debug "-----0----"
-
           if member_ids.present?
-            logger.debug "-----1----"
             team_members = tagged_user_ids & member_ids
             
             @receiver_id = team_members.sample
-            @receiver_name = User.find(@receiver_id).name
+            receiver = User.find(@receiver_id)
 
-            logger.debug team_members
-            logger.debug @receiver_id
-            logger.debug @receiver_name
+            if receiver.present?
+              @receiver_name = receiver.name
+            end
           end
-
-          
         end
       end
 
