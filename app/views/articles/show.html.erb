@@ -502,6 +502,8 @@
   </div>
 </div>
 
+
+
 <script type="text/javascript">
 $(".btn_edit").click(function() {
   window.location = '/update';
@@ -1072,17 +1074,17 @@ $(function () {
       $('.show-message').on('click', showModal);
     }());
 
-    $('.show-message').on('click', function(){
-      $('.destination').empty("");
-      $('.description #article_user').remove();
-      var user_id =  $(this).attr("id");
-      var name =  $(this).attr("name");
+$('.show-message').on('click', function(){
+  $('.destination').empty("");
+  $('.description #article_user').remove();
+  var user_id =  $(this).attr("id");
+  var name =  $(this).attr("name");
 
-      // $(".description textarea").attr("placeholder",id);
-    $(".destination").append("To: " + name);
-    $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
-      // $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
-    });
+  // $(".description textarea").attr("placeholder",id);
+  $(".destination").append("To: " + name);
+  $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
+  // $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
+});
 
 // show_modal
 $(function () {
@@ -1114,6 +1116,98 @@ $(function () {
       }
       $('.show-user-post').on('click', showModal);
     }());
+
+$(window).on("scroll", function(e) {
+    var scrollHeight = $(document).height();
+    var scrollPosition = $(window).height() + $(window).scrollTop();
+    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+      <% if @receiver_id.present? %>
+        showModal(e);
+      <% end %>
+    }
+
+    // モーダルウィンドウを開く
+    function showModal(event) {
+      event.preventDefault();
+      var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#modalmessage');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        }).fadeIn();
+
+      var user_id = "<%= @receiver_id %>";
+      var name =  "<%= @receiver_name %>";
+
+      $('.destination').empty("");
+      $('.description #article_user').remove();
+      $(".destination").append("To: " + name);
+      $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
+    }
+    function hideModal() {
+      $('#shade').remove();
+      $('#modalmessage')
+        .removeClass('show')
+        .addClass('hide');
+    }
+});
+
+
+$(window).on("scroll", function(e) {
+    var scrollHeight = $(document).height();
+    var scrollPosition = $(window).height() + $(window).scrollTop();
+    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+      <% if @receiver_id.present? %>
+        showModal(e);
+      <% end %>
+    }
+
+    function showModal(event) {
+      event.preventDefault();
+      var $shade = $('<div></div>');
+      $shade
+        .attr('id', 'shade')
+        .on('click', hideModal);
+      var $modalWin = $('#modalmessage-sp');
+      var $window = $(window);
+      var posX = ($window.width() - $modalWin.outerWidth()) / 2;
+      var posY = ($window.height() - $modalWin.outerHeight()) / 2;
+      $modalWin
+        .before($shade)
+        .css({left: posX, top: posY})
+        .removeClass('hide')
+        .addClass('show')
+        .on('click', 'button', function () {
+          hideModal();
+        }).fadeIn();
+
+      var user_id = "<%= @receiver_id %>";
+      var name =  "<%= @receiver_name %>";
+
+      $('.destination').empty("");
+      $('.description #article_user').remove();
+      $(".destination").append("To: " + name);
+      $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
+    }
+
+    function hideModal() {
+      $('#shade').remove();
+      $('#modalmessage-sp')
+        .removeClass('show')
+        .addClass('hide');
+      }
+});
+
 
 // show_modal
 $(function () {
@@ -1175,6 +1269,8 @@ $(function () {
       }
     });
   });
+
+
 // show_modal
 $(function () {
   // モーダルウィンドウを開く
@@ -1235,7 +1331,7 @@ $(function () {
       }
       $('.show-message-sp').on('click', showModal);
     }());
-
+/*
     $('.show-message-sp').on('click', function(){
       $('.destination').empty("");
       $('.description #article_user').remove();
@@ -1247,6 +1343,5 @@ $(function () {
     $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
       // $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
     });
-
-
+*/
 </script>
