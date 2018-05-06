@@ -335,7 +335,7 @@ class ArticlesController < ApplicationController
             team_members = tagged_user_ids & member_ids
 
             if team_members.present?
-              if team_members > 1
+              if team_members.count > 1
                 @receiver_id = team_members.sample
               else
                 @receiver_id = team_members[0]
