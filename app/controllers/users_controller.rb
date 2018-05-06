@@ -544,7 +544,7 @@ class UsersController < ApplicationController
       receiver_ids.each do |receiver_id|
         if receiver_id != @id.to_i
           receiver = User.find(receiver_id)
-          #send_emails("comments",receiver,params[:description])
+          send_emails("comments",receiver,params[:description])
         end
       end
 
