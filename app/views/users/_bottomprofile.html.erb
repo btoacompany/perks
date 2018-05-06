@@ -149,7 +149,11 @@
         </div>
         <%# if post[:receiver_id].include?(@user.id) || post[:user_id] == @user.id %>
           <div>
+            <!--
             <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="Enterキーでコメント返信 （250文字以内）" autocomplete="off" maxlength="250"/>
+            -->
+            
+            <textarea name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>"  placeholder="Enterキーでコメント返信 （250文字以内）, Shift+Enterで改行する" style="resize:none;height:60px;" rows="1" maxlength="250"/></textarea>
             <p align="right"><input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/></p>
           </div>
         <%# end %>
@@ -339,8 +343,9 @@ $(".btn_unlike").mouseup(function() {
   });
 });
 
-$(".give_comments").bind('keypress',function(e) {
-  if(e.keyCode == 13) {
+$(".give_comments").bind('keydown',function(e) {
+  if(e.which == 13 && !e.shiftKey) {
+  //if(e.keyCode == 13) {
     var _this = $(this).parent().children(".give_comments").first();
     var post_id = ($(this).attr('data-id')); //get attributes of clicked item
     var comments = ($(this).val()); //get attributes of clicked item
@@ -360,6 +365,9 @@ $(".btn_comment").click(function() {
 function postComment(post_id, comments, _this) {
   var obj = _this.val();
 
+  $(_this).val("");
+  $(_this).empty();
+
   if (obj.length > 250) {
     alert("コメントは250文字以内です");
     return false;
@@ -369,7 +377,7 @@ function postComment(post_id, comments, _this) {
       url: "/profile/give_comments",
       data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page') },
       success: function(data) {
-        $(this).val("");
+        $(_this).val("");
         window.location.reload(); 
       }
     });
@@ -377,6 +385,7 @@ function postComment(post_id, comments, _this) {
 }
 
 $(function() {
+  $(".give_comments").autosize();
   $(".give_comments").keypress(function(){
     if ($(this).val().length > 250) {
       $(this).css("border","2px solid red");

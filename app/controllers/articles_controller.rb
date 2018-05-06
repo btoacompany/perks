@@ -231,7 +231,8 @@ class ArticlesController < ApplicationController
 	    # @first_pic = Image.find_by(article_id: @article.id)
 	    @contents = []
 	    @titles = @article.titles
-
+      @receiver_id = nil
+      
 	    unless @titles.blank?
 	      @titles.each do |item|
 	        @data = {
@@ -297,8 +298,12 @@ class ArticlesController < ApplicationController
       testdata = {}
 
       unless @nametags.blank?
+        tagged_user_ids = []
+
         @nametags.each do |item|
           place_number = item.place_number.to_i
+          tagged_user_ids << item.user_id.to_s
+
           #ignore if place number is 0 (for general tags)
           if place_number > 0
             fullname = "#{item.user.lastname + item.user.firstname}"
@@ -308,12 +313,41 @@ class ArticlesController < ApplicationController
               testdata[place_number][:user_fullnames] << fullname
               testdata[place_number][:ids] << item.id
             else
-
               testdata[place_number] = {
                 user_ids: [item.user_id],
                 user_fullnames: [fullname],
                 ids: [item.id]
               }
+            end
+          end
+        end
+
+        user = @user
+        teams = Team.of_company(user.company_id).available
+
+        # 所属
+        belonging = nil
+        teams.map { |team| belonging = team if team.member_ids.present? && team.member_ids.split(",").include?(user.id.to_s) }
+        
+        if belonging
+          member_ids = belonging.member_ids.split(",") - [user.id.to_s]
+          if member_ids.present?
+            team_members = tagged_user_ids & member_ids
+
+            if team_members.present?
+              if team_members.count > 1
+                @receiver_id = team_members.sample
+              else
+                @receiver_id = team_members[0]
+              end
+            end
+
+            if @receiver_id
+              receiver = User.find(@receiver_id)
+            end
+
+            if receiver.present?
+              @receiver_name = receiver.name
             end
           end
         end

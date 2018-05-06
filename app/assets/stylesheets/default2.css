@@ -173,6 +173,10 @@ table.horizontal td{
     width: 100%;
   }
 
+  #postsbox .comments textarea.give_comments {
+    width: 100%;
+  }
+
   #postsbox .comments input.btn_comment{
     text-align: center;
     width: 23%;
@@ -1102,6 +1106,17 @@ hr.style-two {
 #postsbox .comments input {
   padding: 5px;
   margin-top: 5px;
+}
+
+#postsbox .comments textarea {
+  padding: 5px;
+  margin-top: 5px;
+  font-size:10pt;
+  border: 1px solid #a4a4a4;
+  border-radius: 2px;
+  resize:none;
+  border-collapse:collapse;
+  height: 60px;
 }
 
 #postsbox .comments .user_comment_img {

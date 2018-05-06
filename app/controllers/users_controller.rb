@@ -20,6 +20,7 @@ class UsersController < ApplicationController
       @admin_flag = Company.exists?(:email => user.email) ? 1 : 0
     end
 
+    #if give_points_slack was accessed
     if params[:code].present?
       slack_code = params[:code]
 
@@ -32,6 +33,7 @@ class UsersController < ApplicationController
       uri	= URI.parse("https://slack.com/api/oauth.access")
       http	= Net::HTTP.post_form(uri, data)
       userinfo	= JSON.parse(http.body)
+
       slack	= SlackToken.where(:team_id => userinfo["team_id"]).first
       
       if slack.blank?
@@ -509,9 +511,12 @@ class UsersController < ApplicationController
     params[:company_id] = @company_id
     params[:user_id]	= @id
 
-    params[:description]  = params["comments"]
+    #params[:description]  = simple_format(params["comments"])
+    params[:description]  = params["comments"].gsub(/\n/, '<br>')
     params[:points]    = params["comments"].scan(/\+[^\s|　]+/).first
     params[:type]   = "comment"
+
+    params["comments"]  = params["comments"].gsub(/\n/, '<br>')
 
     if params[:description].length > 250
       flash[:notice] = "コメントは250文字以内です"
