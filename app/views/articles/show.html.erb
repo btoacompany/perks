@@ -1117,7 +1117,7 @@ $(function () {
       $('.show-user-post').on('click', showModal);
     }());
 
-$(function () {
+
 $(window).on("scroll", function(e) {
     var scrollHeight = $(document).height();
     var scrollPosition = $(window).height() + $(window).scrollTop();
@@ -1187,47 +1187,7 @@ $(window).on("scroll", function(e) {
 
 
     //$('.show-message').on('click', showModal);
-});
-});
 
-$(function () {
-$(window).on("scroll", function(e) {
-      // モーダルウィンドウを開く
-      function showModal(event) {
-        event.preventDefault();
-        var $shade = $('<div></div>');
-        $shade
-          .attr('id', 'shade')
-          .on('click', hideModal);
-        var $modalWin = $('#modalmessage-sp');
-        var $window = $(window);
-        var posX = ($window.width() - $modalWin.outerWidth()) / 2;
-        var posY = ($window.height() - $modalWin.outerHeight()) / 2;
-        $modalWin
-          .before($shade)
-          .css({left: posX, top: posY})
-          .removeClass('hide')
-          .addClass('show')
-          .on('click', 'button', function () {
-            hideModal();
-          }).fadeIn();
-
-        var user_id = "<%= @receiver_id %>";
-        var name =  "<%= @receiver_name %>";
-
-        $('.destination').empty("");
-        $('.description #article_user').remove();
-        $(".destination").append("To: " + name);
-        $(".description").append($("<input type='hidden' id='article_user' class='receiver-selected given_user' name='new_post[]receiver_id[]' data-id='" + user_id + "'/>").val(user_id));
-      }
-      function hideModal() {
-        $('#shade').remove();
-        $('#modalmessage-sp')
-          .removeClass('show')
-          .addClass('hide');
-      }
-      $('.show-message-sp').on('click', showModal);
-});
 });
 
 // show_modal
