@@ -275,7 +275,7 @@
 
 <div id="modalmessage2" class="modalwin hide">
   <a herf="#" class="modal-close"></a>
-  <h1>この記事には、あなたと同じ部署で活躍する<%= @receiver_name %>さんが登場しています。<br/><%= @receiver_name %>さんにメッセージを贈ってみませんか？？</h1>
+  <h1>この記事には、あなたと同じ部署で活躍する<br/><%= @receiver_name %>さんが登場しています。<br/><%= @receiver_name %>さんにメッセージを贈ってみませんか？？</h1>
   <div class="modalwin-contents">
     <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
       <div class="description">
