@@ -22,6 +22,7 @@ class Admin::PostsController < Admin::Base
         message.store(:receiver, receiver.try(:fullname))
         message.store(:description, post.description)
         message.store(:comments, post.comments)
+        # message.store(:kudos, post.kudos)
         @messages.push(message)
       end
     end

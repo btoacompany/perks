@@ -36,6 +36,7 @@
           <th>受信者</th>
           <th>内容</th>
           <th>コメント</th>
+          <th>いいね</th>
         </tr>
         <% @messages.each do |message| %>
           <tr>
@@ -55,6 +56,7 @@
                 <span>-</span>
               <% end %>
             </td>
+            <td><%= message[:kudos] %></td>
           </tr>
         <% end %>
       </table>
