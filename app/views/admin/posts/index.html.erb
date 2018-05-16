@@ -44,12 +44,12 @@
             <td class="width-10-percent" style="word-break: break-all;"><%= message[:sender] %></td>
             <td class="width-10-percent" style="word-break: break-all;"><%= message[:receiver_team] %></td>
             <td class="width-10-percent" style="word-break: break-all;"><%= message[:receiver] %></td>
-            <td style="max-width: 600px;word-break: break-all;"><%= message[:description] %></td>
+            <td style="max-width: 600px;word-break: break-all;"><%= simple_format(message[:description]) %></td>
             <td class="width-20-percent" style="text-align: left;word-break: break-all;">
               <% if message[:comments].present? %>
                 <% message[:comments].each do |comment| %>
                   【<%= comment.user.lastname + comment.user.firstname %>】
-                  <%= comment.comments %><br/>
+                  <%= simple_format(comment.comments) %><br/>
                 <% end %>
               <% else %>
                 <span>-</span>
