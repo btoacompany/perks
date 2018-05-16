@@ -151,7 +151,7 @@
             <!--
             <input type="text" name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" value="" placeholder="Enterキーでコメント返信 （250文字以内）" autocomplete="off" maxlength="250"/>
             -->
-            <textarea name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>"  placeholder="Enterキーでコメント返信, Shift+Enterで改行する" style="resize:none;height:60px;" rows="1" maxlength="2000"/></textarea>
+            <textarea name="comment" data-id="<%= post[:id] %>" class="give_comments post_comment_<%= post[:id] %>" id="give_comments"  placeholder="Enterキーでコメント返信, Shift+Enterで改行する" style="resize:none;height:60px;" rows="1" maxlength="2000"/></textarea>
             <p align="right"><input type="button" class="btn_comment" data-id="<%= post[:id] %>" value="送信"/></p>
           </div>
         <%# end %>
@@ -342,12 +342,15 @@ $(".btn_unlike").mouseup(function() {
 });
 
 $(".give_comments").bind('keydown',function(e) {
-  if(e.which == 13 && !e.shiftKey) {
-  //if(e.keyCode == 13) {
-    var _this = $(this).parent().children(".give_comments").first();
-    var post_id = ($(this).attr('data-id')); //get attributes of clicked item
-    var comments = ($(this).val()); //get attributes of clicked item
-    postComment(post_id, comments, _this);
+  if(!e.shiftKey){
+    if(!e.altKey){
+      if(e.which == 13) {
+        var _this = $(this).parent().children(".give_comments").first();
+        var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+        var comments = ($(this).val()); //get attributes of clicked item
+        postComment(post_id, comments, _this);
+      }
+    }
   }
 });
 
@@ -362,10 +365,11 @@ $(".btn_comment").click(function() {
 function postComment(post_id, comments, _this) {
   var obj = _this.val();
 
-  $(_this).val("");
+  $(_this).val("※コメントを送信しています");
   $(_this).empty();
 
   if (obj.length > 2000 || obj.length < 1) {
+    $(_this).val("");
     alert("コメントは1文字以上2000文字以内です");
     return false;
   } else {
@@ -374,7 +378,7 @@ function postComment(post_id, comments, _this) {
       url: "/profile/give_comments",
       data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page') },
       success: function(data) {
-        $(_this).val("");
+        $(_this).val("※コメントを送信しています");
         window.location.reload(); 
       }
     });
@@ -403,6 +407,15 @@ $('.del_comment').click(function() {
     $(".comment_" + _id).remove();
   }
   return false; //do nothing
+});
+
+$(".give_comments").bind('keydown',function(e) {
+  if(event.altKey){
+    if(e.which == 13) {
+      var aaaa =$(this).parent().children(".give_comments").first().val();;
+      $(".give_comments").val(aaaa + "\n");
+    }
+  }
 });
 
 </script>
