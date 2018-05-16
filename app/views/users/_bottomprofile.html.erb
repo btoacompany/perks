@@ -365,8 +365,10 @@ $(".btn_comment").click(function() {
 function postComment(post_id, comments, _this) {
   var obj = _this.val();
 
-  $(_this).val("※コメントを送信しています");
+  $(_this).val("");
   $(_this).empty();
+  $(_this).prop('disabled', true);
+  $(_this).prop('placeholder', "※コメントを送信しています");
 
   if (obj.length > 2000 || obj.length < 1) {
     $(_this).val("");
@@ -378,7 +380,6 @@ function postComment(post_id, comments, _this) {
       url: "/profile/give_comments",
       data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page') },
       success: function(data) {
-        $(_this).val("※コメントを送信しています");
         window.location.reload(); 
       }
     });
