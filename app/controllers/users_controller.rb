@@ -518,8 +518,8 @@ class UsersController < ApplicationController
 
     params["comments"]  = params["comments"].gsub(/\n/, '<br>')
 
-    if params[:description].length > 250
-      flash[:notice] = "コメントは250文字以内です"
+    if params[:description].length > 2000
+      flash[:notice] = "コメントは2000文字以内です"
     else
       res = Comment.new
       res.save_record(params)
