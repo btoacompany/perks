@@ -384,7 +384,26 @@ class UsersController < ApplicationController
     nickname_id = params[:nickname_id].to_i if params[:nickname_id]
 
     new_posts.each do |post|
-      parse_points(post, nickname_id)
+      if post[:receiver_id].present?
+        post[:receiver_id] = post[:receiver_id].uniq
+        post[:receiver_id].each do |r|
+          if r == @id
+            flash[:status] = "false"
+            flash[:notice] = "自分にポイントを贈ることはできません。"
+            @description = params[:description]
+            error = 1
+          else
+            post[:receiver_id] = r
+            parse_points(post, nickname_id)
+          end
+        end
+      else
+        flash[:status] = "false"
+        flash[:result] = "送信に失敗しました。"
+        flash[:notice] = "「名前からメッセージを贈る相手を探す」場合は、社員名をクリックしてから「追加」ボタンを押してください"
+        @description = params[:description]
+        error = 1
+      end
     end
     redirect_to controller: "users", action: "given", description: @description
   end
@@ -419,7 +438,7 @@ class UsersController < ApplicationController
         flash[:notice] = "メッセージは1024文字以下にしてください"
         @description = params[:description]
         error = 1
-      elsif params[:receiver_id].uniq.include?("")
+      elsif params[:receiver_id].nil?
         flash[:status] = "false"
         flash[:result] = "送信に失敗しました。"
         flash[:notice] = "「名前からメッセージを贈る相手を探す」場合は、社員名をクリックしてから「追加」ボタンを押してください"
@@ -428,11 +447,12 @@ class UsersController < ApplicationController
       end
 
       if error == 0
-        receiver_ids  = params[:receiver_id].uniq
-        receiver_count  = receiver_ids.count
-   	    points		= points * receiver_count
+        receiver_ids  = params[:receiver_id]
+        # receiver_count  = receiver_ids.count
+        # points		= points * receiver_count
+        points		= points * 1
 
-	      params[:receiver_id] = receiver_ids.join(",")
+	      params[:receiver_id] = receiver_ids
 
 	      if (points <= @user[:out_points])
 	        @user.out_points -= points
@@ -444,7 +464,7 @@ class UsersController < ApplicationController
 	          params[:post_id] = post.id
 	        end
 
-    	    receiver_ids.each do | receiver_id |
+    	    receiver_ids.split(",").each do | receiver_id |
 	          receiver = User.find(receiver_id.to_i)
 
             if @company.give_point_to_sender_and_receiver_flag == 0
