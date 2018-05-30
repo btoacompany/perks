@@ -204,128 +204,128 @@
                               <p class="fukidashi">クリックしてメッセージを贈る</p>
                             <% end %>
                           </div>
+                        </div>
                       </div>
-                    </div>
-                  <% end %>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-<!-- sp -->
-<div class="sp_view sp_footer">
-  <div class="title" style="background-color: #ff8290;">日々の感謝さん</div>
-  <div class="user_postbox">
-    <% if @user_posted_contents.count > 0 %>
-      <% @user_posted_contents.each do |article| %>
-        <div class="each_post clearfix" style="padding: 10px;background-color: white;min-height: 80px;">
-          <div class="each_post_left width-30-percent" style="float: left;">
-            <% if article.images.present? %>
-              <%= image_tag @first_images[article.id], class: "width-100-percent" %>
-            <% else %>
-              <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
-            <% end %>
+  <!-- sp -->
+  <div class="sp_view sp_footer">
+    <div class="title" style="background-color: #ff8290;">日々の感謝さん</div>
+    <div class="user_postbox">
+      <% if @user_posted_contents.count > 0 %>
+        <% @user_posted_contents.each do |article| %>
+          <div class="each_post clearfix" style="padding: 10px;background-color: white;min-height: 80px;">
+            <div class="each_post_left width-30-percent" style="float: left;">
+              <% if article.images.present? %>
+                <%= image_tag @first_images[article.id], class: "width-100-percent" %>
+              <% else %>
+                <img src="https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" class="width-100-percent" />
+              <% end %>
+            </div>
+            <div class="each_post_right width-70-percent" style="float: left;padding-left: 10px;">
+              <p><%= link_to article.title.truncate(30), "/company/article/#{article.id}", style: "word-break:break-all;color: black;font-weight: bold;text-decoration:none;" %></p>
+            </div>
           </div>
-          <div class="each_post_right width-70-percent" style="float: left;padding-left: 10px;">
-            <p><%= link_to article.title.truncate(30), "/company/article/#{article.id}", style: "word-break:break-all;color: black;font-weight: bold;text-decoration:none;" %></p>
-          </div>
+        <% end %>
+      <% else %>
+        <div class="each_article clearfix">
+          <p style="margin-left: 10px;">記事が投稿されていません</p>
         </div>
       <% end %>
-    <% else %>
-      <div class="each_article clearfix">
-        <p style="margin-left: 10px;">記事が投稿されていません</p>
-      </div>
-    <% end %>
+    </div>
+    <div class="title border-radius-5 show-user-post-sp dropbtn width-60-percent" style="margin:10px auto;background-color: #ff8d07;font-size:13px;text-align: center;">視聴者投稿はこちら</div>
   </div>
-  <div class="title border-radius-5 show-user-post-sp dropbtn width-60-percent" style="margin:10px auto;background-color: #ff8d07;font-size:13px;text-align: center;">視聴者投稿はこちら</div>
-</div>
-<!-- end_sp -->
+  <!-- end_sp -->
 
-<div id="modalmessage" class="modalwin hide">
-  <a herf="#" class="modal-close"></a>
-  <h1>メッセージを贈る</h1>
-  <div class="modalwin-contents">
-    <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
-      <div class="description">
-        <p class="destination">To:
-        </p>
-        <p style="float: left;">贈り主：
-          <select class="select_giver_user new_post_select" name="nickname_id">
-            <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-            <% if $allow_nickname.include?(@current_user.company_id) %>
-              <% $nicknames.each do |key, value| %>
-                <option value="<%= key %>"><%= value %></option>
+  <div id="modalmessage" class="modalwin hide">
+    <a herf="#" class="modal-close"></a>
+    <h1>メッセージを贈る</h1>
+    <div class="modalwin-contents">
+      <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
+        <div class="description">
+          <p class="destination">To:
+          </p>
+          <p style="float: left;">贈り主：
+            <select class="select_giver_user new_post_select" name="nickname_id">
+              <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
+              <% if $allow_nickname.include?(@current_user.company_id) %>
+                <% $nicknames.each do |key, value| %>
+                  <option value="<%= key %>"><%= value %></option>
+                <% end %>
+              <% else %>
+                <option value="4">匿名希望さん</option>
               <% end %>
-            <% else %>
-              <option value="4">匿名希望さん</option>
-            <% end %>
-          </select>
-        </p>
-        <p>
-          <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
-        </p>
-      </div>
-      <p align="right"><input type="submit" value="送信する"/></p>
-    <% end %>
+            </select>
+          </p>
+          <p>
+            <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
+          </p>
+        </div>
+        <p align="right"><input type="submit" value="送信する"/></p>
+      <% end %>
+    </div>
   </div>
-</div>
 
-<div id="modalmessage2" class="modalwin hide">
-  <a herf="#" class="modal-close"></a>
-  <h1>この記事には、あなたと同じ部署で活躍する<br/><%= @receiver_name %>さんが登場しています。<br/><%= @receiver_name %>さんにメッセージを贈ってみませんか？？</h1>
-  <div class="modalwin-contents">
-    <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
-      <div class="description">
-        <p class="destination">To:
-        </p>
-        <p style="float: left;">贈り主：
-          <select class="select_giver_user new_post_select" name="nickname_id">
-            <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
-            <% if $allow_nickname.include?(@current_user.company_id) %>
-              <% $nicknames.each do |key, value| %>
-                <option value="<%= key %>"><%= value %></option>
+  <div id="modalmessage2" class="modalwin hide">
+    <a herf="#" class="modal-close"></a>
+    <h1>この記事には、あなたと同じ部署で活躍する<br/><%= @receiver_name %>さんが登場しています。<br/><%= @receiver_name %>さんにメッセージを贈ってみませんか？？</h1>
+    <div class="modalwin-contents">
+      <%= form_tag("/user/give_points", method: "post", id: "login_form" ) do %>
+        <div class="description">
+          <p class="destination">To:
+          </p>
+          <p style="float: left;">贈り主：
+            <select class="select_giver_user new_post_select" name="nickname_id">
+              <option value="0"><%= @user.lastname %><%= @user.firstname %></option>
+              <% if $allow_nickname.include?(@current_user.company_id) %>
+                <% $nicknames.each do |key, value| %>
+                  <option value="<%= key %>"><%= value %></option>
+                <% end %>
+              <% else %>
+                <option value="4">匿名希望さん</option>
               <% end %>
-            <% else %>
-              <option value="4">匿名希望さん</option>
-            <% end %>
-          </select>
-        </p>
-        <p>
-          <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
-        </p>
-      </div>
-      <p align="right"><input type="submit" value="送信する"/></p>
-    <% end %>
+            </select>
+          </p>
+          <p>
+            <textarea autofocus="autofocus" name="new_post[][description]" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。" data-intro="最後にコメントを記入しましょう。相手のどのような行動に感謝しているのか、どのような点を褒めているのか明確にすると相手も嬉しさが高まります。"></textarea>
+          </p>
+        </div>
+        <p align="right"><input type="submit" value="送信する"/></p>
+      <% end %>
+    </div>
   </div>
-</div>
 
 
-<div id="modal_user_post" class="modalwin hide">
-  <a herf="#" class="modal-close"></a>
-  <h1>視聴者投稿を贈る</h1>
-  <div class="modalwin-contents">
-    <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
-      <textarea autofocus="autofocus" name="description" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。"></textarea>
-      <input type="file" name="image" %>
-      <p align="right"><input type="submit" value="送信する"/></p>
-    <% end %>
+  <div id="modal_user_post" class="modalwin hide">
+    <a herf="#" class="modal-close"></a>
+    <h1>視聴者投稿を贈る</h1>
+    <div class="modalwin-contents">
+      <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
+        <textarea autofocus="autofocus" name="description" id="description" class="taginput" required align="center" rows="5" cols="75" style="font-size: 14px; padding: 8px;" placeholder="メッセージを入力してください。"></textarea>
+        <input type="file" name="image" %>
+        <p align="right"><input type="submit" value="送信する"/></p>
+      <% end %>
+    </div>
   </div>
-</div>
 
-<div id="modal_user_post_sp" class="modalwin-sp hide">
-  <a herf="#" class="modal-close"></a>
-  <h1>視聴者投稿を贈る</h1>
-  <div class="modalwin-sp-contents">
-    <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
-      <textarea autofocus="autofocus" name="description" id="description" class="taginput width-100-percent" required align="center" rows="5" style="font-size: 14px; padding: 8px;border: 1px solid gray;" placeholder="メッセージを入力してください。"></textarea>
-      <input type="file" name="image" %>
-      <p align="right"><input type="submit" value="送信する"/></p>
-    <% end %>
+  <div id="modal_user_post_sp" class="modalwin-sp hide">
+    <a herf="#" class="modal-close"></a>
+    <h1>視聴者投稿を贈る</h1>
+    <div class="modalwin-sp-contents">
+      <%= form_tag("/company/user_posted_content/create", method: "post", id: "login_form", :multipart => true ) do %>
+        <textarea autofocus="autofocus" name="description" id="description" class="taginput width-100-percent" required align="center" rows="5" style="font-size: 14px; padding: 8px;border: 1px solid gray;" placeholder="メッセージを入力してください。"></textarea>
+        <input type="file" name="image" %>
+        <p align="right"><input type="submit" value="送信する"/></p>
+      <% end %>
+    </div>
   </div>
-</div>
 
 <!-- start_post -->
 <div id="modalwin" class="modalwin hide">
