@@ -1,23 +1,25 @@
 class ArticleCommentsController < ApplicationController
   def create
-    logger.debug("===")
-    logger.debug(params)
-    logger.debug("----")
-
     article_comment = ArticleComment.new(
       company_id: current_user.company_id,
-      article_id: params[:post_id],
+      article_id: params[:post_id].to_i,
       user_id: current_user.id,
-      comment: params[:comment]
+      comment: params[:comments],
+      is_nickname: params[:is_nickname],
+      create_time: Time.now,
+      update_time: Time.now
     )
-    if article_comment.save?
-      redirect_to "/company/article/#{article_comment.id}"
+    if article_comment.save
+      redirect_to "/company/article/#{article_comment.id}", notice: "コメントを送信いたしました"
     else
-      redirect_to "/company/article/#{article_comment.id}"
+      redirect_to "/company/article/#{article_comment.id}", notice: "#{article_comment.errors.full_messages}"
     end
   end
 
   def destroy
+    article_comment = ArticleComment.find(params[:id])
+    article_comment.delete
+    redirect_to :back, notice: "コメントを削除しました"
   end
 
   def update

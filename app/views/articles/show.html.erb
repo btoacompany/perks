@@ -210,20 +210,22 @@
                   </div>
 
                   <div class="comments">
-                    <% @article.article_comments.each do |comment| %>
+                    <% @article.article_comments.available.each do |comment| %>
                       <div class="comment_entry clearfix">
                         <div class="user_comment_img" style="float: left;">
                           <img src=<%= comment.user.img_src %> width="25px" height="25px" class="radius20" />
                         </div>
                         <div class="user_comments">
                           <div class="cmt_left">
-                            <span class="user" style="font-weight: normal;">@<%= "#{comment.user.lastname} #{comment.user.firstname}" %></span>
+                            <span class="user" style="font-weight: normal;">@<%= comment.is_nickname ? "匿名希望さん" : "#{comment.user.lastname} #{comment.user.firstname}" %></span>
                             <span class="comment"><%= comment.comment %></span>
                           </div>
                           <div class="cmt_right">
-                            <%= link_to article_comment_path(comment.id), method: :delete do %>
-                              <i class="fas fa-trash-alt"></i>
-                            <% end %>
+                            <div class="editnav dropdown">
+                              <span class="del_comment" data-id=<%= comment.id %>>
+                                <i class="fas fa-trash-alt"></i>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -721,13 +723,15 @@ function timeSince(time) {
 }
 
 $('.del_comment').click(function() {
-  var _id = ($(this).attr('data-id')); //get attributes of clicked item
+  var _id = ($(this).attr('data-id'));
 
   if (confirm("本当にこのコメントを削除しますか？")) {
-    $.post("/user/delete_comment", { 'comment_id': _id }); //send post request
-    $(".comment_" + _id).remove(); //remove item upon deletion
+    $.ajax({
+      type: "DELETE",
+      url: "/article_comments/" + _id,
+    });
+    window.location.reload();
   }
-  return false; //do nothing
 });
 
 $('.del_post').click(function() {
@@ -1423,7 +1427,7 @@ $(function () {
     $(".btn_comment").click(function() {
       var _this = $(this).parent().parent().children(".give_comments").first();
       var post_id = ($(this).attr('data-id')); //get attributes of clicked item
-      var comments = $(".post_comment_"+post_id).val(); 
+      var comments = $(".post_comment_"+post_id).val();
 
       postComment(post_id, comments, _this);
     });
@@ -1444,7 +1448,7 @@ $(function () {
         $.ajax({
           type: "POST",
           url: "/article_comments",
-          data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page') },
+          data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page'), 'is_nickname': document.getElementById("is_nickname").checked },
           success: function(data) {
             window.location.reload(); 
           }
