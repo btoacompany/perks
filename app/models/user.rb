@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :tags
   has_many :articles, through: :tags
   has_many :user_posted_contents
+  has_many :article_comment
 
   before_save 	:encrypt_password
   after_save 	:clear_password
