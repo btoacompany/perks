@@ -13,13 +13,14 @@
       <% if flash[:notice] %><p class="c_align notice" style="color: red;"><b><i><%= raw flash[:notice] %></i></b></p><br><% end %>
 		  <h3 class="margin-bottom-10">作成したニュース記事一覧</h3>
 		  <p>現在の公開記事数: <%= @articles.where(is_published: 1).count %>記事</p>
-		  <div style="margin: 10px auto 0px;">
+		  <div style="margin: 10px auto 0px; padding-bottom: 30px;">
 		    <div >
 			  <table class="admin_table c_align width-90-percent">
 			  	<tr>
 			  	  <th scope="row width-8-percent">作成日</th>
 			  	  <th scope="row width-30-percent">タイトル</th>
 			  	  <th scope="row width-8-percent">いいね数</th>
+			  	  <th scope="row width-8-percent">コメント数</th>
 			  	  <th scope="row width-8-percent">PV数</th>
 			  	  <th scope="row width-8-percent">公開/未公開</th>
 			  	  <th scope="row width-8-percent">Newバッチ</th>
@@ -30,8 +31,9 @@
 			  	<% @articles.each do |article| %>
 				  	<tr>
 				  	  <td class="width-8-percent"><%= article.updated_at.strftime("%Y/%m/%d") %></td>
-				  	  <td class="width-30-percent"><%= link_to article.title.truncate(35), "/company/article/#{article.id}" %></td>
+				  	  <td class="width-20-percent"><%= link_to article.title.truncate(35), "/company/article/#{article.id}" %></td>
 				  	  <td class="width-8-percent"><%= article.article_likes.count %></td>
+				  	  <td class="width-8-percent"><%= article.article_comments.available.count %></td>
 				  	  <td class="width-8-percent"><%= number_with_delimiter(article.impressionist_count) %></td>
 				  	  <td class="width-8-percent">
 				  	    <% if article.is_published == 0 %>
