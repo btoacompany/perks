@@ -228,6 +228,7 @@
                         </div>
                       </div>
                     <% end %>
+                    <input type="checkbox" class="is_nickname" name="is_nickname" id="is_nickname" value="true"><label for="is_nickname">ニックネームでコメントする</label>
                     <textarea name="comment" class="give_comments" data-id=<%= @article.id %> id="give_comments"  placeholder="Enterキーでコメント返信, Shift+Enterで改行する" style="resize:none;height:60px;" rows="1" maxlength="2000"/></textarea>
                   </div>
                 </div>
@@ -1432,14 +1433,14 @@ $(function () {
     
       $(_this).val("");
       $(_this).empty();
-      $(_this).prop('disabled', true);
-      $(_this).prop('placeholder', "※コメントを送信しています");
     
       if (obj.length > 2000 || obj.length < 1) {
         $(_this).val("");
         alert("コメントは1文字以上2000文字以内です");
         return false;
       } else {
+        $(_this).prop('disabled', true);
+        $(_this).prop('placeholder', "※コメントを送信しています");
         $.ajax({
           type: "POST",
           url: "/article_comments",
@@ -1461,7 +1462,6 @@ $(function () {
         }
       });
     });
-
 
     $(".give_comments").bind('keydown',function(e) {
       if(event.altKey){
