@@ -10,9 +10,9 @@ class ArticleCommentsController < ApplicationController
       update_time: Time.now
     )
     if article_comment.save
-      redirect_to "/company/article/#{article_comment.article_id}", notice: "コメントを送信いたしました"
+      redirect_to :back, notice: "コメントを送信いたしました"
     else
-      redirect_to "/company/article/#{article_comment.article_id}", notice: "#{article_comment.errors.full_messages}"
+      redirect_to :back, notice: "#{article_comment.errors.full_messages}"
     end
   end
 
