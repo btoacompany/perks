@@ -210,28 +210,48 @@
                   </div>
 
                   <div class="comments">
-                    <% @article.article_comments.available.each do |comment| %>
+                    <% @article_comments.each do |comment| %>
                       <div class="comment_entry clearfix">
                         <div class="user_comment_img" style="float: left;">
                           <img src=<%= comment.user.img_src %> width="25px" height="25px" class="radius20" />
                         </div>
                         <div class="user_comments">
                           <div class="cmt_left">
-                            <span class="user" style="font-weight: normal;">@<%= comment.is_nickname ? "匿名希望さん" : "#{comment.user.lastname} #{comment.user.firstname}" %></span>
+                            <span class="user" style="font-weight: normal;color: #ff8d07;"><%= comment.is_nickname ? "匿名希望さん" : "#{comment.user.lastname} #{comment.user.firstname}" %></span>
                             <span class="comment"><%= comment.comment %></span>
                           </div>
                           <div class="cmt_right">
-                            <div class="editnav dropdown">
-                              <span class="del_comment" data-id=<%= comment.id %>>
-                                <i class="fas fa-trash-alt"></i>
-                              </span>
-                            </div>
+                            <% if comment.user_id == @user.id || @user.admin == 1 %>
+                              <div class="editnav dropdown">
+                                <span class="del_comment" data-id=<%= comment.id %>>
+                                  <i class="fas fa-trash-alt"></i>
+                                </span>
+                              </div>
+                            <% end %>
                           </div>
                         </div>
                       </div>
                     <% end %>
                     <input type="checkbox" class="is_nickname" name="is_nickname" id="is_nickname" value="true"><label for="is_nickname">ニックネームでコメントする</label>
                     <textarea name="comment" class="give_comments" data-id=<%= @article.id %> id="give_comments"  placeholder="Enterキーでコメント返信, Shift+Enterで改行する" style="resize:none;height:60px;" rows="1" maxlength="2000"/></textarea>
+                  </div>
+                  <!-- paging comments -->
+                  <div class="pagination" style="float:right">
+                    <% if @total_pages > 8 %>
+                      <% unless @page_now == 1 %>
+                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=1" %>>最初</a>
+                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{@previous_page}" %>>前へ</a>
+                      <% end %>
+                      <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{@page_now}" %>><%= @page_now %></a>
+                      <% unless @page_now == @total_pages %>
+                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{@next_page}" %>>次へ</a>
+                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{@total_pages}" %>>最後</a>
+                      <% end %>
+                    <% else %>
+                      <% (1..@total_pages).each do | i | %>
+                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{i}" %>><%= i %></a>
+                      <% end %>
+                    <% end %>
                   </div>
                 </div>
               </div>

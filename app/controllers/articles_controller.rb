@@ -215,6 +215,12 @@ class ArticlesController < ApplicationController
     @total_receive_message = Post.where(company_id: @company.id, delete_flag: 0, receiver_id: @user.id).count
     @user_ids, @user_fullnames  = User.autocomplete_suggestions(@company.id)
     @article = Article.find_by(id: params[:id], is_deleted: 0, company_id: @company.id)
+    @article_comments = @article.article_comments.available
+
+    # TODO
+    @article_comments = process_paging(@article_comments)
+
+
     @user_posted_contents = Article.where(company_id: @company.id, is_casual: 1, is_deleted: 0, is_published: 1)
 	  
     user_posts = @user_posted_contents
@@ -782,7 +788,7 @@ class ArticlesController < ApplicationController
 
 
   def process_paging(posts)
-    limit = 10
+    limit = 20
     page  = params[:page] || 1
     
     @total_items = posts.count
