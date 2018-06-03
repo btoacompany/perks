@@ -172,7 +172,7 @@ Rails.application.routes.draw do
   post '/company/article/send_release_mail' => 'articles#send_release_mail'
   post '/company/article/:id/update_is_new' => 'articles#update_is_new'
   post '/company/article/like' => 'articles#like'
-  post '/article_comments' => 'article_comments#create'
+  post '/company/article/comment' => 'article_comments#create'
   get '/company/image/:id/edit' => 'articles#image'
   post '/company/image/:id/update' => 'articles#image_update'
   post '/company/image/:id/delete' => 'articles#image_delete'

@@ -709,7 +709,7 @@ function postComment(post_id, comments, _this) {
     $(_this).prop('placeholder', "※コメントを送信しています");
     $.ajax({
       type: "POST",
-      url: "/article_comments",
+      url: "/company/article/comment",
       data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page'), 'is_nickname': document.getElementById("is_nickname").checked },
       success: function(data) {
         window.location.reload(); 
