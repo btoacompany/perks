@@ -239,17 +239,17 @@
                   <div class="pagination" style="float:right">
                     <% if @total_pages > 8 %>
                       <% unless @page_now == 1 %>
-                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=1" %>>最初</a>
-                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{@previous_page}" %>>前へ</a>
+                        <a href=<%= "https://www.prizy.me/company/article/#{@article.id}/?page=1" %>>最初</a>
+                        <a href=<%= "https://www.prizy.me/company/article/#{@article.id}/?page=#{@previous_page}" %>>前へ</a>
                       <% end %>
-                      <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{@page_now}" %>><%= @page_now %></a>
+                      <a href=<%= "https://www.prizy.me/company/article/#{@article.id}/?page=#{@page_now}" %>><%= @page_now %></a>
                       <% unless @page_now == @total_pages %>
-                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{@next_page}" %>>次へ</a>
-                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{@total_pages}" %>>最後</a>
+                        <a href=<%= "https://www.prizy.me/company/article/#{@article.id}/?page=#{@next_page}" %>>次へ</a>
+                        <a href=<%= "https://www.prizy.me/company/article/#{@article.id}/?page=#{@total_pages}" %>>最後</a>
                       <% end %>
                     <% else %>
                       <% (1..@total_pages).each do | i | %>
-                        <a href=<%= "#{@prizy_url}/company/article/#{@article.id}/?page=#{i}" %>><%= i %></a>
+                        <a href=<%= "https://www.prizy.me/company/article/#{@article.id}/?page=#{i}" %>><%= i %></a>
                       <% end %>
                     <% end %>
                   </div>
@@ -646,18 +646,6 @@ $(".btn_comment").click(function() {
   postComment(post_id, comments);
 });
 
-function postComment(post_id, comments) {
-  $.ajax({
-    type: "POST",
-    url: "/user/give_comments",
-    data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page') },
-    success: function(data) {
-      $(this).val("");
-      window.location.reload(); 
-    }
-  });
-}
-
 $(".btn_like").mouseup(function() {
   var post_id = ($(this).attr('data-id')); //get attributes of clicked item
 
@@ -683,6 +671,74 @@ $(".btn_unlike").mouseup(function() {
     }
   });
 });
+
+
+$(".give_comments").bind('keydown',function(e) {
+  if(!e.shiftKey){
+    if(!e.altKey){
+      if(e.which == 13) {
+        var _this = $(this).parent().children(".give_comments").first();
+        var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+        var comments = ($(this).val()); //get attributes of clicked item
+        postComment(post_id, comments, _this);
+      }
+    }
+  }
+});
+
+$(".btn_comment").click(function() {
+  var _this = $(this).parent().parent().children(".give_comments").first();
+  var post_id = ($(this).attr('data-id')); //get attributes of clicked item
+  var comments = $(".post_comment_"+post_id).val();
+
+  postComment(post_id, comments, _this);
+});
+
+function postComment(post_id, comments, _this) {
+  var obj = _this.val();
+
+  $(_this).val("");
+  $(_this).empty();
+
+  if (obj.length > 2000 || obj.length < 1) {
+    $(_this).val("");
+    alert("コメントは1文字以上2000文字以内です");
+    return false;
+  } else {
+    $(_this).prop('disabled', true);
+    $(_this).prop('placeholder', "※コメントを送信しています");
+    $.ajax({
+      type: "POST",
+      url: "/article_comments",
+      data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page'), 'is_nickname': document.getElementById("is_nickname").checked },
+      success: function(data) {
+        window.location.reload(); 
+      }
+    });
+  }
+}
+
+$(function() {
+  $(".give_comments").autosize();
+  $(".give_comments").keypress(function(){
+    if ($(this).val().length > 2000) {
+      $(this).css("border","2px solid red");
+    } else {
+      $(this).css("border","");
+    }
+  });
+});
+
+$(".give_comments").bind('keydown',function(e) {
+  if(event.altKey){
+    if(e.which == 13) {
+      var aaaa =$(this).parent().children(".give_comments").first().val();;
+      $(".give_comments").val(aaaa + "\n");
+    }
+  }
+});
+
+
 
 function getTag () {
   items = [];
@@ -1430,69 +1486,4 @@ $(function () {
       // $(".description textarea").val("新しい記事が公開されました！" + "\n" + "\n"  + title + "\n" + url);
     });
 
-
-    $(".give_comments").bind('keydown',function(e) {
-      if(!e.shiftKey){
-        if(!e.altKey){
-          if(e.which == 13) {
-            var _this = $(this).parent().children(".give_comments").first();
-            var post_id = ($(this).attr('data-id')); //get attributes of clicked item
-            var comments = ($(this).val()); //get attributes of clicked item
-            postComment(post_id, comments, _this);
-          }
-        }
-      }
-    });
-
-    $(".btn_comment").click(function() {
-      var _this = $(this).parent().parent().children(".give_comments").first();
-      var post_id = ($(this).attr('data-id')); //get attributes of clicked item
-      var comments = $(".post_comment_"+post_id).val();
-
-      postComment(post_id, comments, _this);
-    });
-
-    function postComment(post_id, comments, _this) {
-      var obj = _this.val();
-    
-      $(_this).val("");
-      $(_this).empty();
-    
-      if (obj.length > 2000 || obj.length < 1) {
-        $(_this).val("");
-        alert("コメントは1文字以上2000文字以内です");
-        return false;
-      } else {
-        $(_this).prop('disabled', true);
-        $(_this).prop('placeholder', "※コメントを送信しています");
-        $.ajax({
-          type: "POST",
-          url: "/article_comments",
-          data: { 'post_id': post_id, 'comments': comments, 'page': $.urlParam('page'), 'is_nickname': document.getElementById("is_nickname").checked },
-          success: function(data) {
-            window.location.reload(); 
-          }
-        });
-      }
-    }
-
-    $(function() {
-      $(".give_comments").autosize();
-      $(".give_comments").keypress(function(){
-        if ($(this).val().length > 2000) {
-          $(this).css("border","2px solid red");
-        } else {
-          $(this).css("border","");
-        }
-      });
-    });
-
-    $(".give_comments").bind('keydown',function(e) {
-      if(event.altKey){
-        if(e.which == 13) {
-          var aaaa =$(this).parent().children(".give_comments").first().val();;
-          $(".give_comments").val(aaaa + "\n");
-        }
-      }
-    });
 </script>
