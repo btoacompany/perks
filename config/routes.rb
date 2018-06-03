@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   end
 
   resources :posts, only: :update
-  resources :article_comments, only: [:destroy, :update]
+  resources :article_comments, only: [:create, :destroy, :update]
 
   get "bad_request" => "top#bad_request"
   get "internal_server_error" => "top#internal_server_error"
@@ -172,7 +172,6 @@ Rails.application.routes.draw do
   post '/company/article/send_release_mail' => 'articles#send_release_mail'
   post '/company/article/:id/update_is_new' => 'articles#update_is_new'
   post '/company/article/like' => 'articles#like'
-  post '/company/article/comment' => 'article_comments#create'
   get '/company/image/:id/edit' => 'articles#image'
   post '/company/image/:id/update' => 'articles#image_update'
   post '/company/image/:id/delete' => 'articles#image_delete'
