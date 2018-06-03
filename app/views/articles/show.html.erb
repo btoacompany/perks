@@ -221,7 +221,7 @@
                             <span class="comment"><%= comment.comment %></span>
                           </div>
                           <div class="cmt_right">
-                            <% if comment.user_id == @user.id %>
+                            <% if comment.user_id == @user.id || @user.admin == 1 %>
                               <div class="editnav dropdown">
                                 <span class="del_comment" data-id=<%= comment.id %>>
                                   <i class="fas fa-trash-alt"></i>
