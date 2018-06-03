@@ -367,14 +367,14 @@ function postComment(post_id, comments, _this) {
 
   $(_this).val("");
   $(_this).empty();
-  $(_this).prop('disabled', true);
-  $(_this).prop('placeholder', "※コメントを送信しています");
 
   if (obj.length > 2000 || obj.length < 1) {
     $(_this).val("");
     alert("コメントは1文字以上2000文字以内です");
     return false;
   } else {
+    $(_this).prop('disabled', true);
+    $(_this).prop('placeholder', "※コメントを送信しています");
     $.ajax({
       type: "POST",
       url: "/profile/give_comments",
