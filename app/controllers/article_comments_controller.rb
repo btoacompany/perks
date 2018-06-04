@@ -4,7 +4,7 @@ class ArticleCommentsController < ApplicationController
       company_id: current_user.company_id,
       article_id: params[:post_id].to_i,
       user_id: current_user.id,
-      comment: params[:comments],
+      comment: params[:comments].gsub(/\n/, '<br>'),
       is_nickname: params[:is_nickname],
       create_time: Time.now,
       update_time: Time.now
