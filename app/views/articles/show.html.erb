@@ -217,7 +217,7 @@
                         </div>
                         <div class="user_comments">
                           <div class="cmt_left">
-                            <span class="user" style="font-weight: normal;color: #ff8d07;"><%= comment.is_nickname ? "匿名希望さん" : "#{comment.user.lastname} #{comment.user.firstname}" %></span>
+                            <span class="user" style="font-weight: normal;color: #ff8d07;"><%= comment.is_nickname ? "匿名希望さん" : "#{@belonging_team[comment.user_id].try(:department).try(:dep_name)} #{comment.user.lastname} #{comment.user.firstname}" %></span>
                             <span class="comment">
                               <%= raw comment.comment.gsub(/\+[^\s|  ]+|\#[^\s|  ]+/,"<b style='color:#0080ff'>\\0</b>") %>
                             </span>
