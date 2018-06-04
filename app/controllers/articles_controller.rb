@@ -2,6 +2,7 @@ class ArticlesController < ApplicationController
   impressionist actions: [:index, :show]
   before_filter :init_url, :authenticate_user
   before_action :init
+  before_action :belonging_team, only: :show
 
   class << self
     def send_each(user)
