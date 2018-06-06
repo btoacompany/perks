@@ -21,10 +21,10 @@ staging:
   pool: 5
   variables:
     sql_mode: TRADITIONAL
-  host:     <%= ENV['DATABASE_HOST'] %>
-  port:     <%= ENV['DATABASE_PORT'] || 3306 %>
-  username: <%= ENV['DATABASE_USERNAME'] %>
-  password: <%= ENV['DATABASE_PWD'] %>
+  host:     <%= ENV['DB_HOST'] %>
+  port:     <%= ENV['DB_PORT'] || 3306 %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
   database: perks_staging
 
 production:
