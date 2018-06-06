@@ -140,7 +140,7 @@ Mappings:
     node:
       stackName: 64bit Amazon Linux 2017.09 v4.4.4 running Node.js
     rails:
-      stackName: 64bit Amazon Linux 2018.03 v2.8.0 running Ruby 2.5 (Puma)
+      stackName: 64bit Amazon Linux 2018.03 v2.8.0 running Ruby 2.2 (Puma)
     spring:
       stackName: 64bit Amazon Linux 2017.09 v2.7.5 running Tomcat 8 Java 8
     python:
