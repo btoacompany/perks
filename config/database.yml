@@ -13,7 +13,11 @@ default: &default
 
 development:
   <<: *default
-  database: prizy_development
+  database: perks_development
+
+test:
+  <<: *default
+  database: perks_test
 
 staging:
   adapter: mysql2

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20180606000000) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",        limit: 191,             null: false
@@ -160,9 +160,6 @@ ActiveRecord::Schema.define(version: 0) do
     t.date     "track_date",                          null: false
     t.datetime "create_time",                         null: false
   end
-
-# Could not dump table "relationship_scores" because of following StandardError
-#   Unknown type 'json' for column 'scores'
 
   create_table "request_rewards", force: :cascade do |t|
     t.integer  "company_id",      limit: 4,             null: false
