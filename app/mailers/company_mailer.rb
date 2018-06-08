@@ -29,6 +29,7 @@ class CompanyMailer < ActionMailer::Base
   end
 
   def recommend_mail(data)
+    Rails.logger.debug("CompanyMailer.recommend_mail\t#{data.inspect}")
     @data = data
     mail(to: data[:email], subject: "【Prizy】今週の勝手にレコメンド")
   end
