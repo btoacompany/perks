@@ -48,8 +48,7 @@ class ArticlesController < ApplicationController
 
       data = {
         user: user,
-        # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
-        email: "naoto.udagawa1230@gmail.com",
+        email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
         target: targets
       }
       CompanyMailer.recommend_mail(data).deliver_now
