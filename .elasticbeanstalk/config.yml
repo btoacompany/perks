@@ -1,9 +1,0 @@
-branch-defaults:
-  chore/deployment-us-west-2:
-    environment: prizy-staging
-  master:
-    environment: Prizy-V2-prod
-environment-defaults:
-  prizy-staging:
-    branch: master
-    repository: null

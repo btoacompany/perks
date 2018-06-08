@@ -1,8 +1,8 @@
 environment-defaults:
-  prizy-production:
+  perks-production:
     branch: master
     repository: null
-  prizy-production:
+  perks-staging:
     branch: master
     repository: null
 global:

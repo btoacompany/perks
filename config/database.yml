@@ -30,11 +30,17 @@ staging:
   port:     <%= ENV['DB_PORT'] || 3306 %>
   username: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASSWORD'] %>
-  database: prizy_staging
+  database: perks_staging
 
 production:
-  <<: *default
-  host: <%= ENV['DB_HOST'] %>
+  adapter: mysql2
+  encoding: utf8mb4
+  collation: utf8mb4_bin
+  pool: 5
+  variables:
+    sql_mode: TRADITIONAL
+  host:     <%= ENV['DB_HOST'] %>
+  port:     <%= ENV['DB_PORT'] || 3306 %>
   username: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASSWORD'] %>
-  database: <%= ENV['DB_NAME'] %>
+  database: perks_production
