@@ -3,44 +3,20 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   collation: utf8mb4_bin
+  socket: /tmp/mysql.sock
+  port: 3306
   pool: 5
-  username: root
-  password: 123456
-  host: 127.0.0.1
-  port: 3307
-  variables:
-    sql_mode: TRADITIONAL
 
 development:
   <<: *default
-  database: perks_development
-
-test:
-  <<: *default
-  database: perks_test
-
-staging:
-  adapter: mysql2
-  encoding: utf8mb4
-  collation: utf8mb4_bin
-  pool: 5
-  variables:
-    sql_mode: TRADITIONAL
-  host:     <%= ENV['DB_HOST'] %>
-  port:     <%= ENV['DB_PORT'] || 3306 %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  database: perks_staging
+  host: <%= ENV['DB_HOST_DEV'] %>
+  username: <%= ENV['DB_USER_DEV'] %>
+  password: <%= ENV['DB_PASSWORD_DEV'] %>
+  database: <%= ENV['DB_NAME_DEV'] %>
 
 production:
-  adapter: mysql2
-  encoding: utf8mb4
-  collation: utf8mb4_bin
-  pool: 5
-  variables:
-    sql_mode: TRADITIONAL
-  host:     <%= ENV['DB_HOST'] %>
-  port:     <%= ENV['DB_PORT'] || 3306 %>
+  <<: *default
+  host: <%= ENV['DB_HOST'] %>
   username: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASSWORD'] %>
-  database: perks_production
+  database: <%= ENV['DB_NAME'] %>

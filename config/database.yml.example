@@ -1,0 +1,36 @@
+# MySQL.  Versions 5.0+ are recommended.
+default: &default
+  adapter:    mysql2
+  encoding:   utf8mb4
+  collation:  utf8mb4_bin
+  pool:       5
+  variables:
+    sql_mode: TRADITIONAL
+  host:       127.0.0.1
+  port:       3306
+  username:   root
+  password:   123456
+
+development:
+  <<: *default
+  database: perks_development
+
+test:
+  <<: *default
+  database: perks_test
+
+staging:
+  <<: *default
+  host:     <%= ENV['DB_HOST'] %>
+  port:     <%= ENV['DB_PORT'] || 3306 %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  database: perks_staging
+
+production:
+  <<: *default
+  host:     <%= ENV['DB_HOST'] %>
+  port:     <%= ENV['DB_PORT'] || 3306 %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  database: perks_production
