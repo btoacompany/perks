@@ -24,3 +24,5 @@ doc/
 .byebug_history
 vendor/bundler/
 /.elasticbeanstalk/config.yml
+/config/database.yml
+/config/application.yml
