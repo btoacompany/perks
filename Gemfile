@@ -81,3 +81,4 @@ gem "sentry-raven"
 #gem 'omniauth-google-oauth2'
 #gem 'signet'
 gem 'kaminari'
+gem 'le'
