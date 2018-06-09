@@ -12,14 +12,14 @@
 !/log/.keep
 /tmp
 /.bash_profile
-/.env
-/config/database.yml
-/config/application.yml
 
 # Ignore application configuration
-/config/application.yml
 /public
 .DS_Store
 doc/
 .byebug_history
 vendor/bundler/
+/.elasticbeanstalk/config.yml
+/.env
+/config/database.yml
+/config/application.yml

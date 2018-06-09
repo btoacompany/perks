@@ -48,7 +48,7 @@ class ArticlesController < ApplicationController
 
       data = {
         user: user,
-        email: Rails.env.production? ? user.email : "naoto.udagawa1230@gmail.com",
+        email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
         target: targets
       }
       CompanyMailer.recommend_mail(data).deliver_now
@@ -56,6 +56,9 @@ class ArticlesController < ApplicationController
 
     def batch
       @users = User.available.of_company(32)
+      unless ENV["SENDGRID_ENABLED"]
+        @users = @users.limit(1)
+      end
       @users.each do |user|
         send_each(user)
         sleep 1

@@ -8,7 +8,13 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
 # セプテーニのcompany_idをいれる。今は暫定
-  all_company_ids = Company.all.where(delete_flag: 0).pluck(:id)
+  begin
+    all_company_ids = Company.all.where(delete_flag: 0).pluck(:id)
+  rescue ActiveRecord::StatementInvalid => e
+    Rails.logger.error(e)
+    Rails.logger.error(e.backtrace)
+    all_company_ids = []
+  end
   $showoff_timeline = all_company_ids
   $showoff_ranking  = all_company_ids
   $showoff_hashtag  = all_company_ids
