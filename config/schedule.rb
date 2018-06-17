@@ -23,13 +23,13 @@ job_type :runner, "cd :path && RAILS_ENV=#{@environment} bin/rails runner -e :en
 
 set :output, 'log/whenever.log'
 
-every 1.day, at: '00:00 am' do
+every 1.day, at: '15:00' do
   runner "CompanyController.reset_point"
 end
 
 # Learn more: http://github.com/javan/whenever
 
-every :monday, :at => '12:00 pm' do
+every :monday, :at => '03:00' do
   runner "ArticlesController.batch"
 end
 
