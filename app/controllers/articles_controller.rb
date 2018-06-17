@@ -30,7 +30,7 @@ class ArticlesController < ApplicationController
 
       articles = Article.of_company(user.company_id).available.pluck(:id)
       target_from_article = Tag.where(article_id: articles).where.not(user_id: user.id).where.not(user_id: two_targets_from_team).pluck(:user_id).sample(1)
-        
+
       # targets = {team: user, ...}
       targets = Hash.new
       if belonging
