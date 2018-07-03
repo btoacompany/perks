@@ -17,6 +17,11 @@ Rails.application.routes.draw do
     end
     resources :teams
     resources :departments
+    resources :votes do
+      collection do
+        get :demo
+      end
+    end
   end
 
   resources :posts, only: :update

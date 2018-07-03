@@ -1,0 +1,60 @@
+.analytics_holder
+  .analytics_time_select
+    .clearfix
+  = render '/analytics/analytics'
+  .analytics_container{ style: "float: left; width: 80%; background-color: white; margin-bottom: 30px;" }
+    .analytics_holder.toolbox.width-100-percent#admin_contents
+      %h3{ style: "padding-left: 10px; margin: 10px;" } 2018/04/15の投票結果
+      %h4{ style: "padding-left: 20px; line-height: 1.8em;"} 質問内容: 今週あなたのチームで最も活躍した人は誰ですか？
+      %h4{ style: "padding-left: 20px; line-height: 1.8em;"}  現在の部署ごとの投票率
+      #chartContainer{ style: "height: 300px; width: 90%;" }
+      %div{ style: "padding-left: 20px; margin: 20px 0;" }
+        %select
+          %option 対象の部署を選択してください
+          %option 人事部
+      %table.tbl_tools.width-90-percent{ border: "1" }
+        %tr
+          %th チーム
+          %th 名前
+          %th 投票数
+          %th 投票率
+        %tr
+          %td.width-8-percent{ style: "word-break: break-all;" } インフラ
+          %td.width-8-percent{ style: "word-break: break-all;" } 山田太郎
+          %td.width-8-percent{ style: "word-break: break-all;" } 10
+          %td.width-8-percent{ style: "word-break: break-all;" } 60%
+        %tr
+          %td.width-8-percent{ style: "word-break: break-all;" } 開発
+          %td.width-8-percent{ style: "word-break: break-all;" } 山田太郎
+          %td.width-8-percent{ style: "word-break: break-all;" } 10
+          %td.width-8-percent{ style: "word-break: break-all;" } 25%
+        %tr
+          %td.width-8-percent{ style: "word-break: break-all;" } 開発
+          %td.width-8-percent{ style: "word-break: break-all;" } 佐藤二朗
+          %td.width-8-percent{ style: "word-break: break-all;" } 5
+          %td.width-8-percent{ style: "word-break: break-all;" } 15%
+
+:javascript
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      theme: "light2", // "light1", "light2", "dark1", "dark2"
+      title:{
+        text: "部署ごとの投票率"
+      },
+      axisY: {
+        title: "投票率"
+      },
+      data: [{        
+        type: "column",
+        dataPoints: [      
+          { y: 91.8, label: "メディア事業部" },
+          { y: 85.2,  label: "人事部" },
+          { y: 79.1,  label: "経営企画部" },
+          { y: 63.2,  label: "営業部" },
+          { y: 52.4,  label: "新規事業部" },
+        ]
+      }]
+    });
+    chart.render();
+  }
