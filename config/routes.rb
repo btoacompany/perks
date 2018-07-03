@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :votes do
       collection do
         get :demo
+        get :voted
       end
     end
   end
