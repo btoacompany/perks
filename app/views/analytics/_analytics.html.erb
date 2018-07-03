@@ -35,7 +35,7 @@
     <% else %>
       <li><%= link_to "メッセージ一覧", admin_posts_path %></li>
     <% end %>
-    <% if @user.company_id == 6 %>
+    <% if @user.company_id == 1 %>
       <li><%= link_to "投票一覧", admin_votes_path %></li>
     <% end %>
   </ul>
