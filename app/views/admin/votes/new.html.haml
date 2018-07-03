@@ -6,12 +6,12 @@
     %h3.c_align 投票を作成する
     - if flash[:notice]
       %p.c_align.notice{ style: "color: red;margin: 20px;" }%b%i = flash[:notice]
-    = form_tag("", method: :post) do
+    = form_tag(demo_admin_votes_path, method: :get) do
       %table.mail_form.width-60-percent.l_align{ style: "margin: 20px auto 0px;" }
         %tr
           %td 件名
           %td
-            %input.width-100-percent{ type: "text", name: "subject", style: "height: 35px;border: none;border:none;border-bottom: 1px solid #e5e5e5;font-size: 16px;padding: 7px;", autofocus: "on", placeholder: "配信するメールの件名を記入してください", required: "required" }
+            %input.width-100-percent{ type: "text", name: "title", style: "height: 35px;border: none;border:none;border-bottom: 1px solid #e5e5e5;font-size: 16px;padding: 7px;", autofocus: "on", placeholder: "配信するメールの件名を記入してください", required: "required" }
         %tr
           %td ヘッダー画像
           %td
@@ -19,7 +19,7 @@
         %tr
           %td{ style: "vertical-align:top;" }質問内容
           %td
-            %textarea.width-100-percent{ name: "description", rows: "2", style: "border: none;resize: none;border: 1px solid #e5e5e5;font-size: 16px;color:black;padding: 7px;margin-top: 10px;", placeholder: "質問内容を記入してください", required: "required" }
+            %textarea.width-100-percent{ name: "question", rows: "2", style: "border: none;resize: none;border: 1px solid #e5e5e5;font-size: 16px;color:black;padding: 7px;margin-top: 10px;", placeholder: "質問内容を記入してください", required: "required" }
         %tr
           %td
           %td

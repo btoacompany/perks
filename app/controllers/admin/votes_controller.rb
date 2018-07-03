@@ -7,4 +7,7 @@ class Admin::VotesController < Admin::Base
 
   def show
   end
+
+  def demo
+  end
 end
