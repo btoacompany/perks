@@ -73,16 +73,16 @@ class CompanyController < ApplicationController
       })
 
       c_code = (Time.now.to_i).to_s + "_" + (company.id).to_s
-      # company.invite_link = @prizy_url + "/invite?c_code=" + c_code
+      company.invite_link = @prizy_url + "/invite?c_code=" + c_code
       company.save
 
       if company.save
         CompanyMailer.welcome_email(params).deliver_later
-          # invite_link = InviteLink.new
-          # invite_link.save_record({
-          #   :company_id   => company.id,
-          #   :c_code  => c_code
-          # })
+          invite_link = InviteLink.new
+          invite_link.save_record({
+            :company_id   => company.id,
+            :c_code  => c_code
+          })
       end
       session[:id] = nil
       cookies.delete :id
