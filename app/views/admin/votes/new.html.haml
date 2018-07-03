@@ -1,0 +1,28 @@
+#admin_wrapper
+  = render "/company/admin_subheader"
+
+  .width-100-percent#admin_contents
+    .width-60-percent{ style: "margin: 0 auto;" }
+    %h3.c_align 投票を作成する
+    - if flash[:notice]
+      %p.c_align.notice{ style: "color: red;margin: 20px;" }%b%i = flash[:notice]
+    = form_tag("", method: :post) do
+      %table.mail_form.width-60-percent.l_align{ style: "margin: 20px auto 0px;" }
+        %tr
+          %td 件名
+          %td
+            %input.width-100-percent{ type: "text", name: "subject", style: "height: 35px;border: none;border:none;border-bottom: 1px solid #e5e5e5;font-size: 16px;padding: 7px;", autofocus: "on", placeholder: "配信するメールの件名を記入してください", required: "required" }
+        %tr
+          %td ヘッダー画像
+          %td
+            %input{ type: "file", name: "banner" }
+        %tr
+          %td{ style: "vertical-align:top;" }質問内容
+          %td
+            %textarea.width-100-percent{ name: "description", rows: "2", style: "border: none;resize: none;border: 1px solid #e5e5e5;font-size: 16px;color:black;padding: 7px;margin-top: 10px;", placeholder: "質問内容を記入してください", required: "required" }
+        %tr
+          %td
+          %td
+            %div{ style: "float:right;" }
+              %input{ type: "submit", name: "submit", value: "送信", style: "text-align: center;" }
+
