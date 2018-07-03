@@ -4,10 +4,13 @@
     %div.width-50-percent{ style: "margin: 30px auto; border: 1px solid gray; min-height: 300px; padding: 10px;" }
       %table.width-90-percent
         %tr
-          %td.width-10-percent{ style: "line-height: 4em;" } 件名
+          %td.width-20-percent 配信予定日
+          %td= params[:date]
+        %tr
+          %td.width-20-percent{ style: "line-height: 4em;" } 件名
           %td= params[:title]
         %tr
-          %td.width-10-percent 内容
+          %td.width-20-percent 内容
           %td
             %img.width-50-percent{ src: "https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" }
             %br
@@ -42,4 +45,4 @@
                 人事部
                 %br
                 %span.color-white{style: "background-color: #009DBF; padding: 5px; display: inline-block;" }
-                  投票する
+                  =link_to "投票する", voted_admin_votes_path, {style: "color: white; text-decoration:	none;"}
