@@ -82,3 +82,5 @@ gem "sentry-raven"
 #gem 'signet'
 gem 'kaminari'
 gem 'le'
+gem 'haml-rails'
+gem 'erb2haml'
