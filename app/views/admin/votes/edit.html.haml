@@ -5,4 +5,4 @@
     %h3.c_align 投票を作成する
     - if flash[:notice]
       %p.c_align.notice{ style: "color: red;margin: 20px;" }%b%i = flash[:notice]
-    -render partial: "form". locals: { vote: @vote }
+    =render partial: "form", locals: { vote: @vote }
