@@ -33,7 +33,7 @@
     - else
       %li= link_to "メッセージ", new_admin_contact_path
     - if params[:controller] == "admin/votes"
-      %li.admin_li_checked=link_to "投票", new_admin_vote_path
+      %li.admin_li_checked=link_to "投票", admin_votes_path
     - else
-      %li=link_to "投票", new_admin_vote_path
+      %li=link_to "投票", admin_votes_path
 

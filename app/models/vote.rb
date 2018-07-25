@@ -6,6 +6,8 @@ class Vote < ActiveRecord::Base
   validates :question, presence: true, length: { maximum: 50 }
   validate :not_before_today
 
+  scope :of_company, ->(company_id) { where(company_id: company_id) }
+
   def not_before_today
     errors.add(:date, '明日以降の日付を選択してください') if date.nil? || date <= Date.today
   end
