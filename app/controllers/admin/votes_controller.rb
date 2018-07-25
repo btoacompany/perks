@@ -1,11 +1,12 @@
 class Admin::VotesController < Admin::Base
-  before_action :set_record, only: [:edit, :destroy]
+  before_action :set_record, only: [:edit, :update, :destroy]
 
   def index
     @votes = Vote.of_company(@user.company_id)
   end
   
   def new
+    @vote = Vote.new
   end
 
   def create
@@ -19,6 +20,12 @@ class Admin::VotesController < Admin::Base
   end
 
   def show
+  end
+
+  def edit
+  end
+
+  def update
   end
 
   def destroy
