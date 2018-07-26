@@ -6,7 +6,7 @@ class CreateVoteResults < ActiveRecord::Migration
       t.integer :team_id
       t.integer :department_id
       t.references :vote
-      t.text :result
+      t.integer :result, null: false, default: 0
 
       t.timestamps null: false
     end

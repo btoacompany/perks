@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180726084112) do
+ActiveRecord::Schema.define(version: 20180725063303) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",        limit: 191,             null: false
@@ -267,9 +267,9 @@ ActiveRecord::Schema.define(version: 20180726084112) do
     t.integer  "team_id",       limit: 4
     t.integer  "department_id", limit: 4
     t.integer  "vote_id",       limit: 4
-    t.text     "result",        limit: 65535
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.integer  "result",        limit: 4, default: 0, null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "votes", force: :cascade do |t|
