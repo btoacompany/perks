@@ -1,8 +1,8 @@
 class Admin::VotesController < Admin::Base
-  before_action :set_record, only: [:edit, :update, :destroy]
+  before_action :set_record, only: [:show, :edit, :update, :destroy]
 
   def index
-    @votes = Vote.of_company(@user.company_id)
+    @votes = Vote.of_company(@user.company_id).order(date: :asc)
   end
   
   def new
@@ -15,7 +15,7 @@ class Admin::VotesController < Admin::Base
     if vote.save
       redirect_to admin_votes_path, notice: "投票の作成に成功しました"
     else
-      redirect_to new_admin_vote_path, notice: "#{vote.errors.full_messages}"
+      redirect_to new_admin_vote_path, notice: "#{vote.errors.full_messages[0]}"
     end
   end
 
@@ -26,9 +26,19 @@ class Admin::VotesController < Admin::Base
   end
 
   def update
+    if @vote.update_attributes(vote_params)
+      redirect_to admin_votes_path, notice: "投票の更新に成功しました"
+    else
+      redirect_to new_admin_vote_path, notice: "#{vote.errors.full_messages[0]}"
+    end
   end
 
   def destroy
+    if @vote.destroy
+      redirect_to admin_votes_path, notice: "当該の投票を削除いたしました"
+    else
+      redirect_to admin_votes_path, notice: "#{vote.errors.full_messages}"
+    end
   end
 
   def demo

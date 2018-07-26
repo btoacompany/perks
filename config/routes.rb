@@ -17,12 +17,7 @@ Rails.application.routes.draw do
     end
     resources :teams
     resources :departments
-    resources :votes do
-      collection do
-        get :demo
-        get :voted
-      end
-    end
+    resources :votes
   end
 
   resources :posts, only: :update

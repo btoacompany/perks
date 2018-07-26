@@ -6,4 +6,6 @@
       .c_align.font-size-16{ style: "font-weight: bold;" } 投票を編集する
       - if flash[:notice]
         %p.c_align.notice{ style: "color: red;margin: 20px;" }%b%i = flash[:notice]
-      =render partial: "form", locals: { vote: @vote }
+      = form_tag admin_vote_path(@vote.id), method: "put" do
+        =render partial: "form", locals: { vote: @vote }
+

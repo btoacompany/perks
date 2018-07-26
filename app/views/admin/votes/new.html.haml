@@ -5,6 +5,6 @@
       .l_align.padding-top-20=link_to "配信予定の投票一覧", admin_votes_path
       .c_align.font-size-16{ style: "font-weight: bold;" } 投票を作成する
       - if flash[:notice]
-        %p.c_align.notice{ style: "color: red;margin: 20px;" }%b%i = flash[:notice]
-      =render partial: "form", locals: { vote: @vote }
-
+        %p.c_align.notice{ style: "color: red;margin: 20px;" }= flash[:notice]
+      = form_tag admin_votes_path(@vote.id) do
+        =render partial: "form", locals: { vote: @vote }

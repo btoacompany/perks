@@ -9,6 +9,6 @@ class Vote < ActiveRecord::Base
   scope :of_company, ->(company_id) { where(company_id: company_id) }
 
   def not_before_today
-    errors.add(:date, '明日以降の日付を選択してください') if date.nil? || date <= Date.today
+    errors.add(:date, 'を明日以降で選択してください') if date.nil? || date <= Date.today
   end
 end
