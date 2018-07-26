@@ -2,7 +2,7 @@ class Admin::VotesController < Admin::Base
   before_action :set_record, only: [:show, :edit, :update, :destroy]
 
   def index
-    @votes = Vote.of_company(@user.company_id).order(date: :asc)
+    @votes = Vote.of_company(@user.company_id).date_order(:asc).scheduled
   end
   
   def new
