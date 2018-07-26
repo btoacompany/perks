@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     resources :teams
     resources :departments
     resources :votes
+    resources :vote_results, only: [:index, :show]
   end
 
   resources :posts, only: :update
