@@ -2,21 +2,22 @@
   = render "/company/admin_subheader"
   .width-100-percent#admin_contents
     .width-60-percent{ style: "margin: 0 auto;" }
-    %h3.c_align 配信予定の投票一覧
-    - if @votes.count > 0
-      %table.width-60-percent{ style: "margin: 0 auto; padding: 20px 0;" }
-        %tr
-          %th 配信予定日
-          %th タイトル
-          %th 質問内容
-          %th 編集
-          %th 削除
-        - @votes.each do |vote|
-          %tr
-            %td.width-8-percent.c_align{ style: "word-break: break-all;" }= vote.date
-            %td.width-10-percent.c_align{ style: "word-break: break-all;" }= vote.title
-            %td.width-30-percent.c_align{ style: "word-break: break-all;" }= vote.question
-            %td.width-10-percent.c_align{ style: "word-break: break-all;" }= link_to "編集", edit_admin_vote_path(vote.id)
-            %td.width-10-percent.c_align{ style: "word-break: break-all;" }=link_to "削除", admin_vote_path(vote.id)
-    - else
-      %p 配信予定の投票はありません
+      %h3.c_align 配信予定の投票一覧
+      - if @votes.count > 0
+        %table{ style: "margin: 10px auto;", border: 1 }
+          %tr.bg-gray
+            %th.p-10 配信予定日
+            %th タイトル
+            %th 質問内容
+            %th 編集
+            %th キャンセル
+          - @votes.each do |vote|
+            %tr
+              %td.width-8-percent.c_align.p-10{ style: "word-break: break-all;" }= vote.date
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }= vote.title
+              %td.width-30-percent.c_align{ style: "word-break: break-all;" }= vote.question
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }= link_to "編集", edit_admin_vote_path(vote.id)
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }=link_to "キャンセル", admin_vote_path(vote.id), method: :delete, data: { confirm: "#{vote.date}配信予定 #{vote.title}の投票をキャンセルにしますか?" }
+        .r_align.p-10=link_to "投票を新しく作成する", new_admin_vote_path
+      - else
+        .c_align.p-10=link_to "投票を新しく作成する", new_admin_vote_path
