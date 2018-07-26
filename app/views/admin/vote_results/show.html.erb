@@ -1,0 +1,65 @@
+<div class="analytics_holder">
+  <div class="analytics_time_select">
+    <div class="clearfix">
+    </div>
+  </div>
+  <%= render '/analytics/analytics' %>
+  <div class="analytics_container" style="float: left; width: 80%; background-color: white; margin-bottom: 30px;">
+    <div class="analytics_holder toolbox width-100-percent" id="admin_contents">
+      <h3 style="padding-left: 10px; margin: 10px;"><%= @vote.title %></h3>
+      <h4 style="padding-left: 20px; line-height: 1.8em;">質問内容: <%= @vote.question %></h4>
+      <h4 style="padding-left: 20px; line-height: 1.8em;">現在の部署ごとの投票率</h4>
+      <div id="chartContainer" style="padding-left: 20px; margin: 20px 0;height: 300px; width: 80%;"></div>
+      <div class="width-90-percent" style="padding-left: 20px; margin: 20px 0;">
+        <%=form_tag admin_vote_result_path(@vote.id), method: :get do %>
+          <select>
+            <option>詳細を閲覧する部署を選択してください</option>
+            <% @departments.each do |dep| %>
+              <option><%= dep.dep_name %></option>
+            <% end %>
+          <input type="submit"/>
+        <% end %>
+        <table class="tbl_tools width-100-percent" border="1"/>
+          <tr>
+            <th>チーム
+            <th>名前
+            <th>投票数
+            <th>投票率
+          </tr>
+          <tr>
+            <td class="width-8-percent" style="word-break: break-all;">インフラ </td>
+            <td class="width-8-percent" style="word-break: break-all;">山田太郎 </td>
+            <td class="width-8-percent" style="word-break: break-all;">10 </td>
+            <td class="width-8-percent" style="word-break: break-all;">60% </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      theme: "light2",
+      title:{
+        text: "部署ごとの投票率"
+      },
+      axisY: {
+        title: "投票率"
+      },
+      data: [{        
+        type: "column",
+        color: "#ff8d07",
+        dataPoints: [
+          <% @dep_response_rate.each do |key, value| %>
+            { y: <%= value %>, label: "<%= key %>" },
+          <% end %>
+        ]
+      }]
+    });
+    chart.render();
+  }
+
+</script>
