@@ -7,6 +7,7 @@ class Department < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
   has_many :teams
+  has_many :vote_results
 
   validates :dep_name , presence: true , length: {maximum: 30}
   validates :company_id , presence: true
