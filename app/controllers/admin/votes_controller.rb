@@ -37,14 +37,15 @@ class Admin::VotesController < Admin::Base
     if @vote.destroy
       redirect_to admin_votes_path, notice: "当該の投票を削除いたしました"
     else
-      redirect_to admin_votes_path, notice: "#{vote.errors.full_messages}"
+      redirect_to admin_votes_path, notice: "#{vote.errors.full_messages[0]}"
     end
   end
 
-  def demo
-  end
-
-  def voted
+  def send
+    votes = Vote.done.where(is_delivered: false)
+    votes.each do |vote|
+      
+    end
   end
 
   private
