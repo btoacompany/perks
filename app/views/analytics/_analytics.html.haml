@@ -1,0 +1,34 @@
+.analytics_sidebar{ style: "width: 15%;" }
+  %ul
+    - if controller.action_name == "pv"
+      %li{ "background-color: #3a3a3c;" }= link_to "アクセス状況", "/analytics/pv"
+    - else
+      %li= link_to "アクセス状況", "/analytics/pv"
+    - if controller.action_name == "overall"
+      %li{ style: "background-color: #3a3a3c;" }= link_to "利用状況", "/analytics/"
+    - else
+      %li= link_to "利用状況", "/analytics"
+    - if controller.controller_name == "analytics" && controller.action_name == "index"
+      %li{ style: "background-color: #3a3a3c;" }= link_to "ポイント取得状況", "/analytics/receiver"
+    - else
+      %li= link_to "ポイント取得状況", "/analytics/receiver"
+    - if controller.action_name == "giver"
+      %li{ style: "background-color: #3a3a3c;" }= link_to "ポイント贈与状況", "/analytics/giver"
+    - else
+      %li= link_to "ポイント贈与状況", "/analytics/giver"
+    - if controller.action_name == "teams"
+      %li{ style: "background-color: #3a3a3c;" }= link_to "チーム別", "/analytics/teams"
+    - else
+      %li= link_to "チーム別", "/analytics/teams"
+    - if controller.action_name == "users"
+      %li{ style: "background-color: #3a3a3c;" }= link_to "社員一覧", "/analytics/users"
+    - else
+      %li= link_to "社員一覧", "/analytics/users"
+    - if controller.controller_name == "posts" && controller.action_name == "index"
+      %li{ style: "background-color: #3a3a3c;" }= link_to "メッセージ一覧", admin_posts_path
+    - else
+      %li= link_to "メッセージ一覧", admin_posts_path
+    - if controller.controller_name == "vote_results" && controller.action_name == "index"
+      %li{ style: "background-color: #3a3a3c;" }= link_to "投票結果一覧", admin_vote_results_path
+    - else
+      %li= link_to "投票結果一覧", admin_vote_results_path
