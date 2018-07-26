@@ -64,6 +64,8 @@
 .font-size-18{font-size: 12px;}
 .font-size-36{font-size: 36px;}
 .font-size-40{font-size: 40px;}
+.bg-gray{background-color: #f0f0f0;}
+.p-10{ padding: 10px; }
 
 table {
   border-spacing: 0;
@@ -805,6 +807,10 @@ hr.style-two {
 
 .c_align {
   text-align: center;
+}
+
+.r_align {
+  text-align: right;
 }
 
 .r_float {
