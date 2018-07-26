@@ -3,7 +3,22 @@
     .clearfix
   = render '/analytics/analytics'
   .analytics_container{ style: "float: left; width: 80%; background-color: white; margin-bottom: 30px;" }
-    .analytics_holder.toolbox.width-100-percent#admin_contents
-      %h3{ style: "padding-left: 10px; margin: 10px;" } 2018/04/15の投票結果
-      %h4{ style: "padding-left: 20px; line-height: 1.8em;"} 質問内容: 今週あなたのチームで最も活躍した人は誰ですか？
-      %h4{ style: "padding-left: 20px; line-height: 1.8em;"}  現在の部署ごとの投票率
+    .analytics_holder.toolbox.width-80-percent#admin_contents{ style: "margin: 0 auto;" }
+      %h3.c_align 投票結果一覧
+      - if @votes.count > 0
+        %table{ style: "margin: 10px auto;", border: 1 }
+          %tr.bg-gray
+            %th.p-10 配信日
+            %th タイトル
+            %th 質問内容
+            %th 回答数
+            %th 回答率
+          - @votes.each do |vote|
+            %tr
+              %td.width-8-percent.c_align.p-10{ style: "word-break: break-all;" }= vote.date
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }= link_to vote.title, admin_vote_result_path(vote.id)
+              %td.width-30-percent.c_align{ style: "word-break: break-all;" }= vote.question
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }= vote.vote_results.count
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }= ((vote.vote_results.count / @total_employee_count).round(1) * 100).to_s + "%"
+      - else
+        .c_align.p-10 投票が開始するまでお待ちください

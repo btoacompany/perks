@@ -12,27 +12,37 @@
       <div id="chartContainer" style="padding-left: 20px; margin: 20px 0;height: 300px; width: 80%;"></div>
       <div class="width-90-percent" style="padding-left: 20px; margin: 20px 0;">
         <%=form_tag admin_vote_result_path(@vote.id), method: :get do %>
-          <select>
-            <option>詳細を閲覧する部署を選択してください</option>
+          <select name="department_id">
+            <option value="">詳細を閲覧する部署を選択してください</option>
             <% @departments.each do |dep| %>
-              <option><%= dep.dep_name %></option>
+              <% if params[:department_id] == dep.id.to_s %>
+                <option value=<%= dep.id %> selected><%= dep.dep_name %></option>
+              <% else %>
+                <option value=<%= dep.id %>><%= dep.dep_name %></option>
+              <% end %>
             <% end %>
           <input type="submit"/>
         <% end %>
-        <table class="tbl_tools width-100-percent" border="1"/>
-          <tr>
-            <th>チーム
-            <th>名前
-            <th>投票数
-            <th>投票率
-          </tr>
-          <tr>
-            <td class="width-8-percent" style="word-break: break-all;">インフラ </td>
-            <td class="width-8-percent" style="word-break: break-all;">山田太郎 </td>
-            <td class="width-8-percent" style="word-break: break-all;">10 </td>
-            <td class="width-8-percent" style="word-break: break-all;">60% </td>
-          </tr>
-        </table>
+        <% if @dep_ranking.present? %>
+          <table class="tbl_tools width-100-percent" border="1"/>
+            <tr>
+              <th>名前
+              <th>投票数
+              <th>投票率
+            </tr>
+            <% @dep_ranking.each do |key, value| %>
+              <tr>
+                <td class="width-8-percent" style="word-break: break-all;"><%= "#{@users[key].try(:lastname)} #{@users[key].try(:firstname)}" %></td>
+                <td class="width-8-percent" style="word-break: break-all;"><%= value %></td>
+                <td class="width-8-percent" style="word-break: break-all;"><%= (value/@dep_total_vote.to_f).round(2) * 100 %>%</td>
+              </tr>
+            <% end %>
+          </table>
+        <% else %>
+          <p>まだ投票されていません</p>
+        <% end %>
+        <br/>
+        <%= link_to "投票結果一覧へ", admin_vote_results_path %>
       </div>
     </div>
   </div>
@@ -47,11 +57,13 @@
         text: "部署ごとの投票率"
       },
       axisY: {
-        title: "投票率"
+        title: "投票率",
+        valueFormatString: "##.#%"
       },
       data: [{        
         type: "column",
         color: "#ff8d07",
+        yValueFormatString: "##.#%",
         dataPoints: [
           <% @dep_response_rate.each do |key, value| %>
             { y: <%= value %>, label: "<%= key %>" },

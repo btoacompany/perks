@@ -28,7 +28,7 @@
       %li{ style: "background-color: #3a3a3c;" }= link_to "メッセージ一覧", admin_posts_path
     - else
       %li= link_to "メッセージ一覧", admin_posts_path
-    - if controller.controller_name == "vote_results" && controller.action_name == "index"
+    - if controller.controller_name == "vote_results" && ( controller.action_name == "index" || controller.action_name == "show" )
       %li{ style: "background-color: #3a3a3c;" }= link_to "投票結果一覧", admin_vote_results_path
     - else
       %li= link_to "投票結果一覧", admin_vote_results_path
