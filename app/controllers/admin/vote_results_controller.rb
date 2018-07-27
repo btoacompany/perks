@@ -16,6 +16,16 @@ class Admin::VoteResultsController < Admin::Base
     @dep_total_vote = VoteResult.of_company(@user.company_id).of_department(params[:department_id]).count
   end
 
+  def create
+    VoteResule.new(
+      user_id:  ,
+      team_id:  ,
+      department_id: ,
+      vote_id: ,
+      result: ,
+    )
+  end
+
   private
   def get_dep_headcount(departments)
     departments.each_with_object({}) do |dep, hash |
