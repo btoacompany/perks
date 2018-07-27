@@ -13,6 +13,8 @@
             %th 質問内容
             %th 編集
             %th キャンセル
+            - if @user.company_id == 1 || 6
+              %th 今すぐ配信
           - @votes.each do |vote|
             %tr
               %td.width-8-percent.c_align.p-10{ style: "word-break: break-all;" }= vote.date
@@ -20,6 +22,8 @@
               %td.width-30-percent.c_align{ style: "word-break: break-all;" }= vote.question
               %td.width-10-percent.c_align{ style: "word-break: break-all;" }= link_to "編集", edit_admin_vote_path(vote.id)
               %td.width-10-percent.c_align{ style: "word-break: break-all;" }=link_to "キャンセル", admin_vote_path(vote.id), method: :delete, data: { confirm: "#{vote.date}配信予定 #{vote.title}の投票をキャンセルにしますか?" }
+              - if @user.company_id == 1 || 6
+                %td.width-8-percent.c_align{ style: "word-break: break-all;" }=link_to "今すぐ配信する", send_votes_admin_votes_path, method: :post, data: { confirm: "#{vote.date}配信予定 #{vote.title}の投票を本当に配信しますか?" }
         .r_align.p-10=link_to "投票を新しく作成する", new_admin_vote_path
       - else
         .c_align.p-10=link_to "投票を新しく作成する", new_admin_vote_path

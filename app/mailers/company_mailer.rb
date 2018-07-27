@@ -39,8 +39,8 @@ class CompanyMailer < ActionMailer::Base
     @vote  = data[:vote]
     @ref_users = data[:ref_users]
     @info = data[:info]
-    @ref_users = ref_users
-    puts @info
-    # mail(to: data[:email], subject: data[:vote].title)
+    @ref_users = data[:ref_users]
+
+    mail(to: data[:email], subject: @vote.title)
   end
 end

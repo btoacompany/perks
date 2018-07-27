@@ -2,7 +2,7 @@ class Admin::VotesController < Admin::Base
   before_action :set_record, only: [:show, :edit, :update, :destroy]
 
   def index
-    @votes = Vote.of_company(@user.company_id).date_order(:asc).scheduled
+    @votes = Vote.of_company(@user.company_id).date_order(:asc).scheduled.where(is_delivered: false)
   end
   
   def new
@@ -13,11 +13,6 @@ class Admin::VotesController < Admin::Base
     vote = Vote.new(vote_params)
     vote.company_id = @user.company_id
     if vote.save
-
-      logger.debug("----")
-      send_votes
-      logger.debug("----")
-
       redirect_to admin_votes_path, notice: "投票の作成に成功しました"
     else
       redirect_to new_admin_vote_path, notice: "#{vote.errors.full_messages[0]}"
@@ -57,12 +52,15 @@ class Admin::VotesController < Admin::Base
         data = {
           vote: vote,
           ref_users: @ref_users,
-          email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
+          email: ENV["SENDGRID_ENABLED"] ? user.email : "info@btoa-company.com",
           info: info
         }
-        # CompanyMailer.vote_mail(data).deliver_now
+        CompanyMailer.vote_mail(data).deliver_now
       end
+      vote.is_delivered = true
+      vote.save
     end
+    redirect_to admin_votes_path
   end
 
   private

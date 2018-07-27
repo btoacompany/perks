@@ -17,13 +17,11 @@ class Admin::VoteResultsController < Admin::Base
   end
 
   def create
-    VoteResule.new(
-      user_id:  ,
-      team_id:  ,
-      department_id: ,
-      vote_id: ,
-      result: ,
-    )
+    if VoteResule.create(vote_result_params)
+      redirect_to admin_votes_path, notice: "投票しました"
+    else
+      redirect_to admin_votes_path, notice: "投票に失敗しました"
+    end
   end
 
   private
@@ -50,5 +48,9 @@ class Admin::VoteResultsController < Admin::Base
     unless @vote
       raise ActiveRecord::RecordNotFound, "Vote is not found"
     end
+  end
+
+  def vote_result_params
+    params.permit(:user_id, :team_id, :department_id, :vote_id, :result)
   end
 end
