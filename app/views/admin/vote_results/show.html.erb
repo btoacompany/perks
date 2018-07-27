@@ -1,0 +1,77 @@
+<div class="analytics_holder">
+  <div class="analytics_time_select">
+    <div class="clearfix">
+    </div>
+  </div>
+  <%= render '/analytics/analytics' %>
+  <div class="analytics_container" style="float: left; width: 80%; background-color: white; margin-bottom: 30px;">
+    <div class="analytics_holder toolbox width-100-percent" id="admin_contents">
+      <h3 style="padding-left: 10px; margin: 10px;"><%= @vote.title %></h3>
+      <h4 style="padding-left: 20px; line-height: 1.8em;">質問内容: <%= @vote.question %></h4>
+      <h4 style="padding-left: 20px; line-height: 1.8em;">現在の部署ごとの投票率</h4>
+      <div id="chartContainer" style="padding-left: 20px; margin: 20px 0;height: 300px; width: 80%;"></div>
+      <div class="width-90-percent" style="padding-left: 20px; margin: 20px 0;">
+        <%=form_tag admin_vote_result_path(@vote.id), method: :get do %>
+          <select name="department_id">
+            <option value="">詳細を閲覧する部署を選択してください</option>
+            <% @departments.each do |dep| %>
+              <% if params[:department_id] == dep.id.to_s %>
+                <option value=<%= dep.id %> selected><%= dep.dep_name %></option>
+              <% else %>
+                <option value=<%= dep.id %>><%= dep.dep_name %></option>
+              <% end %>
+            <% end %>
+          <input type="submit"/>
+        <% end %>
+        <% if @dep_ranking.present? %>
+          <table class="tbl_tools width-100-percent" border="1"/>
+            <tr>
+              <th>名前
+              <th>投票数
+              <th>投票率
+            </tr>
+            <% @dep_ranking.each do |key, value| %>
+              <tr>
+                <td class="width-8-percent" style="word-break: break-all;"><%= "#{@users[key].try(:lastname)} #{@users[key].try(:firstname)}" %></td>
+                <td class="width-8-percent" style="word-break: break-all;"><%= value %></td>
+                <td class="width-8-percent" style="word-break: break-all;"><%= (value/@dep_total_vote.to_f).round(2) * 100 %>%</td>
+              </tr>
+            <% end %>
+          </table>
+        <% else %>
+          <p>まだ投票されていません</p>
+        <% end %>
+        <br/>
+        <%= link_to "投票結果一覧へ", admin_vote_results_path %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      theme: "light2",
+      title:{
+        text: "部署ごとの投票率"
+      },
+      axisY: {
+        title: "投票率",
+        valueFormatString: "##.#%"
+      },
+      data: [{        
+        type: "column",
+        color: "#ff8d07",
+        yValueFormatString: "##.#%",
+        dataPoints: [
+          <% @dep_response_rate.each do |key, value| %>
+            { y: <%= value %>, label: "<%= key %>" },
+          <% end %>
+        ]
+      }]
+    });
+    chart.render();
+  }
+
+</script>

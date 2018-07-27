@@ -9,3 +9,7 @@ ja:
         description: ディスクリプション
       post:
         description: メッセージ
+      vote:
+        title: 件名
+        date: 日付
+        question: 質問内容

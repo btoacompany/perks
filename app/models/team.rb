@@ -6,6 +6,7 @@ class Team < ActiveRecord::Base
   before_create :set_create_time
   before_update :set_update_time
   belongs_to :department
+  has_many :vote_records
 
   validates :team_name, presence: true
   validates :member_ids, presence: true, on: :create

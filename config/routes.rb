@@ -19,10 +19,10 @@ Rails.application.routes.draw do
     resources :departments
     resources :votes do
       collection do
-        get :demo
-        get :voted
+        post :send_votes
       end
     end
+    resources :vote_results, only: [:index, :show, :create]
   end
 
   resources :posts, only: :update

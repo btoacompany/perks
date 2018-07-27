@@ -1,0 +1,39 @@
+.admin_subheader
+  %ul.admin_list
+    - if params[:controller] == "company" && params[:action] == "details"
+      %li.admin_li_checked= link_to "会社情報", company_details_path
+    - else
+      %li= link_to "会社情報", company_details_path
+    - if params[:controller] == "company" && params[:action] == "customize"
+      %li.admin_li_checked= link_to "カスタマイズ", company_customize_path
+    - else
+      %li= link_to "カスタマイズ", company_customize_path
+    - if params[:controller] == "company" && params[:action] == "teams" || (controller.class.parents.include?(Admin) && params[:controller] == "admin/teams")
+      %li.admin_li_checked= link_to "部署・チーム情報", admin_teams_path
+    - else
+      %li= link_to "部署・チーム情報", admin_teams_path
+    - if params[:controller] == "company" && (params[:action] == "employees" || params[:action] == "register_employees" || params[:action] == "add_employees")
+      %li.admin_li_checked= link_to "社員情報", company_employees_path
+    - else
+      %li= link_to "社員情報", company_employees_path
+    - if params[:controller] == "landing" && params[:action] == "slack_add"
+      %li.admin_li_checked= link_to "Slack連携", integration_slack_path
+    - else
+      %li= link_to "Slack連携", integration_slack_path
+    - if params[:controller] == "articles" || params[:controller] == "categories" || params[:controller] == "user_posted_contents"
+      %li.admin_li_checked= link_to "ブログ", company_articles_path
+    - else
+      %li= link_to "ブログ", company_articles_path
+    - if params[:controller] == "banners"
+      %li.admin_li_checked= link_to "バナー", company_banners_path
+    - else
+      %li= link_to "バナー", company_banners_path
+    - if params[:controller] == "admin/contacts"
+      %li.admin_li_checked= link_to "メッセージ", new_admin_contact_path
+    - else
+      %li= link_to "メッセージ", new_admin_contact_path
+    - if params[:controller] == "admin/votes"
+      %li.admin_li_checked=link_to "投票", admin_votes_path
+    - else
+      %li=link_to "投票", admin_votes_path
+

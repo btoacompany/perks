@@ -34,4 +34,13 @@ class CompanyMailer < ActionMailer::Base
     @data = data
     mail(to: data[:email], subject: "【Prizy】今週の勝手にレコメンド")
   end
+
+  def vote_mail(data)
+    @vote  = data[:vote]
+    @ref_users = data[:ref_users]
+    @info = data[:info]
+    @ref_users = data[:ref_users]
+
+    mail(to: data[:email], subject: @vote.title)
+  end
 end

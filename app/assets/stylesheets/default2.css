@@ -61,9 +61,12 @@
 .font-size-13{font-size: 13px;}
 .font-size-13half{font-size: 13.5px;}
 .font-size-14{font-size: 14px;}
+.font-size-16{font-size: 16px;}
 .font-size-18{font-size: 12px;}
 .font-size-36{font-size: 36px;}
 .font-size-40{font-size: 40px;}
+.bg-gray{background-color: #f0f0f0;}
+.p-10{ padding: 10px; }
 
 table {
   border-spacing: 0;
@@ -803,8 +806,16 @@ hr.style-two {
   margin: 0 auto;
 }
 
+.l_align {
+  text-align: left;
+}
+
 .c_align {
   text-align: center;
+}
+
+.r_align {
+  text-align: right;
 }
 
 .r_float {
@@ -987,6 +998,10 @@ hr.style-two {
 }
 .padding-bottom-30{
   padding-bottom: 30px;
+}
+
+.padding-top-20 {
+  padding-top: 20px;
 }
 
 .inactive_link {

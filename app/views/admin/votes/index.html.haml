@@ -1,32 +1,29 @@
-.analytics_holder
-  .analytics_time_select
-    .clearfix
-  = render '/analytics/analytics'
-  .analytics_container.c_align{ style: "float: left; width: 80%; background-color: white; margin-bottom: 30px;" }
-    .analytics_holder.toolbox.width-100-percent#admin_contents
-      %h3{ style: "margin: 10px;" } 投票一覧
-      %table.tbl_tools.width-90-percent{ border: "1" }
-        %tr
-          %th 配信日
-          %th タイトル
-          %th 質問内容
-          %th 回答者数
-          %th 回答率
-        %tr
-          %td.width-8-percent{ style: "word-break: break-all;" } 2018/04/15
-          %td.width-10-percent{ style: "word-break: break-all;" }=link_to "2018/04/15の投票", admin_vote_path(1)
-          %td.width-30-percent{ style: "word-break: break-all;" } 今週あなたのチームで最も活躍した人は誰ですか？
-          %td.width-10-percent{ style: "word-break: break-all;" } 200/1000
-          %td.width-10-percent{ style: "word-break: break-all;" } 20.0%
-        %tr
-          %td.width-8-percent{ style: "word-break: break-all;" } 2018/04/08
-          %td.width-10-percent{ style: "word-break: break-all;" } 2018/04/08の投票
-          %td.width-30-percent{ style: "word-break: break-all;" } 今週あなたのチームで最も活躍した人は誰ですか？
-          %td.width-10-percent{ style: "word-break: break-all;" } 150/1000
-          %td.width-10-percent{ style: "word-break: break-all;" } 15.0%
-        %tr
-          %td.width-8-percent{ style: "word-break: break-all;" } 2018/04/01
-          %td.width-10-percent{ style: "word-break: break-all;" } 2018/04/01の投票
-          %td.width-30-percent{ style: "word-break: break-all;" } 今週あなたのチームで最も活躍した人は誰ですか？
-          %td.width-10-percent{ style: "word-break: break-all;" } 100/1000
-          %td.width-10-percent{ style: "word-break: break-all;" } 10.0%
+#admin_wrapper
+  = render "/company/admin_subheader"
+  .width-100-percent#admin_contents
+    .width-60-percent{ style: "margin: 0 auto;" }
+      %h3.c_align 配信予定の投票一覧
+      - if flash[:notice]
+        %p.c_align.notice{ style: "color: red;margin: 20px;" }= flash[:notice]
+      - if @votes.count > 0
+        %table{ style: "margin: 10px auto;", border: 1 }
+          %tr.bg-gray
+            %th.p-10 配信予定日
+            %th タイトル
+            %th 質問内容
+            %th 編集
+            %th キャンセル
+            - if @user.company_id == 1 || 6
+              %th 今すぐ配信
+          - @votes.each do |vote|
+            %tr
+              %td.width-8-percent.c_align.p-10{ style: "word-break: break-all;" }= vote.date
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }= link_to vote.title, admin_vote_path(vote.id)
+              %td.width-30-percent.c_align{ style: "word-break: break-all;" }= vote.question
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }= link_to "編集", edit_admin_vote_path(vote.id)
+              %td.width-10-percent.c_align{ style: "word-break: break-all;" }=link_to "キャンセル", admin_vote_path(vote.id), method: :delete, data: { confirm: "#{vote.date}配信予定 #{vote.title}の投票をキャンセルにしますか?" }
+              - if @user.company_id == 1 || 6
+                %td.width-8-percent.c_align{ style: "word-break: break-all;" }=link_to "今すぐ配信する", send_votes_admin_votes_path, method: :post, data: { confirm: "#{vote.date}配信予定 #{vote.title}の投票を本当に配信しますか?" }
+        .r_align.p-10=link_to "投票を新しく作成する", new_admin_vote_path
+      - else
+        .c_align.p-10=link_to "投票を新しく作成する", new_admin_vote_path
