@@ -1,0 +1,15 @@
+.width-100-percent
+  %div.width-50-percent{ style: "margin: 30px auto; min-height: 300px; padding: 10px;" }
+    %p.c_align= @vote.question
+    %img.width-100-percent{ src: "https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image" }
+    .width-100-percent.clearfix{ style: "margin: 0 auto;"}
+      .width-30-percent.float_left
+        %img.width-30-percent{ src: "https://s3-ap-northeast-1.amazonaws.com/prizy/common/noimg_pc.png" }
+        %br
+        %h4 鈴木三郎
+        %br
+        人事部
+        %br
+        %span.color-white{style: "background-color: #009DBF; padding: 5px; display: inline-block;" }
+          =link_to "投票する", "", {style: "color: white; text-decoration:	none;"}
+
