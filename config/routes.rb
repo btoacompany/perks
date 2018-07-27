@@ -17,8 +17,12 @@ Rails.application.routes.draw do
     end
     resources :teams
     resources :departments
-    resources :votes
-    resources :vote_results, only: [:index, :show]
+    resources :votes do
+      collection do
+        post :send_votes
+      end
+    end
+    resources :vote_results, only: [:index, :show, :create]
   end
 
   resources :posts, only: :update
