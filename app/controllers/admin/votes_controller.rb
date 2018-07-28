@@ -106,7 +106,7 @@ class Admin::VotesController < Admin::Base
     teams = Team.available.of_company(vote.company_id)
     dep_member_ids = Department.of_company(vote.company_id).available.each_with_object({}) do |dep, hash|
       array = dep.teams.each_with_object([]) do |team, array|
-        team.member_ids.split(",").map { |member_id| array << member_id }
+        team.member_ids.split(",").map { |member_id| array << member_id } if team.member_ids.present?
       end
       hash.store(dep.id, array.uniq)
     end
