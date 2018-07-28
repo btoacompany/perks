@@ -10,12 +10,24 @@ class Admin::VotesController < Admin::Base
   end
 
   def create
-    vote = Vote.new(vote_params)
-    vote.company_id = @user.company_id
-    if vote.save
-      redirect_to admin_votes_path, notice: "投票の作成に成功しました"
-    else
-      redirect_to new_admin_vote_path, notice: "#{vote.errors.full_messages[0]}"
+    begin
+      vote = Vote.new(vote_params)
+      vote.company_id = @user.company_id
+      if vote_params[:header_image_url]
+        src = vote_params[:header_image_url]
+        s3 = Aws::S3::Resource.new
+        obj = s3 .bucket(@s3_bucket).object("vote/vote_#{vote.id}")
+        obj.upload_file src.tempfile, { acl: "public-read" }
+        vote.header_image_url = obj.public_url
+      end
+      vote.save
+      if vote.valid?
+        redirect_to admin_votes_path, notice: "投票の作成に成功しました"
+      else
+        redirect_to new_admin_vote_path, notice: "#{vote.errors.full_messages[0]}"
+      end
+    rescue Exception => e
+      puts "#{e.class}"
     end
   end
 
@@ -27,6 +39,14 @@ class Admin::VotesController < Admin::Base
 
   def update
     if @vote.update_attributes(vote_params)
+      if vote_params[:header_image_url]
+        src = vote_params[:header_image_url]
+        s3 = Aws::S3::Resource.new
+        obj = s3 .bucket(@s3_bucket).object("vote/vote_#{@vote.id}")
+        obj.upload_file src.tempfile, { acl: "public-read" }
+        @vote.header_image_url = obj.public_url
+        @vote.save
+      end
       redirect_to admin_votes_path, notice: "投票の更新に成功しました"
     else
       redirect_to new_admin_vote_path, notice: "#{vote.errors.full_messages[0]}"
