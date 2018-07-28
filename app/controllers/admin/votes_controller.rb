@@ -65,16 +65,17 @@ class Admin::VotesController < Admin::Base
     # votes = Vote.finished.where(is_delivered: false)
     votes = Vote.where(is_delivered: false)
     votes.each do |vote|
-      users = User.of_company(vote.company_id).where(id: [1..20]).available
+      users = User.of_company(vote.company_id).available
       @ref_users = users.index_by(&:id)
       voters_info = get_voters_info(vote, users, @ref_users)
       voters_info.each do |info|
         data = {
           vote: vote,
           ref_users: @ref_users,
-          email: ENV["SENDGRID_ENABLED"] ? user.email : "info@btoa-company.com",
+          email: "naoto.udagawa1230@gmail.com",
           info: info
         }
+        # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
         CompanyMailer.vote_mail(data).deliver_now
       end
       vote.is_delivered = true

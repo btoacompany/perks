@@ -14,7 +14,7 @@
             %th 編集
             %th キャンセル
             - if @user.company_id == 1 || 6
-              %th 今すぐ配信
+              %th 今すぐ配信（テスト用）
           - @votes.each do |vote|
             %tr
               %td.width-8-percent.c_align.p-10{ style: "word-break: break-all;" }= vote.date
