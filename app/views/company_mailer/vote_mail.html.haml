@@ -1,7 +1,7 @@
 .width-100-percent
-  %p.c_align= @vote.question
+  %h3.c_align= @vote.question
   .width-50-percent
-    %img.width-30-percent{ src: "https://btoa-img.s3-ap-northeast-1.amazonaws.com/company/banner_no_image", width: "400px", style: "margin: 0 auto;" }
+    = @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "200") : "ヘッダー画像はありません"
     .width-100-percent.clearfix{ style: "margin: 0 auto;"}
       - if @info[1][:candidate_ids].present?
         - @info[1][:candidate_ids].each do |id|
@@ -15,5 +15,5 @@
                 %br
               %h4.c_align{ style: "margin: 0 auto;" }=(@ref_users[id.to_i].lastname =@ref_users[id.to_i].lastname)
               %span.color-white.c_align{ style: "background-color: #009DBF; padding: 5px; display: inline-block;margin: 0 auto;" }
-                =link_to "投票する", admin_vote_results_path(user_id: @info[0].id, team_id: @info[1][:team_id], department_id: @info[1][:department].try(:id), vote_id: @vote.id , result: id.to_i ), method: :post, style: "color: white; text-decoration:	none;"
+                =link_to "投票する", create_vote_admin_vote_results_path(user_id: @info[0].id, team_id: @info[1][:team_id], department_id: @info[1][:department].try(:id), vote_id: @vote.id , result: id.to_i ), method: :post, style: "color: white; text-decoration:	none;"
 
