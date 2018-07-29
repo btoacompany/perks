@@ -702,7 +702,11 @@ GEM
       addressable
       faraday
       multi_json
+    launchy (2.4.3)
+      addressable (~> 2.3)
     le (2.7.6)
+    letter_opener (1.6.0)
+      launchy (~> 2.2)
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -875,6 +879,7 @@ DEPENDENCIES
   kaminari
   koala (~> 1.10.0rc)
   le
+  letter_opener
   mysql2 (~> 0.3.21)
   omniauth-facebook (~> 1.4.1)
   omniauth-slack
