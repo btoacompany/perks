@@ -1,0 +1,30 @@
+<div width-100-percent>
+  <h3 class="c_align"><%= @vote.question %></h3>
+  <div class="width-50-percent">
+    <%= @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "200") : "" %>
+    <div class="width-100-percent clearfix" style="margin: 0 auto;">
+      <% if @info[1][:candidate_ids].present? %>
+        <% @info[1][:candidate_ids].each do |id| %>
+          <div class="width-30-percent float_left">
+            <img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/noimg_pc.png" />
+            <br/>
+            <div class="width-100-percent c_align" style="margin: 0 auto;">
+              <% if @info[1][:department].present? %>
+                <div class="c_align" style="margin: 0 auto;">
+                  <%= @info[1][:department].try(:dep_name) %>
+                  <br/>
+                </div>
+              <% end %>
+              <h4 class="c_align" style="margin: 0 auto;">
+                <%=(@ref_users[id.to_i].lastname =@ref_users[id.to_i].lastname) %>
+              </h4>
+              <span class="color-white c_align" style="background-color: #009DBF; padding: 5px; display: inline-block;margin: 0 auto;" >
+                <%= link_to "投票する", admin_vote_results_path(user_id: @info[0].id, team_id: @info[1][:team_id], department_id: @info[1][:department].try(:id), vote_id: @vote.id , result: id.to_i ), method: :post, style: "color: white; text-decoration:	none;" %>
+              </span>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
