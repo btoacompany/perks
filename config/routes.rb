@@ -22,7 +22,7 @@ Rails.application.routes.draw do
         post :send_votes
       end
     end
-    resources :vote_results, only: [:index, :show], shallow: true do
+    resources :vote_results, only: [:index, :show, :create], shallow: true do
       collection do
         get :create_vote
       end
