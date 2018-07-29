@@ -1,7 +1,7 @@
 .width-100-percent
   %h3.c_align= @vote.question
   .width-50-percent
-    = @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "200") : "ヘッダー画像はありません"
+    = @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "200") : ""
     .width-100-percent.clearfix{ style: "margin: 0 auto;"}
       - if @info[1][:candidate_ids].present?
         - @info[1][:candidate_ids].each do |id|
