@@ -62,26 +62,30 @@ class Admin::VotesController < Admin::Base
   end
 
   def send_votes
-    # votes = Vote.finished.where(is_delivered: false)
-    votes = Vote.where(is_delivered: false)
-    votes.each do |vote|
-      users = User.of_company(vote.company_id).available
-      @ref_users = users.index_by(&:id)
-      voters_info = get_voters_info(vote, users, @ref_users)
-      voters_info.each do |info|
-        data = {
-          vote: vote,
-          ref_users: @ref_users,
-          email: "naoto.udagawa1230@gmail.com",
-          info: info
-        }
-        # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
-        CompanyMailer.vote_mail(data).deliver_now
+    begin
+      # votes = Vote.finished.where(is_delivered: false)
+      votes = Vote.where(is_delivered: false)
+      votes.each do |vote|
+        users = User.of_company(vote.company_id).available
+        @ref_users = users.index_by(&:id)
+        voters_info = get_voters_info(vote, users, @ref_users)
+        voters_info.each do |info|
+          data = {
+            vote: vote,
+            ref_users: @ref_users,
+            email: "naoto.udagawa1230@gmail.com",
+            info: info
+          }
+          # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
+          CompanyMailer.vote_mail(data).deliver_now
+        end
+        vote.is_delivered = true
+        vote.save
       end
-      vote.is_delivered = true
-      vote.save
+      redirect_to admin_votes_path
+    rescue => e
+      puts "#{e}"
     end
-    redirect_to admin_votes_path
   end
 
   private

@@ -41,6 +41,10 @@ class CompanyMailer < ActionMailer::Base
     @info = data[:info]
     @ref_users = data[:ref_users]
 
+    logger.debug("----")
+    logger.debug(@info[1][:candidate_ids])
+    logger.debug("----")
+
     mail(to: data[:email], subject: @vote.title)
   end
 end
