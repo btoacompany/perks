@@ -122,9 +122,9 @@ class Admin::VotesController < Admin::Base
       if team.member_ids.present?
         team.member_ids.split(",").each do |member_id|
           if member_id.present?
-            voters_info[ref_users[member_id.to_i]][:team_id] = team.id
-            voters_info[ref_users[member_id.to_i]][:department] = team.department
-            candidate_ids = team.member_ids.split(",") - [member_id]
+            # voters_info[ref_users[member_id.to_i]][:team_id] = team.id
+            # voters_info[ref_users[member_id.to_i]][:department] = team.department
+            # candidate_ids = team.member_ids.split(",") - [member_id]
             # if candidate_ids.count > 2
             #   voters_info[ref_users[member_id.to_i]][:candidate_ids] = candidate_ids.sample(3)
             # else
