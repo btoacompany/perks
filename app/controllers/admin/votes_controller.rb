@@ -85,6 +85,8 @@ class Admin::VotesController < Admin::Base
       redirect_to admin_votes_path
     rescue => e
       puts "#{e}"
+      flash[:notice] = "#{e}"
+      redirect_to admin_votes_path
     end
   end
 
