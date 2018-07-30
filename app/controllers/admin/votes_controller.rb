@@ -79,6 +79,7 @@ class Admin::VotesController < Admin::Base
             }
             # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
             # CompanyMailer.vote_mail(data).deliver_now
+            # sleep 0.1
           end
           vote.is_delivered = true
           vote.save
