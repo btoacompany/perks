@@ -78,7 +78,7 @@ class Admin::VotesController < Admin::Base
               info: info
             }
             # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
-            CompanyMailer.vote_mail(data).deliver_now
+            # CompanyMailer.vote_mail(data).deliver_now
           end
           vote.is_delivered = true
           vote.save
@@ -121,15 +121,15 @@ class Admin::VotesController < Admin::Base
     teams.each do |team|
       if team.member_ids.present?
         team.member_ids.split(",").each do |member_id|
-          if member_id.present?
-            # voters_info[ref_users[member_id.to_i]][:team_id] = team.id
-            # voters_info[ref_users[member_id.to_i]][:department] = team.department
-            # candidate_ids = team.member_ids.split(",") - [member_id]
-            # if candidate_ids.count > 2
-            #   voters_info[ref_users[member_id.to_i]][:candidate_ids] = candidate_ids.sample(3)
-            # else
-            #   voters_info[ref_users[member_id.to_i]][:candidate_ids] = (dep_member_ids[team.department.id] -  [member_id]).sample(3)
-            # end
+          if member_id.present? && voters_info[ref_users[member_id.to_i]].present?
+            voters_info[ref_users[member_id.to_i]][:team_id] = team.id
+            voters_info[ref_users[member_id.to_i]][:department] = team.department
+            candidate_ids = team.member_ids.split(",") - [member_id]
+            if candidate_ids.count > 2
+              voters_info[ref_users[member_id.to_i]][:candidate_ids] = candidate_ids.sample(3)
+            else
+              voters_info[ref_users[member_id.to_i]][:candidate_ids] = (dep_member_ids[team.department.id] -  [member_id]).sample(3)
+            end
           end
         end
       end
