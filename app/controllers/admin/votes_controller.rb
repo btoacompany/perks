@@ -125,11 +125,11 @@ class Admin::VotesController < Admin::Base
             voters_info[ref_users[member_id.to_i]][:team_id] = team.id
             voters_info[ref_users[member_id.to_i]][:department] = team.department
             candidate_ids = team.member_ids.split(",") - [member_id]
-            if candidate_ids.count > 2
-              voters_info[ref_users[member_id.to_i]][:candidate_ids] = candidate_ids.sample(3)
-            else
-              voters_info[ref_users[member_id.to_i]][:candidate_ids] = (dep_member_ids[team.department.id] -  [member_id]).sample(3)
-            end
+            # if candidate_ids.count > 2
+            #   voters_info[ref_users[member_id.to_i]][:candidate_ids] = candidate_ids.sample(3)
+            # else
+            #   voters_info[ref_users[member_id.to_i]][:candidate_ids] = (dep_member_ids[team.department.id] -  [member_id]).sample(3)
+            # end
           end
         end
       end
