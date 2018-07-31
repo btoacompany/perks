@@ -1089,7 +1089,7 @@ $(function () {
     });
   });
 
-<% if flash[:notice].present? && flash[:notice] == "投票しました" %>
+<% if @send_to_user %>
   <% if ((request.env["HTTP_USER_AGENT"].include?('Mobile') || request.env["HTTP_USER_AGENT"].include?('Android'))) %>
   // SP
   $(document).ready(() => {
@@ -1217,8 +1217,7 @@ $(function () {
   <% end %>
 <% end %>
 
-
-  <% if @success_post_vote.present? %>
+  <% if flash[:notice] && flash[:notice] == "投票しました" %>
     <% if ((request.env["HTTP_USER_AGENT"].include?('Mobile') || request.env["HTTP_USER_AGENT"].include?('Android'))) %>
     // SP
     $(document).ready(() => {
@@ -1276,5 +1275,8 @@ $(function () {
   <% else %>
     console.log("NG");
   <% end %>
+
+
+
 
 </script>
