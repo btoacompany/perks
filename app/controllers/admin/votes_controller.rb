@@ -61,11 +61,11 @@ class Admin::VotesController < Admin::Base
     end
   end
 
-  # class << self
+  class << self
     def send_votes
       begin
-        # votes = Vote.finished.where(is_delivered: false)
-        votes = Vote.where(is_delivered: false)
+        votes = Vote.finished.where(is_delivered: false)
+        # votes = Vote.where(is_delivered: false)
         if votes.count > 0
           votes.each do |vote|
             users = User.of_company(vote.company_id).available
@@ -75,25 +75,23 @@ class Admin::VotesController < Admin::Base
               data = {
                 vote: vote,
                 ref_users: @ref_users,
-                email: "info@btoa-company.com",
+                email: ENV["SENDGRID_ENABLED"] ? user.email : "info@btoa-company.com",
                 info: info
               }
-              # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
               CompanyMailer.vote_mail(data).deliver_now
-              # sleep 0.1
+              sleep 0.1
             end
             vote.is_delivered = true
             vote.save
           end
         end
-        redirect_to admin_votes_path
       rescue => e
         puts "#{e}"
         # flash[:notice] = "#{e}"
         # redirect_to admin_votes_path
       end
     end
-  # end
+  end
 
   private
   def vote_params
