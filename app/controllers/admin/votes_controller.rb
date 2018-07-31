@@ -61,37 +61,39 @@ class Admin::VotesController < Admin::Base
     end
   end
 
-  def send_votes
-    begin
-      # votes = Vote.finished.where(is_delivered: false)
-      votes = Vote.where(is_delivered: false)
-      if votes.count > 0
-        votes.each do |vote|
-          users = User.of_company(vote.company_id).available
-          @ref_users = users.index_by(&:id)
-          voters_info = get_voters_info(vote, users, @ref_users)
-          voters_info.each do |info|
-            data = {
-              vote: vote,
-              ref_users: @ref_users,
-              email: "info@btoa-company.com",
-              info: info
-            }
-            # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
-            CompanyMailer.vote_mail(data).deliver_now
-            # sleep 0.1
+  # class << self
+    def send_votes
+      begin
+        # votes = Vote.finished.where(is_delivered: false)
+        votes = Vote.where(is_delivered: false)
+        if votes.count > 0
+          votes.each do |vote|
+            users = User.of_company(vote.company_id).available
+            @ref_users = users.index_by(&:id)
+            voters_info = get_voters_info(vote, users, @ref_users)
+            voters_info.each do |info|
+              data = {
+                vote: vote,
+                ref_users: @ref_users,
+                email: "info@btoa-company.com",
+                info: info
+              }
+              # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",
+              CompanyMailer.vote_mail(data).deliver_now
+              # sleep 0.1
+            end
+            vote.is_delivered = true
+            vote.save
           end
-          vote.is_delivered = true
-          vote.save
         end
+        redirect_to admin_votes_path
+      rescue => e
+        puts "#{e}"
+        # flash[:notice] = "#{e}"
+        # redirect_to admin_votes_path
       end
-      redirect_to admin_votes_path
-    rescue => e
-      puts "#{e}"
-      flash[:notice] = "#{e}"
-      redirect_to admin_votes_path
     end
-  end
+  # end
 
   private
   def vote_params
