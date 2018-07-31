@@ -17,11 +17,17 @@ class Admin::VoteResultsController < Admin::Base
   end
 
   def post_vote
-    if VoteResult.create(vote_result_params)
-      @success_post_vote = "投票しました"
-      redirect_to profile_given_path, notice: "投票しました"
-    else
-      redirect_to admin_votes_path, notice: "投票に失敗しました"
+    begin
+      if VoteResult.create(vote_result_params)
+        @success_post_vote = "投票しました"
+        redirect_to profile_given_path, notice: "投票しました"
+      else
+        redirect_to admin_votes_path, notice: "投票に失敗しました"
+      end
+    rescue => e
+      puts "#{e}"
+      flash[:notice] = e
+      redirect_to profile_given_path
     end
   end
 
