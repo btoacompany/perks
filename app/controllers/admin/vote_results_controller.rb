@@ -16,17 +16,9 @@ class Admin::VoteResultsController < Admin::Base
     @dep_total_vote = VoteResult.of_company(@user.company_id).of_vote(params[:id]).of_department(params[:department_id]).count
   end
 
-  def create
-    if VoteResule.create(vote_result_params)
-      redirect_to admin_votes_path, notice: "投票しました"
-    else
-      redirect_to admin_votes_path, notice: "投票に失敗しました"
-    end
-  end
-
   def post_vote
     if VoteResult.create(vote_result_params)
-      redirect_to admin_votes_path, notice: "投票しました"
+      redirect_to admin_vote_result_path(vote_result_params[:vote_id]), notice: "投票しました"
     else
       redirect_to admin_votes_path, notice: "投票に失敗しました"
     end
