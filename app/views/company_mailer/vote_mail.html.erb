@@ -21,7 +21,7 @@
                 <%= "#{@ref_users[id.to_i].try(:lastname)}" "#{@ref_users[id.to_i].try(:firstname)}" %>
               </h4>
               <span class="color-white c_align" style="background-color: #009DBF; padding: 5px; display: inline-block;margin: 0 auto; text-align: center;" >
-                <%= link_to "投票する", create_vote_admin_vote_results_url(user_id: @info[0].id, team_id: @info[1][:team_id], department_id: @info[1][:department].try(:id), vote_id: @vote.id , result: id.to_i ), style: "color: white; text-decoration: none;" %>
+                <%= link_to "投票する", create_vote_admin_vote_results_url(user_id: @info[0].id, team_id: @info[1][:team_id], department_id: @info[1][:department].try(:id), vote_id: @vote.id , result: id.to_i ), method: :post, style: "color: white; text-decoration: none;" %>
               </span>
             </div>
           </div>
