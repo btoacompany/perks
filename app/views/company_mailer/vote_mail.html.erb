@@ -18,7 +18,7 @@
                 </div>
               <% end %>
               <h4 class="c_align" style="margin: 0 auto; text-align: center;">
-                <%= "#{@ref_users[id.to_i].lastname}" "#{@ref_users[id.to_i].firstname}" %>
+                <%= "#{@ref_users[id.to_i].try(:lastname)}" "#{@ref_users[id.to_i].try(:firstname)}" %>
               </h4>
               <span class="color-white c_align" style="background-color: #009DBF; padding: 5px; display: inline-block;margin: 0 auto; text-align: center;" >
                 <%= link_to "投票する", admin_votes_path, style: "color: white; text-decoration: none;text-align: center;" %>
