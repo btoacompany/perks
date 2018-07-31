@@ -18,7 +18,8 @@ class Admin::VoteResultsController < Admin::Base
 
   def post_vote
     if VoteResult.create(vote_result_params)
-      redirect_to admin_vote_result_path(vote_result_params[:vote_id]), notice: "投票しました"
+      @success_post_vote = "投票しました"
+      redirect_to profile_given_path, notice: "投票しました"
     else
       redirect_to admin_votes_path, notice: "投票に失敗しました"
     end
