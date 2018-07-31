@@ -2,7 +2,7 @@
   <h3 class="c_align" style="text-align: center;"><%= @vote.question %></h3>
   <div class="" style="margin: 0 auto; width: 100%;">
     <div class="width-100-percent" style="margin: 20px auto; width: 100%; text-align: center;">
-      <%= @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "500", style: "text-align: center;") : "" %>
+      <%= @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "200", style: "text-align: center;") : "" %>
     </div>
     <div class="width-100-percent clearfix" style="width: 100%; margin: 0 auto; text-align: center;">
       <% if @info[1][:candidate_ids].present? %>
