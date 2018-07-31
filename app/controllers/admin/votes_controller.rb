@@ -61,11 +61,11 @@ class Admin::VotesController < Admin::Base
     end
   end
 
-  class << self
+  # class << self
     def send_votes
       begin
-        votes = Vote.finished.where(is_delivered: false)
-        # votes = Vote.where(is_delivered: false)
+        # votes = Vote.finished.where(is_delivered: false)
+        votes = Vote.where(is_delivered: false)
         if votes.count > 0
           votes.each do |vote|
             users = User.of_company(vote.company_id).available
@@ -86,14 +86,14 @@ class Admin::VotesController < Admin::Base
             vote.save
           end
         end
-        # redirect_to admin_votes_path
+        redirect_to admin_votes_path
       rescue => e
         puts "#{e}"
         # flash[:notice] = "#{e}"
         # redirect_to admin_votes_path
       end
     end
-  end
+  # end
 
   private
   def vote_params
