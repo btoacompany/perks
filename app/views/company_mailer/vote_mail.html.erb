@@ -1,25 +1,27 @@
-<div width-100-percent>
-  <h3 class="c_align"><%= @vote.question %></h3>
-  <div class="width-50-percent">
-    <%= @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "200") : "" %>
-    <div class="width-100-percent clearfix" style="margin: 0 auto;">
+<div class="width-100-percent" style="margin: 0 auto; width: 50%;">
+  <h3 class="c_align" style="text-align: center;"><%= @vote.question %></h3>
+  <div class="" style="margin: 0 auto; width: 100%;">
+    <div class="width-100-percent" style="margin: 20px auto; width: 100%; text-align: center;">
+      <%= @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "300", style: "text-align: center;") : "" %>
+    </div>
+    <div class="width-100-percent clearfix" style="width: 100%; margin: 0 auto;">
       <% if @info[1][:candidate_ids].present? %>
         <% @info[1][:candidate_ids].each do |id| %>
-          <div class="width-30-percent float_left">
+          <div class="width-30-percent float_left"  style="float: left; margin: 0 20px;">
             <img src="https://s3-ap-northeast-1.amazonaws.com/prizy/common/noimg_pc.png" />
             <br/>
             <div class="width-100-percent c_align" style="margin: 0 auto;">
               <% if @info[1][:department].present? %>
-                <div class="c_align" style="margin: 0 auto;">
+                <div class="c_align" style="margin: 0 auto;text-align: center;">
                   <%= @info[1][:department].try(:dep_name) %>
                   <br/>
                 </div>
               <% end %>
-              <h4 class="c_align" style="margin: 0 auto;">
-                <%=(@ref_users[id.to_i].lastname =@ref_users[id.to_i].lastname) %>
+              <h4 class="c_align" style="margin: 0 auto; text-align: center;">
+                <%= "#{@ref_users[id.to_i].lastname}" "#{@ref_users[id.to_i].firstname}" %>
               </h4>
-              <span class="color-white c_align" style="background-color: #009DBF; padding: 5px; display: inline-block;margin: 0 auto;" >
-                <%= link_to "投票する", admin_vote_results_path(user_id: @info[0].id, team_id: @info[1][:team_id], department_id: @info[1][:department].try(:id), vote_id: @vote.id , result: id.to_i ), method: :post, style: "color: white; text-decoration:	none;" %>
+              <span class="color-white c_align" style="background-color: #009DBF; padding: 5px; display: inline-block;margin: 0 auto; text-align: center;" >
+                <%= link_to "投票する", admin_votes_path, style: "color: white; text-decoration: none;text-align: center;" %>
               </span>
             </div>
           </div>
