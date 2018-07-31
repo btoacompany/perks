@@ -2,7 +2,7 @@ class Admin::VoteResultsController < Admin::Base
   before_action :set_record, only: :show
 
   def index
-    @votes = Vote.of_company(@user.company_id).order(date: :asc).finished.date_order
+    @votes = Vote.of_company(@user.company_id).finished.where(is_delivered: true).date_order
     @total_employee_count = User.of_company(@user.company_id).available.count
   end
 
@@ -12,13 +12,13 @@ class Admin::VoteResultsController < Admin::Base
     dep_headcount = get_dep_headcount(@departments)
     dep_resultcount = VoteResult.of_company(@user.company_id).of_vote(params[:id]).group(:department_id).count
     @dep_response_rate = get_response_rate(dep_headcount, dep_resultcount)
-    @dep_ranking = Hash[ VoteResult.of_company(@user.company_id).of_department(params[:department_id]).group(:result).count.sort_by{ |_, v| -v } ]
-    @dep_total_vote = VoteResult.of_company(@user.company_id).of_department(params[:department_id]).count
+    @dep_ranking = Hash[ VoteResult.of_company(@user.company_id).of_department(params[:department_id]).of_vote(params[:id]).group(:result).count.sort_by{ |_, v| -v } ]
+    @dep_total_vote = VoteResult.of_company(@user.company_id).of_vote(params[:id]).of_department(params[:department_id]).count
   end
 
-  def create
-    if VoteResule.create(vote_result_params)
-      redirect_to admin_votes_path, notice: "投票しました"
+  def post_vote
+    if VoteResult.create(vote_result_params)
+      redirect_to admin_vote_result_path(vote_result_params[:vote_id]), notice: "投票しました"
     else
       redirect_to admin_votes_path, notice: "投票に失敗しました"
     end
@@ -51,6 +51,6 @@ class Admin::VoteResultsController < Admin::Base
   end
 
   def vote_result_params
-    params.permit(:user_id, :team_id, :department_id, :vote_id, :result)
+    params.permit(:user_id, :company_id, :team_id, :department_id, :vote_id, :result)
   end
 end

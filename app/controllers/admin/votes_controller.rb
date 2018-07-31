@@ -74,7 +74,7 @@ class Admin::VotesController < Admin::Base
             data = {
               vote: vote,
               ref_users: @ref_users,
-              email: "naoto.udagawa1230@gmail.com",
+              email: "info@btoa-company.com",
               info: info
             }
             # email: ENV["SENDGRID_ENABLED"] ? user.email : "naoto.udagawa1230@gmail.com",

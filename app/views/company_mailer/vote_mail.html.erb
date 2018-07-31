@@ -4,7 +4,7 @@
     <div class="width-100-percent" style="margin: 20px auto; width: 100%; text-align: center;">
       <%= @vote.try(:header_image_url).present? ? image_tag(@vote.try(:header_image_url), size: "300", style: "text-align: center;") : "" %>
     </div>
-    <div class="width-100-percent clearfix" style="width: 100%; margin: 0 auto;">
+    <div class="width-100-percent clearfix" style="width: 100%; margin: 0 auto; text-align: center;">
       <% if @info[1][:candidate_ids].present? %>
         <% @info[1][:candidate_ids].each do |id| %>
           <div class="width-30-percent float_left"  style="float: left; margin: 0 20px;">
@@ -18,10 +18,10 @@
                 </div>
               <% end %>
               <h4 class="c_align" style="margin: 0 auto; text-align: center;">
-                <%= "#{@ref_users[id.to_i].lastname}" "#{@ref_users[id.to_i].firstname}" %>
+                <%= "#{@ref_users[id.to_i].try(:lastname)}" "#{@ref_users[id.to_i].try(:firstname)}" %>
               </h4>
-              <span class="color-white c_align" style="background-color: #009DBF; padding: 5px; display: inline-block;margin: 0 auto; text-align: center;" >
-                <%= link_to "投票する", admin_votes_path, style: "color: white; text-decoration: none;text-align: center;" %>
+              <span class="color-white c_align" style="text-align: center; background-color: #009DBF; padding: 5px; display: inline-block;margin: 0 auto; text-align: center;" >
+                <%= link_to "投票する", post_vote_admin_vote_results_url(user_id: @info[0].id, company_id: @info[0].company_id, team_id: @info[1][:team_id], department_id: @info[1][:department].try(:id), vote_id: @vote.id , result: id.to_i ), style: "text-align: center; color: white; text-decoration: none;" %>
               </span>
             </div>
           </div>
