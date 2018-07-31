@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     end
     resources :vote_results, only: [:index, :show, :create], shallow: true do
       collection do
-        get :create_vote
+        get :post_vote
       end
     end
   end
