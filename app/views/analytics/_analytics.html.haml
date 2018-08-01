@@ -1,7 +1,7 @@
 .analytics_sidebar{ style: "width: 15%;" }
   %ul
     - if controller.action_name == "pv"
-      %li{ "background-color: #3a3a3c;" }= link_to "アクセス状況", "/analytics/pv"
+      %li{ style: "background-color: #3a3a3c;" }= link_to "アクセス状況", "/analytics/pv"
     - else
       %li= link_to "アクセス状況", "/analytics/pv"
     - if controller.action_name == "overall"
