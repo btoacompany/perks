@@ -23,7 +23,7 @@ job_type :runner, "cd :path && RAILS_ENV=#{@environment} bin/rails runner -e :en
 
 set :output, 'log/whenever.log'
 
-every 1.day, at: '10:00' do
+every 1.day, at: '01:00' do
   # runner "CompanyController.reset_point"
   runner "Admin::VotesController.send_votes"
 end
