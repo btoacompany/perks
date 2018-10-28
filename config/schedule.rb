@@ -22,19 +22,3 @@ require File.expand_path(File.dirname(__FILE__) + '/environment')
 job_type :runner, "cd :path && RAILS_ENV=#{@environment} bin/rails runner -e :environment ':task' :output"
 
 set :output, 'log/whenever.log'
-
-every 1.day, at: '01:00' do
-  # runner "CompanyController.reset_point"
-  runner "Admin::VotesController.send_votes"
-end
-
-# Learn more: http://github.com/javan/whenever
-
-every :monday, :at => '03:00' do
-  runner "ArticlesController.batch"
-end
-
-# every 1.day, at: '5:40 pm' do
-#   runner "ArticlesController.batch"
-# end
-
